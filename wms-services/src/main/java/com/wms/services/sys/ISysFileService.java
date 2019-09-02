@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
+import com.wms.common.enums.FileTypeEnum;
 import com.wms.common.exception.BusinessServiceException;
-import com.wms.entity.auto.InboundHeaderTEntity;
 import com.wms.entity.auto.SysFileTEntity;
 
 public interface ISysFileService {
@@ -15,6 +15,8 @@ public interface ISysFileService {
 	public List<SysFileTEntity> find(PageRequest request) throws BusinessServiceException;
 	
 	public SysFileTEntity find(SysFileTEntity file) throws BusinessServiceException;
+	
+	public List<SysFileTEntity> findByType(FileTypeEnum type) throws BusinessServiceException;
 	
 	public Boolean add(SysFileTEntity file) throws BusinessServiceException;
 	

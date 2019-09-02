@@ -160,6 +160,31 @@ public class FileRest extends BaseController {
 	}
 	
 	/**
+	 * 上传移动app文件
+	 * @param file 文件
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping("/uploadReport")
+	public AjaxResult<List<FileVO>> uploadReport(@RequestParam MultipartFile file, HttpServletRequest req){
+		try {
+			if (file == null) return fail("upload.nofile");
+			AjaxRequest<String> request = ajaxRequest(req);
+			List<FileVO> fileVos = Lists.newArrayList();
+			FileVO vo = new FileVO();
+			vo.setFile(file);
+			vo.setTemplate(request.getString(SysFileTEntity.Column.template.getJavaProperty()));
+			vo.setFileType(FileTypeEnum.Report.getCode());
+			fileVos.add(vo);
+			
+			fileService.upload(ajaxRequest(fileVos, request));
+			return success(fileVos);
+		} catch (Exception e) {
+			return fail(e.getMessage());
+		}
+	}
+	
+	/**
 	 * 下载app
 	 * @throws IOException 
 	 */

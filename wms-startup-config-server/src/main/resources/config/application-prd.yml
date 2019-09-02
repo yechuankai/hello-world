@@ -1,0 +1,55 @@
+spring:
+ cloud:
+  config:
+   #开发环境本地优先级最高，远程优先级低
+   allowOverride: false
+   overrideNone: false
+   overrideSystemProperties: false
+ datasource:
+  name: datasourceTest
+  url: jdbc:oracle:thin:@10.88.19.31:1521:DIFTZER
+  username: wms
+  password: wms
+  type: com.alibaba.druid.pool.DruidDataSource
+  driver-class-name: oracle.jdbc.OracleDriver
+  filters: stat
+  maxActive: 20
+  initialSize: 1
+  maxWait: 60000
+  minIdle: 1
+  timeBetweenEvictionRunsMillis: 60000
+  minEvictableIdleTimeMillis: 300000
+  validationQuery: select '1' from dual
+  testWhileIdle: true
+  testOnBorrow: false
+  testOnReturn: false
+  poolPreparedStatements: true
+  maxOpenPreparedStatements: 20
+ data:
+  mongodb:
+   uri: mongodb://10.88.18.20:27017
+   database: WMS
+        #spring.data.mongodb.uri=mongodb://name:pass@localhost:27017/dbname
+
+wms:
+ locale: en_US
+ #WMS相关服务地址
+ url:
+  service: http://www.diftz.dj:8088/WMS-JBT
+  report: http://www.diftz.dj:8088/wms-report
+  file: http://www.diftz.dj:8088/wms-file
+  
+
+cas: 
+  #cas server地址，外网访问需用外网IP,可以写域名
+  server: http://www.diftz.dj:8088/CAS-JBT
+  #拿取票据地址
+  tickets: ${cas.server}/v1/tickets
+  #当前项目被casFilter拦截的请求路径
+  casFilterUrl: /cas
+  loginUrl: ${cas.server}/login?flag=trade&service=${wms.url.service}/cas
+  
+logging:
+ path: D:\\logs
+ 
+  

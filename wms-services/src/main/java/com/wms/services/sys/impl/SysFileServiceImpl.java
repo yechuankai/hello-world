@@ -179,4 +179,14 @@ public class SysFileServiceImpl implements ISysFileService {
 		return Boolean.TRUE;
 	}
 
+	@Override
+	public List<SysFileTEntity> findByType(FileTypeEnum type) throws BusinessServiceException {
+		SysFileTExample example = new SysFileTExample();
+		example.createCriteria()
+		.andFileTypeEqualTo(type.getCode())
+		.andDelFlagEqualTo(YesNoEnum.No.getCode());
+		List<SysFileTEntity> list = fileDao.selectByExample(example);
+		return list;
+	}
+
 }
