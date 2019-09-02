@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${web.label.warehouseactive}">仓库激活</title>
+    <head th:replace="common/head" />
+</head>
+<body class="easyui-layout" >
+	<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+		<div id="searchDiv">
+			<div style="margin-left: 10px;">
+				<form id="searchForm" data-table="#dataTable" >
+					<div style="margin-bottom:10px">
+						<input name="warehouseCode" class="easyui-textbox" wms:data-options="label:'${web.label.warehouse.code}',labelPosition:'top'">
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="warehouseDescr" class="easyui-textbox" wms:data-options="label:'${web.label.warehouse.descr}',labelPosition:'top'">
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="companyDescr" class="easyui-textbox" wms:data-options="label:'${web.label.company.descr}',labelPosition:'top'">
+					</div>
+					<div style="margin-bottom: 10px">
+						<input class="easyui-combobox" name="active" wms:data-options="
+						data: codelkups['YESNO'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.active}',
+						labelPosition: 'top'
+						" />
+					</div>
+				</form>
+			</div>
+			<div style="text-align: center;">
+				<a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;" data-options="iconCls:'icon-search'" >
+					<span wms:text="${web.label.search}">Search</span>
+				</a>	
+				<a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;" data-options="iconCls:'icon-clear'" >
+					<span wms:text="${web.label.clear}">Clear</span>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div data-options="region:'center',border:false" >
+		<div class="tableToolbar">
+			<a href="#" class="easyui-linkbutton common-active" onclick="active('Enable')">
+				<span wms:text="${web.label.enabled}">Enabled</span>
+			</a>
+			<a href="#" class="easyui-linkbutton common-active" onclick="active('Disable')">
+				<span wms:text="${web.label.disabled}">Disabled</span>
+			</a>
+		</div>
+		<div>
+			<table id="dataTable" wms:title="${web.label.warehouseactive}" class="easyui-datagrid"
+							th:data-delayUrl="@{/services/inner/warehouse/findUserWarehouse}">
+				<thead>
+					<tr>
+						<th field="activeId" data-options="checkbox:true"></th>
+						<th field="updateVersion" data-options="hidden:true"></th>
+						<th field="warehouseId" data-options="hidden:true"></th>
+						<th field="companyId" width="80" data-options="hidden:true">companyId</th>
+						<th field="warehouseCode" width="150" wms:text="${web.label.warehouse.code}" data-options="sortable:true">code</th>
+						<th field="warehouseDescr" width="200" wms:text="${web.label.warehouse.descr}" data-options="sortable:true">descr</th>
+						<th field="companyDescr" width="200" wms:text="${web.label.company.descr}" data-options="sortable:true">companyDescr</th>
+						<th field="active" width="150" wms:text="${web.label.active}" data-options="
+							sortable:true,
+							formatter:function(value,row){
+								return getCodelkupValue('YESNO',value);
+							}
+						" >Active</th>
+						<th field="updateBy" width="80" wms:text="${web.label.updateby}" >updateBy</th>
+						<th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">updateTime</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</body>
+<script th:replace="common/js" />
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=YESNO}"></script>
+<script type="text/javascript" th:inline="text">
+	function active(action){
+		var checkedRows = $('#dataTable').datagrid('getChecked');
+		if (checkedRows.length == 0) {
+			showError($.locale.selectOneRow);
+			return;
+		}
+		confirmMsg($.locale.warehouseAction,{action:action,row:checkedRows.length}, function(r){
+			if (!r){
+				return;
+			}
+			var active = 'N';
+			if (action == 'Enable'){
+				active = 'Y';
+			}
+			for (var i in checkedRows){
+				checkedRows[i]['active'] = active;
+			}
+			
+			var data = getBaseData(checkedRows);
+			loading();
+			$.post({
+				url: '../../services/inner/warehouse/active',
+				data:data,
+				success: function(data){
+					data = returnData(data);
+					closeLoading();
+					if (data.code == '0') {
+						showError(data.msg);
+						return;
+					}
+					var checkedRows = $('#dataTable').datagrid('reload').datagrid('clearChecked');
+					window.parent.reloadWarehouseList();
+				}
+			});
+		});
+	}
+</script>
+</html>

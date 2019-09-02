@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${wms.monitorlog.title}">监控日志</title>
+    <head th:replace="common/head" />
+</head>
+<body class="easyui-layout" >
+	<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+		<div id="searchDiv" class="easyui-layout" style="height: 100%;">
+			<div style="margin-left: 10px;height: 100%;" data-options="region:'north',border:false" >
+				<form id="searchForm" data-table="#monitorData" style="height: 780px;" >
+					<div style="margin-bottom:10px">
+						<input name="clz" class="easyui-textbox" wms:data-options="label:'${web.label.clz}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="method" class="easyui-textbox" wms:data-options="label:'${web.label.method}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input class="easyui-combobox" name="type" wms:data-options="
+						data: codelkups['MONITORTYPE'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.type}',
+						labelPosition: 'top'
+						" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="url" class="easyui-textbox" wms:data-options="label:'${web.label.url}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="ip" class="easyui-textbox" wms:data-options="label:'${web.label.ip}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="requestParam" class="easyui-textbox" wms:data-options="label:'${web.label.request}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="responseParam" class="easyui-textbox" wms:data-options="label:'${web.label.response}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="errorParam" class="easyui-textbox" wms:data-options="label:'${web.label.error}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input class="easyui-combobox" name="status" wms:data-options="
+						data: codelkups['MONITORSTATUS'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.status}',
+						labelPosition: 'top'
+						" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input class="easyui-combobox" name="timeParam" wms:data-options="
+						data: codelkups['REQUESTIME'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.time}',
+						labelPosition: 'top'
+						" />
+					</div>
+				</form>
+			</div>
+			<div style="text-align: center;height:50px;" data-options="region:'south',border:false">
+				<a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;" data-options="iconCls:'icon-search'" >
+					<span wms:text="${web.label.search}">Search</span>
+				</a>	
+				<a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;" data-options="iconCls:'icon-clear'" >
+					<span wms:text="${web.label.clear}">Clear</span>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div data-options="region:'center',border:false" >
+		<div>
+			<table id="monitorData"  wms:title="${web.label.monitorlist.title}" class="easyui-datagrid" 
+							th:data-delayUrl="@{/services/inner/monitor/find}">
+				<thead>
+					<tr>
+						<th field="clz" width="150" wms:text="${web.label.clz}" data-options="sortable:true">Class</th>
+						<th field="method" width="50" wms:text="${web.label.method}" data-options="sortable:true">Method</th>
+						<th field="type" width="50" wms:text="${web.label.type}" data-options="
+							sortable:true,
+							formatter:function(value,row){
+								return getCodelkupValue('MONITORTYPE',value);
+							}
+						">Type</th>
+						<th field="url" width="400" wms:text="${web.label.url}">URL</th>
+						<th field="ip" width="100" wms:text="${web.label.ip}">IP</th>
+						<th field="time" width="50" wms:text="${web.label.time}" data-options="sortable:true">Time</th>
+						<th field="status" width="50" wms:text="${web.label.status}" data-options="
+							sortable:true,
+							formatter:function(value,row){
+								return getCodelkupValue('MONITORSTATUS',value);
+							}
+						">status</th>
+						<th field="request" width="50" wms:text="${web.label.request}" data-options="
+							formatter:function(value,row){
+								var obj = {id: value, type: 'REQUEST'};
+								obj = JSON.stringify(obj);
+								var detail = '<span title = \'查看\' onclick=\'viewDetail('+obj+')\' class=\'icon-find\'>&nbsp;</span>';
+								return detail;
+							}
+						">request</th>
+						<th field="response" width="50" wms:text="${web.label.response}" data-options="
+							formatter:function(value,row){
+								var obj = {id: value, type: 'REQUEST'};
+								obj = JSON.stringify(obj);
+								var detail = '<span title = \'查看\' onclick=\'viewDetail('+obj+')\' class=\'icon-find\'>&nbsp;</span>';
+								return detail;
+							}
+						">response</th>
+						<th field="error" width="50" wms:text="${web.label.error}" data-options="
+							formatter:function(value,row){
+								var obj = {id: value, type: 'REQUEST'};
+								obj = JSON.stringify(obj);
+								var detail = '<span title = \'查看\' onclick=\'viewDetail('+obj+')\' class=\'icon-find\'>&nbsp;</span>';
+								return detail;
+							}
+						">error</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+	<div id="detailDiv" wms:title="${web.label.viewdetail}" style="width:500px;height:500px; display: none;">
+		<pre id="showJson">
+			
+		</pre>
+	</div>
+</body>
+<script th:replace="common/js" />
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=MONITORSTATUS,REQUESTIME,MONITORTYPE}"></script>
+<script type="text/javascript">
+	function viewDetail(obj){
+		var data = getBaseData(obj);
+		loading();
+		$.post({
+			url: '../../services/inner/monitor/view',
+			data:data,
+			success: function(data){
+				data = returnData(data);
+				closeLoading();
+				if (data.code == '0') {
+					showError(data.msg);
+					return;
+				}
+				if(obj.type == 'ERROR'){
+					$('#showJson').html(data.data.content);
+				}else{
+					var json = eval('('+data.data.content+')');
+					$('#showJson').html(JSON.stringify(json, null, '\t'));
+				}
+				$('#detailDiv').dialog({
+				    closed: true,
+				    modal: true,
+				    fix: true
+				}).dialog('open');
+			}
+		});
+	}
+</script>
+</html>

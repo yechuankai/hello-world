@@ -1,0 +1,192 @@
+<div id="detailToolbar" class="tableToolbar">
+<a href="#" class="easyui-linkbutton codelkup-add" data-addpanel="#codelkupAddDiv">
+    <span wms:text="${web.label.add}">Add</span>
+</a>
+<a href="#" class="easyui-linkbutton common-rowsave" data-table="#codelkupTable"
+   th:data-url="@{/services/inner/codelkup/save}">
+    <span wms:text="${web.label.save}">Save</span>
+</a>
+<a href="#" class="easyui-linkbutton common-rowdel" data-table="#codelkupTable"
+   th:data-url="@{/services/inner/codelkup/delete}">
+    <span wms:text="${web.label.delete}">Delete</span>
+</a>
+</div>
+<div>
+    <table id="codelkupTable" wms:title="${web.label.codelkuplist.title}" class="easyui-datagrid"
+           data-options="toolbar: '#detailToolbar'"
+           th:data-delayUrl="@{/services/inner/codelkup/find}">
+        <thead>
+        <tr>
+            <th field="codelkupId" data-options="checkbox:true"></th>
+            <th field="codelistId" data-options="hidden:true"></th>
+            <th field="code" width="80" wms:text="${web.label.code}"
+                data-options="sortable:true">code
+            </th>
+            <th field="sort" width="50" wms:text="${web.label.sort}"
+                data-options="sortable:true,editor:'numberbox'">sort
+            </th>
+            <th field="descr" width="130" wms:text="${web.label.descr}"
+                data-options="
+                sortable:true,
+                editor:'text',
+                formatter: function(value,row,index){
+                    if(null != value){
+                        return '<span title='+value+'>'+value+'</span>'
+                    }
+                }
+                ">descr
+            </th>
+            <th field="type" width="80" wms:text="${web.label.type}" data-options="
+							            sortable:true,
+							            formatter:function(value,row){
+								            return getCodelkupValue('CODETYPE',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['CODETYPE']
+								            }
+							            }
+						            ">type
+            </th>
+            <th field="active" width="50" wms:text="${web.label.active}" data-options="
+							            sortable:true,
+							            formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">active
+            </th>
+            <th field="isDefault" width="70" wms:text="${web.label.isdefault}" data-options="
+							            sortable:true,
+							            formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">isDefault
+            </th>
+            <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+            <th field="createTime" width="150" wms:text="${web.label.createtime}"
+                data-options="sortable:true">createTime
+            </th>
+            <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+            <th field="updateTime" width="150" wms:text="${web.label.updatetime}"
+                data-options="sortable:true">updateTime
+            </th>
+            <th field="remark" width="200" wms:text="${web.label.remark}"
+                data-options="
+                editor:'text',
+                formatter: function(value,row,index){
+                    if(null != value){
+                        return '<span title='+value+'>'+value+'</span>'
+                    }
+                }
+                ">remark
+            </th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<div id="codelkupAddDiv" wms:title="${web.label.detail.add}" style="width:500px;height:420px; display: none;">
+    <div style="width: 100%;padding-left: 50px;">
+        <form method="post" id="addCodelkupForm" th:data-url="@{/services/inner/codelkup/add}">
+            <table style="width: 100%;">
+                <tr>
+                    <td >
+                        <input name="code" class="easyui-textbox" wms:data-options="required:true,label:'${web.label.code}',labelPosition:'top'">
+                    </td>
+                    <td >
+                        <input name="descr" class="easyui-textbox" wms:data-options="required:true,label:'${web.label.descr}',labelPosition:'top'">
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <input name="sort" class="easyui-numberbox" wms:data-options="required:true,label:'${web.label.sort}',labelPosition:'top'">
+                    </td>
+                    <td>
+                        <input class="easyui-combobox" name="type" style="width: 100px;" wms:data-options="
+							required:true,
+							value: '10',
+							data: codelkups['CODETYPE'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.type}',
+							labelPosition: 'top'
+							" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="easyui-combobox" name="active" style="width: 100px;" wms:data-options="
+							required:true,
+							value: 'Y',
+							data: codelkups['YESNO'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.active}',
+							labelPosition: 'top'
+							"/>
+                    </td>
+                    <td>
+                        <input class="easyui-combobox" name="isDefault" style="width: 100px;" wms:data-options="
+							required:true,
+							value: 'N',
+							data: codelkups['YESNO'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.isdefault}',
+							labelPosition: 'top'
+							"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input name="remark" class="easyui-textbox"
+                               wms:data-options="label:'${web.label.remark}',labelPosition:'top',multiline:true"
+                               style="width: 400px;height:100px;"/>
+                    </td>
+                </tr>
+
+            </table>
+        </form>
+    </div>
+    <div style="text-align: center;margin-top: 30px;">
+        <a href="#" class="easyui-linkbutton codelkup-confirmadd" data-form="#addCodelkupForm" data-table="#codelkupTable" id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
+        </a>
+        <a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');" data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
+        </a>
+    </div>
+</div>
+<script type="text/javascript" th:inline="text">
+    function refreshCodelkup(data) {
+        var codelkupTable = '#codelkupTable';
+        var url = $(codelkupTable).attr('data-delayUrl');
+
+        var searchData = {codelistId: data.codelistId};
+        var data = getBaseData();
+        $.extend(data, searchData);
+
+        $(codelkupTable).datagrid({
+            url: url,
+            queryParams: data
+        }).datagrid('clearChecked');
+    }
+</script>

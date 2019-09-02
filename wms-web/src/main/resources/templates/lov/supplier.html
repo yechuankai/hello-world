@@ -1,0 +1,52 @@
+<input id="supplierCode" name="supplierCode" class="lazy-load" lazy-load="easyui-combogrid" wms:data-options="
+								label: '${web.label.supplier}',
+								labelPosition: 'top',
+								idField:'supplierCode',
+    							textField:'supplierCode',
+								url:'../../services/inner/base/supplier/find',
+							    onBeforeLoad: function(param){
+									$.extend(param, getSupplierParams());
+								},
+							    columns:[[
+								    {field:'supplierId',hidden:true},
+								    {field:'phone1',hidden:true},
+								    {field:'phone2',hidden:true},
+								    {field:'contact1',hidden:true},
+								    {field:'contact2',hidden:true},
+								    {field:'address1',hidden:true},
+								    {field:'address2',hidden:true},
+								    {field:'fax',hidden:true},
+								    {field:'email',hidden:true},
+								    {field:'supplierCode',title:'${web.label.supplier}',width:80},
+								    {field:'supplierDescr',title:'${web.label.descr}',width:150}
+							    ]]
+							" />
+<script type="text/javascript">
+	function loadSupplierLov(params, fn){ 
+		$('#supplierCode').combogrid({
+			queryParams: getSupplierParams(params),
+			onClickRow: function(rowIndex, rowData){
+				if (fn != undefined) {
+					fn(rowData);
+				}else{
+					setSupplierResult(rowData);
+				}
+			}
+		});
+	}
+	
+	function getSupplierParams (params){ 
+		var data = getBaseData();
+		data['active'] = 'Y';
+		if (typeof(params) == 'object'){
+			$.extend(data, params);
+		}
+		return data;
+	}
+	
+	function setSupplierResult (data){ 
+		if ($("#SupplierDescr").length > 0) {
+			$("#SupplierDescr").textbox('setValue', data.SupplierDescr);
+		}
+	}
+</script>

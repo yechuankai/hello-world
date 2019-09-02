@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${web.tip.warehouse.choice}">WMS管理系统</title>
+    <head th:replace="common/mobileHead" />
+    <script>
+        if(window.top!==window.self){window.top.location=window.location};
+    </script>
+</head>
+
+<body th:class="'easyui-layout wms-' + ${env}" id="main-content" style="opacity: 1;">
+	<div class="easyui-navpanel">
+		<header>
+			<div class="m-toolbar">
+				<span class="m-title" wms:text="${web.tip.warehouse.choice}">wh</span>
+			</div>
+		</header>
+		<ul class="m-list warehouses">
+			<li th:each="wh,whStat : ${warehouseList}"><p th:text="${wh.warehouseDescr}">wh</p>
+				<div class="m-right">
+					<a href="javascript:void(0)" class="easyui-linkbutton confirm-warehouse" wms:text="${web.label.go}" th:data-warehouseId="${wh.warehouseId}" th:data-companyId="${wh.companyId}">Go</a>
+				</div>
+			</li>
+		</ul>
+	</div>
+</body>
+<style scoped>
+p{
+	font-weight: bold;
+	font-size: 16px;
+}
+</style>
+<script th:replace="common/mobileJs" />
+<script type="text/javascript" th:src="@{/static/js/test.js}"></script>
+<script type="text/javascript" th:inline="text">
+$(function(){
+	$('.warehouses .confirm-warehouse').click(function(){
+		var warehouseId = $(this).attr('data-warehouseId');
+		var companyId = $(this).attr('data-companyId');
+		setWarehouse(warehouseId, companyId);
+	});
+});
+function setWarehouse(warehouseId, companyId){
+	loading();
+	$.post({
+		url: '../services/web/setWarehouse',
+		contentType: 'application/x-www-form-urlencoded',
+		processData: true,
+		data:  {warehouseId:warehouseId, companyId:companyId},
+		success: function(data){
+			data = returnData(data);
+			closeLoading();
+			if (data.code == '0') {
+				showError(data.msg);
+				return;
+			}
+			window.location.href = 'main';
+		}
+	});
+}
+</script>
+</html>

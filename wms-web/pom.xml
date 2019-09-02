@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>wms.base</groupId>
+		<artifactId>wms</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>wms-web</artifactId>
+	<packaging>jar</packaging>
+	<name>wms-web Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+	
+	
+	<dependencies>
+		<dependency>
+			<groupId>wms.base</groupId>
+			<artifactId>wms-async</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>wms.base</groupId>
+			<artifactId>wms-services</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<!-- thymeleaf模板引擎和shiro框架的整合 -->
+		<dependency>
+			<groupId>com.github.theborakompanioni</groupId>
+			<artifactId>thymeleaf-extras-shiro</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+		<!-- 解析客户端操作系统、浏览器等 -->
+		<dependency>
+			<groupId>eu.bitwalker</groupId>
+			<artifactId>UserAgentUtils</artifactId>
+			<version>1.19</version>
+		</dependency>
+		 <!--验证码 -->
+		<dependency>
+			<groupId>com.github.penggle</groupId>
+			<artifactId>kaptcha</artifactId>
+			<version>2.3.2</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<finalName>wms-web</finalName>
+	</build>
+</project>

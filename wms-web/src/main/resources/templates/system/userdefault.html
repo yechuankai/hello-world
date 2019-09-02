@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${wms.userdefault.title}">用户</title>
+    <head th:replace="common/head" />
+</head>
+<body class="easyui-layout" >
+	<input type="hidden" id="userId" th:value="${user.userId}" />
+	<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+		<div id="searchDiv">
+			<div style="margin-left: 10px;">
+				<form id="searchForm" data-table="#dataTable" >
+					<div style="margin-bottom:10px">
+						<input name="loginName" class="easyui-textbox" wms:data-options="label:'${web.label.user.loginname}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="warehouseName" class="easyui-textbox" wms:data-options="label:'${web.label.warehouse.descr}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input class="easyui-combobox" name="name="locale"" wms:data-options="
+						data: codelkups['LOCALE'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.language}',
+						labelPosition: 'top'
+						" />
+					</div>
+				</form>
+			</div>
+			<div style="text-align: center;">
+				<a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;" data-options="iconCls:'icon-search'" >
+					<span wms:text="${web.label.search}">Search</span>
+				</a>	
+				<a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;" data-options="iconCls:'icon-clear'" >
+					<span wms:text="${web.label.clear}">Clear</span>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div data-options="region:'center',border:false" >
+		<div class="tableToolbar">
+			<a href="#" class="easyui-linkbutton common-add" data-addpanel="#addDiv">
+				<span wms:text="${web.label.add}">Add</span>
+			</a>
+			<a href="#" class="easyui-linkbutton common-rowsave" data-table="#dataTable" th:data-url="@{/services/inner/userdefault/save}" >
+				<span wms:text="${web.label.save}">Save</span>
+			</a>
+			<a href="#" class="easyui-linkbutton common-rowdel"  data-table="#dataTable" th:data-url="@{/services/inner/userdefault/delete}">
+				<span wms:text="${web.label.delete}">Delete</span>
+			</a>
+		</div>
+		<div>
+			<table id="dataTable" wms:title="${web.label.userdefaultlist.title}" class="easyui-datagrid"
+				data-options="
+				onBeforeEdit: function(rowIndex, rowData){
+					loginName = rowData.loginName;
+				}
+				"
+							th:data-delayUrl="@{/services/inner/userdefault/find}">
+				<thead>
+					<tr>
+						<th field="defaultId" data-options="checkbox:true"></th>
+						<th field="loginName" width="100" wms:text="${web.label.user.loginname}" data-options="sortable:true">userName</th>
+						<th field="warehouseCode" width="100"  wms:text="${web.label.warehouse.code}"  wms:data-options="
+							sortable:true,
+							editor:{
+								type:'combogrid',
+								options:{
+									idField:'code',
+	    							textField:'code',
+									url:'../../services/inner/userWarehouse/find',
+									onBeforeLoad: function(param){
+										$.extend(param, getListParams());
+									},
+									queryParams: getListParams(),
+								    columns:[[
+									    {field:'code',title:'${web.label.code}',width:80},
+									    {field:'descr',title:'${web.label.descr}',width:150},
+									    {field:'companyDescr',title:'${web.label.companydescr}',width:150}
+								    ]]
+								}
+							}
+						"></th>
+						<th field="localeCode" width="100" wms:text="${web.label.language}" data-options="
+							formatter:function(value,row){
+								return getCodelkupValue('LOCALE',value);
+							},
+							editor:{
+								type:'combobox',
+								options:{
+									valueField:'code',
+									textField:'descr',
+									data: codelkups['LOCALE']
+								}
+							}
+						" >localeCode</th>
+						<th field="createBy" width="80" wms:text="${web.label.createby}" >createBy</th>
+						<th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true">createTime</th>
+						<th field="updateBy" width="80" wms:text="${web.label.updateby}" >updateBy</th>
+						<th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">updateTime</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+	<div id="addDiv" wms:title="${web.label.add}" style="width:300px;height:400px; display: none;">
+		<div style="width: 100%;padding-left: 50px;">
+			<form method="post" id="addForm" th:data-url="@{/services/inner/userdefault/add}">
+				<table style="width: 100%;">
+					<tr>
+						<td>
+							<input name="loginName" class="easyui-textbox" th:value="${user.loginName}" wms:data-options="readonly:true,required:true,label:'${web.label.user.loginname}',labelPosition:'top'">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input name="warehouseCode" class="easyui-combogrid"  wms:data-options="
+								required:true,
+								label:'${web.label.warehouse.code}',
+								labelPosition:'top',
+								idField:'code',
+    							textField:'descr',
+								url:'../../services/inner/userWarehouse/find',
+								queryParams: getAddParams(),
+							    columns:[[
+								    {field:'code',title:'${web.label.code}',width:80},
+								    {field:'descr',title:'${web.label.descr}',width:150},
+								    {field:'companyDescr',title:'${web.label.companydescr}',width:150}
+							    ]]
+								"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input class="easyui-combobox" name="localeCode" style="width: 100px;" wms:data-options="
+							required:true,
+							data: codelkups['LOCALE'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.language}',
+							labelPosition: 'top'
+							" />
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<div style="text-align: center;margin-top: 20px;">
+				<a href="#" class="easyui-linkbutton common-confirmadd" data-form="#addForm" data-table="web.label.user.username" id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
+					<span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
+				</a>
+				<a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');" data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
+					<span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
+				</a>
+			</div>
+		</div>
+	</div>
+</body>
+<script th:replace="common/js" />
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=LOCALE}"></script>
+<script type="text/javascript" th:inline="text">
+	var loginName;
+	function getAddParams(){
+		var data = {
+			active: 'Y',
+			userId: $('#userId').val()
+		};
+		return data;
+	}
+	function getListParams(){
+		var data = {
+			active: 'Y',
+			loginName: loginName
+		};
+		return data;
+	}
+</script>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${wms.label.import}">导入</title>
+    <head th:replace="common/head" />
+</head>
+<body >
+	
+	 <div style="width: 100%;padding-left: 50px;">
+	 	<input type="hidden" id="defaultTpl" th:value="${template}"/>
+        <form method="post" id="addForm" th:data-url="@{/services/inner/codeList/add}">
+            <input type="hidden" name="userId" th:value="${user.userId}" />
+            <input type="hidden" name="warehouseId" th:value="${user.warehouseId}" />
+			<input type="hidden" name="companyId" th:value="${user.companyId}"/>
+			<input type="hidden" name="locale" th:value="${user.locale}"/>
+			<input type="hidden" name="userName" th:value="${user.userName}"/>
+            <table style="width: 100%;">
+                <tr>
+                    <td width="150">
+                         <input class="easyui-combobox" th:value="${template}" name="template" id="template" style="width: 140px;" wms:data-options="
+							required:true,
+							data: codelkups['TEMPLATE'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.template}',
+							labelPosition: 'top'
+							"/>
+                    </td>
+                    <td valign="bottom">
+                    	 <a href="#" class="easyui-linkbutton" onclick="downloadTemplate()" id="downloadTemplate" wms:text="${web.label.template.download}">Download</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input class="easyui-filebox" name="file" id="file" style="width: 210px;"
+                               wms:data-options="required:true,label:'${web.label.importfile}',labelPosition:'top'">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="text-align: center;margin-top: 30px;">
+        <a href="#" class="easyui-linkbutton"onclick="upload()"
+           id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.import}">Import</span>
+        </a>
+        <a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="clean();"
+           data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
+        </a>
+    </div>
+</body>
+<script th:replace="common/js" />
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=TEMPLATE}"></script>
+<script type="text/javascript">
+
+function downloadTemplate(){
+	var template = $('#template').combobox('getValue');
+	if (template == ''){
+		showError($.locale.selectTemplate);
+		return;
+	}
+	var url = getFileUrl() + '/template/download/import';
+	window.location.href=url + '?template='+template;
+}
+
+function clean(){
+	$('#addForm').form('clear');
+	var defaultTpl = $('#defaultTpl').val();
+	if (defaultTpl != ''){
+		$('#template').combobox('setValue', defaultTpl);	
+	}
+	
+}
+
+function upload(){
+	var template = $('#file').filebox('getValue');
+	if (template == ''){
+		showError($.locale.selectFile);
+		return;
+	}
+	var formData = new FormData($('#addForm')[0]);
+	var url = getFileUrl() + '/file/import';
+	loading();
+	$.post({
+		url: url,
+		data:  formData,
+		enctype: 'multipart/form-data',
+		processData: false,
+        contentType: false,
+		success: function(data){
+			data = returnData(data);
+			closeLoading();
+			if (data.code == '0') {
+				showError(data.msg);
+				return;
+			}
+			showMsg($.locale.importTip);
+			clean();
+		}
+	});
+}
+
+</script>
+</html>

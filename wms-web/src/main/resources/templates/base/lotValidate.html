@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${wms.base.lotValidate.title}">承运人</title>
+    <head th:replace="common/head" />
+</head>
+<body class="easyui-layout" >
+<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+    <div id="searchDiv">
+        <div style="margin-left: 10px;">
+            <form id="searchForm" data-table="#lotValidateData">
+                <div style="margin-bottom:10px">
+                    <input name="lotValidateCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.inventory.ownerCode}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="lotValidateDescr" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.descr}',labelPosition:'top'">
+                </div>
+            </form>
+        </div>
+        <div style="text-align: center;">
+            <a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-search'">
+                <span wms:text="${web.label.search}">Search</span>
+            </a>
+            <a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-clear'">
+                <span wms:text="${web.label.clear}">Clear</span>
+            </a>
+        </div>
+    </div>
+</div>
+<div data-options="region:'center',border:false">
+    <div id="tableToolbar" class="tableToolbar">
+        <a href="#" class="easyui-linkbutton add" data-addpanel="#addDiv">
+            <span wms:text="${web.label.add}">Add</span>
+        </a>
+        <a href="#" class="easyui-linkbutton common-rowdel" data-table="#lotValidateData"
+           th:data-url="@{/services/inner/base/lotValidate/delete}">
+            <span wms:text="${web.label.delete}">Delete</span>
+        </a>
+    </div>
+    <div>
+        <table id="lotValidateData" wms:title="${web.label.lotvalidatelist}" class="easyui-datagrid"
+               data-options=" toolbar: '#tableToolbar'"
+               th:data-delayUrl="@{/services/inner/base/lotValidate/find}">
+            <thead>
+            <tr>
+                <th rowspan="2" field="lotValidateId" data-options="checkbox:true"></th>
+                <th rowspan="2" field="edit" data-options="
+										formatter:function(value,row){
+											var data = JSON.stringify(row);
+											var detail = '<span title = \'编辑\' onclick=\'toEdit('+data+')\' class=\'icon-edit\'>&nbsp;</span>';
+											return detail;
+										}
+									"></th>
+                <th rowspan="2" field="lotValidateCode" width="80" wms:text="${web.label.lotvalidatecode}" data-options="sortable:true">
+                    lotValidateCode
+                </th>
+                <th rowspan="2" field="lotValidateDescr" width="150" wms:text="${web.label.descr}" data-options="sortable:true">
+                    lotValidateDescr
+                </th>
+                <th	colspan="12" wms:text="${web.label.lotattribute.display}">display</th>
+                <th	colspan="12" wms:text="${web.label.lotattribute.required}">required</th>
+            </tr>
+            <tr>
+            	<th field="lotAttribute1View" width="50" wms:text="1"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute1View
+                </th>
+                <th field="lotAttribute2View" width="50" wms:text="2"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute2View
+                </th>
+                <th field="lotAttribute3View" width="50" wms:text="3"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute3View
+                </th>
+                <th field="lotAttribute4View" width="50" wms:text="4"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute4View
+                </th>
+                <th field="lotAttribute5View" width="50" wms:text="5"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute5View
+                </th>
+                <th field="lotAttribute6View" width="50" wms:text="6"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute6View
+                </th>
+                <th field="lotAttribute7View" width="50" wms:text="7"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute7View
+                </th>
+                <th field="lotAttribute8View" width="50" wms:text="8"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute8View
+                </th>
+                <th field="lotAttribute9View" width="50" wms:text="9"
+                    data-options="sortable:true">lotAttribute9View
+                </th>
+                <th field="lotAttribute10View" width="50" wms:text="10"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute10View
+                </th>
+                <th field="lotAttribute11View" width="50" wms:text="11"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute11View
+                </th>
+                <th field="lotAttribute12View" width="50" wms:text="12"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute12View
+                </th>
+                <th field="lotAttribute1Required" width="50" wms:text="1"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute1Required
+                </th>
+                <th field="lotAttribute2Required" width="50" wms:text="2"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute2Required
+                </th>
+                <th field="lotAttribute3Required" width="50" wms:text="3"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute3Required
+                </th>
+                <th field="lotAttribute4Required" width="50" wms:text="4"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute4Required
+                </th>
+                <th field="lotAttribute5Required" width="50" wms:text="5"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute1Required
+                </th>
+                <th field="lotAttribute6Required" width="50" wms:text="6"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute6Required
+                </th>
+                <th field="lotAttribute7Required" width="50" wms:text="7"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute7Required
+                </th>
+                <th field="lotAttribute8Required" width="50" wms:text="8"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute8Required
+                </th>
+                <th field="lotAttribute9Required" width="50" wms:text="9"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute9Required
+                </th>
+                <th field="lotAttribute10Required" width="50" wms:text="10"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute10Required
+                </th>
+                <th field="lotAttribute11Required" width="50" wms:text="11"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute11Required
+                </th>
+                <th field="lotAttribute12Required" width="50" wms:text="12"
+                    data-options="sortable:true,formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">lotAttribute12Required
+                </th>
+                <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+                <th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true">
+                    createTime
+                </th>
+                <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+                <th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">
+                    updateTime
+                </th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div id="addDiv" wms:title="${web.label.add}" style="width:460px;height:600px; display: none;" data-options="buttons: '#addButton'">
+    <div style="width: 100%;">
+        <form method="post" id="addForm" th:data-url="@{/services/inner/base/lotValidate/add}">
+            <table style="width: 100%;">
+                <tr>
+                    <td colspan="2">
+                        <input name="lotValidateId" id="lotValidateId" type="hidden" />
+                        <input id="lotValidateCode" name="lotValidateCode" class="easyui-textbox" wms:data-options="required:true,label:'${web.label.lotvalidatecode}',labelPosition:'top'">
+                    </td>
+                    <td colspan="2">
+                        <input id="lotValidateDescr" name="lotValidateDescr" class="easyui-textbox"  wms:data-options="required:true,label:'${web.label.descr}',labelPosition:'top'">
+                    </td>
+
+                </tr>
+                <tr>
+            		<td colspan="4"><span wms:text="${web.label.lotattribute.display}">lot attribute required</span></td>
+            	</tr>
+                <tr>
+                    <td>
+                        <input id="lotAttribute1View" name="lotAttribute1View"  class="easyui-switchbutton" wms:data-options="label:'1',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                    <td>
+                        <input id="lotAttribute2View" name="lotAttribute2View"  class="easyui-switchbutton" wms:data-options="label:'2',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                    <td>
+                        <input id="lotAttribute3View" name="lotAttribute3View"  class="easyui-switchbutton" wms:data-options="label:'3',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                    <td>
+                        <input id="lotAttribute4View" name="lotAttribute4View"  class="easyui-switchbutton" wms:data-options="label:'4',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="lotAttribute5View" name="lotAttribute5View" class="easyui-switchbutton" wms:data-options="label:'5',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                    <td>
+                        <input id="lotAttribute6View" name="lotAttribute6View" class="easyui-switchbutton" wms:data-options="label:'6',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                    <td>
+                        <input id="lotAttribute7View" name="lotAttribute7View" class="easyui-switchbutton" wms:data-options="label:'7',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                    <td>
+                        <input id="lotAttribute8View" name="lotAttribute8View" class="easyui-switchbutton" wms:data-options="label:'8',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="lotAttribute9View" name="lotAttribute9View" class="easyui-switchbutton" wms:data-options="label:'9',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                    <td>
+                        <input id="lotAttribute10View" name="lotAttribute10View" class="easyui-switchbutton" wms:data-options="label:'10',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                    <td>
+                        <input id="lotAttribute11View" name="lotAttribute11View" class="easyui-switchbutton" wms:data-options="label:'11',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                    <td>
+                        <input id="lotAttribute12View" name="lotAttribute12View" class="easyui-switchbutton" wms:data-options="label:'12',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                </tr>
+                <tr>
+            		<td colspan="4"><hr color="red" /></td>
+            	</tr>
+            	<tr>
+            		<td colspan="4"><span wms:text="${web.label.lotattribute.required}">lot attribute required</span></td>
+            	</tr>
+                <tr>
+                    <td>
+                        <input id="lotAttribute1Required" name="lotAttribute1Required"  class="easyui-switchbutton" wms:data-options="label:'1',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                    <td>
+                        <input id="lotAttribute2Required" name="lotAttribute2Required"class="easyui-switchbutton" wms:data-options="label:'2',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                    <td>
+                        <input id="lotAttribute3Required" name="lotAttribute3Required" class="easyui-switchbutton" wms:data-options="label:'3',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                    <td>
+                        <input id="lotAttribute4Required" name="lotAttribute4Required" class="easyui-switchbutton" wms:data-options="label:'4',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="lotAttribute5Required" name="lotAttribute5Required" class="easyui-switchbutton" wms:data-options="label:'5',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                    <td>
+                        <input id="lotAttribute6Required" name="lotAttribute6Required" class="easyui-switchbutton" wms:data-options="label:'6',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                    <td>
+                        <input id="lotAttribute7Required" name="lotAttribute7Required" class="easyui-switchbutton" wms:data-options="label:'7',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                    <td>
+                        <input id="lotAttribute8Required" name="lotAttribute8Required" class="easyui-switchbutton" wms:data-options="label:'8',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="lotAttribute9Required" name="lotAttribute9Required" class="easyui-switchbutton" wms:data-options="label:'9',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                    <td>
+                        <input id="lotAttribute10Required" name="lotAttribute10Required" class="easyui-switchbutton" wms:data-options="label:'10',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                    <td>
+                        <input id="lotAttribute11Required" name="lotAttribute11Required" class="easyui-switchbutton" wms:data-options="label:'11',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                    <td>
+                        <input id="lotAttribute12Required" name="lotAttribute12Required" class="easyui-switchbutton" wms:data-options="label:'12',labelPosition:'top',onText:'${web.label.yestext}',offText:'${web.label.notext}',value:'Y'">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div id="addButton" style="text-align: center;margin-top: 15px;">
+        <a href="#" class="easyui-linkbutton common-confirmadd" data-form="#addForm" data-table="#lotValidateData" id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
+        </a>
+        <a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');" data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
+        </a>
+    </div>
+    <div id="editButton" style="display:none;">
+        <a href="#" class="easyui-linkbutton save" wms:text="${web.label.save}" data-form="#addForm" data-table="#lotValidateData">Save</a>
+    </div>
+</div>
+</body>
+<script th:replace="common/js" />
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=YESNO}"></script>
+<script type="text/javascript" th:inline="text">
+    var editData;
+    $(function(){
+        $('.add').click(function(){
+            $('#addButton').show();
+            $('#editButton').hide();
+            $('#lotValidateCode').textbox({readonly:false});
+            var panel = $(this).attr('data-addpanel');
+            $(panel).dialog({
+                closed: true,
+                modal: true,
+                fix: true,
+                buttons: '#addButton'
+            }).dialog('open');
+            $(panel).find('form').form('reset');
+            $('#lotValidateId').val("");
+        });
+
+        $('.save').click(function(){
+            var from = $(this).attr('data-form');
+            var datagrid = $(this).attr('data-table');
+            var url ='../../services/inner/base/lotValidate/save';
+            var valid = $(from).form('validate');
+            if (!valid) {
+                return;
+            }
+            var data = $(from).serializeObject();
+            data.updateVersion=editData.updateVersion;
+            data.warehouseId=editData.warehouseId;
+            data.companyId=editData.companyId;
+            data = getBaseData(data);
+            loading();
+            $.post({
+                url: url,
+                data:data,
+                success: function(data){
+                    data = returnData(data);
+                    closeLoading();
+                    if (data.code == '0') {
+                        showError(data.msg);
+                        return;
+                    }
+                    $(from).parents('.window-body').dialog('close');
+                    $(datagrid).datagrid('reload').datagrid('clearChecked');
+                }
+            });
+        });
+    });
+
+    function toEdit(data) {
+        if (typeof(data) == 'object') {
+            editData = data;
+        }else{
+            var checkedRows = $('#lotValidateData').datagrid('getChecked');
+            if (checkedRows.length != 1) {
+                showError($.locale.selectOneRow);
+                return;
+            }
+            editData = checkedRows[0];
+        }
+        $('#addButton').hide();
+        $('#editButton').show();
+        var panel = '#addDiv';
+        $(panel).dialog({
+            closed: true,
+            modal: true,
+            fix: true,
+            buttons: '#editButton',
+        }).dialog('open');
+        $(panel).find('form').form('reset');
+        var from = $(panel).find('form');
+        $(from).form('load', editData);
+        $('#lotValidateCode').textbox({readonly:true});
+    }
+</script>
+</html>

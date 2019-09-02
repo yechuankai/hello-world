@@ -1,0 +1,336 @@
+<div id="detailToolbar" class="tableToolbar">
+    <a href="#" class="easyui-linkbutton allocateStrategydetail-add" data-addpanel="#addDetailDiv">
+        <span wms:text="${web.label.add}">Add</span>
+    </a>
+    <a href="#" class="easyui-linkbutton common-rowsave" data-table="#detailTable"
+       th:data-url="@{/services/inner/base/allocateStrategyDetail/save}">
+        <span wms:text="${web.label.save}">Save</span>
+    </a>
+    <a href="#" class="easyui-linkbutton common-rowdel" data-table="#detailTable"
+       th:data-url="@{/services/inner/base/allocateStrategyDetail/delete}">
+        <span wms:text="${web.label.delete}">Delete</span>
+    </a>
+</div>
+<div>
+    <table id="detailTable" wms:title="${web.label.allocatestrategydetail.title}" class="easyui-datagrid"
+           th:data-delayUrl="@{/services/inner/base/allocateStrategyDetail/find}"
+           data-options="sortName: 'lineNumber',
+                         sortOrder: 'asc',
+                         toolbar: '#detailToolbar'
+           ">
+        <thead>
+        <tr>
+            <th field="allocateStrategyDetailId" data-options="checkbox:true"></th>
+            <th field="allocateStrategyId" data-options="hidden:true"></th>
+            <th field="lineNumber" width="50" wms:text="${web.label.linenumber}"
+                data-options="sortable:true,
+                             editor:{
+                                type:'numberbox',
+                                options:{
+                                    required:true
+                                }
+                             }
+            ">lineNumber
+            </th>
+            <th field="areaCode" width="130" wms:text="${web.label.areacode}" wms:data-options="
+							sortable:true,
+							editor:{
+								type:'combogrid',
+								options:{
+									idField:'areaCode',
+	    							textField:'areaCode',
+									url:'../../services/inner/base/area/find',
+									queryParams: getAreaParams(),
+								    columns:[[
+								        {field:'areaId',hidden:true},
+								        {field:'areaCode',title:'${web.label.areacode}',width:80},
+								        {field:'areaDescr',title:'${web.label.descr}',width:80},
+								        {field:'type',title:'${web.label.type}',width:80,formatter:function(value,row){
+											return getCodelkupValue('AREATYPE',value);
+										    }
+									    }
+							        ]],
+                                    onChange: function (newValue, oldValue) {
+                                        artChanged = true;//记录是否有改变（当手动输入时发生)
+                                    },
+                                    onHidePanel: function () {
+                                        var t = $(this).combogrid('getValue');
+                                        if (artChanged) {
+                                            if (selectRow == null || t != selectRow.areaCode) {//没有选择或者选项不相等时清除内容
+                                                alert('请选择，不要直接输入');
+                                            $(this).combogrid('setValue', '');
+                                            }
+                                        }
+                                        artChanged = false;
+                                        selectRow = null;
+                                    },
+                                    onSelect: function (index, row) {
+                                        selectRow = row;
+                                    }
+							    }
+							}
+
+						">areaCode
+            </th>
+            <th field="type" width="110" wms:text="${web.label.type}" data-options="
+							            sortable:true,
+							            formatter:function(value,row){
+								            return getCodelkupValue('ALLOCATETYPE',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['ALLOCATETYPE']
+								            }
+							            }
+						            ">type
+            </th>
+            <th field="fifoRule" width="120" wms:text="${web.label.fiforule}" data-options="
+							            sortable:true,
+							            formatter:function(value,row){
+								            return getCodelkupValue('ALLOCATEFIFO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['ALLOCATEFIFO']
+								            }
+							            }
+						            ">fifoRule
+            </th>
+            <th field="sortRule" width="120" wms:text="${web.label.sortrule}" data-options="
+							            sortable:true,
+							            formatter:function(value,row){
+								            return getCodelkupValue('ALLOCATESORT',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['ALLOCATESORT']
+								            }
+							            }
+						            ">sortRule
+            </th>
+            <th field="uom" width="100" wms:text="${web.label.uom}" data-options="
+							            sortable:true,
+							            formatter:function(value,row){
+								            return getCodelkupValue('ALLOCATEUOM',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['ALLOCATEUOM']
+								            }
+							            }
+						            ">uom
+            </th>
+            <th field="active" width="50" wms:text="${web.label.active}" data-options="
+							            sortable:true,
+							            formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">active
+            </th>
+            <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+            <th field="createTime" width="150" wms:text="${web.label.createtime}"
+                data-options="sortable:true">createTime
+            </th>
+            <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+            <th field="updateTime" width="150" wms:text="${web.label.updatetime}"
+                data-options="sortable:true">updateTime
+            </th>
+            <th field="remark" width="200" wms:text="${web.label.remark}"
+                data-options="
+                editor:'text',
+                formatter: function(value,row,index){
+                    if(null != value){
+                        return '<span title='+value+'>'+value+'</span>'
+                    }
+                }
+                ">remark
+            </th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<div id="addDetailDiv" wms:title="${web.label.detail.add}" style="width:600px;height:400px; display: none;">
+    <div style="width: 100%;padding-left: 50px;">
+        <form method="post" id="addDetailForm" th:data-url="@{/services/inner/base/allocateStrategyDetail/add}">
+            <input type="hidden" name="allocateStrategyId" id="allocateStrategyId"/>
+            <input type="hidden" name="areaId" id="areaId"/>
+            <table style="width: 100%;">
+                <tr>
+                    <td>
+                        <input id="lineNumber" style="width: 200px;" name="lineNumber" class="easyui-numberbox"
+                               wms:data-options="required:true,label:'${web.label.linenumber}',labelPosition:'top'">
+                    </td>
+                    <td style="padding-left: 30px">
+                        <input id="areaCode" name="areaCode" class="easyui-combogrid" wms:data-options="
+                                idField: 'areaCode',
+                                textField: 'areaCode',
+                                label: '${wms.area.title}',
+    							queryParams: getAreaParams(),
+    							labelPosition: 'top',
+                                url: '../../services/inner/base/area/find',
+							    columns:[[
+							        {field:'areaId',hidden:true},
+							        {field:'areaCode',title:'${web.label.areacode}',width:80},
+							        {field:'areaDescr',title:'${web.label.descr}',width:80},
+							        {field:'type',title:'${web.label.type}',width:80,formatter:function(value,row){
+										return getCodelkupValue('AREATYPE',value);
+									    }
+								    }
+						        ]]
+                               " />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="easyui-combobox" name="type" style="width: 200px;" wms:data-options="
+							required:true,
+							value: 'NORMAL',
+							data: codelkups['ALLOCATETYPE'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.type}',
+							labelPosition: 'top'
+							"/>
+                    </td>
+                    <td style="padding-left: 30px;">
+                        <input class="easyui-combobox" name="uom" style="width: 200px;" wms:data-options="
+							required:true,
+							value: 'PCS',
+							data: codelkups['ALLOCATEUOM'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.uom}',
+							labelPosition: 'top'
+							"/>
+                    </td>
+                </tr>
+                <tr>
+                	<td>
+                        <input class="easyui-combobox" name="fifoRule" style="width: 200px;" wms:data-options="
+							required:true,
+							data: codelkups['ALLOCATEFIFO'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.fiforule}',
+							labelPosition: 'top'
+							"/>
+                    </td>
+                    <td style="padding-left: 30px;">
+                        <input class="easyui-combobox" name="sortRule" style="width: 200px;" wms:data-options="
+							required:true,
+							data: codelkups['ALLOCATESORT'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.sortrule}',
+							labelPosition: 'top'
+							"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="easyui-combobox" name="active" style="width: 200px;" wms:data-options="
+							required:true,
+							value: 'Y',
+							data: codelkups['YESNO'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.active}',
+							labelPosition: 'top'
+							"/>
+                    </td>
+                    <td style="padding-left: 30px;">
+                        <input name="remark" class="easyui-textbox" style="width: 250px;"
+                               wms:data-options="label:'${web.label.remark}',labelPosition:'top'">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="text-align: center;margin-top: 30px;">
+        <a href="#" class="easyui-linkbutton detail-confirmadd" data-form="#addDetailForm" data-table="#detailTable"
+           id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
+        </a>
+        <a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');"
+           data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
+        </a>
+    </div>
+</div>
+<script type="text/javascript" th:inline="text">
+    var selectRow;
+    var artChanged;
+    var loadFlag=false;
+
+    function refreshallocateStrategy(data) {
+        var detailTable = '#detailTable';
+        var url = $(detailTable).attr('data-delayUrl');
+        $("#allocateStrategyId").val(data.allocateStrategyId);
+        var searchData = {allocateStrategyId: data.allocateStrategyId};
+        var baseData = getBaseData();
+        $.extend(baseData, searchData);
+
+        $(detailTable).datagrid({
+            url: url,
+            sortName: 'lineNumber',
+            sortOrder: 'asc',
+            queryParams: baseData
+        }).datagrid('clearChecked');
+    }
+
+    function getAreaParams(params) {
+        var data = getBaseData();
+        data['active'] = 'Y';
+       	data['type'] = 'PK';
+        if (typeof (params) == 'object') {
+            $.extend(data, params);
+        }
+        return data;
+    }
+
+    function convertAreaId(areaId) {
+        $("#areaId").val(areaId);
+    }
+
+    /**
+     * 区域下拉框加载完成后处理数据
+     * @param param
+     */
+    function loadArea(param) {
+        if(loadFlag){
+            var data = [];
+            var rows = param.rows;
+            for (var i in rows) {
+                var area = {
+                    "areaId": rows[i].areaId,
+                    "areaCode": rows[i].areaCode
+                };
+                data.push(area);
+            }
+            //不会再次进入加载成功方法
+            loadFlag=false;
+            $('#areaId').combobox('loadData', data);
+        }
+
+    }
+</script>

@@ -1,0 +1,124 @@
+<div id="detailToolbar" class="tableToolbar">
+    <a href="#" class="easyui-linkbutton areadetail-add" data-addpanel="#addDetailDiv">
+        <span wms:text="${web.label.add}">Add</span>
+    </a>
+    <a href="#" class="easyui-linkbutton common-rowsave" data-table="#areaDetailTable"
+       th:data-url="@{/services/inner/base/areaDetail/save}">
+        <span wms:text="${web.label.save}">Save</span>
+    </a>
+    <a href="#" class="easyui-linkbutton common-rowdel" data-table="#areaDetailTable"
+       th:data-url="@{/services/inner/base/areaDetail/delete}">
+        <span wms:text="${web.label.delete}">Delete</span>
+    </a>
+</div>
+<div>
+    <table id="areaDetailTable" wms:title="${web.label.areadetaillist.title}" class="easyui-datagrid"
+           data-options=" toolbar: '#detailToolbar'"
+           th:data-delayUrl="@{/services/inner/base/areaDetail/find}">
+        <thead>
+        <tr>
+            <th field="areaDetailId" data-options="checkbox:true"></th>
+            <th field="locationCode" width="150" wms:text="${web.label.location}">locationCode</th>
+            <th field="active" width="100" wms:text="${web.label.active}" data-options="
+							            sortable:true,
+							            formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">active
+            </th>
+            <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+            <th field="createTime" width="150" wms:text="${web.label.createtime}"
+                data-options="sortable:true">createTime
+            </th>
+            <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+            <th field="updateTime" width="150" wms:text="${web.label.updatetime}"
+                data-options="sortable:true">updateTime
+            </th>
+            <th field="remark" width="200" wms:text="${web.label.remark}"
+                data-options="
+                editor:'text',
+                formatter: function(value,row,index){
+                    if(null != value){
+                        return '<span title='+value+'>'+value+'</span>'
+                    }
+                }
+                ">remark
+            </th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<div id="addDetailDiv" wms:title="${web.label.detail.add}" style="width:600px;height:380px; display: none;">
+    <div id="areaLocationToolbar" style="padding-left: 30px;">
+        <a href="#" class="easyui-linkbutton common-areaDetail-add" data-table="#areaLocationData"
+           th:data-url="@{/services/inner/base/areaDetail/add}">
+            <span wms:text="${web.label.submit}">Submit</span>
+        </a>
+    </div>
+    <table id="areaLocationData" class="easyui-datagrid" style="height: 100%;width:100%;"
+           wms:data-options="
+										sortOrder: 'desc',
+										sortName: 'areaId',
+										toolbar: '#areaLocationToolbar'
+										"
+           th:data-delayUrl="@{/services/inner/base/location/findArealocation}">
+        <thead>
+        <tr>
+            <th field="locationId" data-options="checkbox:true"></th>
+            <th field="locationCode" width="100" wms:text="${web.label.location}" data-options="sortable:true">
+                locationCode
+            </th>
+            <th field="active" width="100" wms:text="${web.label.active}" data-options="
+							            sortable:true,
+							            formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">active
+            </th>
+            <th field="remark" width="200" wms:text="${web.label.remark}" data-options="editor:'text'">remark</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<script type="text/javascript" th:inline="text">
+
+    function refreshAreaDetail(data) {
+        var areaDetailTableId = '#areaDetailTable';
+        var url = $(areaDetailTableId).attr('data-delayUrl');
+
+        var searchData = {areaId: data.areaId};
+        var baseData = getBaseData();
+        $.extend(baseData, searchData);
+
+        $(areaDetailTableId).datagrid({
+            url: url,
+            queryParams: baseData
+        }).datagrid('clearChecked');
+    }
+
+    function loadAreaLocation() {
+        var headerData = getAreaHeaderData();
+        data = getBaseData(headerData);
+        var url = $('#areaLocationData').attr('data-delayUrl');
+        $('#areaLocationData').datagrid({
+            url: url,
+            queryParams: data
+        }).datagrid('clearChecked');
+    }
+</script>

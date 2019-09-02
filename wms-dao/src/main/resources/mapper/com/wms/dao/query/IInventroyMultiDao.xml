@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wms.dao.query.IInventoryMultiDao">
+  <resultMap id="BaseResultMap" type="com.wms.vo.InventoryMultiCountVo">
+    <result column="OWNER_CODE" jdbcType="VARCHAR" property="ownerCode" />
+    <result column="SKU_CODE" jdbcType="VARCHAR" property="skuCode" />
+    <result column="SKU_ALIAS" jdbcType="VARCHAR" property="skuAlias" />
+     <result column="LPN_NUMBER" jdbcType="VARCHAR" property="lpnNumber" />
+     <result column="CONTAINER_NUMBER" jdbcType="VARCHAR" property="containerNumber" />
+     <result column="LOCATION_CODE" jdbcType="VARCHAR" property="locationCode" />
+     <result column="availableAmount" jdbcType="DECIMAL" property="availableAmount" />
+     <result column="onHandAmount" jdbcType="DECIMAL" property="onHandAmount" />
+     <result column="lockAmount" jdbcType="DECIMAL" property="lockAmount" />
+     <result column="allocateAmount" jdbcType="DECIMAL" property="allocateAmount" />
+     <result column="softAllocateAmount" jdbcType="DECIMAL" property="softAllocateAmount" />
+     <result column="SKU_ID" jdbcType="DECIMAL" property="skuId"/>
+     <result column="LOCATION_ID" jdbcType="DECIMAL" property="locationId"/>
+  </resultMap>
+  
+  <!-- 根据容器号查询分组 -->
+   <select id="selectByContainer" parameterType="com.wms.common.core.domain.request.PageRequest" resultMap="BaseResultMap">
+  	 select i.OWNER_CODE OWNER_CODE,
+	  		i.SKU_CODE SKU_CODE,
+	  		i.SKU_ALIAS SKU_ALIAS,
+	  		l.CONTAINER_NUMBER CONTAINER_NUMBER,
+	  		sum(i.QUANTITY_ONHAND) onHandAmount,
+	  		sum(i.QUANTITY_ALLOCATED) allocateAmount,
+	  		sum(i.QUANTITY_LOCKED) lockAmount from INVENTORY_ONHAND_T i
+	  		left join LPN_T l on i.LPN_ID = l.LPN_ID
+  		where i.DEL_FLAG = 'N'
+  		and l.DEL_FLAG = 'N'
+  		and i.COMPANY_ID = #{companyId}
+  		and i.WAREHOUSE_ID = #{warehouseId}
+  		<if test="ownerCode != null and ownerCode != ''">
+	      AND ${OWNER_CODE} #{ownerCode,jdbcType=VARCHAR}
+	    </if>
+	    <if test="skuCode != null and skuCode != ''">
+	      AND ${SKU_CODE} #{skuCode,jdbcType=VARCHAR}
+	    </if>
+	    <if test="skuAlias != null and skuAlias != ''">
+	      AND ${SKU_ALIAS} #{skuAlias,jdbcType=VARCHAR}
+	    </if>
+	    <if test="containerNumber != null and containerNumber != ''">
+	      AND ${CONTAINER_NUMBER} #{containerNumber,jdbcType=VARCHAR}
+	    </if>
+	group by OWNER_CODE,SKU_CODE,SKU_ALIAS,CONTAINER_NUMBER 
+		<if test="quantityAvailableMoreThanZero == 'Y'.toString()">
+	      having sum(i.QUANTITY_ONHAND) - sum(i.QUANTITY_ALLOCATED) - sum(i.QUANTITY_LOCKED) > 0
+	    </if>
+  </select>
+  
+  <!-- 根据lpnNumber分组 -->
+   <select id="selectByLPN" parameterType="com.wms.common.core.domain.request.PageRequest" resultMap="BaseResultMap">
+ 	 select OWNER_CODE,
+	  		SKU_CODE,
+	  		SKU_ALIAS,
+	  		LPN_NUMBER,
+	  		sum(QUANTITY_ONHAND) onHandAmount,
+	  		sum(QUANTITY_ALLOCATED) allocateAmount,
+	  		sum(QUANTITY_LOCKED) lockAmount from INVENTORY_ONHAND_T
+  		where DEL_FLAG = 'N'
+  		and COMPANY_ID = #{companyId}
+  		and WAREHOUSE_ID = #{warehouseId}
+ 		<if test="ownerCode != null and ownerCode != ''">
+      		AND ${OWNER_CODE} #{ownerCode,jdbcType=VARCHAR}
+	    </if>
+	    <if test="skuCode != null and skuCode != ''">
+	      AND ${SKU_CODE} #{skuCode,jdbcType=VARCHAR}
+	    </if>
+	    <if test="skuAlias != null and skuAlias != ''">
+	      AND ${SKU_ALIAS} #{skuAlias,jdbcType=VARCHAR}
+	    </if>
+	    <if test="lpnNumber != null and lpnNumber != ''">
+	      AND ${LPN_NUMBER} #{lpnNumber,jdbcType=VARCHAR}
+	    </if>
+	group by OWNER_CODE,SKU_CODE,SKU_ALIAS,LPN_NUMBER 
+		<if test="quantityAvailableMoreThanZero == 'Y'.toString()">
+	      having sum(QUANTITY_ONHAND) - sum(QUANTITY_ALLOCATED) - sum(QUANTITY_LOCKED) > 0
+	    </if>
+  	</select>
+  	
+  	<!-- 根据库位查询分组 -->
+    <select id="selectByLocation" parameterType="com.wms.common.core.domain.request.PageRequest" resultMap="BaseResultMap">
+ 	 select OWNER_CODE,
+  		SKU_CODE,
+  		SKU_ALIAS,
+  		LOCATION_CODE,
+  		SKU_ID,
+  		LOCATION_ID,
+  		sum(QUANTITY_ONHAND) onHandAmount,
+  		sum(QUANTITY_ALLOCATED) allocateAmount,
+  		sum(QUANTITY_LOCKED) lockAmount from inventory_onhand_t
+ 		where DEL_FLAG = 'N'
+ 		and COMPANY_ID = #{companyId}
+ 		and WAREHOUSE_ID = #{warehouseId}
+ 		<if test="ownerCode != null and ownerCode != ''">
+      		AND ${OWNER_CODE} #{ownerCode,jdbcType=VARCHAR}
+	    </if>
+	    <if test="skuCode != null and skuCode != ''">
+	      AND ${SKU_CODE} #{skuCode,jdbcType=VARCHAR}
+	    </if>
+	    <if test="skuAlias != null and skuAlias != ''">
+	      AND ${SKU_ALIAS} #{skuAlias,jdbcType=VARCHAR}
+	    </if>
+	    <if test="locationCode != null and locationCode != ''">
+	      AND ${LOCATION_CODE} #{locationCode,jdbcType=VARCHAR}
+	    </if>
+	group by OWNER_CODE,SKU_CODE,SKU_ALIAS,LOCATION_CODE,SKU_ID,LOCATION_ID
+		<if test="quantityAvailableMoreThanZero == 'Y'.toString()">
+	      having sum(QUANTITY_ONHAND) - sum(QUANTITY_LOCKED) - sum(QUANTITY_ALLOCATED) > 0
+	    </if>
+  	</select>
+  	
+  	<!-- 根据货品别名查询分组 -->
+  	<select id="selectBySku" parameterType="com.wms.common.core.domain.request.PageRequest" resultMap="BaseResultMap">
+ 	 select OWNER_CODE,
+  		SKU_CODE,
+  		SKU_ALIAS,
+  		SKU_ID,
+  		sum(QUANTITY_ONHAND) onHandAmount,
+  		sum(QUANTITY_ALLOCATED) allocateAmount,
+  		sum(QUANTITY_LOCKED) lockAmount from inventory_onhand_t
+ 		where DEL_FLAG = 'N'
+ 		and COMPANY_ID = #{companyId}
+ 		and WAREHOUSE_ID = #{warehouseId}
+ 		<if test="ownerCode != null and ownerCode != ''">
+      	  AND ${OWNER_CODE} #{ownerCode,jdbcType=VARCHAR}
+	    </if>
+	    <if test="skuCode != null and skuCode != ''">
+	      AND ${SKU_CODE} #{skuCode,jdbcType=VARCHAR}
+	    </if>
+	    <if test="skuAlias != null and skuAlias != ''">
+	      AND ${SKU_ALIAS} #{skuAlias,jdbcType=VARCHAR}
+	    </if>
+	group by OWNER_CODE,SKU_CODE,SKU_ALIAS,SKU_ID
+		<if test="quantityAvailableMoreThanZero == 'Y'.toString()">
+	       having sum(QUANTITY_ONHAND) - sum(QUANTITY_LOCKED) - sum(QUANTITY_ALLOCATED) > 0
+	    </if>
+  	</select>
+</mapper>

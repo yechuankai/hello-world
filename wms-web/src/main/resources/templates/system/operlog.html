@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${wms.operlog.title}">操作日志</title>
+    <head th:replace="common/head" />
+</head>
+<body class="easyui-layout" >
+	<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+		<div id="searchDiv">
+			<div style="margin-left: 10px;">
+				<form id="searchForm" data-table="#operData" >
+					<div style="margin-bottom:10px">
+						<input name="title" class="easyui-textbox" wms:data-options="label:'${web.label.title}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="businessType" class="easyui-textbox" wms:data-options="label:'${web.label.businesstype}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="operatorType" class="easyui-textbox" wms:data-options="label:'${web.label.operatortype}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="operName" class="easyui-textbox" wms:data-options="label:'${web.label.opername}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="operParam" class="easyui-textbox" wms:data-options="label:'${web.label.operparam}',labelPosition:'top'" />
+					</div>
+				</form>
+			</div>
+			<div style="text-align: center;">
+				<a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;" data-options="iconCls:'icon-search'" >
+					<span wms:text="${web.label.search}">Search</span>
+				</a>	
+				<a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;" data-options="iconCls:'icon-clear'" >
+					<span wms:text="${web.label.clear}">Clear</span>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div data-options="region:'center',border:false" >
+		<div>
+			<table id="operData"  wms:title="${web.label.onlinelist.title}" class="easyui-datagrid"
+							th:data-delayUrl="@{/services/inner/operlog/find}">
+				<thead>
+					<tr>
+						<th field="title" width="150" wms:text="${web.label.title}" data-options="sortable:true">title</th>
+						<th field="businessType" width="150" wms:text="${web.label.businesstype}" data-options="sortable:true">businessType</th>
+						<th field="operatorType" width="80" wms:text="${web.label.operatortype}">operatorType</th>
+						<th field="method" width="80" wms:text="${web.label.method}">method</th>
+						<th field="operName" width="80" wms:text="${web.label.opername}">operName</th>
+						<th field="operParam" width="200" wms:text="${web.label.operparam}"  data-options="
+							formatter: function(value,row,index){
+								if(null != value){
+									value = value.replace(/ /g,'　');
+									return '<span title='+value+'>'+value+'</span>';
+								}
+							}
+                		">operParam</th>
+						<th field="errorMsg" width="100" wms:text="${web.label.error}">errorMsg</th>
+						<th field="operTime" width="200" wms:text="${web.label.opertime}">operTime</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</body>
+<script th:replace="common/js" />
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=YESNO}"></script>
+</html>

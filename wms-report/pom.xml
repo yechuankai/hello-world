@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>wms.base</groupId>
+		<artifactId>wms</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<groupId>wms.base</groupId>
+	<artifactId>wms-report</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>wms-report</name>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>wms.base</groupId>
+			<artifactId>wms-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>wms.base</groupId>
+			<artifactId>wms-services</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>6.6.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>net.sf.jasperreports</groupId>
+		    <artifactId>jasperreports-fonts</artifactId>
+		    <version>6.9.0</version>
+		    <type>pom</type>
+		</dependency>
+		<dependency>
+		    <groupId>net.sf.jasperreports</groupId>
+		    <artifactId>jasperreports-functions</artifactId>
+		    <version>6.9.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.lowagie</groupId>
+			<artifactId>itext</artifactId>
+			<version>2.1.7</version>
+		</dependency>
+		
+		<!-- barbecue一维码较全  jasper 同时支持 barbecue/barcode4j  -->
+		<dependency>
+			<groupId>net.sourceforge.barbecue</groupId>
+			<artifactId>barbecue</artifactId>
+			<version>1.5-beta1</version>
+		</dependency>
+		<!-- 自定义条码标签使用 barcode4j-light
+		<dependency>
+			<groupId>net.sf.barcode4j</groupId>
+			<artifactId>barcode4j-light</artifactId>
+			<version>2.0</version>
+		</dependency>
+		-->
+		<!-- 提供servlet支持，同时支持QR code 二维码 -->
+		<dependency>
+		    <groupId>net.sf.barcode4j</groupId>
+		    <artifactId>barcode4j</artifactId>
+		    <version>2.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.avalon.framework</groupId>
+		    <artifactId>avalon-framework-api</artifactId>
+		    <version>4.3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>3.4.0</version>
+		</dependency>
+	</dependencies>
+</project>

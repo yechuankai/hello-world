@@ -1,0 +1,12 @@
+/wms-async/target
+/wms-common/target
+/wms-dao/target
+/wms-file/target
+/wms-report/target
+/wms-services/target
+/wms-startup-config-server/target
+/wms-startup-file-tomcat/target
+/wms-startup-report-tomcat/target
+/wms-startup-tomcat/target
+/wms-web/target
+/bin

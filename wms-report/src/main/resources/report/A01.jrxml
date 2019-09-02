@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="print" pageWidth="100" pageHeight="100" columnWidth="100" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="782f0f4c-f959-4f45-b1cb-d6841739bb18">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="469"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="523"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="id" class="java.lang.String"/>
+	<parameter name="warehouseId" class="java.lang.String"/>
+	<parameter name="companyId" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT o."CUSTOMER_CODE",
+	o."SOURCE_NUMBER",
+	a."LPN_ID"
+FROM "ALLOCATE_T" a
+	left join "OUTBOUND_DETAIL_T" d 
+		ON d."OUTBOUND_DETAIL_ID" = a."SOURCE_NUMBER"
+	left join "OUTBOUND_HEADER_T" o
+		ON d."OUTBOUND_HEADER_ID" = o."OUTBOUND_HEADER_ID"
+	 where o."OUTBOUND_HEADER_ID" = $P{id}
+	 AND o."WAREHOUSE_ID" = $P{warehouseId}
+	 AND o."COMPANY_ID" = $P{companyId}
+	 AND a."DEL_FLAG" = 'N'
+	 AND o."DEL_FLAG" = 'N']]>
+	</queryString>
+	<field name="CUSTOMER_CODE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CUSTOMER_CODE"/>
+	</field>
+	<field name="SOURCE_NUMBER" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="SOURCE_NUMBER"/>
+	</field>
+	<field name="LPN_ID" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="LPN_ID"/>
+	</field>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{LPN_ID}]]></groupExpression>
+		<groupHeader>
+			<band height="70">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<textField>
+					<reportElement x="0" y="0" width="100" height="30" uuid="39ea32d8-a0ac-4344-aad8-ccd79526f607">
+						<property name="net.sf.jasperreports.style.box.leftPadding" value="5"/>
+						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+					</reportElement>
+					<textElement verticalAlignment="Bottom">
+						<font fontName="pdfFont" size="16"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CUSTOMER_CODE}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="30" width="100" height="40" uuid="18567916-9771-4295-b71e-ad89be6830ad">
+						<property name="net.sf.jasperreports.style.box.leftPadding" value="5"/>
+						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="pdfFont" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{SOURCE_NUMBER}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<pageFooter>
+		<band height="30">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="50" y="0" width="20" height="30" uuid="2b2a6f28-ab2b-4b98-8c29-7a7b469ae34f">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="pdfFont" size="12"/>
+				</textElement>
+				<text><![CDATA[OF]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="0" width="50" height="30" isRemoveLineWhenBlank="true" uuid="70891ecd-7566-4c13-a9d4-d3fc76f300bb">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="net.sf.jasperreports.style.box.rightPadding" value="5"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="pdfFont" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement isPrintRepeatedValues="false" x="70" y="0" width="30" height="30" uuid="738ecd5a-dfa4-4981-9b84-7191e4691f6a">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="net.sf.jasperreports.style.box.leftPadding" value="5"/>
+				</reportElement>
+				<textElement verticalAlignment="Top">
+					<font fontName="pdfFont" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

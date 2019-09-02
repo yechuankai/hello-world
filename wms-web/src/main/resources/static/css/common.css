@@ -1,0 +1,109 @@
+body {
+    opacity: 0;
+    font-family: '\5FAE\8F6F\96C5\9ED1', '\5B8B\4F53', 'helvetica neue', tahoma, 'hiragino sans gb', stheiti, 'wenquanyi micro hei', sans-serif;
+}
+
+#main-content .l-btn-text {
+    font-size: 14px;
+}
+
+#wmsMenuNav .l-btn-text {
+    color: white;
+}
+
+#main-user .l-btn-text {
+    color: white;
+}
+
+#main-content .menu-text {
+    font-size: 14px;
+}
+
+#main-content .menu-text span {
+    font-size: 14px;
+}
+
+#wmsMenuNav .m-btn-downarrow {
+    background: url('../images/menu_arrows.png') no-repeat 0 center;
+}
+
+#main-user .m-btn-downarrow {
+    background: url('../images/menu_arrows.png') no-repeat 0 center;
+}
+
+#main-content.wms-test {
+    border-bottom: 2px solid red;
+}
+
+#main-content.wms-dev {
+    border-bottom: 2px solid red;
+}
+
+#main-content.wms-prd {
+
+}
+
+.tableToolbar {
+    padding-left: 20px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.datagrid-filter-c .datagrid-filter {
+    height: 27px !important;
+}
+
+.datagrid-filter-c .textbox {
+    height: 27px !important;
+}
+
+.datagrid-filter-c .textbox-text {
+    height: 27px !important;
+}
+
+.datagrid-editable .textbox {
+    height: 27px !important;
+}
+
+.datagrid-editable .datagrid-editable-input {
+    height: 27px !important;
+}
+
+.datagrid-editable .textbox-text {
+    height: 27px !important;
+}
+
+.datagrid-btable .datagrid-cell {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.datagrid-cell-edited{
+	background: rgba(244,67,54,0.35);
+    color: #000000;
+}
+
+.logo{
+	width: 84px !important;
+	background: url('../images/logo4.png') no-repeat;
+}
+.top{
+	height: 40px;
+}
+.top-content{
+	padding-top: 5px !important;
+	background-color: #C72926 !important;
+}
+.datagrid .pagination-info{
+	text-align: right;
+	padding-right: 10px;
+}
+/*
+.tableToolbar .l-btn{
+    color: #fff !important;
+    border: 1px solid #C62926 !important;
+    background: linear-gradient(to bottom,#D65757 0,#C62926 100%) !important;
+}
+*/
+

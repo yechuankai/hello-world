@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title th:text="${user.warehouseId == -1}?'WMS':${user.warehouseDescr}">WMS管理系统</title>
+    <head th:replace="common/head" />
+    <style type="text/css">label.error { position:inherit;  } #wmsMenuNav .easyui-menubutton{margin-right: 10px;}</style>
+    <script>
+        if(window.top!==window.self){window.top.location=window.location};
+    </script>
+</head>
+
+<body th:class="'easyui-layout wms-' + ${env}" id="main-content" style="opacity: 1;">
+	<div class="icon-loading" style="position: absolute; z-index: 999999;width: 100%; height: 100%;opacity: 1;background-color: white;" >&nbsp;</div>
+	<input type="hidden" id="userId" th:value="${user.userId}" />
+	<input type="hidden" id="warehouseId" th:value="${user.warehouseId}" />
+	<input type="hidden" id="companyId" th:value="${user.companyId}"/>
+	<input type="hidden" id="locale" th:value="${user.locale}"/>
+	<input type="hidden" id="userName" th:value="${user.userName}"/>
+	<div data-options="region:'north',border:false" id="main-top" class="top">
+		<div class="easyui-layout" data-options="fit:true">
+			<!-- logo -->
+			<div data-options="region:'west',border:false" class="logo">
+				&nbsp;
+			</div>
+			<!-- menu -->
+			<div data-options="region:'center',border:false" class="top-content">
+				<div id="wmsMenuNav">
+					<a href="#" class="easyui-menubutton" data-options="menu:'#warehouseMenu',iconCls:'icon-wh'" th:text="${user.warehouseId == 0}?${selectWarehouseLabel}:${user.warehouseDescr}">Choice Warehouse</a>
+					<wms:menu />
+				</div>
+				<div id="warehouseMenu" class="menu-content" style="height: 400px;width: 500px;">
+					<table id="warehouseData" class="easyui-datagrid" style="width:450px;height: auto;" data-options="
+						fit:true,
+						rownumbers:true,
+						singleSelect:true,
+						autoRowHeight:false,
+						remoteSort:false,
+						multiSort:true,
+						pagination: false,
+						toolbar:'#warehouseSearch'">
+						<thead>
+							<tr>
+								<th field="warehouseId" width="80" data-options="hidden:true">warehouseId</th>
+								<th field="companyId" width="80" data-options="hidden:true">companyId</th>
+								<th field="warehouseCode" width="130" wms:text="${web.label.warehouse.code}" data-options="sortable:true">code</th>
+								<th field="warehouseDescr" width="150" wms:text="${web.label.warehouse.descr}" data-options="sortable:true">descr</th>
+								<th field="companyDescr" width="150" wms:text="${web.label.company.descr}" data-options="sortable:true">companyDescr</th>
+							</tr>
+						</thead>
+						<body>
+							<tr th:each="wh,whStat : ${warehouseList}">
+								<td th:text="${wh.warehouseId}" />
+								<td th:text="${wh.companyId}"></td>
+								<td th:text="${wh.warehouseCode}"></td>
+								<td th:text="${wh.warehouseDescr}"></td>
+								<td th:text="${wh.companyDescr}"></td>
+							</tr>
+						</body>
+					</table>
+				</div>
+			</div>
+			<!-- user -->
+			<div data-options="region:'east',border:false" style="width:150px;" class="top-content">
+				<a href="#" id="main-user" class="easyui-menubutton" data-options="menu:'#userMenu',iconCls:'icon-man-w'" th:text="${user.userName}">user</a>
+				<div id="userMenu" style="width:100px;">
+					<div th:if="${user.loginType == 'NORMAL'}">
+						<span wms:text="${web.label.language}">Language</span>
+						<div id="wmsLocaleMenu">
+							<div th:each="locale,localeStat : ${localeList}" th:text="${locale.descr}" th:name="${locale.code}" th:iconCls="${locale.code == user.locale} ? 'icon-ok' : ''" />
+						</div>
+					</div>
+					<div id="files" wms:text="${web.label.files}">Files</div>
+					<div id="mobile" wms:text="${web.label.mobile}">mobile</div>
+					<div th:if="${user.loginType == 'NORMAL'}" id="changePasswordMenu" wms:text="${web.label.change.password}">Change Password</div>
+					<div th:if="${user.loginType == 'NORMAL'}" id="logoutMenu" wms:text="${web.label.logout}" th:data="@{/web/logout}">Logout</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div data-options="region:'center',border:false" style="overflow:hidden;">
+		<div id="tab-tools">
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-no'" wms:title="${web.label.close.all}" onclick="closeAll()"></a>
+		</div>
+		<div id="main" class="easyui-tabs" style="width:100%;height:100%;overflow:hidden;" data-options="plain: true,tools:'#tab-tools'"></div>
+	</div>
+	<div id="warehouseSearch">
+		<input class="easyui-textbox" id="warehouseSearchInput" wms:data-options="buttonText:'${web.label.clear}',prompt:'${web.label.warehouse.searchshow}',onClickButton:clearSearchValue" style="width:100%;height:32px;">
+	</div>
+	<div th:if="${user.loginType == 'NORMAL'}" id="changePasswordDiv" wms:title="${web.label.change.password}" style="width:400px;padding:50px 60px;display: none;">
+		<div>
+			<form method="post" id="changePasswordForm">
+				<div style="margin-bottom:20px">
+					<input id="oripassword" name="oriPassword" class="easyui-passwordbox" style="width:100%;height:34px;padding:10px;" wms:data-options="required:true,prompt:'${web.label.original.password}',iconWidth:28">
+				</div>
+				<div style="margin-bottom:20px">
+					<input id="newpassword" name="newPassword" class="easyui-passwordbox" style="width:100%;height:34px;padding:10px" wms:data-options="required:true,prompt:'${web.label.new.password}',iconWidth:28">
+				</div>
+				<div style="margin-bottom:20px">
+					<input id="confirmpassword" name="confirmPassword" class="easyui-passwordbox" validType="confirmPass['#newpassword']" style="width:100%;height:34px;padding:10px" wms:data-options="required:true,prompt:'${web.label.confirm.password}',iconWidth:28">
+				</div>
+			</form>
+		</div>
+		<div style="text-align: center;">
+				<a href="#" class="easyui-linkbutton" id="submitChangePasswordForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
+					<span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
+				</a>
+				<a href="#" class="easyui-linkbutton" id="clearChangePasswordForm" data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
+					<span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div id="filesContent" wms:title="${web.label.files}"  style="display: none;width: 1000px; height:500px;">
+	</div>
+	<div id="mobileDiv" wms:title="${web.label.mobile}"  style="display: none;width: 380px; height:400px;">
+		<div style="padding: 10px;width: 100%; text-align: center;"><a id="mobilePath" target="_blank"></a></idv>
+		<div style="width: 100%; text-align: center;padding-top: 20px">
+			<img id="mobileQrCode" />
+		</div>
+	</div>
+</body>
+<script th:replace="common/js" />
+<script type="text/javascript" th:src="@{/static/js/nav.js}"></script>
+<script type="text/javascript" th:src="@{/static/js/test.js}"></script>
+<script type="text/javascript" th:inline="text">
+	$(function(){
+		$.fn.menubutton.methods.enableNav();
+	});
+	
+	function setWarehouse(wh){
+		var warehouseId = wh.warehouseId;
+		var companyId = wh.companyId;
+		loading();
+		$.post({
+			url: '../services/web/setWarehouse',
+			contentType: 'application/x-www-form-urlencoded',
+			processData: true,
+			data:  {warehouseId:warehouseId, companyId:companyId},
+			success: function(data){
+				data = returnData(data);
+				closeLoading();
+				if (data.code == '0') {
+					showError(data.msg);
+					return;
+				}
+				window.location.reload();
+			}
+		});
+	}
+	var searchValue = '';
+	function clearSearchValue(){
+		$(this).val();
+		searchValue = '';
+		$('#warehouseData').datagrid('loadData',warehouseData);
+	}
+	
+	function enterSearchValue(){
+		searchValue = $(this).val();
+		$('#warehouseData').datagrid('loadData',warehouseData);
+	}
+	
+	function setLocale(locale){
+		$.post({
+			url: '../services/web/setLocale',
+			contentType: 'application/x-www-form-urlencoded',
+			processData: true,
+			data:  {locale: locale},
+			success: function(data){
+				data = returnData(data);
+				closeLoading();
+				if (data.code == '0') {
+					showError(data.msg);
+					return;
+				}
+				
+				//设置到cookie中保存30天
+				var d = new Date();
+			    d.setTime(d.getTime() + (30*24*60*60*1000));
+			    var expires = "expires="+ d.toUTCString();
+			    document.cookie = 'locale' + "=" + locale + ";" + expires + ";path=/";
+				
+				window.location.reload();
+			}
+		});
+	}
+	
+	function submitChangePassword(){
+		var valid = $('#changePasswordForm').form('validate');
+		if (!valid) {
+			return;
+		}
+		loading();
+		$('#changePasswordForm').form('submit', {
+		    url:'../services/inner/user/restPassword',
+			success:function(data){
+				data = returnData(data);
+				closeLoading();
+				if (data.code == '0') {
+					showError(data.msg);
+					return;
+				}
+				showMsg($.locale.changePasswordSuccess, function(){
+					$('#logoutMenu').trigger('click');
+				});
+			}
+		});
+	}
+	
+	$(function(){
+	    $('#warehouseSearchInput').textbox('textbox').bind({ input: enterSearchValue, propertychange: enterSearchValue });
+	    $('#wmsLocaleMenu .menu-item').click(function(){
+			var locale = ($(this).attr('name'));
+			setLocale(locale);
+		});
+	    $('#warehouseData').datagrid({
+			onClickRow: function(rowIndex, rowData){
+				setWarehouse(rowData);
+			},
+			loadFilter: function(data){
+				if (searchValue == '' || searchValue == undefined) {
+					return data;
+				}
+				//过滤数据
+				var value = {
+					total: data.total,
+					rows:[]
+				};
+				var x=0;
+				for (var i = 0; i < data.rows.length; i++) {  
+					if(data.rows[i].warehouseCode.indexOf(searchValue) != -1){
+						value.rows[x++]=data.rows[i];
+					}
+				}
+				return value;
+			}
+		});
+	    $.extend($.fn.validatebox.defaults.rules, {
+			confirmPass: {
+				validator: function(value, param){
+					var pass = $(param[0]).passwordbox('getValue');
+					return value == pass;
+				},
+				message: 'Password does not match confirmation.'
+			}
+		});
+		warehouseData = $('#warehouseData').datagrid('getData');
+		$('#logoutMenu').click(function(){
+			var url = $(this).attr('data');
+			window.location.href = url;
+		});
+		$('#changePasswordMenu').click(function(){
+			$('#changePasswordDiv').dialog({
+			    closed: true,
+			    modal: true
+			});
+			$('#changePasswordDiv').dialog('open');
+			$('#oripassword').textbox().next('span').find('input').focus();
+		});
+		$('#clearChangePasswordForm').click(function(){
+			$('#changePasswordForm').form('clear');
+		});
+		$('#submitChangePasswordForm').click(submitChangePassword);
+		$('#files').click(function(){
+			$('#filesContent').dialog({
+			    closed: true,
+			    modal: true,
+			    fix: true,
+			    content: '<iframe scrolling="no" frameborder="0"  src="system/myfiles" style="width:100%;height:98%;" />'
+			}).dialog('open');
+		});
+		$('#mobile').click(function(){
+			
+			//mobile url
+			var mobileUrl = global['wms.url.file'] + '/file/mobile';
+			$('#mobilePath').attr('href', mobileUrl).text(mobileUrl);
+			//var qrCodeUrl = global['wms.url.report'] + '/barcode?type=datamatrix&mw=3&msg='+mobileUrl;
+			var qrCodeUrl = global['wms.url.report'] + '/QRCode/create?content=' + mobileUrl;
+
+			$('#mobileQrCode').attr('src', qrCodeUrl);
+			
+			$('#mobileDiv').dialog({
+			    closed: true,
+			    modal: true,
+			    fix: true,
+			}).dialog('open');
+		});
+	});
+	
+	function reloadWarehouseList(){
+		$('#warehouseData').datagrid({
+			url: '../services/inner/warehouse/userWarehouse'
+		});
+		setTimeout(() => {
+			warehouseData = $('#warehouseData').datagrid('getData');
+		}, 1000);
+	}
+
+</script>
+</html>

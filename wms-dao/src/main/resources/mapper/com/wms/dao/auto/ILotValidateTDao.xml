@@ -1,0 +1,874 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wms.dao.auto.ILotValidateTDao">
+  <resultMap id="BaseResultMap" type="com.wms.entity.auto.LotValidateTEntity">
+    <id column="LOT_VALIDATE_ID" jdbcType="DECIMAL" property="lotValidateId" />
+    <result column="LOT_VALIDATE_CODE" jdbcType="VARCHAR" property="lotValidateCode" />
+    <result column="LOT_VALIDATE_DESCR" jdbcType="VARCHAR" property="lotValidateDescr" />
+    <result column="LOT_ATTRIBUTE1_VIEW" jdbcType="CHAR" property="lotAttribute1View" />
+    <result column="LOT_ATTRIBUTE2_VIEW" jdbcType="CHAR" property="lotAttribute2View" />
+    <result column="LOT_ATTRIBUTE3_VIEW" jdbcType="CHAR" property="lotAttribute3View" />
+    <result column="LOT_ATTRIBUTE4_VIEW" jdbcType="CHAR" property="lotAttribute4View" />
+    <result column="LOT_ATTRIBUTE5_VIEW" jdbcType="CHAR" property="lotAttribute5View" />
+    <result column="LOT_ATTRIBUTE6_VIEW" jdbcType="CHAR" property="lotAttribute6View" />
+    <result column="LOT_ATTRIBUTE7_VIEW" jdbcType="CHAR" property="lotAttribute7View" />
+    <result column="LOT_ATTRIBUTE8_VIEW" jdbcType="CHAR" property="lotAttribute8View" />
+    <result column="LOT_ATTRIBUTE9_VIEW" jdbcType="CHAR" property="lotAttribute9View" />
+    <result column="LOT_ATTRIBUTE10_VIEW" jdbcType="CHAR" property="lotAttribute10View" />
+    <result column="LOT_ATTRIBUTE11_VIEW" jdbcType="CHAR" property="lotAttribute11View" />
+    <result column="LOT_ATTRIBUTE12_VIEW" jdbcType="CHAR" property="lotAttribute12View" />
+    <result column="LOT_ATTRIBUTE1_REQUIRED" jdbcType="CHAR" property="lotAttribute1Required" />
+    <result column="LOT_ATTRIBUTE2_REQUIRED" jdbcType="CHAR" property="lotAttribute2Required" />
+    <result column="LOT_ATTRIBUTE3_REQUIRED" jdbcType="CHAR" property="lotAttribute3Required" />
+    <result column="LOT_ATTRIBUTE4_REQUIRED" jdbcType="CHAR" property="lotAttribute4Required" />
+    <result column="LOT_ATTRIBUTE5_REQUIRED" jdbcType="CHAR" property="lotAttribute5Required" />
+    <result column="LOT_ATTRIBUTE6_REQUIRED" jdbcType="CHAR" property="lotAttribute6Required" />
+    <result column="LOT_ATTRIBUTE7_REQUIRED" jdbcType="CHAR" property="lotAttribute7Required" />
+    <result column="LOT_ATTRIBUTE8_REQUIRED" jdbcType="CHAR" property="lotAttribute8Required" />
+    <result column="LOT_ATTRIBUTE9_REQUIRED" jdbcType="CHAR" property="lotAttribute9Required" />
+    <result column="LOT_ATTRIBUTE10_REQUIRED" jdbcType="CHAR" property="lotAttribute10Required" />
+    <result column="LOT_ATTRIBUTE11_REQUIRED" jdbcType="CHAR" property="lotAttribute11Required" />
+    <result column="LOT_ATTRIBUTE12_REQUIRED" jdbcType="CHAR" property="lotAttribute12Required" />
+    <result column="ACTIVE" jdbcType="CHAR" property="active" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="COMPANY_ID" jdbcType="DECIMAL" property="companyId" />
+    <result column="WAREHOUSE_ID" jdbcType="DECIMAL" property="warehouseId" />
+    <result column="DEL_FLAG" jdbcType="CHAR" property="delFlag" />
+    <result column="CREATE_BY" jdbcType="VARCHAR" property="createBy" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_BY" jdbcType="VARCHAR" property="updateBy" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATE_VERSION" jdbcType="DECIMAL" property="updateVersion" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach close=")" collection="example.oredCriteria" item="criteria" open="and (" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_With_Version_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    <where >
+      UPDATE_VERSION = #{version,jdbcType=DECIMAL}
+      <if test="example.oredCriteria.size() > 0">
+        <foreach close=")" collection="example.oredCriteria" item="criteria" open="and (" separator="or">
+          <if test="criteria.valid">
+            <trim prefix="(" prefixOverrides="and" suffix=")">
+              <foreach collection="criteria.criteria" item="criterion">
+                <choose>
+                  <when test="criterion.noValue">
+                    and ${criterion.condition}
+                  </when>
+                  <when test="criterion.singleValue">
+                    and ${criterion.condition} #{criterion.value}
+                  </when>
+                  <when test="criterion.betweenValue">
+                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                  </when>
+                  <when test="criterion.listValue">
+                    and ${criterion.condition}
+                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                      #{listItem}
+                    </foreach>
+                  </when>
+                </choose>
+              </foreach>
+            </trim>
+          </if>
+        </foreach>
+      </if>
+    </where >
+  </sql>
+  <sql id="Base_Column_List">
+    LOT_VALIDATE_ID, LOT_VALIDATE_CODE, LOT_VALIDATE_DESCR, LOT_ATTRIBUTE1_VIEW, LOT_ATTRIBUTE2_VIEW, 
+    LOT_ATTRIBUTE3_VIEW, LOT_ATTRIBUTE4_VIEW, LOT_ATTRIBUTE5_VIEW, LOT_ATTRIBUTE6_VIEW, 
+    LOT_ATTRIBUTE7_VIEW, LOT_ATTRIBUTE8_VIEW, LOT_ATTRIBUTE9_VIEW, LOT_ATTRIBUTE10_VIEW, 
+    LOT_ATTRIBUTE11_VIEW, LOT_ATTRIBUTE12_VIEW, LOT_ATTRIBUTE1_REQUIRED, LOT_ATTRIBUTE2_REQUIRED, 
+    LOT_ATTRIBUTE3_REQUIRED, LOT_ATTRIBUTE4_REQUIRED, LOT_ATTRIBUTE5_REQUIRED, LOT_ATTRIBUTE6_REQUIRED, 
+    LOT_ATTRIBUTE7_REQUIRED, LOT_ATTRIBUTE8_REQUIRED, LOT_ATTRIBUTE9_REQUIRED, LOT_ATTRIBUTE10_REQUIRED, 
+    LOT_ATTRIBUTE11_REQUIRED, LOT_ATTRIBUTE12_REQUIRED, ACTIVE, REMARK, COMPANY_ID, WAREHOUSE_ID, 
+    DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
+  </sql>
+  <select id="selectByExample" parameterType="com.wms.dao.example.LotValidateTExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from LOT_VALIDATE_T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.wms.dao.example.LotValidateTExample">
+    delete from LOT_VALIDATE_T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wms.entity.auto.LotValidateTEntity">
+    insert into LOT_VALIDATE_T (LOT_VALIDATE_ID, LOT_VALIDATE_CODE, LOT_VALIDATE_DESCR, 
+      LOT_ATTRIBUTE1_VIEW, LOT_ATTRIBUTE2_VIEW, LOT_ATTRIBUTE3_VIEW, 
+      LOT_ATTRIBUTE4_VIEW, LOT_ATTRIBUTE5_VIEW, LOT_ATTRIBUTE6_VIEW, 
+      LOT_ATTRIBUTE7_VIEW, LOT_ATTRIBUTE8_VIEW, LOT_ATTRIBUTE9_VIEW, 
+      LOT_ATTRIBUTE10_VIEW, LOT_ATTRIBUTE11_VIEW, LOT_ATTRIBUTE12_VIEW, 
+      LOT_ATTRIBUTE1_REQUIRED, LOT_ATTRIBUTE2_REQUIRED, 
+      LOT_ATTRIBUTE3_REQUIRED, LOT_ATTRIBUTE4_REQUIRED, 
+      LOT_ATTRIBUTE5_REQUIRED, LOT_ATTRIBUTE6_REQUIRED, 
+      LOT_ATTRIBUTE7_REQUIRED, LOT_ATTRIBUTE8_REQUIRED, 
+      LOT_ATTRIBUTE9_REQUIRED, LOT_ATTRIBUTE10_REQUIRED, 
+      LOT_ATTRIBUTE11_REQUIRED, LOT_ATTRIBUTE12_REQUIRED, 
+      ACTIVE, REMARK, COMPANY_ID, 
+      WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
+      CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
+      UPDATE_VERSION, DESCRIPTION)
+    values (#{lotValidateId,jdbcType=DECIMAL}, #{lotValidateCode,jdbcType=VARCHAR}, #{lotValidateDescr,jdbcType=VARCHAR}, 
+      #{lotAttribute1View,jdbcType=CHAR}, #{lotAttribute2View,jdbcType=CHAR}, #{lotAttribute3View,jdbcType=CHAR}, 
+      #{lotAttribute4View,jdbcType=CHAR}, #{lotAttribute5View,jdbcType=CHAR}, #{lotAttribute6View,jdbcType=CHAR}, 
+      #{lotAttribute7View,jdbcType=CHAR}, #{lotAttribute8View,jdbcType=CHAR}, #{lotAttribute9View,jdbcType=CHAR}, 
+      #{lotAttribute10View,jdbcType=CHAR}, #{lotAttribute11View,jdbcType=CHAR}, #{lotAttribute12View,jdbcType=CHAR}, 
+      #{lotAttribute1Required,jdbcType=CHAR}, #{lotAttribute2Required,jdbcType=CHAR}, 
+      #{lotAttribute3Required,jdbcType=CHAR}, #{lotAttribute4Required,jdbcType=CHAR}, 
+      #{lotAttribute5Required,jdbcType=CHAR}, #{lotAttribute6Required,jdbcType=CHAR}, 
+      #{lotAttribute7Required,jdbcType=CHAR}, #{lotAttribute8Required,jdbcType=CHAR}, 
+      #{lotAttribute9Required,jdbcType=CHAR}, #{lotAttribute10Required,jdbcType=CHAR}, 
+      #{lotAttribute11Required,jdbcType=CHAR}, #{lotAttribute12Required,jdbcType=CHAR}, 
+      #{active,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, 
+      #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wms.entity.auto.LotValidateTEntity">
+    insert into LOT_VALIDATE_T
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="lotValidateId != null">
+        LOT_VALIDATE_ID,
+      </if>
+      <if test="lotValidateCode != null">
+        LOT_VALIDATE_CODE,
+      </if>
+      <if test="lotValidateDescr != null">
+        LOT_VALIDATE_DESCR,
+      </if>
+      <if test="lotAttribute1View != null">
+        LOT_ATTRIBUTE1_VIEW,
+      </if>
+      <if test="lotAttribute2View != null">
+        LOT_ATTRIBUTE2_VIEW,
+      </if>
+      <if test="lotAttribute3View != null">
+        LOT_ATTRIBUTE3_VIEW,
+      </if>
+      <if test="lotAttribute4View != null">
+        LOT_ATTRIBUTE4_VIEW,
+      </if>
+      <if test="lotAttribute5View != null">
+        LOT_ATTRIBUTE5_VIEW,
+      </if>
+      <if test="lotAttribute6View != null">
+        LOT_ATTRIBUTE6_VIEW,
+      </if>
+      <if test="lotAttribute7View != null">
+        LOT_ATTRIBUTE7_VIEW,
+      </if>
+      <if test="lotAttribute8View != null">
+        LOT_ATTRIBUTE8_VIEW,
+      </if>
+      <if test="lotAttribute9View != null">
+        LOT_ATTRIBUTE9_VIEW,
+      </if>
+      <if test="lotAttribute10View != null">
+        LOT_ATTRIBUTE10_VIEW,
+      </if>
+      <if test="lotAttribute11View != null">
+        LOT_ATTRIBUTE11_VIEW,
+      </if>
+      <if test="lotAttribute12View != null">
+        LOT_ATTRIBUTE12_VIEW,
+      </if>
+      <if test="lotAttribute1Required != null">
+        LOT_ATTRIBUTE1_REQUIRED,
+      </if>
+      <if test="lotAttribute2Required != null">
+        LOT_ATTRIBUTE2_REQUIRED,
+      </if>
+      <if test="lotAttribute3Required != null">
+        LOT_ATTRIBUTE3_REQUIRED,
+      </if>
+      <if test="lotAttribute4Required != null">
+        LOT_ATTRIBUTE4_REQUIRED,
+      </if>
+      <if test="lotAttribute5Required != null">
+        LOT_ATTRIBUTE5_REQUIRED,
+      </if>
+      <if test="lotAttribute6Required != null">
+        LOT_ATTRIBUTE6_REQUIRED,
+      </if>
+      <if test="lotAttribute7Required != null">
+        LOT_ATTRIBUTE7_REQUIRED,
+      </if>
+      <if test="lotAttribute8Required != null">
+        LOT_ATTRIBUTE8_REQUIRED,
+      </if>
+      <if test="lotAttribute9Required != null">
+        LOT_ATTRIBUTE9_REQUIRED,
+      </if>
+      <if test="lotAttribute10Required != null">
+        LOT_ATTRIBUTE10_REQUIRED,
+      </if>
+      <if test="lotAttribute11Required != null">
+        LOT_ATTRIBUTE11_REQUIRED,
+      </if>
+      <if test="lotAttribute12Required != null">
+        LOT_ATTRIBUTE12_REQUIRED,
+      </if>
+      <if test="active != null">
+        ACTIVE,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="companyId != null">
+        COMPANY_ID,
+      </if>
+      <if test="warehouseId != null">
+        WAREHOUSE_ID,
+      </if>
+      <if test="delFlag != null">
+        DEL_FLAG,
+      </if>
+      <if test="createBy != null">
+        CREATE_BY,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateBy != null">
+        UPDATE_BY,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="updateVersion != null">
+        UPDATE_VERSION,
+      </if>
+      <if test="description != null">
+        DESCRIPTION,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="lotValidateId != null">
+        #{lotValidateId,jdbcType=DECIMAL},
+      </if>
+      <if test="lotValidateCode != null">
+        #{lotValidateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="lotValidateDescr != null">
+        #{lotValidateDescr,jdbcType=VARCHAR},
+      </if>
+      <if test="lotAttribute1View != null">
+        #{lotAttribute1View,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute2View != null">
+        #{lotAttribute2View,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute3View != null">
+        #{lotAttribute3View,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute4View != null">
+        #{lotAttribute4View,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute5View != null">
+        #{lotAttribute5View,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute6View != null">
+        #{lotAttribute6View,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute7View != null">
+        #{lotAttribute7View,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute8View != null">
+        #{lotAttribute8View,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute9View != null">
+        #{lotAttribute9View,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute10View != null">
+        #{lotAttribute10View,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute11View != null">
+        #{lotAttribute11View,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute12View != null">
+        #{lotAttribute12View,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute1Required != null">
+        #{lotAttribute1Required,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute2Required != null">
+        #{lotAttribute2Required,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute3Required != null">
+        #{lotAttribute3Required,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute4Required != null">
+        #{lotAttribute4Required,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute5Required != null">
+        #{lotAttribute5Required,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute6Required != null">
+        #{lotAttribute6Required,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute7Required != null">
+        #{lotAttribute7Required,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute8Required != null">
+        #{lotAttribute8Required,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute9Required != null">
+        #{lotAttribute9Required,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute10Required != null">
+        #{lotAttribute10Required,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute11Required != null">
+        #{lotAttribute11Required,jdbcType=CHAR},
+      </if>
+      <if test="lotAttribute12Required != null">
+        #{lotAttribute12Required,jdbcType=CHAR},
+      </if>
+      <if test="active != null">
+        #{active,jdbcType=CHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=DECIMAL},
+      </if>
+      <if test="warehouseId != null">
+        #{warehouseId,jdbcType=DECIMAL},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateVersion != null">
+        #{updateVersion,jdbcType=DECIMAL},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.wms.dao.example.LotValidateTExample" resultType="java.lang.Long">
+    select count(*) from LOT_VALIDATE_T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update LOT_VALIDATE_T
+    <set>
+      <if test="record.lotValidateId != null">
+        LOT_VALIDATE_ID = #{record.lotValidateId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lotValidateCode != null">
+        LOT_VALIDATE_CODE = #{record.lotValidateCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lotValidateDescr != null">
+        LOT_VALIDATE_DESCR = #{record.lotValidateDescr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lotAttribute1View != null">
+        LOT_ATTRIBUTE1_VIEW = #{record.lotAttribute1View,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute2View != null">
+        LOT_ATTRIBUTE2_VIEW = #{record.lotAttribute2View,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute3View != null">
+        LOT_ATTRIBUTE3_VIEW = #{record.lotAttribute3View,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute4View != null">
+        LOT_ATTRIBUTE4_VIEW = #{record.lotAttribute4View,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute5View != null">
+        LOT_ATTRIBUTE5_VIEW = #{record.lotAttribute5View,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute6View != null">
+        LOT_ATTRIBUTE6_VIEW = #{record.lotAttribute6View,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute7View != null">
+        LOT_ATTRIBUTE7_VIEW = #{record.lotAttribute7View,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute8View != null">
+        LOT_ATTRIBUTE8_VIEW = #{record.lotAttribute8View,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute9View != null">
+        LOT_ATTRIBUTE9_VIEW = #{record.lotAttribute9View,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute10View != null">
+        LOT_ATTRIBUTE10_VIEW = #{record.lotAttribute10View,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute11View != null">
+        LOT_ATTRIBUTE11_VIEW = #{record.lotAttribute11View,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute12View != null">
+        LOT_ATTRIBUTE12_VIEW = #{record.lotAttribute12View,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute1Required != null">
+        LOT_ATTRIBUTE1_REQUIRED = #{record.lotAttribute1Required,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute2Required != null">
+        LOT_ATTRIBUTE2_REQUIRED = #{record.lotAttribute2Required,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute3Required != null">
+        LOT_ATTRIBUTE3_REQUIRED = #{record.lotAttribute3Required,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute4Required != null">
+        LOT_ATTRIBUTE4_REQUIRED = #{record.lotAttribute4Required,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute5Required != null">
+        LOT_ATTRIBUTE5_REQUIRED = #{record.lotAttribute5Required,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute6Required != null">
+        LOT_ATTRIBUTE6_REQUIRED = #{record.lotAttribute6Required,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute7Required != null">
+        LOT_ATTRIBUTE7_REQUIRED = #{record.lotAttribute7Required,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute8Required != null">
+        LOT_ATTRIBUTE8_REQUIRED = #{record.lotAttribute8Required,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute9Required != null">
+        LOT_ATTRIBUTE9_REQUIRED = #{record.lotAttribute9Required,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute10Required != null">
+        LOT_ATTRIBUTE10_REQUIRED = #{record.lotAttribute10Required,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute11Required != null">
+        LOT_ATTRIBUTE11_REQUIRED = #{record.lotAttribute11Required,jdbcType=CHAR},
+      </if>
+      <if test="record.lotAttribute12Required != null">
+        LOT_ATTRIBUTE12_REQUIRED = #{record.lotAttribute12Required,jdbcType=CHAR},
+      </if>
+      <if test="record.active != null">
+        ACTIVE = #{record.active,jdbcType=CHAR},
+      </if>
+      <if test="record.remark != null">
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyId != null">
+        COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.warehouseId != null">
+        WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.delFlag != null">
+        DEL_FLAG = #{record.delFlag,jdbcType=CHAR},
+      </if>
+      <if test="record.createBy != null">
+        CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null">
+        UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateVersion != null">
+        UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
+      </if>
+      <if test="record.description != null">
+        DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update LOT_VALIDATE_T
+    set LOT_VALIDATE_ID = #{record.lotValidateId,jdbcType=DECIMAL},
+      LOT_VALIDATE_CODE = #{record.lotValidateCode,jdbcType=VARCHAR},
+      LOT_VALIDATE_DESCR = #{record.lotValidateDescr,jdbcType=VARCHAR},
+      LOT_ATTRIBUTE1_VIEW = #{record.lotAttribute1View,jdbcType=CHAR},
+      LOT_ATTRIBUTE2_VIEW = #{record.lotAttribute2View,jdbcType=CHAR},
+      LOT_ATTRIBUTE3_VIEW = #{record.lotAttribute3View,jdbcType=CHAR},
+      LOT_ATTRIBUTE4_VIEW = #{record.lotAttribute4View,jdbcType=CHAR},
+      LOT_ATTRIBUTE5_VIEW = #{record.lotAttribute5View,jdbcType=CHAR},
+      LOT_ATTRIBUTE6_VIEW = #{record.lotAttribute6View,jdbcType=CHAR},
+      LOT_ATTRIBUTE7_VIEW = #{record.lotAttribute7View,jdbcType=CHAR},
+      LOT_ATTRIBUTE8_VIEW = #{record.lotAttribute8View,jdbcType=CHAR},
+      LOT_ATTRIBUTE9_VIEW = #{record.lotAttribute9View,jdbcType=CHAR},
+      LOT_ATTRIBUTE10_VIEW = #{record.lotAttribute10View,jdbcType=CHAR},
+      LOT_ATTRIBUTE11_VIEW = #{record.lotAttribute11View,jdbcType=CHAR},
+      LOT_ATTRIBUTE12_VIEW = #{record.lotAttribute12View,jdbcType=CHAR},
+      LOT_ATTRIBUTE1_REQUIRED = #{record.lotAttribute1Required,jdbcType=CHAR},
+      LOT_ATTRIBUTE2_REQUIRED = #{record.lotAttribute2Required,jdbcType=CHAR},
+      LOT_ATTRIBUTE3_REQUIRED = #{record.lotAttribute3Required,jdbcType=CHAR},
+      LOT_ATTRIBUTE4_REQUIRED = #{record.lotAttribute4Required,jdbcType=CHAR},
+      LOT_ATTRIBUTE5_REQUIRED = #{record.lotAttribute5Required,jdbcType=CHAR},
+      LOT_ATTRIBUTE6_REQUIRED = #{record.lotAttribute6Required,jdbcType=CHAR},
+      LOT_ATTRIBUTE7_REQUIRED = #{record.lotAttribute7Required,jdbcType=CHAR},
+      LOT_ATTRIBUTE8_REQUIRED = #{record.lotAttribute8Required,jdbcType=CHAR},
+      LOT_ATTRIBUTE9_REQUIRED = #{record.lotAttribute9Required,jdbcType=CHAR},
+      LOT_ATTRIBUTE10_REQUIRED = #{record.lotAttribute10Required,jdbcType=CHAR},
+      LOT_ATTRIBUTE11_REQUIRED = #{record.lotAttribute11Required,jdbcType=CHAR},
+      LOT_ATTRIBUTE12_REQUIRED = #{record.lotAttribute12Required,jdbcType=CHAR},
+      ACTIVE = #{record.active,jdbcType=CHAR},
+      REMARK = #{record.remark,jdbcType=VARCHAR},
+      COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
+      WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL},
+      DEL_FLAG = #{record.delFlag,jdbcType=CHAR},
+      CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <select id="selectOneByExample" parameterType="com.wms.dao.example.LotValidateTExample" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    select
+    <include refid="Base_Column_List" />
+    from LOT_VALIDATE_T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <update id="logicalDeleteByExample" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update LOT_VALIDATE_T set DEL_FLAG = 'Y'
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="logicalDeleteWithVersionByExample" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update LOT_VALIDATE_T
+    set UPDATE_VERSION = UPDATE_VERSION + 1,DEL_FLAG = 'Y'
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_With_Version_Where_Clause" />
+    </if>
+  </update>
+  <update id="logicalDeleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update LOT_VALIDATE_T set DEL_FLAG = 'Y'
+    where LOT_VALIDATE_ID = #{lotValidateId,jdbcType=DECIMAL}
+  </update>
+  <update id="logicalDeleteWithVersionByPrimaryKey" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update LOT_VALIDATE_T
+    set UPDATE_VERSION = UPDATE_VERSION + 1,DEL_FLAG = 'Y'
+    where UPDATE_VERSION = #{version,jdbcType=DECIMAL}
+      and LOT_VALIDATE_ID = #{key,jdbcType=DECIMAL}
+  </update>
+  <select id="selectByPrimaryKeyWithLogicalDelete" parameterType="map" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from LOT_VALIDATE_T
+    where LOT_VALIDATE_ID = #{lotValidateId,jdbcType=DECIMAL}
+      and DEL_FLAG = 
+    <choose>
+      <when test="andLogicalDeleted">
+        'Y'
+      </when>
+      <otherwise>
+        'N'
+      </otherwise>
+    </choose>
+  </select>
+  <delete id="deleteWithVersionByExample" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    delete from LOT_VALIDATE_T
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_With_Version_Where_Clause" />
+    </if>
+  </delete>
+  <update id="updateWithVersionByExample" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update LOT_VALIDATE_T
+    set UPDATE_VERSION = UPDATE_VERSION + 1,
+    LOT_VALIDATE_ID = #{record.lotValidateId,jdbcType=DECIMAL}, 
+    LOT_VALIDATE_CODE = #{record.lotValidateCode,jdbcType=VARCHAR}, 
+    LOT_VALIDATE_DESCR = #{record.lotValidateDescr,jdbcType=VARCHAR}, 
+    LOT_ATTRIBUTE1_VIEW = #{record.lotAttribute1View,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE2_VIEW = #{record.lotAttribute2View,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE3_VIEW = #{record.lotAttribute3View,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE4_VIEW = #{record.lotAttribute4View,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE5_VIEW = #{record.lotAttribute5View,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE6_VIEW = #{record.lotAttribute6View,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE7_VIEW = #{record.lotAttribute7View,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE8_VIEW = #{record.lotAttribute8View,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE9_VIEW = #{record.lotAttribute9View,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE10_VIEW = #{record.lotAttribute10View,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE11_VIEW = #{record.lotAttribute11View,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE12_VIEW = #{record.lotAttribute12View,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE1_REQUIRED = #{record.lotAttribute1Required,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE2_REQUIRED = #{record.lotAttribute2Required,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE3_REQUIRED = #{record.lotAttribute3Required,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE4_REQUIRED = #{record.lotAttribute4Required,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE5_REQUIRED = #{record.lotAttribute5Required,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE6_REQUIRED = #{record.lotAttribute6Required,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE7_REQUIRED = #{record.lotAttribute7Required,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE8_REQUIRED = #{record.lotAttribute8Required,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE9_REQUIRED = #{record.lotAttribute9Required,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE10_REQUIRED = #{record.lotAttribute10Required,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE11_REQUIRED = #{record.lotAttribute11Required,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE12_REQUIRED = #{record.lotAttribute12Required,jdbcType=CHAR}, 
+    ACTIVE = #{record.active,jdbcType=CHAR}, 
+    REMARK = #{record.remark,jdbcType=VARCHAR}, 
+    COMPANY_ID = #{record.companyId,jdbcType=DECIMAL}, 
+    WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL}, 
+    DEL_FLAG = #{record.delFlag,jdbcType=CHAR}, 
+    CREATE_BY = #{record.createBy,jdbcType=VARCHAR}, 
+    CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP}, 
+    UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR}, 
+    UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
+    DESCRIPTION = #{record.description,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_With_Version_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateWithVersionByExampleSelective" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update LOT_VALIDATE_T
+    <set>
+      <trim suffixOverrides=",">
+        UPDATE_VERSION = UPDATE_VERSION + 1,
+        <if test="record.lotValidateId != null">
+          LOT_VALIDATE_ID = #{record.lotValidateId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.lotValidateCode != null">
+          LOT_VALIDATE_CODE = #{record.lotValidateCode,jdbcType=VARCHAR},
+        </if>
+        <if test="record.lotValidateDescr != null">
+          LOT_VALIDATE_DESCR = #{record.lotValidateDescr,jdbcType=VARCHAR},
+        </if>
+        <if test="record.lotAttribute1View != null">
+          LOT_ATTRIBUTE1_VIEW = #{record.lotAttribute1View,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute2View != null">
+          LOT_ATTRIBUTE2_VIEW = #{record.lotAttribute2View,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute3View != null">
+          LOT_ATTRIBUTE3_VIEW = #{record.lotAttribute3View,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute4View != null">
+          LOT_ATTRIBUTE4_VIEW = #{record.lotAttribute4View,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute5View != null">
+          LOT_ATTRIBUTE5_VIEW = #{record.lotAttribute5View,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute6View != null">
+          LOT_ATTRIBUTE6_VIEW = #{record.lotAttribute6View,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute7View != null">
+          LOT_ATTRIBUTE7_VIEW = #{record.lotAttribute7View,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute8View != null">
+          LOT_ATTRIBUTE8_VIEW = #{record.lotAttribute8View,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute9View != null">
+          LOT_ATTRIBUTE9_VIEW = #{record.lotAttribute9View,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute10View != null">
+          LOT_ATTRIBUTE10_VIEW = #{record.lotAttribute10View,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute11View != null">
+          LOT_ATTRIBUTE11_VIEW = #{record.lotAttribute11View,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute12View != null">
+          LOT_ATTRIBUTE12_VIEW = #{record.lotAttribute12View,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute1Required != null">
+          LOT_ATTRIBUTE1_REQUIRED = #{record.lotAttribute1Required,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute2Required != null">
+          LOT_ATTRIBUTE2_REQUIRED = #{record.lotAttribute2Required,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute3Required != null">
+          LOT_ATTRIBUTE3_REQUIRED = #{record.lotAttribute3Required,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute4Required != null">
+          LOT_ATTRIBUTE4_REQUIRED = #{record.lotAttribute4Required,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute5Required != null">
+          LOT_ATTRIBUTE5_REQUIRED = #{record.lotAttribute5Required,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute6Required != null">
+          LOT_ATTRIBUTE6_REQUIRED = #{record.lotAttribute6Required,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute7Required != null">
+          LOT_ATTRIBUTE7_REQUIRED = #{record.lotAttribute7Required,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute8Required != null">
+          LOT_ATTRIBUTE8_REQUIRED = #{record.lotAttribute8Required,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute9Required != null">
+          LOT_ATTRIBUTE9_REQUIRED = #{record.lotAttribute9Required,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute10Required != null">
+          LOT_ATTRIBUTE10_REQUIRED = #{record.lotAttribute10Required,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute11Required != null">
+          LOT_ATTRIBUTE11_REQUIRED = #{record.lotAttribute11Required,jdbcType=CHAR},
+        </if>
+        <if test="record.lotAttribute12Required != null">
+          LOT_ATTRIBUTE12_REQUIRED = #{record.lotAttribute12Required,jdbcType=CHAR},
+        </if>
+        <if test="record.active != null">
+          ACTIVE = #{record.active,jdbcType=CHAR},
+        </if>
+        <if test="record.remark != null">
+          REMARK = #{record.remark,jdbcType=VARCHAR},
+        </if>
+        <if test="record.companyId != null">
+          COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.warehouseId != null">
+          WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.delFlag != null">
+          DEL_FLAG = #{record.delFlag,jdbcType=CHAR},
+        </if>
+        <if test="record.createBy != null">
+          CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+        </if>
+        <if test="record.createTime != null">
+          CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.updateBy != null">
+          UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
+        </if>
+        <if test="record.updateTime != null">
+          UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.description != null">
+          DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+        </if>
+      </trim>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_With_Version_Where_Clause" />
+    </if>
+  </update>
+</mapper>

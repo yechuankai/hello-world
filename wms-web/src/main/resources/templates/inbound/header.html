@@ -1,0 +1,175 @@
+<form id="inboundHeaderForm" th:data-url="@{/services/inner/inbound/save}" >
+	<input id="inboundHeaderId" name="inboundHeaderId" type="hidden" />
+	<div class="easyui-tabs">
+		<div wms:title="${web.label.normal}" >
+			<table border="0" cellpadding="0" cellspacing="0" id="headerTab1" >
+				<tr>
+					<td width="200px">
+						<input name="inboundNumber" class="lazy-load" lazy-load="easyui-textbox" readonly="readonly"  wms:data-options="label:'${web.label.inboundnumber}',labelPosition:'top'" />
+					</td>
+					<td width="200px">
+						<input id="ownerCode" name="ownerCode" th:replace="lov/owner" />
+						<input type="hidden" name="ownerId" id="ownerId" />
+					</td>
+					<td width="200px">
+						<input id="sourceNumber" name="sourceNumber" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.sourcenumber}',labelPosition:'top'" />
+					</td>
+					<td width="200px">
+						<input id="referenceNumber" name="referenceNumber" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.referencenumber}',labelPosition:'top'" />
+					</td>
+				</tr>
+				<tr>
+					<td >
+						<input id="type" class="lazy-load" lazy-load="easyui-combobox" name="type" wms:data-options="
+						data: codelkups['INBOUNDTYPE'],
+						valueField: 'code',
+						textField: 'descr',
+						value: '10',
+						label: '${web.label.type}',
+						labelPosition: 'top'
+						" />
+					</td>
+					<td>
+						<input id="supplierCode" name="supplierCode" th:replace="lov/supplier" />
+					</td>
+					<td>
+						<input id="expectedInboundDate" name="expectedInboundDate" class="lazy-load" lazy-load="easyui-datebox" wms:data-options="label:'${web.label.expectedinbounddate}',labelPosition:'top'" />
+					</td>
+					<td rowspan="2">
+						<input name="remark" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.remark}',labelPosition:'top',multiline:true" style="width: 300px;height:150px;" />
+					</td>
+				</tr>
+				<tr>
+					<td >
+						<input class="lazy-load" lazy-load="easyui-combobox" name="status"  readonly="readonly" wms:data-options="
+							data: codelkups['INBOUNDSTATUS'],
+							valueField: 'code',
+							textField: 'descr',
+							value: '10',
+							label: '${web.label.status}',
+							labelPosition: 'top'
+							" />
+					</td>
+					<td>
+						<input id="createTime" name="createTime" readonly="readonly" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="label:'${web.label.createtime}',labelPosition:'top'" />
+					</td>
+					<td>
+						<input id="inboundDate" name="inboundDate" readonly="readonly" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="label:'${web.label.inbounddate}',labelPosition:'top'" />
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div wms:title="${web.label.transport}" >
+			<table border="0" >
+				<tr>
+					<td width="200px">
+						<input id="carrierCode" name="carrierCode" th:replace="lov/carrier" />
+					</td>
+					<td width="200px">
+						<input id="shipAddress1" name="shipAddress1" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.address1}',labelPosition:'top'" />
+					</td>
+					<td width="200px">
+						
+					</td>
+				</tr>
+				<tr>
+					<td >
+						<input id="carrierCarNumber" name="carrierCarNumber" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.carriercarnumber}',labelPosition:'top'" />
+					</td>
+					<td>
+						<input id="shipAddress2" name="shipAddress2" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.address2}',labelPosition:'top'" />
+					</td>
+					<td>
+						&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td >
+						<input name="carrierDriver" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.carrierdriver}',labelPosition:'top'" />
+					</td>
+					<td>
+						&nbsp;
+					</td>
+					<td>
+						&nbsp;
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</form>
+<script type="text/javascript" th:inline="text">
+	$(function(){
+		loadOwnerLov();
+		/*
+		loadOwnerLov();
+		loadSupplierLov();
+		loadCarrierLov();
+		*/
+	});
+	
+	
+	function getInboundHeaderData(){
+		var from = '#inboundHeaderForm';
+		var data = $(from).serializeObject();
+		return data;
+	}
+	
+	function refreshInboundHeader(data){
+		var from = '#inboundHeaderForm';
+		$(from).form('load', data);
+	}
+	function refreshEditHeader(data){
+		var from = '#inboundHeaderForm';
+		//设定可编辑框
+		headerEditable(data.status);
+		$(from).form('load', data);
+	}
+
+	/**
+	 * @Description 设置是否可编辑
+	 * @param status
+	 */
+	function headerEditable(status){
+		if('0' == status){
+			//新增一条数据
+			$('#expectedInboundDate').datebox({readonly:false});
+			$('#ownerCode').combogrid({readonly:false});
+			$('#supplierId').combogrid({readonly:false});
+			$('#sourceNumber').textbox({readonly:false});
+			$('#referenceNumber').textbox({readonly:false});
+			$('#type').combobox({readonly:false});
+			$('#carrierId').combogrid({readonly:false});
+			$('#shipAddress1').textbox({readonly:false});
+			$('#shipAddress2').textbox({readonly:false});
+			$('#carrierCarNumber').textbox({readonly:false});
+			$('#carrierDriver').textbox({readonly:false});
+		}else if('10' == status){
+			//新建状态
+			$('#expectedInboundDate').datebox({readonly:false});
+			$('#ownerCode').combogrid({readonly:true});
+			$('#supplierId').combogrid({readonly:false});
+			$('#sourceNumber').textbox({readonly:false});
+			$('#referenceNumber').textbox({readonly:false});
+			$('#type').combobox({readonly:false});
+			$('#carrierId').combogrid({readonly:false});
+			$('#shipAddress1').textbox({readonly:false});
+			$('#shipAddress2').textbox({readonly:false});
+			$('#carrierCarNumber').textbox({readonly:false});
+			$('#carrierDriver').textbox({readonly:false});
+		}else {
+			// 其他状态
+			$('#expectedInboundDate').datebox({readonly:true});
+			$('#ownerCode').combogrid({readonly:true});
+			$('#supplierId').combogrid({readonly:true});
+			$('#sourceNumber').textbox({readonly:true});
+			$('#referenceNumber').textbox({readonly:true});
+			$('#type').combobox({readonly:true});
+			$('#carrierId').combogrid({readonly:true});
+			$('#shipAddress1').textbox({readonly:true});
+			$('#shipAddress2').textbox({readonly:true});
+			$('#carrierCarNumber').textbox({readonly:true});
+			$('#carrierDriver').textbox({readonly:true});
+		}
+	}
+</script>

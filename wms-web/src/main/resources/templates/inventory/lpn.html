@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${web.lable.inventory.lpn}">LPN</title>
+    <head th:replace="common/head" />
+</head>
+<body class="easyui-layout" >
+    <!-- wyxu-->
+    <div class="icon-loading" style="position: absolute; z-index: 999999;width: 100%; height: 100%;opacity: 1;background-color: white;" >&nbsp;</div>
+	<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px; ">
+		<div id="searchDiv" class="easyui-layout" style="height: 100%;">
+			<div style="margin-left: 10px;height: 100%;" data-options="region:'north',border:false" >
+				<form id="searchForm" data-table="#lpnData" style="height: 830px;">
+					<div style="margin-bottom:10px">
+						<input name="lpnNumber" class="easyui-textbox" wms:data-options="label:'${web.label.lotnumber}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input class="easyui-combobox" name="lpnType" wms:data-options="
+						data: codelkups['LPNTYPE'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.inventory.lpntype}',
+						labelPosition: 'top'
+						" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="lpnSize" class="easyui-textbox" wms:data-options="label:'${web.inventory.lpnsize}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="volume" class="easyui-textbox" wms:data-options="label:'${web.inventory.volume}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="length" class="easyui-textbox" wms:data-options="label:'${web.inventory.length}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="width" class="easyui-textbox" wms:data-options="label:'${web.inventory.width}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="height" class="easyui-textbox" wms:data-options="label:'${web.inventory.height}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="weightGross" class="easyui-textbox" wms:data-options="label:'${web.inventory.weightgross}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="weightNet" class="easyui-textbox" wms:data-options="label:'${web.inventory.weightnet}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="weightTare" class="easyui-textbox" wms:data-options="label:'${web.inventory.weighttare}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="parentLpnCode" class="easyui-textbox" wms:data-options="label:'${web.inventory.parentLpncode}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:60px">
+						<input name="containerNumber" class="easyui-textbox" wms:data-options="label:'${web.inventory.containernumber}',labelPosition:'top'" />
+					</div>
+				</form>
+			</div>
+			<div style="text-align: center;height:50px;" data-options="region:'south',border:false">
+				<a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;" data-options="iconCls:'icon-search'" >
+					<span wms:text="${web.label.search}">Search</span>
+				</a>	
+				<a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;" data-options="iconCls:'icon-clear'" >
+					<span wms:text="${web.label.clear}">Clear</span>
+				</a>
+			</div>
+				
+		</div>
+	</div>
+    <!--  ella end-->
+	<div data-options="region:'center',border:false" >
+	<!-- 仅查询，这里去掉界面按钮增删改按钮-->
+		<div>
+			<table id="lpnData" wms:title="${web.label.lpnlist.title}" class="easyui-datagrid"
+							th:data-delayUrl="@{/services/inner/inventory/lpn/find}">
+				<thead>
+					<tr>
+					    <th field="lpnNumber" width="100" wms:text="${web.label.lpnnumber}" data-options="sortable:true" >lpnNumber</th>
+					    <th field="containerNumber" width="100" wms:text="${web.inventory.containernumber}" data-options="sortable:true" >containerNumber</th>
+						<th field="lpnType" width="100" wms:text="${web.inventory.lpntype}" data-options="
+							sortable:true,
+							formatter:function(value,row){
+								return getCodelkupValue('LPNTYPE',value);
+							}
+						">lpnType</th>
+						<th field="lpnSize" width="100" wms:text="${web.inventory.lpnsize}" data-options="sortable:true" >lpnSize</th>
+						<th field="volume" width="100" wms:text="${web.inventory.volume}" data-options="sortable:true" >lpnSize</th>
+						<th field="length" width="100" wms:text="${web.inventory.length}" data-options="sortable:true" >length</th>
+						<th field="width" width="100" wms:text="${web.inventory.width}" data-options="sortable:true" >width</th>
+				        <th field="height" width="100" wms:text="${web.inventory.height}" data-options="sortable:true" >height</th>
+					    <th field="weightGross" width="100" wms:text="${web.inventory.weightgross}" data-options="sortable:true" >weightGross</th>
+				        <th field="weightNet" width="100" wms:text="${web.inventory.weightnet}" data-options="sortable:true" >weightNet</th>
+					    <th field="weightTare" width="100" wms:text="${web.inventory.weighttare}" data-options="sortable:true" >weightTare</th>
+					    <th field="parentLpnCode" width="100" wms:text="${web.inventory.parentLpncode}" data-options="sortable:true" >parentLpnCode</th>
+					    <th field="createBy" width="80" wms:text="${web.label.createby}" >createBy</th>
+						<th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true" >createTime</th>
+						<th field="updateBy" width="80" wms:text="${web.label.updateby}" >updateBy</th>
+						<th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">updateTime</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</body>
+<script th:replace="common/js" />
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=CONFIGTYPE,YESNO,LPNTYPE}"></script>
+
+</html>

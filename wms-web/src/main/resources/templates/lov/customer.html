@@ -1,0 +1,76 @@
+<input id="customerCode" name="customerCode" class="lazy-load" lazy-load="easyui-combogrid" wms:data-options="
+								label: '${web.label.customercode}',
+								labelPosition: 'top',
+								idField:'customerCode',
+    							textField:'customerCode',
+								url:'../../services/inner/base/customer/find',
+							    onBeforeLoad: function(param){
+									$.extend(param, getCustomerParams());
+								},
+							    columns:[[
+								    {field:'customerId',hidden:true},
+								    {field:'customerCode',title:'${web.label.customercode}',width:80},
+								    {field:'customerDescr',title:'${web.label.descr}',width:150},
+								    {field:'phone1',hidden:true},
+								    {field:'phone2',hidden:true},
+								    {field:'contact1',hidden:true},
+								    {field:'contact2',hidden:true},
+								    {field:'address1',hidden:true},
+								    {field:'address2',hidden:true},
+								    {field:'fax',hidden:true},
+								    {field:'email',hidden:true}
+							    ]]
+							" />
+<script type="text/javascript">
+	function loadCustomerLov(params, fn){ 
+		$('#customerCode').combogrid({
+			queryParams: getCustomerParams(params),
+			onClickRow: function(rowIndex, rowData){
+				if (fn != undefined) {
+					fn(rowData);
+				}else{
+					setCustomerResult(rowData);
+				}
+			}
+		});
+	}
+	
+	function getCustomerParams (params){ 
+		var data = getBaseData();
+		data['active'] = 'Y';
+		if (typeof(params) == 'object'){
+			$.extend(data, params);
+		}
+		return data;
+	}
+	
+	function setCustomerResult (data){
+		if ($("#customerDescr").length > 0) {
+			$("#customerDescr").textbox('setValue', data.customerDescr);
+		}
+		if ($("#contact1").length > 0) {
+			$("#contact1").textbox('setValue', data.contact1);
+		}
+		if ($("#contact2").length > 0) {
+			$("#contact2").textbox('setValue', data.contact2);
+		}
+		if ($("#phone1").length > 0) {
+			$("#phone1").textbox('setValue', data.phone1);
+		}
+		if ($("#phone2").length > 0) {
+			$("#phone2").textbox('setValue', data.phone2);
+		}
+		if ($("#address1").length > 0) {
+			$("#address1").textbox('setValue', data.address1);
+		}
+		if ($("#address2").length > 0) {
+			$("#address2").textbox('setValue', data.address2);
+		}
+		if ($("#fax").length > 0) {
+			$("#fax").textbox('setValue', data.fax);
+		}
+		if ($("#email").length > 0) {
+			$("#email").textbox('setValue', data.email);
+		}
+	}
+</script>

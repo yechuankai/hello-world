@@ -1,0 +1,520 @@
+<div id="detailToolbar" class="tableToolbar detailToolbar">
+    <a href="#" class="lazy-load outbounddetail-add" lazy-load="easyui-linkbutton" wms:title="${web.label.outbound.add}"
+       data-addpanel="#addDetailDiv">
+        <span wms:text="${web.label.add}">Add</span>
+    </a>
+    <a href="#" class="lazy-load common-rowsave" lazy-load="easyui-linkbutton" data-table="#outboundDetailData"
+       th:data-url="@{/services/inner/outboundDetail/listSave}">
+        <span wms:text="${web.label.save}">Save</span>
+    </a>
+    <a href="#" class="lazy-load common-rowdel" lazy-load="easyui-linkbutton" data-table="#outboundDetailData"
+       th:data-url="@{/services/inner/outboundDetail/delete}">
+        <span wms:text="${web.label.delete}">Delete</span>
+    </a>
+</div>
+<div>
+    <table id="outboundDetailData" wms:title="${web.label.outbounddetaillist.title}"
+           wms:data-options="toolbar: '#detailToolbar'"
+           th:data-delayUrl="@{/services/inner/outboundDetail/findByHeader}">
+        <thead>
+        <th field="outboundDetailId" data-options="checkbox:true"></th>
+        <th field="edit" data-options="
+										formatter:function(value,row){
+											var data = JSON.stringify(row);
+											var detail = '<span title = \'编辑\' onclick=\'toEditDetail('+data+')\' class=\'icon-edit\'>&nbsp;</span>';
+											return detail;
+										}
+									"></th>
+        <th field="lineNumber" width="50" wms:text="${web.label.linenumber}" data-options="sortable:true">lineNumber
+        </th>
+        <th field="sourceLineNumber" width="100" wms:text="${web.label.sourcelinenumber}" data-options="sortable:true">
+            sourceLineNumber
+        </th>
+        <th field="skuCode" width="100" wms:text="${web.label.sku}" data-options="sortable:true">skuCode</th>
+        <th field="skuDescr" width="150" wms:text="${web.label.skudescr}">skuDescr</th>
+        <th field="packCode" width="80" wms:text="${web.label.pack}">pack</th>
+        <th field="uom" width="80" wms:text="${web.label.uom}" data-options="
+							formatter:function(value,row){
+								return getCodelkupValue('UOM',value);
+							}
+				">uom</th>
+        <th field="uomQuantityExpected" width="80" wms:text="${web.label.quantityexpected}" data-options="
+					editor: 'numberbox'
+					">Expected Quantity
+        </th>
+        <th field="uomQuantityAllocated" width="80" wms:text="${web.label.uomquantityallocated}" data-options="
+					">Allocated Quantity
+        </th>
+        <th field="uomQuantityPicked" width="80" wms:text="${web.label.uomquantitypicked}" data-options="
+					">Picked Quantity
+        </th>
+        <th field="uomQuantityShiped" width="80" wms:text="${web.label.uomquantityshiped}" data-options="
+					">Shiped Quantity
+        </th>
+        <th field="status" width="80" wms:text="${web.label.status}" data-options="
+					sortable:true,
+					formatter:function(value,row){
+						return getCodelkupValue('OUTBOUNDSTATUS',value);
+					}
+				">status
+        </th>
+        <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+        <th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true">
+            createTime
+        </th>
+        <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+        <th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">
+            updateTime
+        </th>
+        </thead>
+    </table>
+</div>
+<div id="addDetailDiv" wms:title="${web.label.detail.add}" style="height: 350px;width: 800px;display: none;"
+     data-options="buttons: '#detailAddButton'">
+    <div id="detailAddButton">
+        <a href="#" class="easyui-linkbutton outbounddetail-confirmadd" wms:text="${web.label.save}"
+           data-form="#outboundDetailForm">Save</a>
+        <a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#inboundDetailForm').form('clear');"
+           wms:text="${web.label.clear}" data-options="iconCls:'icon-clear'">Clear</a>
+    </div>
+    <div id="detailEditButton" style="display:none;">
+        <a href="#" class="easyui-linkbutton outboundDetail-save" wms:text="${web.label.save}"
+           data-form="#outboundDetailForm" data-table="#outboundDetailData">Save</a>
+    </div>
+    <form id="outboundDetailForm" th:data-url="@{/services/inner/outboundDetail/save}">
+        <input name="outboundHeaderId" type="hidden"/>
+        <input name="outboundDetailId" type="hidden"/>
+        <div class="lazy-load" lazy-load="easyui-tabs">
+            <div wms:title="${web.label.normal}">
+                <table border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td width="200px">
+                            <input name="lineNumber" id="lineNumber" class="lazy-load" lazy-load="easyui-textbox"
+                                   wms:data-options="label:'${web.label.linenumber}',labelPosition:'top',required:true"/>
+                        </td>
+                        <td width="200px">
+                            <input id="sourceLineNumber" name="sourceLineNumber" class="lazy-load"
+                                   lazy-load="easyui-textbox"
+                                   wms:data-options="label:'${web.label.souceline}',labelPosition:'top'"/>
+                        </td>
+                        <td width="200px">
+                            <input id="allocateStrategyCode" name="allocateStrategyCode" th:replace="lov/allocateStrategy"/>
+                            <input id="allocateStrategyId" name="allocateStrategyId" type="hidden"/>
+                        </td>
+                        <td width="200px">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input name="skuCode" th:replace="lov/sku"/>
+                            <input type="hidden" name="skuId" id="skuId"/>
+                        </td>
+                        <td>
+                            <input name="skuAlias" id="skuAlias" class="lazy-load" lazy-load="easyui-textbox"
+                                   wms:data-options="label:'${web.label.skualias}',labelPosition:'top'"/>
+                        </td>
+                        <td colspan="2">
+                            <input name="skuDescr" id="skuDescr" class="lazy-load" lazy-load="easyui-textbox"
+                                   wms:data-options="label:'${web.label.skudescr}',labelPosition:'top'"
+                                   style="width: 300px;"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input name="packCode" th:replace="lov/pack"/>
+                            <input type="hidden" name="packId" id="packId"/>
+                        </td>
+                        <td>
+                        	<input name="uom" id="uom" class="lazy-load" lazy-load="easyui-combobox"
+                                   wms:data-options="label:'${web.label.uom}',labelPosition:'top',required:true,panelHeight:100"/>
+                        </td>
+                        <td>
+                            <input id="uomQuantityExpected" name="uomQuantityExpected" class="lazy-load"
+                                   lazy-load="easyui-numberbox" value="0"
+                                   wms:data-options="label:'${web.label.quantityexpected}',labelPosition:'top',required:true"/>
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div wms:title="${web.lable.lotattribute}" >
+                <table border="0" >
+                    <tr>
+                        <td width="200px">
+                            <input id="lotAttribute1" name="lotAttribute1" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute1}',labelPosition:'top'" />
+                        </td>
+                        <td width="200px">
+                            <input id="lotAttribute4" name="lotAttribute4" class="lazy-load" lazy-load="easyui-datebox"  wms:data-options="label:'${web.label.lotattribute4}',labelPosition:'top'" />
+                        </td>
+                        <td width="200px">
+                            <input id="lotAttribute7" name="lotAttribute7" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute7}',labelPosition:'top'" />
+                        </td>
+                        <td width="200px">
+                            <input id="lotAttribute10" name="lotAttribute10" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute10}',labelPosition:'top'" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td >
+                            <input id="lotAttribute2" name="lotAttribute2" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute2}',labelPosition:'top'" />
+                        </td>
+                        <td>
+                            <input id="lotAttribute5" name="lotAttribute5" class="lazy-load" lazy-load="easyui-datebox"  wms:data-options="label:'${web.label.lotattribute5}',labelPosition:'top'" />
+                        </td>
+                        <td>
+                            <input id="lotAttribute8" name="lotAttribute8" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute8}',labelPosition:'top'" />
+                        </td>
+                        <td width="200px">
+                            <input id="lotAttribute11" name="lotAttribute11" class="lazy-load" lazy-load="easyui-datebox"  wms:data-options="label:'${web.label.lotattribute11}',labelPosition:'top'" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td >
+                            <input id="lotAttribute3" name="lotAttribute3" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute3}',labelPosition:'top'" />
+                        </td>
+                        <td>
+                            <input id="lotAttribute6" name="lotAttribute6" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute6}',labelPosition:'top'" />
+                        </td>
+                        <td>
+                            <input id="lotAttribute9" name="lotAttribute9" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute9}',labelPosition:'top'" />
+                        </td>
+                        <td width="200px">
+                            <input id="lotAttribute12" name="lotAttribute12" class="lazy-load" lazy-load="easyui-datebox"  wms:data-options="label:'${web.label.lotattribute12}',labelPosition:'top'" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" th:src="@{/static/ui/plugins/datagrid-filter.js}"></script>
+<script type="text/javascript" th:inline="text">
+	var detailEditData;
+	var detailFilterRules = [{
+		field:'status',
+		type:'combobox',
+		options:{
+			panelHeight:'auto',
+			data:getFilterCodelkupValue('OUTBOUNDSTATUS'),
+			onChange:function(value){
+				if (value == '---' || value == ''){
+					$('#outboundDetailData').datagrid('removeFilterRule', 'status');
+				} else {
+					$('#outboundDetailData').datagrid('addFilterRule', {
+						field: 'status',
+						op: 'equal',
+						value: value
+					});
+				}
+				$('#outboundDetailData').datagrid('doFilter');
+			}
+		}
+	}];
+	
+    $(function () {
+        $('.outbounddetail-add').click(function () {
+        	var headerData = getOutboundHeaderData();
+        	if (headerData.status == 90) {
+				showError($.locale.statusError);
+				return false;
+			}
+            $('#outboundDetailForm').form('reset');
+            lazyLoadView('#outboundDetailForm');
+            var grid = $("#outboundDetailData").datagrid('getData');
+            var maxNumber = 0;
+			grid.rows.forEach(function(e){
+				if(e.lineNumber != null && parseInt(e.lineNumber) > maxNumber){
+					maxNumber = parseInt(e.lineNumber);
+				}
+			});
+			$("#lineNumber").textbox('setValue', maxNumber + 10);
+            var owner = getOwnerId();
+            if (owner == '-1') {
+                showError($.locale.ownerRequired);
+                return false;
+            }
+            loadSkuLov({ownerId: owner}, function (data) {
+                loadPackLov({packId: data.packId});
+
+                $("#packCode").combo('setValue', data.packCode)
+                    .combo('setText', data.packCode);
+                setSkuResult(data);
+                setUom(data.packId);
+            });
+            //新增所有都可编辑
+            outboundDetailEditable(0);
+            loadAllocateStrategyLov();
+
+            $('#detailAddButton').show();
+            $('#detailEditButton').hide();
+            var panel = $(this).attr('data-addpanel');
+            $(panel).dialog({
+                closed: true,
+                modal: true,
+                fix: true,
+                buttons: '#detailAddButton'
+            }).dialog('open');
+        });
+
+        //判断是否可编辑
+        $('#outboundDetailData').datagrid({
+            onBeginEdit: function (index, row) {
+                var ed = $(this).datagrid('getEditors', index);
+                if('90'== row.status || '80'== row.status){
+                    for (var i = 0 ; i<ed.length ; i++){
+                        $(this).datagrid('cancelEdit',index);
+                    }
+               }
+            }
+        });
+
+        $('.outbounddetail-confirmadd').click(function(){
+            var from = $(this).attr('data-form');
+            var url = $(from).attr('data-url');
+            var valid = $(from).form('validate');
+            if (!valid) {
+                return;
+            }
+            var detailData = $(from).serializeObject();
+            var headerData = getOutboundHeaderData();
+            headerData['detail'] = [];
+            headerData.detail[0] = detailData;
+            var data = getBaseData(headerData);
+            loading();
+            $.post({
+                url: url,
+                data:data,
+                success: function(data){
+                    data = returnData(data);
+                    closeLoading();
+                    if (data.code == '0') {
+                        showError(data.msg);
+                        return;
+                    }
+                    refreshOutboundDetail(data.data);
+                    // refreshOutbound(data.data);
+                    refreshOutboundHeader(data.data);
+                    $('#addDetailDiv').dialog('close');
+                }
+            });
+        });
+
+        $('.outboundDetail-save').click(function(){
+            var form = $(this).attr('data-form');
+            var datagrid = $(this).attr('data-table');
+            var url ='../../services/inner/outboundDetail/listSave';
+            var valid = $(form).form('validate');
+            if (!valid) {
+                return;
+            }
+            var detaildata = $(form).serializeObject();
+            detaildata=Object.assign(detailEditData,detaildata);
+            data = [];
+            data[0]=detaildata;
+            data = getBaseData(data);
+            loading();
+            $.post({
+                url: url,
+                data:data,
+                success: function(data){
+                    data = returnData(data);
+                    closeLoading();
+                    if (data.code == '0') {
+                        showError(data.msg);
+                        return;
+                    }
+                    refreshOutboundDetail(data.data);
+                    refreshOutbound(data.data);
+                    $('#addDetailDiv').dialog('close');
+                }
+            });
+        });
+    });
+
+    function refreshOutboundDetail(data) {
+        var outboundDetailDataId = '#outboundDetailData';
+        var url = $(outboundDetailDataId).attr('data-delayUrl');
+
+        var searchData = {outboundHeaderId: data.outboundHeaderId};
+        var data = getBaseData();
+        $.extend(data, searchData);
+
+        $(outboundDetailDataId).datagrid({
+            url: url,
+            queryParams: data,
+            sortName: 'lineNumber',
+            sortOrder: 'asc',
+            filterPosition: 'top',
+            filterCache: [],
+			filterRules: []
+        }).datagrid('clearChecked').datagrid('enableFilter', detailFilterRules);
+    }
+
+    function loadDetailListToolbarView() {
+        lazyLoadView('.detailToolbar');
+    }
+
+    function loadDetailListView(){
+        $('#outboundDetailData').datagrid();
+    }
+
+    function getOwnerId() {
+        var owner = $('#ownerId').val();
+        if (owner == undefined || owner == '') {
+            return '-1'
+        }
+        return owner;
+    }
+
+    function getOutboundDetailChangeData(){
+
+        var outboundDetailDataId = '#outboundDetailData';
+
+        var checkedRows = $(outboundDetailDataId).datagrid('getEditingRowIndexs');
+        if (checkedRows.length == 0) {
+            // showError('Please select one recrod.');
+            return;
+        }
+        for(var i in checkedRows) {
+            $(outboundDetailDataId).datagrid('endEdit', checkedRows[i]);
+        }
+        var rows = $(outboundDetailDataId).datagrid('getChanges');
+
+        var data = getBaseData(rows);
+
+        return data;
+    }
+
+    function toEditDetail(data) {
+        if (typeof(data) == 'object') {
+            detailEditData = data;
+        }else{
+            var checkedRows = $('#outboundData').datagrid('getChecked');
+            if (checkedRows.length != 1) {
+                showError($.locale.selectOneRow);
+                return;
+            }
+            detailEditData = checkedRows[0];
+        }
+        lazyLoadView('#outboundDetailForm');
+        $('#detailAddButton').hide();
+        $('#detailEditButton').show();
+        var panel = '#addDetailDiv';
+        $(panel).dialog({
+            closed: true,
+            modal: true,
+            fix: true,
+            buttons: '#detailEditButton'
+        }).dialog('open');
+        $(panel).find('form').form('reset');
+        var from = '#outboundDetailForm';
+        //设定可编辑框
+        outboundDetailEditable(detailEditData.status);
+        loadAllocateStrategyLov();
+        $(from).form('load', detailEditData);
+        if( '10' == detailEditData.status){
+            //新建状态订单数量默认为预期数量
+            var uomQuantityExpected=$('#uomQuantityExpected').numberbox('getValue');
+            $('#uomQuantityOrder').numberbox('setValue',uomQuantityExpected);
+        }
+    }
+
+    function outboundDetailEditable(status) {
+        if('0' == status ){
+            //新增
+            $('#lineNumber').textbox({readonly:false});
+            $('#sourceLineNumber').textbox({readonly:false});
+            $('#allocateStrategyCode').combogrid({readonly:false});
+            $('#skuCode').combogrid({readonly:false});
+            $('#skuAlias').textbox({readonly:false});
+            $('#skuDescr').textbox({readonly:false});
+            $('#packId').combogrid({readonly:false});
+            $('#uomQuantityExpected').numberbox({readonly:false});
+            $('#uom').combobox({readonly:false});
+            lotAttributeEditable(false);
+        }else if( '10' == status) {
+            //新建状态
+            $('#lineNumber').textbox({readonly:true});
+            $('#sourceLineNumber').textbox({readonly:true});
+            $('#allocateStrategyCode').combogrid({readonly:false});
+            $('#skuCode').combogrid({readonly:true});
+            $('#skuAlias').textbox({readonly:true});
+            $('#skuDescr').textbox({readonly:true});
+            $('#packId').combogrid({readonly:false});
+            $('#uomQuantityExpected').numberbox({readonly:false});
+            $('#uom').combobox({readonly:false});
+            lotAttributeEditable(false);
+        }else if('20' == status || '30' == status || '40' == status || '50' == status || '60' == status) {
+            //分配、部分分配、发放、拣货、部分拣货
+            $('#lineNumber').textbox({readonly:true});
+            $('#sourceLineNumber').textbox({readonly:true});
+            $('#allocateStrategyCode').combogrid({readonly:true});
+            $('#skuCode').combogrid({readonly:true});
+            $('#skuAlias').textbox({readonly:true});
+            $('#skuDescr').textbox({readonly:true});
+            $('#packId').combogrid({readonly:true});
+            $('#uomQuantityExpected').numberbox({readonly:false});
+            $('#uom').combobox({readonly:true});
+            lotAttributeEditable(true);
+        }else {
+            $('#lineNumber').textbox({readonly:true});
+            $('#sourceLineNumber').textbox({readonly:true});
+            $('#allocateStrategyCode').combogrid({readonly:true});
+            $('#skuCode').combogrid({readonly:true});
+            $('#skuAlias').textbox({readonly:true});
+            $('#skuDescr').textbox({readonly:true});
+            $('#packId').combogrid({readonly:true});
+            $('#uomQuantityExpected').numberbox({readonly:true});
+            $('#uom').combobox({readonly:true});
+            lotAttributeEditable(true);
+        }
+    }
+
+    /**
+     * 批属性是否不可编辑
+     * @Param isDisabled true-不可编辑，false-可编辑
+     **/
+    function lotAttributeEditable(isDisabled) {
+        for(var i=1;i<13;i++){
+            if('4'== i||'5' == i||'11'== i||'12'== i){
+                $("#lotAttribute"+i).datebox({readonly:isDisabled});
+            }else {
+                $("#lotAttribute"+i).textbox({readonly:isDisabled});
+            }
+        }
+    }
+
+    function setUom(packId){
+        var search = {packId:packId};
+        var data = getBaseData();
+        $.extend(data, search);
+        $.post({
+            url: '../../services/inner/base/pack/find',
+            data:data,
+            success: function(data){
+                data = returnData(data);
+                if (data.code == '0') {
+                    showError(data.msg);
+                    return;
+                }
+
+                data =data.rows[0];
+
+                var comData = [];
+
+                comData.push({value: data.uom, label: getCodelkupValue('UOM',data.uom)});
+                comData.push({value: data.uomInner, label: getCodelkupValue('UOM',data.uomInner)});
+                comData.push({value: data.uomCase, label: getCodelkupValue('UOM',data.uomCase)});
+
+                $("#uom").combobox({
+                    data : comData,
+                    value : data.uom,
+                    idField: 'value',
+                    textField: 'label'
+                });
+            }
+        });
+    }
+</script>

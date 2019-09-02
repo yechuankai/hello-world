@@ -1,0 +1,12 @@
+spring:
+ application:
+  name: wms
+ cloud:
+  config:
+   profile: dev
+   label: master
+   uri: http://jbt-config-server/wms-config
+#   uri: http://127.0.0.1:8888/wms-config
+#初始化加载时需要创建的文件
+logging:
+ path: C:\\logs

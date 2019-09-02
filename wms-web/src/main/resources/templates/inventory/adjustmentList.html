@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${wms.adjustment.title}">出库单</title>
+    <head th:replace="common/head"/>
+    <script th:replace="common/js"/>
+    <script type="text/javascript" th:src="@{/js/codelkupList?listName=YESNO,ADJUSTMENTSTATUS,LOCATIONTYPE,ADJUSTMENTREASON}"></script>
+</head>
+<body class="easyui-layout" style="opacity: 1;">
+<div class="icon-loading"
+     style="position: absolute; z-index: 999999;width: 100%; height: 100%;opacity: 1;background-color: white;">&nbsp;
+</div>
+<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+    <div id="searchDiv" class="easyui-layout" style="height: 100%;">
+        <div style="margin-left: 10px;height: 100%;" data-options="region:'center',border:false">
+            <form id="searchForm" data-table="#dataTable" style="height: 830px;">
+                <div style="margin-bottom:10px">
+                    <input name=" inventoryAdjustmentNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.inventoryadjustmentnumber}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="sourceNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.sourcenumber}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="referenceNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.referencenumber}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combobox" name="status" wms:data-options="
+						data: codelkups['ADJUSTMENTSTATUS'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.status}',
+						labelPosition: 'top'
+						">
+                </div>
+            </form>
+        </div>
+        <div style="text-align: center;height:50px;" data-options="region:'south',border:false">
+            <a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-search'">
+                <span wms:text="${web.label.search}">Search</span>
+            </a>
+            <a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-clear'">
+                <span wms:text="${web.label.clear}">Clear</span>
+            </a>
+        </div>
+    </div>
+</div>
+<div data-options="region:'center',border:false">
+    <div class="easyui-layout" style="width: 100%;height: 100%;">
+        <div data-options="region:'north',collapsible:false" style="height:35px;">
+            <div class="tableToolbar">
+                <a href="#" class="easyui-linkbutton common-add" data-addpanel="#addDiv">
+                    <span wms:text="${web.label.add}">Add</span>
+                </a>
+                <a href="#" class="easyui-linkbutton common-rowdel" data-table="#dataTable"
+                   th:data-url="@{/services/inner/inventory/adjustment/deleteHeader}">
+                    <span wms:text="${web.label.delete}">Delete</span>
+                </a>
+            </div>
+        </div>
+        <div data-options="region:'center',collapsible:false,border:false">
+            <div class="easyui-layout" id="detailLayout" style="width: 100%;height: 100%;"
+                 data-options="fix:true">
+                <div data-options="region:'center',collapsible:false,border:false">
+                    <table id="dataTable" wms:title="${web.label.adjustment.list}" class="easyui-datagrid"
+                           th:data-delayUrl="@{/services/inner/inventory/adjustment/find}">
+                        <thead>
+                        <th field="inventoryAdjustmentId" data-options="checkbox:true"></th>
+                        <th field="detail" data-options="
+										formatter:function(value,row){
+											var data = JSON.stringify(row);
+											var detail = '<span onclick=\'viewDetail('+data+')\' class=\'icon-detail\'>&nbsp;</span>';
+											return detail;
+										}
+									"></th>
+                        <th field="inventoryAdjustmentNumber" width="130"
+                            wms:text="${web.label.inventoryadjustmentnumber}"
+                            data-options="sortable:true">inventoryAdjustmentNumber
+                        </th>
+                        <th field="sourceNumber" width="130" wms:text="${web.label.sourcenumber}"
+                            data-options="sortable:true">sourceNumber
+                        </th>
+                        <th field="referenceNumber" width="130" wms:text="${web.label.referencenumber}"
+                            data-options="sortable:true">referenceNumber
+                        </th>
+                        <th field="status" width="80" wms:text="${web.label.status}" data-options="
+										sortable:true,
+										formatter:function(value,row){
+											return getCodelkupValue('ADJUSTMENTSTATUS',value);
+										}
+									">status
+                        </th>
+                        <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+                        <th field="createTime" width="150" wms:text="${web.label.createtime}"
+                            data-options="sortable:true">createTime
+                        </th>
+                        <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+                        <th field="updateTime" width="150" wms:text="${web.label.updatetime}"
+                            data-options="sortable:true">updateTime
+                        </th>
+                        </thead>
+                    </table>
+                </div>
+                <div id="detailPanel" data-options="region:'south',border:false,split:true,minimized:true"
+                     title=" " style="height: 300px;">
+                    <div th:replace="inventory/adjustmentDetail"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="addDiv" wms:title="${web.label.add}" style="width:350px;height:420px; display: none;">
+    <div style="width: 100%;padding-left: 50px;">
+        <form method="post" id="addForm" th:data-url="@{/services/inner/inventory/adjustment/add}">
+            <table style="width: 100%;">
+                <tr>
+                    <td>
+                        <input name="sourceNumber" class="easyui-textbox"
+                               wms:data-options="label:'${web.label.sourcenumber}',labelPosition:'top'"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="referenceNumber" name="referenceNumber" class="lazy-load" lazy-load="easyui-textbox"
+                               wms:data-options="label:'${web.label.referencenumber}',labelPosition:'top'"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="easyui-combobox" name="status" readonly="readonly" wms:data-options="
+                                data: codelkups['ADJUSTMENTSTATUS'],
+                                value: '10',
+                                valueField: 'code',
+                                textField: 'descr',
+                                label: '${web.label.status}',
+                                labelPosition: 'top'
+						">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input name="remark" class="easyui-textbox"
+                               wms:data-options="label:'${web.label.remark}',labelPosition:'top',multiline:true"
+                               style="width: 260px;height:100px;"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="text-align: center;margin-top: 30px;">
+        <a href="#" class="easyui-linkbutton common-confirmadd" data-form="#addForm" data-table="#dataTable"
+           id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
+        </a>
+        <a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');"
+           data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
+        </a>
+    </div>
+</div>
+</body>
+<script type="text/javascript" th:inline="text">
+    var headerData;
+    $(function () {
+        $('.common-search').click(function () {
+            $('#detailLayout').layout('collapse', 'south');
+        });
+
+    });
+
+    function viewDetail(data) {
+        if (typeof (data) == 'object') {
+            headerData = data;
+        } else {
+            var checkedRows = $('#dataTable').datagrid('getChecked');
+            if (checkedRows.length != 1) {
+                showError($.locale.selectOneRow);
+                return;
+            }
+            headerData = checkedRows[0];
+        }
+
+        var detailPanelOptions = $('#detailPanel').panel('options');
+        var collapsed = detailPanelOptions.collapsed;
+        if (collapsed) {
+            $('#detailPanel').panel({
+                height: 300,
+                minimized: false
+            });
+            $('#detailLayout').layout('expand', 'south');
+        }
+        refreshAdjustmentDetail(headerData);
+    }
+
+    function getAdjustmentHeaderData(){
+        return headerData;
+    }
+</script>

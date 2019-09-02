@@ -1,0 +1,217 @@
+<form id="outboundHeaderForm" th:data-url="@{/services/inner/outbound/save}" >
+    <input id="outboundHeaderId" name="outboundHeaderId" type="hidden" />
+    <div class="easyui-tabs">
+        <div wms:title="${web.label.normal}" >
+            <table border="0" cellpadding="0" cellspacing="0" id="headerTab1" >
+                <tr>
+                    <td width="200px">
+                        <input name="outboundNumber" class="lazy-load" lazy-load="easyui-textbox" readonly="readonly"  wms:data-options="label:'${web.label.outboundnumber}',labelPosition:'top'" />
+                    </td>
+                    <td width="200px">
+                        <input id="sourceNumber" name="sourceNumber" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.sourcenumber}',labelPosition:'top'" />
+                    </td>
+                    <td width="200px">
+                        <input class="lazy-load" lazy-load="easyui-combobox" name="status"  readonly="readonly" wms:data-options="
+							data: codelkups['OUTBOUNDSTATUS'],
+							valueField: 'code',
+							textField: 'descr',
+							value: '10',
+							label: '${web.label.status}',
+							labelPosition: 'top'
+							" />
+                    </td>
+                    <td rowspan="3">
+                        <input id="remark" name="remark" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.remark}',labelPosition:'top',multiline:true" style="width: 300px;height:150px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td width="200px">
+                        <input id="type" class="lazy-load" lazy-load="easyui-combobox" name="type" wms:data-options="
+						data: codelkups['OUTBOUNDTYPE'],
+						valueField: 'code',
+						textField: 'descr',
+						value: '10',
+						label: '${web.label.type}',
+						labelPosition: 'top'
+						" />
+                    </td>
+                    <td >
+                        <input id="ownerCode" name="ownerCode" th:replace="lov/owner" />
+                        <input type="hidden" name="ownerId" id="ownerId" />
+                    </td>
+                    <td>
+                        <input id="referenceNumber" name="referenceNumber" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.referencenumber}',labelPosition:'top'" />
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <input id="expectedOutboundDate" name="expectedOutboundDate" class="lazy-load" lazy-load="easyui-datebox" wms:data-options="label:'${web.label.expectedoutbounddate}',labelPosition:'top'" />
+                    </td>
+                    <td>
+                        <input id="createTime" name="createTime" readonly="readonly" class="lazy-load" lazy-load="easyui-datebox" wms:data-options="label:'${web.label.createtime}',labelPosition:'top'" />
+                    </td>
+                    <td>
+                        <input id="outboundDate" name="outboundDate" readonly="readonly" class="lazy-load" lazy-load="easyui-datebox" wms:data-options="label:'${web.label.outbounddate}',labelPosition:'top'" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div wms:title="${web.label.customercode}" >
+            <table border="0" >
+                <tr>
+                    <td width="200px">
+                        <input id="customerCode" name="customerCode" th:replace="lov/customer" />
+                    </td>
+                    <td width="200px">
+                        <input id="contact1" name="contact1" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.contact1}',labelPosition:'top'" />
+                    </td>
+                    <td width="200px">
+                        <input id="contact2" name="contact2" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.contact2}',labelPosition:'top'" />
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="easyui-combobox" id="shipLabel" name="shipLabel" style="width: 150px;" wms:data-options="
+							data: codelkups['SHIPLABEL'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.shiplabel}',
+							labelPosition: 'top'
+							" />
+                    </td>
+                    <td >
+                        <input id="phone1" name="phone1" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.phone1}',labelPosition:'top'" />
+                    </td>
+                    <td >
+                        <input id="phone2" name="phone2" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.phone2}',labelPosition:'top'" />
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="address1" name="contact2" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.address1}',labelPosition:'top'" />
+                    </td>
+                    <td>
+                        <input id="address2" name="address2" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.address2}',labelPosition:'top'" />
+                    </td>
+                    <td >
+                        <input id="fax" name="fax" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.fax}',labelPosition:'top'" />
+                    </td>
+                    <td >
+                        <input id="email" name="email" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.email}',labelPosition:'top'" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div wms:title="${web.label.transport}" >
+            <table border="0" >
+                <tr>
+                    <td width="200px">
+                        <input name="driver" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.carrierdriver}',labelPosition:'top'" />
+                    </td>
+                    <td width="200px">
+                        <input id="carNumber" name="carNumber" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.carriercarnumber}',labelPosition:'top'" />
+                    </td>
+                    <td width="200px">
+                        <input id="containerNumber" name="containerNumber" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="label:'${web.label.containernumber}',labelPosition:'top'" />
+                    </td>
+                </tr>
+                <tr>
+                	<td>
+                	   	<input id="carrierCode" name="carrierCode" th:replace="lov/carrier" />
+                	</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</form>
+<script type="text/javascript" th:inline="text">
+    $(function(){
+        loadOwnerLov();
+        loadCustomerLov(null,function (data) {
+            $("#shipLabel").combobox('setValue',data.shipLabel);
+            setCustomerResult(data);
+        });
+    });
+    function getOutboundHeaderData(){
+        var from = '#outboundHeaderForm';
+        var data = $(from).serializeObject();
+        return data;
+    }
+
+    function refreshOutboundHeader(data){
+        var from = '#outboundHeaderForm';
+        $(from).form('load', data);
+    }
+    function refreshEditHeader(data){
+        var from = '#outboundHeaderForm';
+        //设定可编辑框
+        outboundHeaderEditable(data.status);
+        $(from).form('load', data);
+    }
+
+    function outboundHeaderEditable(status){
+        if('0' == status ){
+            //新增
+            $('#ownerCode').combogrid({readonly:false});
+            $('#sourceNumber').textbox({readonly:false});
+            $('#referenceNumber').textbox({readonly:false});
+            $('#type').combobox({readonly:false});
+            $('#expectedOutboundDate').datebox({readonly:false});
+            $('#customerId').combogrid({readonly:false});
+            $('#contact1').textbox({readonly:false});
+            $('#phone1').textbox({readonly:false});
+            $('#phone2').textbox({readonly:false});
+            $('#address1').textbox({readonly:false});
+            $('#address2').textbox({readonly:false});
+            $('#fax').textbox({readonly:false});
+            $('#email').textbox({readonly:false});
+        }else if( '10' == status){
+            //新建状态
+            $('#ownerCode').combogrid({readonly:true});
+            $('#sourceNumber').textbox({readonly:false});
+            $('#referenceNumber').textbox({readonly:false});
+            $('#type').combobox({readonly:false});
+            $('#expectedOutboundDate').datebox({readonly:false});
+            $('#customerId').combogrid({readonly:false});
+            $('#contact1').textbox({readonly:false});
+            $('#phone1').textbox({readonly:false});
+            $('#phone2').textbox({readonly:false});
+            $('#address1').textbox({readonly:false});
+            $('#address2').textbox({readonly:false});
+            $('#fax').textbox({readonly:false});
+            $('#email').textbox({readonly:false});
+        }else if('20' == status || '30' == status || '40' == status || '50' == status || '60' == status){
+            //分配、部分分配、发放、拣货、部分拣货
+            $('#ownerCode').combogrid({readonly:true});
+            $('#sourceNumber').textbox({readonly:false});
+            $('#referenceNumber').textbox({readonly:false});
+            $('#type').combobox({readonly:true});
+            $('#expectedOutboundDate').datebox({readonly:false});
+            $('#createTime').datebox({readonly:false});
+            $('#customerId').combogrid({readonly:false});
+            $('#contact1').textbox({readonly:false});
+            $('#phone1').textbox({readonly:false});
+            $('#phone2').textbox({readonly:false});
+            $('#address1').textbox({readonly:false});
+            $('#address2').textbox({readonly:false});
+            $('#fax').textbox({readonly:false});
+            $('#email').textbox({readonly:false});
+        }else {
+            $('#ownerCode').combogrid({readonly:true});
+            $('#sourceNumber').textbox({readonly:true});
+            $('#referenceNumber').textbox({readonly:true});
+            $('#type').combobox({readonly:true});
+            $('#expectedOutboundDate').datebox({readonly:true});
+            $('#customerId').combogrid({readonly:true});
+            $('#contact1').textbox({readonly:true});
+            $('#phone1').textbox({readonly:true});
+            $('#phone2').textbox({readonly:true});
+            $('#address1').textbox({readonly:true});
+            $('#address2').textbox({readonly:true});
+            $('#fax').textbox({readonly:true});
+            $('#email').textbox({readonly:true});
+        }
+    }
+</script>

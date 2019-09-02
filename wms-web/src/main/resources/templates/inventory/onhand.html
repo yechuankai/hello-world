@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${web.lable.inventory.onhand}">库存</title>
+    <head th:replace="common/head"/>
+</head>
+<body class="easyui-layout">
+<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+    <div id="searchDiv">
+        <div style="margin-left: 10px;">
+            <form id="searchForm" data-table="#onhandData">
+                <div style="margin-bottom:10px">
+                    <input name="ownerCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.inventory.ownerCode}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="skuCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.inventory.skuCode}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="skuAlias" class="easyui-textbox"
+                           wms:data-options="label:'${web.inventory.skuAlias}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="locationCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.locationcode}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="lotNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.lotnumber}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="lpnNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.lpnnumber}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combobox" name="quantityAvailableMoreThanZero" wms:data-options="
+						data: codelkups['YESNO'],
+						valueField: 'code',
+						textField: 'descr',
+						value: 'Y',
+						label: '${web.label.quantityavailablemorethanzero}',
+						labelPosition: 'top'
+						">
+                </div>
+            </form>
+        </div>
+        <div style="text-align: center;">
+            <a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-search'">
+                <span wms:text="${web.label.search}">Search</span>
+            </a>
+            <a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-clear'">
+                <span wms:text="${web.label.clear}">Clear</span>
+            </a>
+        </div>
+    </div>
+</div>
+<div data-options="region:'center',border:false">
+    <div class="easyui-layout" style="width: 100%;height: 100%;">
+        <div data-options="region:'north',collapsible:false" style="height:35px;">
+            <div id="tableToolbar" class="tableToolbar">
+                <a href="#" class="easyui-linkbutton" onclick="exportExcel('ONHAND', '#searchForm')"
+                   wms:text="${web.label.export}">Export</a>
+	            <a href="#" class="easyui-menubutton" data-options="menu:'#inventoryMultiSearch',plain:false" wms:text="${web.label.query}">View</a>
+				<div id="inventoryMultiSearch">
+					<div  wms:text="${web.label.inventory.search.containernumber}"  class="searchMulti" data-dialog="#containerSearch">by container</div>
+					<div  wms:text="${web.label.inventory.search.lpn}" class="searchMulti" data-dialog="#lpnSearch">by lpn</div>
+					<div  wms:text="${web.label.inventory.search.location}" class="searchMulti" data-dialog="#locationSearch">by location</div>
+					<div  wms:text="${web.label.inventory.search.sku}" class="searchMulti" data-dialog="#skuSearch">by sku</div>
+				</div>
+            </div>
+        </div>
+        <div data-options="region:'center',collapsible:false,border:false">
+            <table id="onhandData" wms:title="${web.label.inventorybalancelist.title}" class="easyui-datagrid"
+                   th:data-delayUrl="@{/services/inner/inventory/onhand/find}">
+                <thead>
+                <tr>
+                    <th field="ownerCode" width="100" wms:text="${web.inventory.ownerCode}"
+                        data-options="sortable:true">ownerCode
+                    </th>
+                    <th field="skuCode" width="100" wms:text="${web.inventory.skuCode}" data-options="sortable:true">
+                        skuCode
+                    </th>
+                    <th field="skuAlias" width="100" wms:text="${web.inventory.skuAlias}" data-options="sortable:true">
+                        skuAlias
+                    </th>
+                    <th field="lotNumber" width="100" wms:text="${web.label.lotnumber}" data-options="sortable:true">
+                        lotNumber
+                    </th>
+                    <th field="locationCode" width="100" wms:text="${web.label.locationcode}"
+                        data-options="sortable:true">locationCode
+                    </th>
+                    <th field="containerNumber" width="100" wms:text="${web.label.containernumber}"
+                        data-options="sortable:true">containerNumber
+                    </th>
+                    <th field="lpnNumber" width="100" wms:text="${web.label.lpnnumber}" data-options="sortable:true">
+                        lpnNumber
+                    </th>
+                    <th field="quantityOnhand" width="120" wms:text="${web.label.quantity.onhand}"
+                        data-options="sortable:true">quantityOnhand
+                    </th>
+                    <th field="quantityAllocated" width="130" wms:text="${web.label.quantity.allocated}"
+                        data-options="sortable:true">quantityAllocated
+                    </th>
+                    <th field="quantityLocked" width="120" wms:text="${web.label.quantity.locked}"
+                        data-options="sortable:true">quantityLocked
+                    </th>
+                    <th field="quantityAvailable" width="120" wms:text="${web.label.quantity.available}"
+                        data-options="sortable:false">quantityAvailable
+                    </th>
+                    <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+                    <th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true">
+                        createTime
+                    </th>
+                    <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+                    <th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">
+                        updateTime
+                    </th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- 多维度查询-容器 -->
+<div style="display: none;width: 1000px;height: 500px;" id="containerSearch">
+    <div class="easyui-layout" style="height: 100%;width:180px;height:450px;display:inline-block;clear: both;">
+        <div style="margin-left: 10px;height: 100%;" data-options="region:'center',border:false">
+            <form id="containerSearchForm" data-table="#containerResult" data-template="stockGroupByContainer">
+                <div style="margin-bottom:10px">
+                    <input name="ownerCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.owner}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="skuCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.sku}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="skuAlias" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.skualias}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="containerNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.containernumber}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combobox" name="quantityAvailableMoreThanZero" wms:data-options="
+						data: codelkups['YESNO'],
+						valueField: 'code',
+						textField: 'descr',
+						value: 'Y',
+						label: '${web.label.quantityavailablemorethanzero}',
+						labelPosition: 'top'
+						">
+               	</div>
+            </form>
+        </div>
+        <div style="text-align: center;height:50px;" data-options="region:'south',border:false">
+            <a href="#" class="easyui-linkbutton common-search multiSearchButton " data-form="#containerSearchForm" style="width:80px;"
+               data-options="iconCls:'icon-search'">
+                <span wms:text="${web.label.search}">Search</span>
+            </a>
+        </div>
+    </div>
+    <div data-options="region:'center',collapsible:false,border:false" style="height:430px;width: 800px;display: inline-block;vertical-align: top;">
+        <table id="containerResult" wms:title="${web.label.inventorybalancelist.title}" class="easyui-datagrid" data-url="/services/inventory/multi/container">
+            <thead>
+	            <th field="ownerCode" width="90" wms:text="${web.label.owner}">ownerCode</th>
+	            <th field="skuCode" width="90" wms:text="${web.label.sku}">skuCode</th>
+	            <th field="skuAlias" width="90" wms:text="${web.label.skualias}">skuAlias</th>
+	            <th field="containerNumber" width="90" wms:text="${web.label.containernumber}">containerNumber</th>
+	            <th field="onHandAmount" width="90" wms:text="${web.label.quantity.onhand}">onHandAmount</th>
+	            <th field="allocateAmount" width="90" wms:text="${web.label.quantity.allocated}">allocateAmount</th>
+	            <th field="availableAmount" width="90"wms:text="${web.label.quantity.available}">availableAmount</th>
+	            <th field="lockAmount" width="90" wms:text="${web.label.quantity.locked}">lockAmount</th>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<!-- 库存多维度查询 按LPN -->
+<div style="display: none;width: 1000px;height: 500px;" id="lpnSearch">
+    <div class="easyui-layout" style="height: 100%;width:180px;height:450px;display:inline-block;clear: both;">
+        <div style="margin-left: 10px;height: 100%;" data-options="region:'center',border:false">
+            <form id="lpnSearchForm" data-table="#lpnResult" data-template="stockGroupByLpn">
+                <div style="margin-bottom:10px">
+                    <input name="ownerCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.owner}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="skuCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.sku}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="skuAlias" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.skualias}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="lpnNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.lpnnumber}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combobox" name="quantityAvailableMoreThanZero" wms:data-options="
+						data: codelkups['YESNO'],
+						valueField: 'code',
+						textField: 'descr',
+						value: 'Y',
+						label: '${web.label.quantityavailablemorethanzero}',
+						labelPosition: 'top'
+						">
+               	</div>
+            </form>
+        </div>
+        <div style="text-align: center;height:50px;" data-options="region:'south',border:false">
+            <a href="#" class="easyui-linkbutton common-search multiSearchButton " data-form="#lpnSearchForm" style="width:80px;"
+               data-options="iconCls:'icon-search'">
+                <span wms:text="${web.label.search}">Search</span>
+            </a>
+        </div>
+    </div>
+    <div data-options="region:'center',collapsible:false,border:false" style="height:430px;width: 800px;display: inline-block;vertical-align: top;">
+        <table id="lpnResult" wms:title="${web.label.inventorybalancelist.title}" class="easyui-datagrid" data-url="/services/inventory/multi/lpn">
+            <thead>
+	            <th field="ownerCode" width="90" wms:text="${web.label.owner}">ownerCode</th>
+	            <th field="skuCode" width="90" wms:text="${web.label.sku}">skuCode</th>
+	            <th field="skuAlias" width="90" wms:text="${web.label.skualias}">skuAlias</th>
+	            <th field="lpnNumber" width="90" wms:text="${web.label.lpnnumber}">LPN</th>
+	            <th field="onHandAmount" width="90" wms:text="${web.label.quantity.onhand}">onHandAmount</th>
+	            <th field="allocateAmount" width="90" wms:text="${web.label.quantity.allocated}">allocateAmount</th>
+	            <th field="availableAmount" width="90"wms:text="${web.label.quantity.available}">availableAmount</th>
+	            <th field="lockAmount" width="90" wms:text="${web.label.quantity.locked}">lockAmount</th>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<!-- 库存多维度查询 按库位 -->
+<div style="display: none;width: 1000px;height: 500px;" id="locationSearch">
+    <div class="easyui-layout" style="height: 100%;width:180px;height:450px;display:inline-block;clear: both;">
+        <div style="margin-left: 10px;height: 100%;" data-options="region:'center',border:false">
+            <form id="locationSearchForm" data-table="#locationResult" data-template="stockGroupByLocation">
+                <div style="margin-bottom:10px">
+                    <input name="ownerCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.owner}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="skuCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.sku}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="skuAlias" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.skualias}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="locationCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.location}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combobox" name="quantityAvailableMoreThanZero" wms:data-options="
+						data: codelkups['YESNO'],
+						valueField: 'code',
+						textField: 'descr',
+						value: 'Y',
+						label: '${web.label.quantityavailablemorethanzero}',
+						labelPosition: 'top'
+						">
+               	</div>
+            </form>
+        </div>
+        <div style="text-align: center;height:50px;" data-options="region:'south',border:false">
+            <a href="#" class="easyui-linkbutton common-search multiSearchButton " data-form="#locationSearchForm" style="width:80px;"
+               data-options="iconCls:'icon-search'">
+                <span wms:text="${web.label.search}">Search</span>
+            </a>
+        </div>
+    </div>
+    <div data-options="region:'center',collapsible:false,border:false" style="height:430px;width: 800px;display: inline-block;vertical-align: top;">
+        <table id="locationResult" wms:title="${web.label.inventorybalancelist.title}" class="easyui-datagrid" data-url="/services/inventory/multi/location">
+            <thead>
+	            <th field="ownerCode" width="85" wms:text="${web.label.owner}">ownerCode</th>
+	            <th field="skuCode" width="85" wms:text="${web.label.sku}">skuCode</th>
+	            <th field="skuAlias" width="85" wms:text="${web.label.skualias}">skuAlias</th>
+	            <th field="locationCode" width="85" wms:text="${web.label.location}">containerNumber</th>
+	            <th field="onHandAmount" width="85" wms:text="${web.label.quantity.onhand}">onHandAmount</th>
+	            <th field="allocateAmount" width="85" wms:text="${web.label.quantity.allocated}">allocateAmount</th>
+	            <th field="softAllocateAmount" width="85" wms:text="${web.label.quantity.softallocated}">softAllocateAmount</th>
+	            <th field="availableAmount" width="85"wms:text="${web.label.quantity.available}">availableAmount</th>
+	            <th field="lockAmount" width="85" wms:text="${web.label.quantity.locked}">lockAmount</th>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<!-- 库存多维度查询 按货品 -->
+<div style="display: none;width: 1000px;height: 500px;" id="skuSearch">
+    <div class="easyui-layout" style="height: 100%;width:180px;height:450px;display:inline-block;clear: both;">
+        <div style="margin-left: 10px;height: 100%;" data-options="region:'center',border:false">
+            <form id="skuSearchForm" data-table="#skuResult" data-template="stockGroupBySku">
+                <div style="margin-bottom:10px">
+                    <input name="ownerCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.owner}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="skuCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.sku}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="skuAlias" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.skualias}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combobox" name="quantityAvailableMoreThanZero" wms:data-options="
+						data: codelkups['YESNO'],
+						valueField: 'code',
+						textField: 'descr',
+						value: 'Y',
+						label: '${web.label.quantityavailablemorethanzero}',
+						labelPosition: 'top'
+						">
+               	</div>
+            </form>
+        </div>
+        <div style="text-align: center;height:50px;" data-options="region:'south',border:false">
+            <a href="#" class="easyui-linkbutton common-search multiSearchButton " data-form="#skuSearchForm" style="width:80px;"
+               data-options="iconCls:'icon-search'">
+                <span wms:text="${web.label.search}">Search</span>
+            </a>
+        </div>
+    </div>
+    <div data-options="region:'center',collapsible:false,border:false" style="height:430px;width: 800px;display: inline-block;vertical-align: top;">
+        <table id="skuResult" wms:title="${web.label.inventorybalancelist.title}" class="easyui-datagrid" data-url="/services/inventory/multi/sku">
+            <thead>
+	            <th field="ownerCode" width="90" wms:text="${web.label.owner}">ownerCode</th>
+	            <th field="skuCode" width="90" wms:text="${web.label.sku}">skuCode</th>
+	            <th field="skuAlias" width="90" wms:text="${web.label.skualias}">skuAlias</th>
+	            <th field="onHandAmount" width="90" wms:text="${web.label.quantity.onhand}">onHandAmount</th>
+	            <th field="allocateAmount" width="90" wms:text="${web.label.quantity.allocated}">allocateAmount</th>
+	            <th field="softAllocateAmount" width="90" wms:text="${web.label.quantity.softallocated}">softAllocateAmount</th>
+	            <th field="availableAmount" width="90"wms:text="${web.label.quantity.available}">availableAmount</th>
+	            <th field="lockAmount" width="90" wms:text="${web.label.quantity.locked}">lockAmount</th>
+            </thead>
+        </table>
+    </div>
+</div>
+<div id="multiSearchToolbar" class="tableToolbar" style="height:35px;display: none;">
+    <a id="exportMultiResult" href="#" class="easyui-linkbutton" onclick="exportCurrent()" wms:text="${web.label.export}" data-export="">Export</a>
+</div>
+</body>
+<script th:replace="common/js"/>
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=CONFIGTYPE,YESNO}"></script>
+<script type="text/javascript">
+	$(".searchMulti").click(function(){
+		var div = $(this).data('dialog');
+		var text = $(this).text();
+		$(div).dialog({
+			title:text,
+			closed: true,
+			modal: true,
+			fix: true
+		}).dialog('open');
+		
+		$(div).find('table').datagrid({
+			toolbar:"#multiSearchToolbar"
+		});
+		
+		var target = "#" + $(div).find("form").attr("id");
+		$("#exportMultiResult").data("export",target);
+	})
+	
+	$(".multiSearchButton").click(function(){
+		var form = $(this).data('form');
+		var data = $(form).serializeObject();
+		var basedata = getBaseData(data);
+		$.extend(data,basedata);
+		var table = $(form).data('table');
+		$(table).datagrid({
+			url:getServiceUrl() + $(table).data('url'),
+			toolbar:"#multiSearchToolbar",
+			queryParams:data,
+			pagination:true,
+			fit:true
+		});
+	})
+	
+	function exportCurrent(){
+		var targetForm = $("#exportMultiResult").data("export");
+		var template = $(targetForm).data("template");
+		exportExcel(template,targetForm);
+	}
+	
+</script>
+</html>

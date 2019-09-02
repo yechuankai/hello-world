@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${wms.base.customer.title}">客户</title>
+    <head th:replace="common/head" />
+</head>
+<body class="easyui-layout" >
+<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+    <div id="searchDiv">
+        <div style="margin-left: 10px;">
+            <form id="searchForm" data-table="#orderNumberData" >
+                <div style="margin-bottom:10px">
+                    <input name="code" class="easyui-textbox" wms:data-options="label:'${web.label.code}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="descr" class="easyui-textbox" wms:data-options="label:'${web.label.descr}',labelPosition:'top'">
+                </div>
+            </form>
+        </div>
+        <div style="text-align: center;">
+            <a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;" data-options="iconCls:'icon-search'" >
+                <span wms:text="${web.label.search}">Search</span>
+            </a>
+            <a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;" data-options="iconCls:'icon-clear'" >
+                <span wms:text="${web.label.clear}">Clear</span>
+            </a>
+        </div>
+    </div>
+</div>
+<div data-options="region:'center',border:false" >
+    <div class="tableToolbar">
+        <a href="#" class="easyui-linkbutton common-rowsave" data-table="#orderNumberData" th:data-url="@{/services/inner/orderNumber/save}" >
+            <span wms:text="${web.label.save}">Save</span>
+        </a>
+    </div>
+    <div>
+        <table id="orderNumberData" wms:title="${web.label.ordernumberlist}" class="easyui-datagrid"
+               th:data-delayUrl="@{/services/inner/orderNumber/find}">
+            <thead>
+            <th field="orderNumberId" data-options="checkbox:true"></th>
+            <th field="code" width="80" wms:text="${web.label.code}" data-options="sortable:true">code</th>
+            <th field="descr" width="150" wms:text="${web.label.descr}" data-options="sortable:false,editor:'text'">descr</th>
+            <th field="prefix" width="150" wms:text="${web.label.prefix}" data-options="sortable:false,editor:'text'">prefix</th>
+            <th field="length" width="80" wms:text="${web.label.length}" data-options="sortable:false,editor:'numberbox'">length</th>
+            <th field="dataFormat" width="150" wms:text="${web.label.dataformat}" data-options="sortable:false,editor:'text'">dataFormat</th>
+            <th field="sequence" width="80" wms:text="${web.label.sequence}" data-options="sortable:false,editor:'numberbox'">sequence</th>
+            <th field="sequenceCache" width="80" wms:text="${web.label.sequencecache}" data-options="sortable:false,editor:'numberbox'">sequenceCache</th>
+            <th field="sequenceIncrement" width="80" wms:text="${web.label.sequenceincrement}" data-options="sortable:false,editor:'numberbox'">sequenceIncrement</th>
+            <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+            <th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true">
+                createTime
+            </th>
+            <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+            <th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">
+                updateTime
+            </th>
+            </thead>
+        </table>
+    </div>
+</div>
+
+</body>
+<script th:replace="common/js" />
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=YESNO}"></script>
+<script type="text/javascript" th:inline="text">
+
+</script>
+</html>

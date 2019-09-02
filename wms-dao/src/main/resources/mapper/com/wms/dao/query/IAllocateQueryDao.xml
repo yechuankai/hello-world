@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wms.dao.query.IAllocateQueryDao">
+  <resultMap id="BaseResultMap" type="com.wms.vo.InventoryOnhandVO">
+    <id column="INVENTORY_ONHAND_ID" jdbcType="DECIMAL" property="inventoryOnhandId" />
+    <result column="OWNER_ID" jdbcType="DECIMAL" property="ownerId" />
+    <result column="OWNER_CODE" jdbcType="VARCHAR" property="ownerCode" />
+    <result column="SKU_ID" jdbcType="DECIMAL" property="skuId" />
+    <result column="SKU_CODE" jdbcType="VARCHAR" property="skuCode" />
+    <result column="SKU_ALIAS" jdbcType="VARCHAR" property="skuAlias" />
+    <result column="QUANTITY_ONHAND" jdbcType="DECIMAL" property="quantityOnhand" />
+    <result column="QUANTITY_ALLOCATED" jdbcType="DECIMAL" property="quantityAllocated" />
+    <result column="QUANTITY_LOCKED" jdbcType="DECIMAL" property="quantityLocked" />
+    <result column="quantityAvailable" jdbcType="DECIMAL" property="quantityAvailable" />
+    <result column="LOCATION_ID" jdbcType="DECIMAL" property="locationId" />
+    <result column="LOCATION_CODE" jdbcType="VARCHAR" property="locationCode" />
+    <result column="LOCATION_LOGICAL" jdbcType="VARCHAR" property="locationLogical" />
+    <result column="LPN_ID" jdbcType="DECIMAL" property="lpnId" />
+    <result column="LPN_NUMBER" jdbcType="VARCHAR" property="lpnNumber" />
+    <result column="LOT_ID" jdbcType="DECIMAL" property="lotId" />
+    <result column="LOT_NUMBER" jdbcType="VARCHAR" property="lotNumber" />
+    <result column="LOT_ATTRIBUTE1" jdbcType="VARCHAR" property="lotAttribute1" />
+    <result column="LOT_ATTRIBUTE2" jdbcType="VARCHAR" property="lotAttribute2" />
+    <result column="LOT_ATTRIBUTE3" jdbcType="VARCHAR" property="lotAttribute3" />
+    <result column="LOT_ATTRIBUTE4" jdbcType="TIMESTAMP" property="lotAttribute4" />
+    <result column="LOT_ATTRIBUTE5" jdbcType="TIMESTAMP" property="lotAttribute5" />
+    <result column="LOT_ATTRIBUTE6" jdbcType="VARCHAR" property="lotAttribute6" />
+    <result column="LOT_ATTRIBUTE7" jdbcType="VARCHAR" property="lotAttribute7" />
+    <result column="LOT_ATTRIBUTE8" jdbcType="VARCHAR" property="lotAttribute8" />
+    <result column="LOT_ATTRIBUTE9" jdbcType="VARCHAR" property="lotAttribute9" />
+    <result column="LOT_ATTRIBUTE10" jdbcType="VARCHAR" property="lotAttribute10" />
+    <result column="LOT_ATTRIBUTE11" jdbcType="TIMESTAMP" property="lotAttribute11" />
+    <result column="LOT_ATTRIBUTE12" jdbcType="TIMESTAMP" property="lotAttribute12" />
+    <result column="COMPANY_ID" jdbcType="DECIMAL" property="companyId" />
+    <result column="WAREHOUSE_ID" jdbcType="DECIMAL" property="warehouseId" />
+  </resultMap>
+
+  <select id="availabelInventory" parameterType="com.wms.vo.InventoryOnhandVO" resultMap="BaseResultMap">
+    select
+	    ONHAND.INVENTORY_ONHAND_ID, 
+	    ONHAND.OWNER_ID, 
+	    ONHAND.OWNER_CODE, 
+	    ONHAND.SKU_ID, 
+	    ONHAND.SKU_CODE, 
+	    ONHAND.SKU_ALIAS, 
+	    ONHAND.QUANTITY_ONHAND, 
+	    0 QUANTITY_ALLOCATED, 
+	    0 QUANTITY_LOCKED, 
+	    (ONHAND.QUANTITY_ONHAND - ONHAND.QUANTITY_ALLOCATED - ONHAND.QUANTITY_LOCKED) quantityAvailable,
+	    ONHAND.LOCATION_ID, 
+	    ONHAND.LOCATION_CODE, 
+	    LOC.LOCATION_LOGICAL, 
+	    ONHAND.LPN_ID, 
+	    ONHAND.LPN_NUMBER, 
+	    ONHAND.LOT_ID, 
+	    ONHAND.LOT_NUMBER, 
+	    LOT.LOT_ATTRIBUTE1, 
+	    LOT.LOT_ATTRIBUTE2, 
+	    LOT.LOT_ATTRIBUTE3, 
+	    LOT.LOT_ATTRIBUTE4, 
+	    LOT.LOT_ATTRIBUTE5, 
+	    LOT.LOT_ATTRIBUTE6, 
+    	LOT.LOT_ATTRIBUTE7, 
+    	LOT.LOT_ATTRIBUTE8, 
+    	LOT.LOT_ATTRIBUTE9, 
+    	LOT.LOT_ATTRIBUTE10, 
+    	LOT.LOT_ATTRIBUTE11, 
+    	LOT.LOT_ATTRIBUTE12,
+	    ONHAND.COMPANY_ID, 
+	    ONHAND.WAREHOUSE_ID
+    from 
+    	INVENTORY_ONHAND_T ONHAND
+    	INNER JOIN LOCATION_T LOC 
+    		ON ONHAND.COMPANY_ID = LOC.COMPANY_ID
+    			AND ONHAND.WAREHOUSE_ID = LOC.WAREHOUSE_ID
+    			AND ONHAND.LOCATION_ID = LOC.LOCATION_ID
+    	INNER JOIN LOT_ATTRIBUTE_T LOT 
+    		ON ONHAND.COMPANY_ID = LOT.COMPANY_ID
+    			AND ONHAND.WAREHOUSE_ID = LOT.WAREHOUSE_ID
+    			AND ONHAND.LOT_ID = LOT.LOT_ATTRIBUTE_ID
+    where
+    	ONHAND.DEL_FLAG = 'N'
+    	AND LOT.DEL_FLAG = 'N'
+    	AND (QUANTITY_ONHAND - QUANTITY_ALLOCATED - QUANTITY_LOCKED) > 0 
+    	AND ONHAND.COMPANY_ID = #{companyId,jdbcType=DECIMAL} 
+	    AND ONHAND.WAREHOUSE_ID = #{warehouseId,jdbcType=DECIMAL}
+	    <if test="locations != null and locations.size() > 0">
+	    	AND ONHAND.LOCATION_ID IN 
+		    <foreach close=")" collection="locations" item="listItem" open="(" separator=",">
+	          #{listItem,jdbcType=DECIMAL}
+	        </foreach>
+        </if>
+	    <if test="lotAttribute1 != null">
+	      AND LOT.LOT_ATTRIBUTE1 = #{lotAttribute1,jdbcType=VARCHAR}
+	    </if>
+	    <if test="lotAttribute2 != null">
+	      AND LOT.LOT_ATTRIBUTE2 = #{lotAttribute2,jdbcType=VARCHAR}
+	    </if>
+	    <if test="lotAttribute3 != null">
+	      AND LOT.LOT_ATTRIBUTE3 = #{lotAttribute3,jdbcType=VARCHAR}
+	    </if>
+	    <if test="lotAttribute4 != null">
+	      AND LOT.LOT_ATTRIBUTE4 = #{lotAttribute4,jdbcType=TIMESTAMP}
+	    </if>
+	    <if test="lotAttribute5 != null">
+	      AND LOT.LOT_ATTRIBUTE5 = #{lotAttribute5,jdbcType=TIMESTAMP}
+	    </if>
+	    <if test="lotAttribute6 != null">
+	      AND LOT.LOT_ATTRIBUTE6 = #{lotAttribute6,jdbcType=VARCHAR}
+	    </if>
+	    <if test="lotAttribute7 != null">
+	      AND LOT.LOT_ATTRIBUTE7 = #{lotAttribute7,jdbcType=VARCHAR}
+	    </if>
+	    <if test="lotAttribute8 != null">
+	      AND LOT.LOT_ATTRIBUTE8 = #{lotAttribute8,jdbcType=VARCHAR}
+	    </if>
+	    <if test="lotAttribute9 != null">
+	      AND LOT.LOT_ATTRIBUTE9 = #{lotAttribute9,jdbcType=VARCHAR}
+	    </if>
+	    <if test="lotAttribute10 != null">
+	      AND LOT.LOT_ATTRIBUTE10 = #{lotAttribute10,jdbcType=VARCHAR}
+	    </if>
+	    <if test="lotAttribute11 != null">
+	      AND LOT.LOT_ATTRIBUTE11 = #{lotAttribute11,jdbcType=TIMESTAMP}
+	    </if>
+	    <if test="lotAttribute12 != null">
+	      AND LOT.LOT_ATTRIBUTE12 = #{lotAttribute12,jdbcType=TIMESTAMP}
+	    </if>
+		<if test="ownerId != null">
+	      AND ONHAND.OWNER_ID = #{ownerId,jdbcType=DECIMAL}
+		</if>
+		<if test="skuId != null">
+	      AND ONHAND.SKU_ID = #{skuId,jdbcType=DECIMAL}
+		</if>
+		<if test="locationCode != null">
+	      AND ONHAND.LOCATION_CODE = #{locationCode,jdbcType=VARCHAR}
+		</if>
+		<if test="lpnNumber != null">
+	      AND ONHAND.LPN_NUMBER = #{lpnNumber,jdbcType=VARCHAR}
+		</if>
+		<if test="lotNumber != null">
+	      AND ONHAND.LOT_NUMBER = #{lotNumber,jdbcType=VARCHAR}
+		</if>
+  </select>
+</mapper>

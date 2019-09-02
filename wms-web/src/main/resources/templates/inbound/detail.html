@@ -1,0 +1,639 @@
+<div id="detailToolbar" class="tableToolbar detailToolbar">
+	<a href="#" class="lazy-load inbounddetail-add" lazy-load="easyui-linkbutton" wms:title="${web.label.inbound.add}" data-addpanel="#addDetailDiv">
+		<span wms:text="${web.label.add}">Add</span>
+	</a>
+	<a href="#" class="lazy-load common-rowsave" lazy-load="easyui-linkbutton" data-table="#inboundDetailData" th:data-url="@{/services/inner/inboundDetail/listSave}" >
+		<span wms:text="${web.label.save}">Save</span>
+	</a>
+	<a href="#" class="lazy-load common-rowdel" lazy-load="easyui-linkbutton" data-table="#inboundDetailData" th:data-url="@{/services/inner/inboundDetail/delete}">
+		<span wms:text="${web.label.delete}">Delete</span>
+	</a>
+	<a href="#" class="lazy-load" lazy-load="easyui-menubutton" data-options="menu:'#detailOptionsMenuButton',plain:false" wms:text="${web.label.options}">Actions</a>
+	<div id="detailOptionsMenuButton">
+		<div  wms:text="${web.label.receive.all}" onclick="lineAction('receiveAll')">Receive All</div>
+		<div  wms:text="${web.label.cancelreceive}" onclick="lineAction('unReceive')">Cancel Receive</div>
+	</div>
+</div>
+<div>
+	<table id="inboundDetailData" wms:title="${web.label.inbounddetaillist.title}"
+		   			wms:data-options="toolbar: '#detailToolbar'"
+					th:data-delayUrl="@{/services/inner/inboundDetail/findByHeader}">
+		<thead>
+			<tr>
+				<th field="inboundDetailId" data-options="checkbox:true"></th>
+				<th field="edit" data-options="
+										formatter:function(value,row){
+											var data = JSON.stringify(row);
+											var detail = '<span title = \'编辑\' onclick=\'toEditDetail('+data+')\' class=\'icon-edit\'>&nbsp;</span>';
+											return detail;
+										}
+									"></th>
+				<th field="lineNumber" width="50" wms:text="${web.label.linenumber}" data-options="sortable:true">lineNumber</th>
+				<th field="parentLineNumber" width="65" wms:text="${web.label.parentlinenumber}" data-options="sortable:true">lineNumber</th>
+				<th field="skuCode" width="100" wms:text="${web.label.sku}" data-options="sortable:true">skuCode</th>
+				<th field="skuDescr" width="150" wms:text="${web.label.skudescr}" >skuDescr</th>
+				<th field="packCode" width="80" wms:text="${web.label.pack}">pack</th>
+				<th field="uom" width="80" wms:text="${web.label.uom}" data-options="
+							formatter:function(value,row){
+								return getCodelkupValue('UOM',value);
+							}
+				">uom</th>
+				<th field="locationCode" width="80" wms:text="${web.label.location}" data-options="sortable:true">location</th>
+				<th field="containerNumber" width="80" wms:text="${web.label.containernumber}" data-options="sortable:true">containerNumber</th>
+				<th field="lpnNumber" width="80" wms:text="${web.label.lpnnumber}" data-options="sortable:true">lpnNumber</th>
+				<th field="lotNumber" width="80" wms:text="${web.label.lotnumber}">lotNumber</th>
+				<th field="uomQuantityExpected" width="60" wms:text="${web.label.quantityexpected}" data-options="
+					sortable:true,
+					editor: 'numberbox'
+
+					">Expected Quantity</th>
+				<th field="uomQuantityReceive" width="60" wms:text="${web.label.quantityreceive}" data-options="
+					sortable:true,
+					editor: 'numberbox'
+					">Receive Quantity</th>
+				<th field="status" width="60" wms:text="${web.label.status}" data-options="
+					sortable:true,
+					formatter:function(value,row){
+						return getCodelkupValue('INBOUNDSTATUS',value);
+					}
+				" >status</th>
+				<th field="inboundDate" width="130" wms:text="${web.label.inbounddate}">inboundDate</th>
+				<th field="weightGross" width="60" wms:text="${web.inventory.weightgross}">weightGross</th>
+				<th field="weightNet" width="60" wms:text="${web.inventory.weightnet}">weightGross</th>
+				<th field="weightTare" width="60" wms:text="${web.inventory.weighttare}">weightGross</th>
+				<th field="volume" width="60" wms:text="${web.inventory.volume}">weightGross</th>
+				<th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+				<th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true">
+					createTime
+				</th>
+				<th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+				<th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">
+					updateTime
+				</th>
+			</tr>
+		</thead>
+	</table>
+</div>
+<div id="addDetailDiv" wms:title="${web.label.detail.add}" style="height: 450px;width: 800px;display: none;" data-options="buttons: '#detailAddButton'">
+	<div id="detailAddButton">
+		<a href="#" class="easyui-linkbutton inbounddetail-confirmadd" wms:text="${web.label.save}" data-form="#inboundDetailForm">Save</a>
+		<a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#inboundDetailForm').form('clear');" wms:text="${web.label.clear}" data-options="iconCls:'icon-clear'">Clear</a>
+	</div>
+	<div id="detailEditButton" style="display:none;">
+		<a href="#" class="easyui-linkbutton inboundDetail-save" wms:text="${web.label.save}" data-form="#inboundDetailForm" data-table="#inboundDetailData">Save</a>
+	</div>
+	<form id="inboundDetailForm" th:data-url="@{/services/inner/inboundDetail/save}">
+		<input name="inboundHeaderId" type="hidden" />
+		<input name="inboundDetailId" type="hidden"/>
+		<div class="lazy-load" lazy-load="easyui-tabs">
+			<div wms:title="${web.label.normal}" >
+				<table border="0" cellpadding="0" cellspacing="0" >
+					<tr>
+						<td width="200px">
+							<input name="lineNumber" id="lineNumber" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.linenumber}',labelPosition:'top',required:true" />
+						</td>
+						<td width="200px">
+							<input id="sourceLineNumber" name="sourceLineNumber" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="label:'${web.label.souceline}',labelPosition:'top'" />
+						</td>
+						<td width="200px">
+							<input id="putawayStrategyCode" name="allocateStrategyCode" th:replace="lov/putawayStrategy"/>
+							<input id="putawayStrategyId" name="putawayStrategyId" type="hidden"/>
+						</td>
+						<td width="200px">
+							
+						</td>
+					</tr>
+					<tr>
+						<td >
+							<input name="skuCode" th:replace="lov/sku" />
+							<input type="hidden" name="skuId" id="skuId" />
+						</td>
+						<td>
+							<input name="skuAlias" id="skuAlias" class="lazy-load" lazy-load="easyui-textbox" readonly="readonly" wms:data-options="label:'${web.label.skualias}',labelPosition:'top'" />
+						</td>
+						<td colspan="2">
+							<input name="skuDescr" id="skuDescr" class="lazy-load" lazy-load="easyui-textbox" readonly="readonly" wms:data-options="label:'${web.label.skudescr}',labelPosition:'top'" style="width: 300px;" />
+						</td>
+					</tr>
+					<tr>
+						<td >
+							<input name="packCode" th:replace="lov/pack" />
+							<input type="hidden" name="packId" id="packId" />
+						</td>
+						<td>
+							<input id="uomQuantityExpected" name="uomQuantityExpected" class="lazy-load"  lazy-load="easyui-numberbox" value="0" wms:data-options="
+							label:'${web.label.quantityexpected}',
+							labelPosition:'top',
+							required:true,
+							onChange(newValue, oldValue){
+								calculate(newValue);
+							}
+						"/>
+						</td>
+						<td>
+							<input id="locationCode" name="locationCode"  th:replace="lov/location"/>
+						</td>
+						<td>
+							&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td >
+							<input name="uom" id="uom" class="lazy-load" lazy-load="easyui-combobox" wms:data-options="label:'${web.label.uom}',labelPosition:'top',required:true,panelHeight:100" />
+						</td>
+						<td>
+							<input id="uomQuantityReceive" name="uomQuantityReceive" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.label.quantityreceive}',labelPosition:'top',required:true" />
+						</td>
+						<td>
+							<input id="lpnNumber" name="lpnNumber" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="label:'${web.label.lpnnumber}',labelPosition:'top'" />
+						</td>
+						<td>
+							<input id="containerNumber" name="containerNumber" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="label:'${web.label.containernumber}',labelPosition:'top'" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input id="weightGross" name="weightGross" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.inventory.weightgross}',labelPosition:'top',required:true" />
+						</td>
+						<td>
+							<input id="weightNet" name="weightNet" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.inventory.weightnet}',labelPosition:'top',required:true" />
+						</td>
+						<td>
+							<input id="weightTare" name="weightTare" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.inventory.weighttare}',labelPosition:'top',required:true" />
+						</td>
+						<td>
+							<input id="volume" name="volume" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.inventory.volume}',labelPosition:'top',required:true" />
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div wms:title="${web.lable.lotattribute}" >
+				<table border="0" >
+					<tr>
+						<td width="200px">
+							<input id="lotAttribute1" name="lotAttribute1" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute1}',labelPosition:'top'" />
+						</td>
+						<td width="200px">
+							<input id="lotAttribute4" name="lotAttribute4" class="lazy-load" lazy-load="easyui-datebox"  wms:data-options="label:'${web.label.lotattribute4}',labelPosition:'top'" />
+						</td>
+						<td width="200px">
+							<input id="lotAttribute7" name="lotAttribute7" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute7}',labelPosition:'top'" />
+						</td>
+						<td width="200px">
+							<input id="lotAttribute10" name="lotAttribute10" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute10}',labelPosition:'top'" />
+						</td>
+					</tr>
+					<tr>
+						<td >
+							<input id="lotAttribute2" name="lotAttribute2" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute2}',labelPosition:'top'" />
+						</td>
+						<td>
+							<input id="lotAttribute5" name="lotAttribute5" class="lazy-load" lazy-load="easyui-datebox"  wms:data-options="label:'${web.label.lotattribute5}',labelPosition:'top'" />
+						</td>
+						<td>
+							<input id="lotAttribute8" name="lotAttribute8" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute8}',labelPosition:'top'" />
+						</td>
+						<td width="200px">
+							<input id="lotAttribute11" name="lotAttribute11" class="lazy-load" lazy-load="easyui-datebox"  wms:data-options="label:'${web.label.lotattribute11}',labelPosition:'top'" />
+						</td>
+					</tr>
+					<tr>
+						<td >
+							<input id="lotAttribute3" name="lotAttribute3" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute3}',labelPosition:'top'" />
+						</td>
+						<td>
+							<input id="lotAttribute6" name="lotAttribute6" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute6}',labelPosition:'top'" />
+						</td>
+						<td>
+							<input id="lotAttribute9" name="lotAttribute9" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute9}',labelPosition:'top'" />
+						</td>
+						<td width="200px">
+							<input id="lotAttribute12" name="lotAttribute12" class="lazy-load" lazy-load="easyui-datebox"  wms:data-options="label:'${web.label.lotattribute12}',labelPosition:'top'" />
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</form>
+</div>
+<script type="text/javascript" th:inline="text">
+	var detailEditData;
+	var skuData;
+	var packData;
+	var detailFilterRules = [{
+		field:'inboundDate',
+		type:'datebox',
+		op:['contains','less','greater']
+	},{
+		field:'status',
+		type:'combobox',
+		options:{
+			panelHeight:'auto',
+			data:getFilterCodelkupValue('INBOUNDSTATUS'),
+			onChange:function(value){
+				if (value == '---' || value == ''){
+					$('#inboundDetailData').datagrid('removeFilterRule', 'status');
+				} else {
+					$('#inboundDetailData').datagrid('addFilterRule', {
+						field: 'status',
+						op: 'equal',
+						value: value
+					});
+				}
+				$('#inboundDetailData').datagrid('doFilter');
+			}
+		}
+	}];
+	
+	$(function(){
+		$('.inbounddetail-add').click(function(){
+			var headerData = getInboundHeaderData();
+			if(headerData.status == 40 || headerData.status == 50){
+				showError($.locale.statusError);
+				return false;
+			}
+			$('#inboundDetailForm').form('reset');
+			lazyLoadView('#inboundDetailForm');
+			var grid = $("#inboundDetailData").datagrid('getData');
+			var maxNumber = 0;
+			grid.rows.forEach(function(e){
+				if(e.lineNumber != null && parseInt(e.lineNumber) > maxNumber){
+					maxNumber = parseInt(e.lineNumber);
+				}
+			});
+			
+			$("#lineNumber").textbox('setValue', maxNumber + 10);
+			
+			var owner = getOwnerId();
+			if (owner == '-1'){
+				showError($.locale.ownerRequired);
+				return false;
+			}
+			loadSkuLov({ownerId:owner}, function(data){
+				setSkuResult(data);
+				skuData=data;
+				loadPackLov({packId:data.packId});
+				$("#packCode").combo('setValue', data.packCode)
+							.combo('setText', data.packCode);
+				
+				setUom(data.packId);
+
+				$("#putawayStrategyCode").combo('setValue', data.putawayStrategyCode)
+						.combo('setText', data.putawayStrategyCode);
+				$("#putawayStrategyId").val(data.putawayStrategyId);
+			});
+			//新增所有都可编辑
+			detailEditable(0);
+
+			loadPutawayStrategyLov();
+			loadLocationLov();
+
+			$("#locationCode").combo('setValue', 'STAGE')
+			.combo('setText', 'STAGE');
+			$('#detailAddButton').show();
+			$('#detailEditButton').hide();
+			var panel = $(this).attr('data-addpanel');
+			$(panel).dialog({
+			    closed: true,
+			    modal: true,
+			    fix: true,
+				buttons: '#detailAddButton'
+			}).dialog('open');
+		});
+
+		//判断是否可编辑
+		$('#inboundDetailData').datagrid({
+			onBeginEdit: function (index, row) {
+				var ed = $(this).datagrid('getEditors', index);
+				if('40'== row.status || '50'== row.status){
+					for (var i = 0 ; i<ed.length ; i++){
+						$(this).datagrid('cancelEdit',index);
+					}
+				}
+			}
+		});
+
+		$('.inbounddetail-confirmadd').click(function(){
+			var form = $(this).attr('data-form');
+			var url = $(form).attr('data-url');
+			var valid = $(form).form('validate');
+			if (!valid) {
+				return;
+			}
+			var detailData = $(form).serializeObject();
+			var headerData = getInboundHeaderData();
+			headerData['detail'] = [];
+			headerData.detail[0] = detailData;
+			var data = getBaseData(headerData);
+			loading();
+			$.post({
+				url: url,
+				data:data,
+				success: function(data){
+					data = returnData(data);
+					closeLoading();
+					if (data.code == '0') {
+						showError(data.msg);
+						return;
+					}
+					refreshInboundDetail(data.data);
+					refreshInboundHeader(data.data);
+					// refreshInbound(data.data);
+					$('#addDetailDiv').dialog('close');
+				}
+			});
+		});
+
+		//编辑明细保存
+		$('.inboundDetail-save').click(function(){
+			var from = $(this).attr('data-form');
+			var datagrid = $(this).attr('data-table');
+			var url ='../../services/inner/inboundDetail/listSave';
+			var valid = $(from).form('validate');
+			if (!valid) {
+				return;
+			}
+			var detaildata = $(from).serializeObject();
+			detaildata=Object.assign(detailEditData,detaildata);
+			data = [];
+			data[0]=detaildata;
+			data = getBaseData(data);
+			loading();
+			$.post({
+				url: url,
+				data:data,
+				success: function(data){
+					data = returnData(data);
+					closeLoading();
+					if (data.code == '0') {
+						showError(data.msg);
+						return;
+					}
+					refreshInboundDetail(data.data);
+					refreshInbound(data.data);
+					$('#addDetailDiv').dialog('close');
+				}
+			});
+		});
+	});
+	
+	function getOwnerId(){
+		var owner = $('#ownerId').val();
+		if (owner == undefined || owner == '' ){
+			return '-1'
+		}
+		return owner;
+	}
+	
+	function setUom(packId){
+		var search = {packId:packId};
+		var data = getBaseData();
+		$.extend(data, search);
+		$.post({
+			url: '../../services/inner/base/pack/find',
+			data:data,
+			success: function(data){
+				// data = returnData(data);
+				if (data.code == '0') {
+					showError(data.msg);
+					return;
+				}
+				data =data.rows[0];
+				packData=data;
+				var comData = [];
+
+				comData.push({value: data.uom, label: getCodelkupValue('UOM',data.uom)});
+				comData.push({value: data.uomInner, label: getCodelkupValue('UOM',data.uomInner)});
+				comData.push({value: data.uomCase, label: getCodelkupValue('UOM',data.uomCase)});
+
+				$("#uom").combobox({
+					data : comData,
+					value : data.uom,
+					idField: 'value',
+					textField: 'label',
+					onHidePanel :function () {
+						var quantityExpected = $('#uomQuantityExpected').numberbox('getValue');
+						calculate(quantityExpected);
+					}
+				});
+			}
+		});
+	}
+	
+	function refreshInboundDetail(data){
+		var inboundDetailDataId = '#inboundDetailData';
+		var url = $(inboundDetailDataId).attr('data-delayUrl');
+		
+		var searchData = {inboundHeaderId : data.inboundHeaderId};
+		var data = getBaseData();
+		$.extend(data, searchData);
+		
+		$(inboundDetailDataId).datagrid({
+			url: url,
+			queryParams: data,
+			sortName: 'lineNumber',
+			sortOrder: 'asc',
+			filterPosition: 'top',
+			filterCache: [],
+			filterRules: []
+		}).datagrid('clearChecked').datagrid('enableFilter', detailFilterRules);
+	}
+	
+	function getInboundDetailChangeData(){
+		
+		var inboundDetailDataId = '#inboundDetailData';
+
+		var checkedRows = $(inboundDetailDataId).datagrid('getEditingRowIndexs');
+		if (checkedRows.length == 0) {
+			// showError('Please select one recrod.');
+			return;
+		}
+		for(var i in checkedRows) {
+			$(inboundDetailDataId).datagrid('endEdit', checkedRows[i]);
+		}
+		var rows = $(inboundDetailDataId).datagrid('getChanges');
+		
+		var data = getBaseData(rows);
+		
+		return data;
+	}
+	
+	function loadDetailListToolbarView(){
+		lazyLoadView('.detailToolbar');
+	}
+	function loadDetailListView(){
+		$('#inboundDetailData').datagrid();
+	}
+	
+	function lineAction(type){
+		var checkedRows = $('#inboundDetailData').datagrid('getChecked');
+		if (checkedRows.length == 0) {
+			showError($.locale.selectOneRow);
+			return;
+		}
+		confirmMsg($.locale.lineConfirm,{type:type,row:checkedRows.length}, function(r){
+			if (!r){
+				return;
+			}
+			var data = getBaseData(checkedRows);
+			loading();
+			$.post({
+				url: '../../services/inner/inboundDetail/'+type,
+				data:data,
+				success: function(data){
+					data = returnData(data);
+					closeLoading();
+					if (data.code == '0') {
+						showError(data.msg);
+						return;
+					}
+					$('#inboundDetailData').datagrid('reload').datagrid('clearChecked');
+					refreshInboundDetail(data.data);
+				}
+			});
+		});
+	}
+
+	function toEditDetail(data) {
+		if (typeof(data) == 'object') {
+			detailEditData = data;
+		}else{
+			var checkedRows = $('#inboundData').datagrid('getChecked');
+			if (checkedRows.length != 1) {
+				showError($.locale.selectOneRow);
+				return;
+			}
+			detailEditData = checkedRows[0];
+		}
+		lazyLoadView('#inboundDetailForm');
+		$('#detailAddButton').hide();
+		$('#detailEditButton').show();
+		var panel = '#addDetailDiv';
+		$(panel).dialog({
+			closed: true,
+			modal: true,
+			fix: true,
+			buttons: '#detailEditButton'
+		}).dialog('open');
+		$(panel).find('form').form('reset');
+		var from = '#inboundDetailForm';
+		//设定可编辑框
+		detailEditable(detailEditData.status);
+		loadPutawayStrategyLov();
+		$(from).form('load', detailEditData);
+	}
+	/**
+	 * 根据预期量计算毛重、净重、皮重、体积
+	 **/
+	function calculate(quantityExpected) {
+		if(null==packData || null == skuData){
+			return;
+		}
+		var uom=$("#uom").combobox("getValue");
+		switch (uom) {
+			case packData.uom:
+				quantityExpected=Number(quantityExpected)*Number(packData.qty);
+				break;
+			case packData.uomInner:
+				quantityExpected=Number(quantityExpected)*Number(packData.qtyInner);
+				break;
+			case packData.uomCase:
+				quantityExpected=Number(quantityExpected)*Number(packData.qtyCase);
+				break;
+		}
+		$('#weightGross').numberbox('setValue',Number(skuData.weightGross)*quantityExpected);
+		$('#weightNet').numberbox('setValue',Number(skuData.weightNet)*quantityExpected);
+		$('#weightTare').numberbox('setValue',Number(skuData.weightTare)*quantityExpected);
+		$('#volume').numberbox('setValue',Number(skuData.volume)*quantityExpected);
+	}
+	
+	function detailEditable(status) {
+		if('0' == status){
+			//新增一条数据
+			$('#lineNumber').textbox({readonly:false});
+			$('#sourceLineNumber').textbox({readonly:false});
+			$('#skuCode').combogrid({readonly:false});
+			$('#skuAlias').textbox({readonly:false});
+			$('#skuDescr').textbox({readonly:false});
+			$('#packCode').combogrid({readonly:false});
+			$('#uomQuantityExpected').numberbox({readonly:false});
+			$('#locationCode').combogrid({readonly:false});
+			$('#uom').combobox({readonly:false});
+			$('#uomQuantityReceive').numberbox({readonly:false});
+			$('#lpnNumber').textbox({readonly:false});
+			$('#containerNumber').textbox({readonly:false});
+			lotAttributeEditable(false);
+		}else if('10' == status){
+			//新建
+			$('#sourceLineNumber').textbox({readonly:true});
+			$('#lineNumber').textbox({readonly:true});
+			$('#skuCode').combogrid({readonly:true});
+			$('#skuAlias').textbox({readonly:true});
+			$('#skuDescr').textbox({readonly:true});
+			$('#packCode').combogrid({readonly:true});
+			$('#uomQuantityExpected').numberbox({readonly:false});
+			$('#locationCode').combogrid({readonly:false});
+			$('#uom').combobox({readonly:true});
+			$('#uomQuantityReceive').numberbox({readonly:false});
+			$('#lpnNumber').textbox({readonly:false});
+			$('#containerNumber').textbox({readonly:false});
+			lotAttributeEditable(false);
+		}else if('20' == status ||'30' == status){
+			//收货中、收货完成
+			$('#lineNumber').textbox({readonly:true});
+			$('#sourceLineNumber').textbox({readonly:true});
+			$('#skuCode').combogrid({readonly:true});
+			$('#skuAlias').textbox({readonly:true});
+			$('#skuDescr').textbox({readonly:true});
+			$('#packCode').combogrid({readonly:true});
+			$('#uomQuantityExpected').numberbox({readonly:false});
+			$('#locationCode').combogrid({readonly:true});
+			$('#uom').combobox({readonly:true});
+			$('#uomQuantityReceive').numberbox({readonly:false});
+			$('#lpnNumber').textbox({readonly:true});
+			$('#containerNumber').textbox({readonly:true});
+			lotAttributeEditable(true);
+		}else if('40' == status ||'50' == status){
+			//已关闭、已取消
+			$('#lineNumber').textbox({readonly:true});
+			$('#sourceLineNumber').textbox({readonly:true});
+			$('#skuCode').combogrid({readonly:true});
+			$('#skuAlias').textbox({readonly:true});
+			$('#skuDescr').textbox({readonly:true});
+			$('#packCode').combogrid({readonly:true});
+			$('#uomQuantityExpected').numberbox({readonly:true});
+			$('#locationCode').combogrid({readonly:true});
+			$('#uom').combobox({readonly:true});
+			$('#uomQuantityReceive').numberbox({readonly:true});
+			$('#lpnNumber').textbox({readonly:true});
+			$('#containerNumber').textbox({readonly:true});
+			lotAttributeEditable(true);
+		}
+	}
+	/**
+	 * 批属性是否不可编辑
+	 * @Param isDisabled true-不可编辑，false-可编辑
+	 **/
+	function lotAttributeEditable(isDisabled) {
+		for(var i=1;i<13;i++){
+			if('4'== i||'5' == i||'11'== i||'12'== i){
+				$("#lotAttribute"+i).datebox({readonly:isDisabled});
+			}else {
+				$("#lotAttribute"+i).textbox({readonly:isDisabled});
+			}
+		}
+	}
+	/* must exists 
+	function getInboundHeaderData(){
+		return {};
+	}
+	*/
+	
+	/* must exists 
+	function refreshInbound(){
+		
+	}
+	*/
+	
+</script>
+</html>

@@ -1,0 +1,933 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wms.dao.auto.ITaskDetailTDao">
+  <resultMap id="BaseResultMap" type="com.wms.entity.auto.TaskDetailTEntity">
+    <id column="TASK_DETAIL_ID" jdbcType="DECIMAL" property="taskDetailId" />
+    <result column="TASK_DETAIL_NUMBER" jdbcType="VARCHAR" property="taskDetailNumber" />
+    <result column="TASK_TYPE" jdbcType="VARCHAR" property="taskType" />
+    <result column="SOURCE_TYPE" jdbcType="VARCHAR" property="sourceType" />
+    <result column="OWNER_ID" jdbcType="DECIMAL" property="ownerId" />
+    <result column="OWNER_CODE" jdbcType="VARCHAR" property="ownerCode" />
+    <result column="SKU_ID" jdbcType="DECIMAL" property="skuId" />
+    <result column="SKU_CODE" jdbcType="VARCHAR" property="skuCode" />
+    <result column="UOM" jdbcType="VARCHAR" property="uom" />
+    <result column="PACK_ID" jdbcType="DECIMAL" property="packId" />
+    <result column="PACK_CODE" jdbcType="VARCHAR" property="packCode" />
+    <result column="LOT_NUMBER" jdbcType="VARCHAR" property="lotNumber" />
+    <result column="FROM_LPN_NUMBER" jdbcType="VARCHAR" property="fromLpnNumber" />
+    <result column="FROM_LOCATION_CODE" jdbcType="VARCHAR" property="fromLocationCode" />
+    <result column="FROM_ZONE_CODE" jdbcType="VARCHAR" property="fromZoneCode" />
+    <result column="TO_LPN_NUMBER" jdbcType="VARCHAR" property="toLpnNumber" />
+    <result column="TO_LOCATION_CODE" jdbcType="VARCHAR" property="toLocationCode" />
+    <result column="TO_ZONE_CODE" jdbcType="VARCHAR" property="toZoneCode" />
+    <result column="FROM_LOCATION_LOGICAL" jdbcType="VARCHAR" property="fromLocationLogical" />
+    <result column="TO_LOCATION_LOGICAL" jdbcType="VARCHAR" property="toLocationLogical" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="RELEASE_TIME" jdbcType="TIMESTAMP" property="releaseTime" />
+    <result column="COMPLETE_TIME" jdbcType="TIMESTAMP" property="completeTime" />
+    <result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="END_TIME" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="QUANTITY" jdbcType="DECIMAL" property="quantity" />
+    <result column="REASON" jdbcType="VARCHAR" property="reason" />
+    <result column="SOURCE_NUMBER" jdbcType="DECIMAL" property="sourceNumber" />
+    <result column="SOURCE_LINE_NUMBER" jdbcType="DECIMAL" property="sourceLineNumber" />
+    <result column="SOURCE_BILL_NUMBER" jdbcType="VARCHAR" property="sourceBillNumber" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="COMPANY_ID" jdbcType="DECIMAL" property="companyId" />
+    <result column="WAREHOUSE_ID" jdbcType="DECIMAL" property="warehouseId" />
+    <result column="DEL_FLAG" jdbcType="CHAR" property="delFlag" />
+    <result column="CREATE_BY" jdbcType="VARCHAR" property="createBy" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_BY" jdbcType="VARCHAR" property="updateBy" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATE_VERSION" jdbcType="DECIMAL" property="updateVersion" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="FROM_LPN_TYPE" jdbcType="VARCHAR" property="fromLpnType" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach close=")" collection="example.oredCriteria" item="criteria" open="and (" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_With_Version_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    <where >
+      UPDATE_VERSION = #{version,jdbcType=DECIMAL}
+      <if test="example.oredCriteria.size() > 0">
+        <foreach close=")" collection="example.oredCriteria" item="criteria" open="and (" separator="or">
+          <if test="criteria.valid">
+            <trim prefix="(" prefixOverrides="and" suffix=")">
+              <foreach collection="criteria.criteria" item="criterion">
+                <choose>
+                  <when test="criterion.noValue">
+                    and ${criterion.condition}
+                  </when>
+                  <when test="criterion.singleValue">
+                    and ${criterion.condition} #{criterion.value}
+                  </when>
+                  <when test="criterion.betweenValue">
+                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                  </when>
+                  <when test="criterion.listValue">
+                    and ${criterion.condition}
+                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                      #{listItem}
+                    </foreach>
+                  </when>
+                </choose>
+              </foreach>
+            </trim>
+          </if>
+        </foreach>
+      </if>
+    </where >
+  </sql>
+  <sql id="Base_Column_List">
+    TASK_DETAIL_ID, TASK_DETAIL_NUMBER, TASK_TYPE, SOURCE_TYPE, OWNER_ID, OWNER_CODE, 
+    SKU_ID, SKU_CODE, UOM, PACK_ID, PACK_CODE, LOT_NUMBER, FROM_LPN_NUMBER, FROM_LOCATION_CODE, 
+    FROM_ZONE_CODE, TO_LPN_NUMBER, TO_LOCATION_CODE, TO_ZONE_CODE, FROM_LOCATION_LOGICAL, 
+    TO_LOCATION_LOGICAL, USER_NAME, RELEASE_TIME, COMPLETE_TIME, START_TIME, END_TIME, 
+    QUANTITY, REASON, SOURCE_NUMBER, SOURCE_LINE_NUMBER, SOURCE_BILL_NUMBER, STATUS, 
+    REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
+    UPDATE_VERSION, DESCRIPTION, FROM_LPN_TYPE
+  </sql>
+  <select id="selectByExample" parameterType="com.wms.dao.example.TaskDetailTExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from TASK_DETAIL_T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.wms.dao.example.TaskDetailTExample">
+    delete from TASK_DETAIL_T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wms.entity.auto.TaskDetailTEntity">
+    insert into TASK_DETAIL_T (TASK_DETAIL_ID, TASK_DETAIL_NUMBER, TASK_TYPE, 
+      SOURCE_TYPE, OWNER_ID, OWNER_CODE, 
+      SKU_ID, SKU_CODE, UOM, 
+      PACK_ID, PACK_CODE, LOT_NUMBER, 
+      FROM_LPN_NUMBER, FROM_LOCATION_CODE, FROM_ZONE_CODE, 
+      TO_LPN_NUMBER, TO_LOCATION_CODE, TO_ZONE_CODE, 
+      FROM_LOCATION_LOGICAL, TO_LOCATION_LOGICAL, 
+      USER_NAME, RELEASE_TIME, COMPLETE_TIME, 
+      START_TIME, END_TIME, QUANTITY, 
+      REASON, SOURCE_NUMBER, SOURCE_LINE_NUMBER, 
+      SOURCE_BILL_NUMBER, STATUS, REMARK, 
+      COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, 
+      CREATE_BY, CREATE_TIME, UPDATE_BY, 
+      UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, 
+      FROM_LPN_TYPE)
+    values (#{taskDetailId,jdbcType=DECIMAL}, #{taskDetailNumber,jdbcType=VARCHAR}, #{taskType,jdbcType=VARCHAR}, 
+      #{sourceType,jdbcType=VARCHAR}, #{ownerId,jdbcType=DECIMAL}, #{ownerCode,jdbcType=VARCHAR}, 
+      #{skuId,jdbcType=DECIMAL}, #{skuCode,jdbcType=VARCHAR}, #{uom,jdbcType=VARCHAR}, 
+      #{packId,jdbcType=DECIMAL}, #{packCode,jdbcType=VARCHAR}, #{lotNumber,jdbcType=VARCHAR}, 
+      #{fromLpnNumber,jdbcType=VARCHAR}, #{fromLocationCode,jdbcType=VARCHAR}, #{fromZoneCode,jdbcType=VARCHAR}, 
+      #{toLpnNumber,jdbcType=VARCHAR}, #{toLocationCode,jdbcType=VARCHAR}, #{toZoneCode,jdbcType=VARCHAR}, 
+      #{fromLocationLogical,jdbcType=VARCHAR}, #{toLocationLogical,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{releaseTime,jdbcType=TIMESTAMP}, #{completeTime,jdbcType=TIMESTAMP}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{quantity,jdbcType=DECIMAL}, 
+      #{reason,jdbcType=VARCHAR}, #{sourceNumber,jdbcType=DECIMAL}, #{sourceLineNumber,jdbcType=DECIMAL}, 
+      #{sourceBillNumber,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, 
+      #{fromLpnType,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wms.entity.auto.TaskDetailTEntity">
+    insert into TASK_DETAIL_T
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="taskDetailId != null">
+        TASK_DETAIL_ID,
+      </if>
+      <if test="taskDetailNumber != null">
+        TASK_DETAIL_NUMBER,
+      </if>
+      <if test="taskType != null">
+        TASK_TYPE,
+      </if>
+      <if test="sourceType != null">
+        SOURCE_TYPE,
+      </if>
+      <if test="ownerId != null">
+        OWNER_ID,
+      </if>
+      <if test="ownerCode != null">
+        OWNER_CODE,
+      </if>
+      <if test="skuId != null">
+        SKU_ID,
+      </if>
+      <if test="skuCode != null">
+        SKU_CODE,
+      </if>
+      <if test="uom != null">
+        UOM,
+      </if>
+      <if test="packId != null">
+        PACK_ID,
+      </if>
+      <if test="packCode != null">
+        PACK_CODE,
+      </if>
+      <if test="lotNumber != null">
+        LOT_NUMBER,
+      </if>
+      <if test="fromLpnNumber != null">
+        FROM_LPN_NUMBER,
+      </if>
+      <if test="fromLocationCode != null">
+        FROM_LOCATION_CODE,
+      </if>
+      <if test="fromZoneCode != null">
+        FROM_ZONE_CODE,
+      </if>
+      <if test="toLpnNumber != null">
+        TO_LPN_NUMBER,
+      </if>
+      <if test="toLocationCode != null">
+        TO_LOCATION_CODE,
+      </if>
+      <if test="toZoneCode != null">
+        TO_ZONE_CODE,
+      </if>
+      <if test="fromLocationLogical != null">
+        FROM_LOCATION_LOGICAL,
+      </if>
+      <if test="toLocationLogical != null">
+        TO_LOCATION_LOGICAL,
+      </if>
+      <if test="userName != null">
+        USER_NAME,
+      </if>
+      <if test="releaseTime != null">
+        RELEASE_TIME,
+      </if>
+      <if test="completeTime != null">
+        COMPLETE_TIME,
+      </if>
+      <if test="startTime != null">
+        START_TIME,
+      </if>
+      <if test="endTime != null">
+        END_TIME,
+      </if>
+      <if test="quantity != null">
+        QUANTITY,
+      </if>
+      <if test="reason != null">
+        REASON,
+      </if>
+      <if test="sourceNumber != null">
+        SOURCE_NUMBER,
+      </if>
+      <if test="sourceLineNumber != null">
+        SOURCE_LINE_NUMBER,
+      </if>
+      <if test="sourceBillNumber != null">
+        SOURCE_BILL_NUMBER,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="companyId != null">
+        COMPANY_ID,
+      </if>
+      <if test="warehouseId != null">
+        WAREHOUSE_ID,
+      </if>
+      <if test="delFlag != null">
+        DEL_FLAG,
+      </if>
+      <if test="createBy != null">
+        CREATE_BY,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateBy != null">
+        UPDATE_BY,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="updateVersion != null">
+        UPDATE_VERSION,
+      </if>
+      <if test="description != null">
+        DESCRIPTION,
+      </if>
+      <if test="fromLpnType != null">
+        FROM_LPN_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="taskDetailId != null">
+        #{taskDetailId,jdbcType=DECIMAL},
+      </if>
+      <if test="taskDetailNumber != null">
+        #{taskDetailNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="taskType != null">
+        #{taskType,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceType != null">
+        #{sourceType,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerId != null">
+        #{ownerId,jdbcType=DECIMAL},
+      </if>
+      <if test="ownerCode != null">
+        #{ownerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="skuId != null">
+        #{skuId,jdbcType=DECIMAL},
+      </if>
+      <if test="skuCode != null">
+        #{skuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="uom != null">
+        #{uom,jdbcType=VARCHAR},
+      </if>
+      <if test="packId != null">
+        #{packId,jdbcType=DECIMAL},
+      </if>
+      <if test="packCode != null">
+        #{packCode,jdbcType=VARCHAR},
+      </if>
+      <if test="lotNumber != null">
+        #{lotNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fromLpnNumber != null">
+        #{fromLpnNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fromLocationCode != null">
+        #{fromLocationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fromZoneCode != null">
+        #{fromZoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="toLpnNumber != null">
+        #{toLpnNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="toLocationCode != null">
+        #{toLocationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="toZoneCode != null">
+        #{toZoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fromLocationLogical != null">
+        #{fromLocationLogical,jdbcType=VARCHAR},
+      </if>
+      <if test="toLocationLogical != null">
+        #{toLocationLogical,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="releaseTime != null">
+        #{releaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="completeTime != null">
+        #{completeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="quantity != null">
+        #{quantity,jdbcType=DECIMAL},
+      </if>
+      <if test="reason != null">
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceNumber != null">
+        #{sourceNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="sourceLineNumber != null">
+        #{sourceLineNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="sourceBillNumber != null">
+        #{sourceBillNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=DECIMAL},
+      </if>
+      <if test="warehouseId != null">
+        #{warehouseId,jdbcType=DECIMAL},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateVersion != null">
+        #{updateVersion,jdbcType=DECIMAL},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="fromLpnType != null">
+        #{fromLpnType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.wms.dao.example.TaskDetailTExample" resultType="java.lang.Long">
+    select count(*) from TASK_DETAIL_T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update TASK_DETAIL_T
+    <set>
+      <if test="record.taskDetailId != null">
+        TASK_DETAIL_ID = #{record.taskDetailId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.taskDetailNumber != null">
+        TASK_DETAIL_NUMBER = #{record.taskDetailNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskType != null">
+        TASK_TYPE = #{record.taskType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sourceType != null">
+        SOURCE_TYPE = #{record.sourceType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ownerId != null">
+        OWNER_ID = #{record.ownerId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.ownerCode != null">
+        OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.skuId != null">
+        SKU_ID = #{record.skuId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.skuCode != null">
+        SKU_CODE = #{record.skuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uom != null">
+        UOM = #{record.uom,jdbcType=VARCHAR},
+      </if>
+      <if test="record.packId != null">
+        PACK_ID = #{record.packId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.packCode != null">
+        PACK_CODE = #{record.packCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lotNumber != null">
+        LOT_NUMBER = #{record.lotNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fromLpnNumber != null">
+        FROM_LPN_NUMBER = #{record.fromLpnNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fromLocationCode != null">
+        FROM_LOCATION_CODE = #{record.fromLocationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fromZoneCode != null">
+        FROM_ZONE_CODE = #{record.fromZoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.toLpnNumber != null">
+        TO_LPN_NUMBER = #{record.toLpnNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.toLocationCode != null">
+        TO_LOCATION_CODE = #{record.toLocationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.toZoneCode != null">
+        TO_ZONE_CODE = #{record.toZoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fromLocationLogical != null">
+        FROM_LOCATION_LOGICAL = #{record.fromLocationLogical,jdbcType=VARCHAR},
+      </if>
+      <if test="record.toLocationLogical != null">
+        TO_LOCATION_LOGICAL = #{record.toLocationLogical,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userName != null">
+        USER_NAME = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.releaseTime != null">
+        RELEASE_TIME = #{record.releaseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.completeTime != null">
+        COMPLETE_TIME = #{record.completeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.startTime != null">
+        START_TIME = #{record.startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null">
+        END_TIME = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.quantity != null">
+        QUANTITY = #{record.quantity,jdbcType=DECIMAL},
+      </if>
+      <if test="record.reason != null">
+        REASON = #{record.reason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sourceNumber != null">
+        SOURCE_NUMBER = #{record.sourceNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sourceLineNumber != null">
+        SOURCE_LINE_NUMBER = #{record.sourceLineNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sourceBillNumber != null">
+        SOURCE_BILL_NUMBER = #{record.sourceBillNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        STATUS = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null">
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyId != null">
+        COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.warehouseId != null">
+        WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.delFlag != null">
+        DEL_FLAG = #{record.delFlag,jdbcType=CHAR},
+      </if>
+      <if test="record.createBy != null">
+        CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null">
+        UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateVersion != null">
+        UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
+      </if>
+      <if test="record.description != null">
+        DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fromLpnType != null">
+        FROM_LPN_TYPE = #{record.fromLpnType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update TASK_DETAIL_T
+    set TASK_DETAIL_ID = #{record.taskDetailId,jdbcType=DECIMAL},
+      TASK_DETAIL_NUMBER = #{record.taskDetailNumber,jdbcType=VARCHAR},
+      TASK_TYPE = #{record.taskType,jdbcType=VARCHAR},
+      SOURCE_TYPE = #{record.sourceType,jdbcType=VARCHAR},
+      OWNER_ID = #{record.ownerId,jdbcType=DECIMAL},
+      OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR},
+      SKU_ID = #{record.skuId,jdbcType=DECIMAL},
+      SKU_CODE = #{record.skuCode,jdbcType=VARCHAR},
+      UOM = #{record.uom,jdbcType=VARCHAR},
+      PACK_ID = #{record.packId,jdbcType=DECIMAL},
+      PACK_CODE = #{record.packCode,jdbcType=VARCHAR},
+      LOT_NUMBER = #{record.lotNumber,jdbcType=VARCHAR},
+      FROM_LPN_NUMBER = #{record.fromLpnNumber,jdbcType=VARCHAR},
+      FROM_LOCATION_CODE = #{record.fromLocationCode,jdbcType=VARCHAR},
+      FROM_ZONE_CODE = #{record.fromZoneCode,jdbcType=VARCHAR},
+      TO_LPN_NUMBER = #{record.toLpnNumber,jdbcType=VARCHAR},
+      TO_LOCATION_CODE = #{record.toLocationCode,jdbcType=VARCHAR},
+      TO_ZONE_CODE = #{record.toZoneCode,jdbcType=VARCHAR},
+      FROM_LOCATION_LOGICAL = #{record.fromLocationLogical,jdbcType=VARCHAR},
+      TO_LOCATION_LOGICAL = #{record.toLocationLogical,jdbcType=VARCHAR},
+      USER_NAME = #{record.userName,jdbcType=VARCHAR},
+      RELEASE_TIME = #{record.releaseTime,jdbcType=TIMESTAMP},
+      COMPLETE_TIME = #{record.completeTime,jdbcType=TIMESTAMP},
+      START_TIME = #{record.startTime,jdbcType=TIMESTAMP},
+      END_TIME = #{record.endTime,jdbcType=TIMESTAMP},
+      QUANTITY = #{record.quantity,jdbcType=DECIMAL},
+      REASON = #{record.reason,jdbcType=VARCHAR},
+      SOURCE_NUMBER = #{record.sourceNumber,jdbcType=DECIMAL},
+      SOURCE_LINE_NUMBER = #{record.sourceLineNumber,jdbcType=DECIMAL},
+      SOURCE_BILL_NUMBER = #{record.sourceBillNumber,jdbcType=VARCHAR},
+      STATUS = #{record.status,jdbcType=VARCHAR},
+      REMARK = #{record.remark,jdbcType=VARCHAR},
+      COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
+      WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL},
+      DEL_FLAG = #{record.delFlag,jdbcType=CHAR},
+      CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      FROM_LPN_TYPE = #{record.fromLpnType,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <select id="selectOneByExample" parameterType="com.wms.dao.example.TaskDetailTExample" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    select
+    <include refid="Base_Column_List" />
+    from TASK_DETAIL_T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <update id="logicalDeleteByExample" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update TASK_DETAIL_T set DEL_FLAG = 'Y'
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="logicalDeleteWithVersionByExample" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update TASK_DETAIL_T
+    set UPDATE_VERSION = UPDATE_VERSION + 1,DEL_FLAG = 'Y'
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_With_Version_Where_Clause" />
+    </if>
+  </update>
+  <update id="logicalDeleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update TASK_DETAIL_T set DEL_FLAG = 'Y'
+    where TASK_DETAIL_ID = #{taskDetailId,jdbcType=DECIMAL}
+  </update>
+  <update id="logicalDeleteWithVersionByPrimaryKey" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update TASK_DETAIL_T
+    set UPDATE_VERSION = UPDATE_VERSION + 1,DEL_FLAG = 'Y'
+    where UPDATE_VERSION = #{version,jdbcType=DECIMAL}
+      and TASK_DETAIL_ID = #{key,jdbcType=DECIMAL}
+  </update>
+  <select id="selectByPrimaryKeyWithLogicalDelete" parameterType="map" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from TASK_DETAIL_T
+    where TASK_DETAIL_ID = #{taskDetailId,jdbcType=DECIMAL}
+      and DEL_FLAG = 
+    <choose>
+      <when test="andLogicalDeleted">
+        'Y'
+      </when>
+      <otherwise>
+        'N'
+      </otherwise>
+    </choose>
+  </select>
+  <delete id="deleteWithVersionByExample" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    delete from TASK_DETAIL_T
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_With_Version_Where_Clause" />
+    </if>
+  </delete>
+  <update id="updateWithVersionByExample" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update TASK_DETAIL_T
+    set UPDATE_VERSION = UPDATE_VERSION + 1,
+    TASK_DETAIL_ID = #{record.taskDetailId,jdbcType=DECIMAL}, 
+    TASK_DETAIL_NUMBER = #{record.taskDetailNumber,jdbcType=VARCHAR}, 
+    TASK_TYPE = #{record.taskType,jdbcType=VARCHAR}, 
+    SOURCE_TYPE = #{record.sourceType,jdbcType=VARCHAR}, 
+    OWNER_ID = #{record.ownerId,jdbcType=DECIMAL}, 
+    OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR}, 
+    SKU_ID = #{record.skuId,jdbcType=DECIMAL}, 
+    SKU_CODE = #{record.skuCode,jdbcType=VARCHAR}, 
+    UOM = #{record.uom,jdbcType=VARCHAR}, 
+    PACK_ID = #{record.packId,jdbcType=DECIMAL}, 
+    PACK_CODE = #{record.packCode,jdbcType=VARCHAR}, 
+    LOT_NUMBER = #{record.lotNumber,jdbcType=VARCHAR}, 
+    FROM_LPN_NUMBER = #{record.fromLpnNumber,jdbcType=VARCHAR}, 
+    FROM_LOCATION_CODE = #{record.fromLocationCode,jdbcType=VARCHAR}, 
+    FROM_ZONE_CODE = #{record.fromZoneCode,jdbcType=VARCHAR}, 
+    TO_LPN_NUMBER = #{record.toLpnNumber,jdbcType=VARCHAR}, 
+    TO_LOCATION_CODE = #{record.toLocationCode,jdbcType=VARCHAR}, 
+    TO_ZONE_CODE = #{record.toZoneCode,jdbcType=VARCHAR}, 
+    FROM_LOCATION_LOGICAL = #{record.fromLocationLogical,jdbcType=VARCHAR}, 
+    TO_LOCATION_LOGICAL = #{record.toLocationLogical,jdbcType=VARCHAR}, 
+    USER_NAME = #{record.userName,jdbcType=VARCHAR}, 
+    RELEASE_TIME = #{record.releaseTime,jdbcType=TIMESTAMP}, 
+    COMPLETE_TIME = #{record.completeTime,jdbcType=TIMESTAMP}, 
+    START_TIME = #{record.startTime,jdbcType=TIMESTAMP}, 
+    END_TIME = #{record.endTime,jdbcType=TIMESTAMP}, 
+    QUANTITY = #{record.quantity,jdbcType=DECIMAL}, 
+    REASON = #{record.reason,jdbcType=VARCHAR}, 
+    SOURCE_NUMBER = #{record.sourceNumber,jdbcType=DECIMAL}, 
+    SOURCE_LINE_NUMBER = #{record.sourceLineNumber,jdbcType=DECIMAL}, 
+    SOURCE_BILL_NUMBER = #{record.sourceBillNumber,jdbcType=VARCHAR}, 
+    STATUS = #{record.status,jdbcType=VARCHAR}, 
+    REMARK = #{record.remark,jdbcType=VARCHAR}, 
+    COMPANY_ID = #{record.companyId,jdbcType=DECIMAL}, 
+    WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL}, 
+    DEL_FLAG = #{record.delFlag,jdbcType=CHAR}, 
+    CREATE_BY = #{record.createBy,jdbcType=VARCHAR}, 
+    CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP}, 
+    UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR}, 
+    UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
+    DESCRIPTION = #{record.description,jdbcType=VARCHAR}, 
+    FROM_LPN_TYPE = #{record.fromLpnType,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_With_Version_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateWithVersionByExampleSelective" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update TASK_DETAIL_T
+    <set>
+      <trim suffixOverrides=",">
+        UPDATE_VERSION = UPDATE_VERSION + 1,
+        <if test="record.taskDetailId != null">
+          TASK_DETAIL_ID = #{record.taskDetailId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.taskDetailNumber != null">
+          TASK_DETAIL_NUMBER = #{record.taskDetailNumber,jdbcType=VARCHAR},
+        </if>
+        <if test="record.taskType != null">
+          TASK_TYPE = #{record.taskType,jdbcType=VARCHAR},
+        </if>
+        <if test="record.sourceType != null">
+          SOURCE_TYPE = #{record.sourceType,jdbcType=VARCHAR},
+        </if>
+        <if test="record.ownerId != null">
+          OWNER_ID = #{record.ownerId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.ownerCode != null">
+          OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR},
+        </if>
+        <if test="record.skuId != null">
+          SKU_ID = #{record.skuId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.skuCode != null">
+          SKU_CODE = #{record.skuCode,jdbcType=VARCHAR},
+        </if>
+        <if test="record.uom != null">
+          UOM = #{record.uom,jdbcType=VARCHAR},
+        </if>
+        <if test="record.packId != null">
+          PACK_ID = #{record.packId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.packCode != null">
+          PACK_CODE = #{record.packCode,jdbcType=VARCHAR},
+        </if>
+        <if test="record.lotNumber != null">
+          LOT_NUMBER = #{record.lotNumber,jdbcType=VARCHAR},
+        </if>
+        <if test="record.fromLpnNumber != null">
+          FROM_LPN_NUMBER = #{record.fromLpnNumber,jdbcType=VARCHAR},
+        </if>
+        <if test="record.fromLocationCode != null">
+          FROM_LOCATION_CODE = #{record.fromLocationCode,jdbcType=VARCHAR},
+        </if>
+        <if test="record.fromZoneCode != null">
+          FROM_ZONE_CODE = #{record.fromZoneCode,jdbcType=VARCHAR},
+        </if>
+        <if test="record.toLpnNumber != null">
+          TO_LPN_NUMBER = #{record.toLpnNumber,jdbcType=VARCHAR},
+        </if>
+        <if test="record.toLocationCode != null">
+          TO_LOCATION_CODE = #{record.toLocationCode,jdbcType=VARCHAR},
+        </if>
+        <if test="record.toZoneCode != null">
+          TO_ZONE_CODE = #{record.toZoneCode,jdbcType=VARCHAR},
+        </if>
+        <if test="record.fromLocationLogical != null">
+          FROM_LOCATION_LOGICAL = #{record.fromLocationLogical,jdbcType=VARCHAR},
+        </if>
+        <if test="record.toLocationLogical != null">
+          TO_LOCATION_LOGICAL = #{record.toLocationLogical,jdbcType=VARCHAR},
+        </if>
+        <if test="record.userName != null">
+          USER_NAME = #{record.userName,jdbcType=VARCHAR},
+        </if>
+        <if test="record.releaseTime != null">
+          RELEASE_TIME = #{record.releaseTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.completeTime != null">
+          COMPLETE_TIME = #{record.completeTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.startTime != null">
+          START_TIME = #{record.startTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.endTime != null">
+          END_TIME = #{record.endTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.quantity != null">
+          QUANTITY = #{record.quantity,jdbcType=DECIMAL},
+        </if>
+        <if test="record.reason != null">
+          REASON = #{record.reason,jdbcType=VARCHAR},
+        </if>
+        <if test="record.sourceNumber != null">
+          SOURCE_NUMBER = #{record.sourceNumber,jdbcType=DECIMAL},
+        </if>
+        <if test="record.sourceLineNumber != null">
+          SOURCE_LINE_NUMBER = #{record.sourceLineNumber,jdbcType=DECIMAL},
+        </if>
+        <if test="record.sourceBillNumber != null">
+          SOURCE_BILL_NUMBER = #{record.sourceBillNumber,jdbcType=VARCHAR},
+        </if>
+        <if test="record.status != null">
+          STATUS = #{record.status,jdbcType=VARCHAR},
+        </if>
+        <if test="record.remark != null">
+          REMARK = #{record.remark,jdbcType=VARCHAR},
+        </if>
+        <if test="record.companyId != null">
+          COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.warehouseId != null">
+          WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.delFlag != null">
+          DEL_FLAG = #{record.delFlag,jdbcType=CHAR},
+        </if>
+        <if test="record.createBy != null">
+          CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+        </if>
+        <if test="record.createTime != null">
+          CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.updateBy != null">
+          UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
+        </if>
+        <if test="record.updateTime != null">
+          UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.description != null">
+          DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+        </if>
+        <if test="record.fromLpnType != null">
+          FROM_LPN_TYPE = #{record.fromLpnType,jdbcType=VARCHAR},
+        </if>
+      </trim>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_With_Version_Where_Clause" />
+    </if>
+  </update>
+</mapper>

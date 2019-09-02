@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${web.label.role}">角色</title>
+    <head th:replace="common/head" />
+</head>
+<body class="easyui-layout" >
+	<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+		<div id="searchDiv">
+			<div style="margin-left: 10px;">
+				<form id="searchForm" data-table="#dataTable" >
+					<div style="margin-bottom:10px">
+						<input name="code" class="easyui-textbox" wms:data-options="label:'${web.label.code}',labelPosition:'top'">
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="descr" class="easyui-textbox" wms:data-options="label:'${web.label.descr}',labelPosition:'top'">
+					</div>
+					<div style="margin-bottom:10px">
+						<input class="easyui-combobox" name="active" wms:data-options="
+						data: codelkups['YESNO'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.active}',
+						labelPosition: 'top'
+						">
+					</div>
+				</form>
+			</div>
+			<div style="text-align: center;">
+				<a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;" data-options="iconCls:'icon-search'" >
+					<span wms:text="${web.label.search}">Search</span>
+				</a>	
+				<a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;" data-options="iconCls:'icon-clear'" >
+					<span wms:text="${web.label.clear}">Clear</span>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div data-options="region:'center',border:false" >
+		<div class="tableToolbar">
+			<a href="#" class="easyui-linkbutton common-add" data-addpanel="#addDiv">
+				<span wms:text="${web.label.add}">Add</span>
+			</a>
+			<a href="#" class="easyui-linkbutton common-rowsave" data-table="#dataTable" th:data-url="@{/services/inner/role/save}" >
+				<span wms:text="${web.label.save}">Save</span>
+			</a>
+			<a href="#" class="easyui-linkbutton common-rowdel"  data-table="#dataTable" th:data-url="@{/services/inner/role/delete}">
+				<span wms:text="${web.label.delete}">Delete</span>
+			</a>
+			<a href="#" class="easyui-linkbutton common-role-permission"  data-table="#dataTable" >
+				<span wms:text="${web.label.permission}">Permission</span>
+			</a>
+			<a href="#" class="easyui-linkbutton common-role-warehouse"  data-table="#dataTable" >
+				<span wms:text="${web.label.warehouse}">Warehouse</span>
+			</a>
+			<a href="#" class="easyui-linkbutton common-role-company"  data-table="#dataTable" >
+				<span wms:text="${web.label.company}">Company</span>
+			</a>
+		</div>
+		<div>
+			<table id="dataTable" wms:title="${web.label.companylist.title}" class="easyui-datagrid"
+							th:data-delayUrl="@{/services/inner/role/find}">
+				<thead>
+					<tr>
+						<th field="companyId" data-options="checkbox:true"></th>
+						<th field="code" width="80" wms:text="${web.label.code}" data-options="sortable:true">code</th>
+						<th field="descr" width="150" wms:text="${web.label.descr}" data-options="sortable:true,editor:'text'">descr</th>
+						<th field="active" width="50" wms:text="${web.label.active}" data-options="
+							sortable:true,
+							formatter:function(value,row){
+								return getCodelkupValue('YESNO',value);
+							},
+							editor:{
+								type:'combobox',
+								options:{
+									valueField:'code',
+									textField:'descr',
+									data: codelkups['YESNO']
+								}
+							}
+						" >active</th>
+						<th field="createBy" width="80" wms:text="${web.label.createby}" >createBy</th>
+						<th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true">createTime</th>
+						<th field="updateBy" width="80" wms:text="${web.label.updateby}" >updateBy</th>
+						<th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">updateTime</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+	<div id="addDiv" wms:title="${web.label.add}" style="width:300px;height:350px; display: none;">
+		<div style="width: 100%;padding-left: 50px;">
+			<form method="post" id="addForm" th:data-url="@{/services/inner/role/add}">
+				<table style="width: 100%;">
+					<tr>
+						<td>
+							<input name="code" class="easyui-textbox" wms:data-options="required:true,label:'${web.label.code}',labelPosition:'top'">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input name="descr" class="easyui-textbox"  wms:data-options="required:true,label:'${web.label.descr}',labelPosition:'top'">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input class="easyui-combobox" name="active" style="width: 100px;" wms:data-options="
+							required:true,
+							value: 'Y',
+							data: codelkups['YESNO'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.active}',
+							labelPosition: 'top'
+							" />
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<div style="text-align: center;margin-top: 30px;">
+				<a href="#" class="easyui-linkbutton common-confirmadd" data-form="#addForm" data-table="#dataTable" id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
+					<span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
+				</a>
+				<a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');" data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
+					<span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div id="treeDiv" wms:title="${web.label.role.permission}" style="width:500px;height:500px; display: none;" data-options="buttons: '#treeButton'">
+		<ul id="permissionTree" data-options="
+			checkbox: true
+			"></ul>
+	</div>
+	<div id="treeButton">
+		<a href="javascript:void(0)" class="easyui-linkbutton common-role-permission-save" wms:text="${web.label.save}">Save</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#treeDiv').dialog('close')" wms:text="${web.label.close}">Close</a>
+	</div>
+	
+	<div id="roleWarehouseDiv" wms:title="${web.label.role.warehouse}" style="width:700px;height:500px; display: none;" >
+		<div id="roleWarehouseTabs" style="width:100%;height:100%;overflow:hidden;" data-options="
+			onSelect: function(title,index){
+				if (index == 0) loadRoleWarehouse();
+				if (index == 1) loadWarehouse();
+			}
+		">
+			<div wms:title="${web.label.rolewarehouse}" >
+				<div id="roleWarehouseToolbar" style="padding-left: 30px;">
+					<a href="#" class="easyui-linkbutton common-rowdel"  data-table="#roleWarehouseData" th:data-url="@{/services/inner/roleData/delete}">
+						<span wms:text="${web.label.delete}">Delete</span>
+					</a>
+				</div>
+				<table id="roleWarehouseData" style="height:100%;" data-options="
+								rownumbers: true,
+								selectOnCheck:true,
+								checkOnSelect:false,
+								method: 'post',
+								multiSort: true,
+								remoteSort: true,
+								toolbar:'#roleWarehouseToolbar',
+								url:'../../services/inner/roleData/haveWarehouse'
+								">
+					<thead>
+						<tr>
+							<th field="roleDataId" data-options="checkbox:true"></th>
+							<th field="warehouseCode" width="80" wms:text="${web.label.warehouse.code}" data-options="sortable:true">warehouseCode</th>
+							<th field="warehouseDescr" width="80" wms:text="${web.label.warehouse.descr}" data-options="sortable:true">warehouseDescr</th>
+							<th field="createBy" width="80" wms:text="${web.label.createby}" >createBy</th>
+							<th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true">createTime</th>
+							<th field="updateBy" width="80" wms:text="${web.label.updateby}" >updateBy</th>
+							<th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">updateTime</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div wms:title="${web.lable.role.warehouse.choice}">
+				<div id="warehouseToolbar" style="padding-left: 30px;">
+					<a href="#" class="easyui-linkbutton common-role-data-add" data-id="warehouseId"  data-table="#warehouseData" th:data-url="@{/services/inner/roleData/addWarehouse}">
+						<span wms:text="${web.label.add}">Add</span>
+					</a>
+				</div>
+				<table id="warehouseData" style="height: 100%;width:100%;" wms:data-options="
+								rownumbers: true,
+								selectOnCheck:true,
+								checkOnSelect:false,
+								method: 'post',
+								multiSort: true,
+								remoteSort: true,
+								toolbar:'#warehouseToolbar',
+								url:'../../services/inner/roleData/findWarehouse'
+								">
+					<thead>
+						<tr>
+							<th field="warehouseId" data-options="checkbox:true"></th>
+							<th field="code" width="80" wms:text="${web.label.code}" data-options="sortable:true">roleCode</th>
+							<th field="descr" width="80" wms:text="${web.label.descr}" data-options="sortable:true">roleDescr</th>
+							<th field="createBy" width="80" wms:text="${web.label.createby}" >createBy</th>
+							<th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true">createTime</th>
+							<th field="updateBy" width="80" wms:text="${web.label.updateby}" >updateBy</th>
+							<th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">updateTime</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div id="roleCompanyDiv" wms:title="${web.label.role.company}" style="width:700px;height:500px; display: none;" >
+		<div id="roleCompanyTabs" style="width:100%;height:100%;overflow:hidden;" data-options="
+			onSelect: function(title,index){
+				if (index == 0) loadRoleCompany();
+				if (index == 1) loadCompany();
+			}
+		">
+			<div wms:title="${web.label.rolecompany}" >
+				<div id="roleCompanyToolbar" style="padding-left: 30px;">
+					<a href="#" class="easyui-linkbutton common-rowdel"  data-table="#roleCompanyData" th:data-url="@{/services/inner/roleData/delete}">
+						<span wms:text="${web.label.delete}">Delete</span>
+					</a>
+				</div>
+				<table id="roleCompanyData" style="height:100%;" data-options="
+								rownumbers: true,
+								selectOnCheck:true,
+								checkOnSelect:false,
+								method: 'post',
+								multiSort: true,
+								remoteSort: true,
+								toolbar:'#roleCompanyToolbar',
+								url:'../../services/inner/roleData/haveCompany'
+								">
+					<thead>
+						<tr>
+							<th field="roleDataId" data-options="checkbox:true"></th>
+							<th field="companyCode" width="80" wms:text="${web.label.company}" data-options="sortable:true">companyCode</th>
+							<th field="companyDescr" width="80" wms:text="${web.label.company.descr}" data-options="sortable:true">companyDescr</th>
+							<th field="createBy" width="80" wms:text="${web.label.createby}" >createBy</th>
+							<th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true">createTime</th>
+							<th field="updateBy" width="80" wms:text="${web.label.updateby}" >updateBy</th>
+							<th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">updateTime</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div wms:title="${web.lable.role.company.choice}">
+				<div id="companyToolbar" style="padding-left: 30px;">
+					<a href="#" class="easyui-linkbutton common-role-data-add" data-id="companyId"  data-table="#companyData" th:data-url="@{/services/inner/roleData/addCompany}">
+						<span wms:text="${web.label.add}">Add</span>
+					</a>
+				</div>
+				<table id="companyData" style="height: 100%;width:100%;" wms:data-options="
+								rownumbers: true,
+								selectOnCheck:true,
+								checkOnSelect:false,
+								method: 'post',
+								multiSort: true,
+								remoteSort: true,
+								toolbar:'#companyToolbar',
+								url:'../../services/inner/roleData/findCompany'
+								">
+					<thead>
+						<tr>
+							<th field="companyId" data-options="checkbox:true"></th>
+							<th field="code" width="80" wms:text="${web.label.code}" data-options="sortable:true">companyCode</th>
+							<th field="descr" width="80" wms:text="${web.label.descr}" data-options="sortable:true">companyDescr</th>
+							<th field="createBy" width="80" wms:text="${web.label.createby}" >createBy</th>
+							<th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true">createTime</th>
+							<th field="updateBy" width="80" wms:text="${web.label.updateby}" >updateBy</th>
+							<th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">updateTime</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+<script th:replace="common/js" />
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=YESNO}"></script>
+<script type="text/javascript" th:inline="text">
+	var roleId;
+	$(function(){
+		$('.common-role-permission').click(function(){
+			var checkedRows = $('#dataTable').datagrid('getChecked');
+			if (checkedRows.length != 1) {
+				showError($.locale.selectOneRow);
+				return;
+			}
+			roleId = checkedRows[0].roleId;
+			
+			$('#permissionTree').tree({
+				url:'../../services/inner/rolePermission/find?roleId='+roleId
+			});
+			
+			$('#treeDiv').dialog({
+			    closed: true,
+			    modal: true,
+			    fix: true
+			}).dialog('open');
+		});
+		
+		$('.common-role-permission-save').click(function(){
+			
+			if (roleId == undefined) {
+				showError($.locale.selectOneRole);
+				return;
+			}
+			
+			var checkedNode = $('#permissionTree').tree('getChecked',['checked', 'indeterminate']);
+			if (checkedNode.length == 0) {
+				confirmMsg($.locale.clearAll, function(r){
+					if (!r){
+						return;
+					}
+				
+					var data = {roleId : roleId};
+					data = getBaseData(data);
+					
+					$.post({
+						url: '../../services/inner/rolePermission/delete',
+						data:data,
+						success: function(data){
+							data = returnData(data);
+							closeLoading();
+							if (data.code == '0') {
+								showError(data.msg);
+								return;
+							}
+							showMsg($.locale.saveSuccess);
+						}
+					});
+				});
+				return;
+			}
+			
+			var data = [];
+			for (var n in checkedNode){
+				data.push({
+					roleId : roleId,
+					permissionId : checkedNode[n].id
+				});
+			}
+			data = getBaseData(data);
+			
+			$.post({
+				url: '../../services/inner/rolePermission/add',
+				data:data,
+				success: function(data){
+					data = returnData(data);
+					closeLoading();
+					if (data.code == '0') {
+						showError(data.msg);
+						return;
+					}
+					showMsg($.locale.saveSuccess);
+				}
+			});
+			
+			
+			
+		});
+		
+		
+		$('.common-role-warehouse').click(function(){
+			var checkedRows = $('#dataTable').datagrid('getChecked');
+			if (checkedRows.length != 1) {
+				showError($.locale.selectOneRow);
+				return;
+			}
+			roleId = checkedRows[0].roleId;
+			
+			//load tabs
+			$('#roleWarehouseTabs').tabs();
+			
+			$('#roleWarehouseDiv').dialog({
+			    closed: true,
+			    modal: true,
+			    fix: true
+			}).dialog('open');
+			
+		});
+		
+		$('.common-role-company').click(function(){
+			var checkedRows = $('#dataTable').datagrid('getChecked');
+			if (checkedRows.length != 1) {
+				showError($.locale.selectOneRow);
+				return;
+			}
+			roleId = checkedRows[0].roleId;
+			
+			//load tabs
+			$('#roleCompanyTabs').tabs();
+			
+			$('#roleCompanyDiv').dialog({
+			    closed: true,
+			    modal: true,
+			    fix: true
+			}).dialog('open');
+			
+		});
+		
+		
+		$('.common-role-data-add').click(function(){
+			var datagrid = $(this).attr('data-table');
+			var dataid = $(this).attr('data-id');
+			
+			var checkedRows = $(datagrid).datagrid('getChecked');
+			if (checkedRows.length == 0) {
+				showError($.locale.selectOneRow);
+				return;
+			}
+			
+			var data = [];
+			for(var i in checkedRows){
+				data.push({
+					roleId : roleId,
+					dataId : checkedRows[i][dataid]
+				});
+			}
+			
+			var data = getBaseData(data);
+			
+			var url = $(this).attr('data-url');
+			loading();
+			$.post({
+				url: url,
+				data:data,
+				success: function(data){
+					data = returnData(data);
+					closeLoading();
+					if (data.code == '0') {
+						showError(data.msg);
+						return;
+					}
+					showMsg($.locale.addSuccess, function(){
+						if (dataid == 'warehouseId'){
+							loadWarehouse();
+						}
+						if (dataid = 'companyId'){
+							loadCompany();
+						}
+					});
+				}
+			});
+		});
+	});
+	
+	
+	function loadRoleWarehouse(){
+		$('#roleWarehouseData').datagrid({
+			queryParams: {
+				roleId : roleId
+			}
+		}).datagrid('clearChecked');
+	}
+	function loadWarehouse(){
+		$('#warehouseData').datagrid({
+			queryParams: {
+				roleId : roleId
+			}
+		}).datagrid('clearChecked');
+	}
+	function loadRoleCompany(){
+		$('#roleCompanyData').datagrid({
+			queryParams: {
+				roleId : roleId
+			}
+		}).datagrid('clearChecked');
+	}
+	function loadCompany(){
+		$('#companyData').datagrid({
+			queryParams: {
+				roleId : roleId
+			}
+		}).datagrid('clearChecked');
+	}
+	
+</script>
+</html>

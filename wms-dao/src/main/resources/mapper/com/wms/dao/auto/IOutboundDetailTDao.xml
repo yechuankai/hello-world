@@ -1,0 +1,1013 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wms.dao.auto.IOutboundDetailTDao">
+  <resultMap id="BaseResultMap" type="com.wms.entity.auto.OutboundDetailTEntity">
+    <id column="OUTBOUND_DETAIL_ID" jdbcType="DECIMAL" property="outboundDetailId" />
+    <result column="OUTBOUND_HEADER_ID" jdbcType="DECIMAL" property="outboundHeaderId" />
+    <result column="LINE_NUMBER" jdbcType="DECIMAL" property="lineNumber" />
+    <result column="SOURCE_LINE_NUMBER" jdbcType="DECIMAL" property="sourceLineNumber" />
+    <result column="OWNER_ID" jdbcType="DECIMAL" property="ownerId" />
+    <result column="OWNER_CODE" jdbcType="VARCHAR" property="ownerCode" />
+    <result column="SKU_ID" jdbcType="DECIMAL" property="skuId" />
+    <result column="SKU_CODE" jdbcType="VARCHAR" property="skuCode" />
+    <result column="SKU_ALIAS" jdbcType="VARCHAR" property="skuAlias" />
+    <result column="ALLOCATE_STRATEGY_ID" jdbcType="DECIMAL" property="allocateStrategyId" />
+    <result column="ALLOCATE_STRATEGY_CODE" jdbcType="VARCHAR" property="allocateStrategyCode" />
+    <result column="UOM" jdbcType="VARCHAR" property="uom" />
+    <result column="UOM_QUANTITY" jdbcType="DECIMAL" property="uomQuantity" />
+    <result column="PACK_ID" jdbcType="DECIMAL" property="packId" />
+    <result column="PACK_CODE" jdbcType="VARCHAR" property="packCode" />
+    <result column="QUANTITY_ORDER" jdbcType="DECIMAL" property="quantityOrder" />
+    <result column="QUANTITY_EXPECTED" jdbcType="DECIMAL" property="quantityExpected" />
+    <result column="QUANTITY_ALLOCATED" jdbcType="DECIMAL" property="quantityAllocated" />
+    <result column="QUANTITY_PICKED" jdbcType="DECIMAL" property="quantityPicked" />
+    <result column="QUANTITY_SHIPED" jdbcType="DECIMAL" property="quantityShiped" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="LOT_ATTRIBUTE1" jdbcType="VARCHAR" property="lotAttribute1" />
+    <result column="LOT_ATTRIBUTE2" jdbcType="VARCHAR" property="lotAttribute2" />
+    <result column="LOT_ATTRIBUTE3" jdbcType="VARCHAR" property="lotAttribute3" />
+    <result column="LOT_ATTRIBUTE4" jdbcType="TIMESTAMP" property="lotAttribute4" />
+    <result column="LOT_ATTRIBUTE5" jdbcType="TIMESTAMP" property="lotAttribute5" />
+    <result column="LOT_ATTRIBUTE6" jdbcType="VARCHAR" property="lotAttribute6" />
+    <result column="LOT_ATTRIBUTE7" jdbcType="VARCHAR" property="lotAttribute7" />
+    <result column="LOT_ATTRIBUTE8" jdbcType="VARCHAR" property="lotAttribute8" />
+    <result column="LOT_ATTRIBUTE9" jdbcType="VARCHAR" property="lotAttribute9" />
+    <result column="LOT_ATTRIBUTE10" jdbcType="VARCHAR" property="lotAttribute10" />
+    <result column="LOT_ATTRIBUTE11" jdbcType="TIMESTAMP" property="lotAttribute11" />
+    <result column="LOT_ATTRIBUTE12" jdbcType="TIMESTAMP" property="lotAttribute12" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="COMPANY_ID" jdbcType="DECIMAL" property="companyId" />
+    <result column="WAREHOUSE_ID" jdbcType="DECIMAL" property="warehouseId" />
+    <result column="DEL_FLAG" jdbcType="CHAR" property="delFlag" />
+    <result column="CREATE_BY" jdbcType="VARCHAR" property="createBy" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_BY" jdbcType="VARCHAR" property="updateBy" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATE_VERSION" jdbcType="DECIMAL" property="updateVersion" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="WEIGHT_GROSS" jdbcType="DECIMAL" property="weightGross" />
+    <result column="WEIGHT_NET" jdbcType="DECIMAL" property="weightNet" />
+    <result column="WEIGHT_TARE" jdbcType="DECIMAL" property="weightTare" />
+    <result column="VOLUME" jdbcType="DECIMAL" property="volume" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach close=")" collection="example.oredCriteria" item="criteria" open="and (" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_With_Version_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    <where >
+      UPDATE_VERSION = #{version,jdbcType=DECIMAL}
+      <if test="example.oredCriteria.size() > 0">
+        <foreach close=")" collection="example.oredCriteria" item="criteria" open="and (" separator="or">
+          <if test="criteria.valid">
+            <trim prefix="(" prefixOverrides="and" suffix=")">
+              <foreach collection="criteria.criteria" item="criterion">
+                <choose>
+                  <when test="criterion.noValue">
+                    and ${criterion.condition}
+                  </when>
+                  <when test="criterion.singleValue">
+                    and ${criterion.condition} #{criterion.value}
+                  </when>
+                  <when test="criterion.betweenValue">
+                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                  </when>
+                  <when test="criterion.listValue">
+                    and ${criterion.condition}
+                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                      #{listItem}
+                    </foreach>
+                  </when>
+                </choose>
+              </foreach>
+            </trim>
+          </if>
+        </foreach>
+      </if>
+    </where >
+  </sql>
+  <sql id="Base_Column_List">
+    OUTBOUND_DETAIL_ID, OUTBOUND_HEADER_ID, LINE_NUMBER, SOURCE_LINE_NUMBER, OWNER_ID, 
+    OWNER_CODE, SKU_ID, SKU_CODE, SKU_ALIAS, ALLOCATE_STRATEGY_ID, ALLOCATE_STRATEGY_CODE, 
+    UOM, UOM_QUANTITY, PACK_ID, PACK_CODE, QUANTITY_ORDER, QUANTITY_EXPECTED, QUANTITY_ALLOCATED, 
+    QUANTITY_PICKED, QUANTITY_SHIPED, STATUS, LOT_ATTRIBUTE1, LOT_ATTRIBUTE2, LOT_ATTRIBUTE3, 
+    LOT_ATTRIBUTE4, LOT_ATTRIBUTE5, LOT_ATTRIBUTE6, LOT_ATTRIBUTE7, LOT_ATTRIBUTE8, LOT_ATTRIBUTE9, 
+    LOT_ATTRIBUTE10, LOT_ATTRIBUTE11, LOT_ATTRIBUTE12, REMARK, COMPANY_ID, WAREHOUSE_ID, 
+    DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, 
+    WEIGHT_GROSS, WEIGHT_NET, WEIGHT_TARE, VOLUME
+  </sql>
+  <select id="selectByExample" parameterType="com.wms.dao.example.OutboundDetailTExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from OUTBOUND_DETAIL_T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.wms.dao.example.OutboundDetailTExample">
+    delete from OUTBOUND_DETAIL_T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wms.entity.auto.OutboundDetailTEntity">
+    insert into OUTBOUND_DETAIL_T (OUTBOUND_DETAIL_ID, OUTBOUND_HEADER_ID, 
+      LINE_NUMBER, SOURCE_LINE_NUMBER, OWNER_ID, 
+      OWNER_CODE, SKU_ID, SKU_CODE, 
+      SKU_ALIAS, ALLOCATE_STRATEGY_ID, ALLOCATE_STRATEGY_CODE, 
+      UOM, UOM_QUANTITY, PACK_ID, 
+      PACK_CODE, QUANTITY_ORDER, QUANTITY_EXPECTED, 
+      QUANTITY_ALLOCATED, QUANTITY_PICKED, QUANTITY_SHIPED, 
+      STATUS, LOT_ATTRIBUTE1, LOT_ATTRIBUTE2, 
+      LOT_ATTRIBUTE3, LOT_ATTRIBUTE4, LOT_ATTRIBUTE5, 
+      LOT_ATTRIBUTE6, LOT_ATTRIBUTE7, LOT_ATTRIBUTE8, 
+      LOT_ATTRIBUTE9, LOT_ATTRIBUTE10, LOT_ATTRIBUTE11, 
+      LOT_ATTRIBUTE12, REMARK, COMPANY_ID, 
+      WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
+      CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
+      UPDATE_VERSION, DESCRIPTION, WEIGHT_GROSS, 
+      WEIGHT_NET, WEIGHT_TARE, VOLUME
+      )
+    values (#{outboundDetailId,jdbcType=DECIMAL}, #{outboundHeaderId,jdbcType=DECIMAL}, 
+      #{lineNumber,jdbcType=DECIMAL}, #{sourceLineNumber,jdbcType=DECIMAL}, #{ownerId,jdbcType=DECIMAL}, 
+      #{ownerCode,jdbcType=VARCHAR}, #{skuId,jdbcType=DECIMAL}, #{skuCode,jdbcType=VARCHAR}, 
+      #{skuAlias,jdbcType=VARCHAR}, #{allocateStrategyId,jdbcType=DECIMAL}, #{allocateStrategyCode,jdbcType=VARCHAR}, 
+      #{uom,jdbcType=VARCHAR}, #{uomQuantity,jdbcType=DECIMAL}, #{packId,jdbcType=DECIMAL}, 
+      #{packCode,jdbcType=VARCHAR}, #{quantityOrder,jdbcType=DECIMAL}, #{quantityExpected,jdbcType=DECIMAL}, 
+      #{quantityAllocated,jdbcType=DECIMAL}, #{quantityPicked,jdbcType=DECIMAL}, #{quantityShiped,jdbcType=DECIMAL}, 
+      #{status,jdbcType=VARCHAR}, #{lotAttribute1,jdbcType=VARCHAR}, #{lotAttribute2,jdbcType=VARCHAR}, 
+      #{lotAttribute3,jdbcType=VARCHAR}, #{lotAttribute4,jdbcType=TIMESTAMP}, #{lotAttribute5,jdbcType=TIMESTAMP}, 
+      #{lotAttribute6,jdbcType=VARCHAR}, #{lotAttribute7,jdbcType=VARCHAR}, #{lotAttribute8,jdbcType=VARCHAR}, 
+      #{lotAttribute9,jdbcType=VARCHAR}, #{lotAttribute10,jdbcType=VARCHAR}, #{lotAttribute11,jdbcType=TIMESTAMP}, 
+      #{lotAttribute12,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, 
+      #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, #{weightGross,jdbcType=DECIMAL}, 
+      #{weightNet,jdbcType=DECIMAL}, #{weightTare,jdbcType=DECIMAL}, #{volume,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wms.entity.auto.OutboundDetailTEntity">
+    insert into OUTBOUND_DETAIL_T
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="outboundDetailId != null">
+        OUTBOUND_DETAIL_ID,
+      </if>
+      <if test="outboundHeaderId != null">
+        OUTBOUND_HEADER_ID,
+      </if>
+      <if test="lineNumber != null">
+        LINE_NUMBER,
+      </if>
+      <if test="sourceLineNumber != null">
+        SOURCE_LINE_NUMBER,
+      </if>
+      <if test="ownerId != null">
+        OWNER_ID,
+      </if>
+      <if test="ownerCode != null">
+        OWNER_CODE,
+      </if>
+      <if test="skuId != null">
+        SKU_ID,
+      </if>
+      <if test="skuCode != null">
+        SKU_CODE,
+      </if>
+      <if test="skuAlias != null">
+        SKU_ALIAS,
+      </if>
+      <if test="allocateStrategyId != null">
+        ALLOCATE_STRATEGY_ID,
+      </if>
+      <if test="allocateStrategyCode != null">
+        ALLOCATE_STRATEGY_CODE,
+      </if>
+      <if test="uom != null">
+        UOM,
+      </if>
+      <if test="uomQuantity != null">
+        UOM_QUANTITY,
+      </if>
+      <if test="packId != null">
+        PACK_ID,
+      </if>
+      <if test="packCode != null">
+        PACK_CODE,
+      </if>
+      <if test="quantityOrder != null">
+        QUANTITY_ORDER,
+      </if>
+      <if test="quantityExpected != null">
+        QUANTITY_EXPECTED,
+      </if>
+      <if test="quantityAllocated != null">
+        QUANTITY_ALLOCATED,
+      </if>
+      <if test="quantityPicked != null">
+        QUANTITY_PICKED,
+      </if>
+      <if test="quantityShiped != null">
+        QUANTITY_SHIPED,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="lotAttribute1 != null">
+        LOT_ATTRIBUTE1,
+      </if>
+      <if test="lotAttribute2 != null">
+        LOT_ATTRIBUTE2,
+      </if>
+      <if test="lotAttribute3 != null">
+        LOT_ATTRIBUTE3,
+      </if>
+      <if test="lotAttribute4 != null">
+        LOT_ATTRIBUTE4,
+      </if>
+      <if test="lotAttribute5 != null">
+        LOT_ATTRIBUTE5,
+      </if>
+      <if test="lotAttribute6 != null">
+        LOT_ATTRIBUTE6,
+      </if>
+      <if test="lotAttribute7 != null">
+        LOT_ATTRIBUTE7,
+      </if>
+      <if test="lotAttribute8 != null">
+        LOT_ATTRIBUTE8,
+      </if>
+      <if test="lotAttribute9 != null">
+        LOT_ATTRIBUTE9,
+      </if>
+      <if test="lotAttribute10 != null">
+        LOT_ATTRIBUTE10,
+      </if>
+      <if test="lotAttribute11 != null">
+        LOT_ATTRIBUTE11,
+      </if>
+      <if test="lotAttribute12 != null">
+        LOT_ATTRIBUTE12,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="companyId != null">
+        COMPANY_ID,
+      </if>
+      <if test="warehouseId != null">
+        WAREHOUSE_ID,
+      </if>
+      <if test="delFlag != null">
+        DEL_FLAG,
+      </if>
+      <if test="createBy != null">
+        CREATE_BY,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateBy != null">
+        UPDATE_BY,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="updateVersion != null">
+        UPDATE_VERSION,
+      </if>
+      <if test="description != null">
+        DESCRIPTION,
+      </if>
+      <if test="weightGross != null">
+        WEIGHT_GROSS,
+      </if>
+      <if test="weightNet != null">
+        WEIGHT_NET,
+      </if>
+      <if test="weightTare != null">
+        WEIGHT_TARE,
+      </if>
+      <if test="volume != null">
+        VOLUME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="outboundDetailId != null">
+        #{outboundDetailId,jdbcType=DECIMAL},
+      </if>
+      <if test="outboundHeaderId != null">
+        #{outboundHeaderId,jdbcType=DECIMAL},
+      </if>
+      <if test="lineNumber != null">
+        #{lineNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="sourceLineNumber != null">
+        #{sourceLineNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="ownerId != null">
+        #{ownerId,jdbcType=DECIMAL},
+      </if>
+      <if test="ownerCode != null">
+        #{ownerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="skuId != null">
+        #{skuId,jdbcType=DECIMAL},
+      </if>
+      <if test="skuCode != null">
+        #{skuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="skuAlias != null">
+        #{skuAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="allocateStrategyId != null">
+        #{allocateStrategyId,jdbcType=DECIMAL},
+      </if>
+      <if test="allocateStrategyCode != null">
+        #{allocateStrategyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="uom != null">
+        #{uom,jdbcType=VARCHAR},
+      </if>
+      <if test="uomQuantity != null">
+        #{uomQuantity,jdbcType=DECIMAL},
+      </if>
+      <if test="packId != null">
+        #{packId,jdbcType=DECIMAL},
+      </if>
+      <if test="packCode != null">
+        #{packCode,jdbcType=VARCHAR},
+      </if>
+      <if test="quantityOrder != null">
+        #{quantityOrder,jdbcType=DECIMAL},
+      </if>
+      <if test="quantityExpected != null">
+        #{quantityExpected,jdbcType=DECIMAL},
+      </if>
+      <if test="quantityAllocated != null">
+        #{quantityAllocated,jdbcType=DECIMAL},
+      </if>
+      <if test="quantityPicked != null">
+        #{quantityPicked,jdbcType=DECIMAL},
+      </if>
+      <if test="quantityShiped != null">
+        #{quantityShiped,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="lotAttribute1 != null">
+        #{lotAttribute1,jdbcType=VARCHAR},
+      </if>
+      <if test="lotAttribute2 != null">
+        #{lotAttribute2,jdbcType=VARCHAR},
+      </if>
+      <if test="lotAttribute3 != null">
+        #{lotAttribute3,jdbcType=VARCHAR},
+      </if>
+      <if test="lotAttribute4 != null">
+        #{lotAttribute4,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lotAttribute5 != null">
+        #{lotAttribute5,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lotAttribute6 != null">
+        #{lotAttribute6,jdbcType=VARCHAR},
+      </if>
+      <if test="lotAttribute7 != null">
+        #{lotAttribute7,jdbcType=VARCHAR},
+      </if>
+      <if test="lotAttribute8 != null">
+        #{lotAttribute8,jdbcType=VARCHAR},
+      </if>
+      <if test="lotAttribute9 != null">
+        #{lotAttribute9,jdbcType=VARCHAR},
+      </if>
+      <if test="lotAttribute10 != null">
+        #{lotAttribute10,jdbcType=VARCHAR},
+      </if>
+      <if test="lotAttribute11 != null">
+        #{lotAttribute11,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lotAttribute12 != null">
+        #{lotAttribute12,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=DECIMAL},
+      </if>
+      <if test="warehouseId != null">
+        #{warehouseId,jdbcType=DECIMAL},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateVersion != null">
+        #{updateVersion,jdbcType=DECIMAL},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="weightGross != null">
+        #{weightGross,jdbcType=DECIMAL},
+      </if>
+      <if test="weightNet != null">
+        #{weightNet,jdbcType=DECIMAL},
+      </if>
+      <if test="weightTare != null">
+        #{weightTare,jdbcType=DECIMAL},
+      </if>
+      <if test="volume != null">
+        #{volume,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.wms.dao.example.OutboundDetailTExample" resultType="java.lang.Long">
+    select count(*) from OUTBOUND_DETAIL_T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update OUTBOUND_DETAIL_T
+    <set>
+      <if test="record.outboundDetailId != null">
+        OUTBOUND_DETAIL_ID = #{record.outboundDetailId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.outboundHeaderId != null">
+        OUTBOUND_HEADER_ID = #{record.outboundHeaderId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lineNumber != null">
+        LINE_NUMBER = #{record.lineNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sourceLineNumber != null">
+        SOURCE_LINE_NUMBER = #{record.sourceLineNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="record.ownerId != null">
+        OWNER_ID = #{record.ownerId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.ownerCode != null">
+        OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.skuId != null">
+        SKU_ID = #{record.skuId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.skuCode != null">
+        SKU_CODE = #{record.skuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.skuAlias != null">
+        SKU_ALIAS = #{record.skuAlias,jdbcType=VARCHAR},
+      </if>
+      <if test="record.allocateStrategyId != null">
+        ALLOCATE_STRATEGY_ID = #{record.allocateStrategyId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.allocateStrategyCode != null">
+        ALLOCATE_STRATEGY_CODE = #{record.allocateStrategyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uom != null">
+        UOM = #{record.uom,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uomQuantity != null">
+        UOM_QUANTITY = #{record.uomQuantity,jdbcType=DECIMAL},
+      </if>
+      <if test="record.packId != null">
+        PACK_ID = #{record.packId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.packCode != null">
+        PACK_CODE = #{record.packCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.quantityOrder != null">
+        QUANTITY_ORDER = #{record.quantityOrder,jdbcType=DECIMAL},
+      </if>
+      <if test="record.quantityExpected != null">
+        QUANTITY_EXPECTED = #{record.quantityExpected,jdbcType=DECIMAL},
+      </if>
+      <if test="record.quantityAllocated != null">
+        QUANTITY_ALLOCATED = #{record.quantityAllocated,jdbcType=DECIMAL},
+      </if>
+      <if test="record.quantityPicked != null">
+        QUANTITY_PICKED = #{record.quantityPicked,jdbcType=DECIMAL},
+      </if>
+      <if test="record.quantityShiped != null">
+        QUANTITY_SHIPED = #{record.quantityShiped,jdbcType=DECIMAL},
+      </if>
+      <if test="record.status != null">
+        STATUS = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lotAttribute1 != null">
+        LOT_ATTRIBUTE1 = #{record.lotAttribute1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lotAttribute2 != null">
+        LOT_ATTRIBUTE2 = #{record.lotAttribute2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lotAttribute3 != null">
+        LOT_ATTRIBUTE3 = #{record.lotAttribute3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lotAttribute4 != null">
+        LOT_ATTRIBUTE4 = #{record.lotAttribute4,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lotAttribute5 != null">
+        LOT_ATTRIBUTE5 = #{record.lotAttribute5,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lotAttribute6 != null">
+        LOT_ATTRIBUTE6 = #{record.lotAttribute6,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lotAttribute7 != null">
+        LOT_ATTRIBUTE7 = #{record.lotAttribute7,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lotAttribute8 != null">
+        LOT_ATTRIBUTE8 = #{record.lotAttribute8,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lotAttribute9 != null">
+        LOT_ATTRIBUTE9 = #{record.lotAttribute9,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lotAttribute10 != null">
+        LOT_ATTRIBUTE10 = #{record.lotAttribute10,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lotAttribute11 != null">
+        LOT_ATTRIBUTE11 = #{record.lotAttribute11,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lotAttribute12 != null">
+        LOT_ATTRIBUTE12 = #{record.lotAttribute12,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remark != null">
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyId != null">
+        COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.warehouseId != null">
+        WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.delFlag != null">
+        DEL_FLAG = #{record.delFlag,jdbcType=CHAR},
+      </if>
+      <if test="record.createBy != null">
+        CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null">
+        UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateVersion != null">
+        UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
+      </if>
+      <if test="record.description != null">
+        DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.weightGross != null">
+        WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightNet != null">
+        WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightTare != null">
+        WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL},
+      </if>
+      <if test="record.volume != null">
+        VOLUME = #{record.volume,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update OUTBOUND_DETAIL_T
+    set OUTBOUND_DETAIL_ID = #{record.outboundDetailId,jdbcType=DECIMAL},
+      OUTBOUND_HEADER_ID = #{record.outboundHeaderId,jdbcType=DECIMAL},
+      LINE_NUMBER = #{record.lineNumber,jdbcType=DECIMAL},
+      SOURCE_LINE_NUMBER = #{record.sourceLineNumber,jdbcType=DECIMAL},
+      OWNER_ID = #{record.ownerId,jdbcType=DECIMAL},
+      OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR},
+      SKU_ID = #{record.skuId,jdbcType=DECIMAL},
+      SKU_CODE = #{record.skuCode,jdbcType=VARCHAR},
+      SKU_ALIAS = #{record.skuAlias,jdbcType=VARCHAR},
+      ALLOCATE_STRATEGY_ID = #{record.allocateStrategyId,jdbcType=DECIMAL},
+      ALLOCATE_STRATEGY_CODE = #{record.allocateStrategyCode,jdbcType=VARCHAR},
+      UOM = #{record.uom,jdbcType=VARCHAR},
+      UOM_QUANTITY = #{record.uomQuantity,jdbcType=DECIMAL},
+      PACK_ID = #{record.packId,jdbcType=DECIMAL},
+      PACK_CODE = #{record.packCode,jdbcType=VARCHAR},
+      QUANTITY_ORDER = #{record.quantityOrder,jdbcType=DECIMAL},
+      QUANTITY_EXPECTED = #{record.quantityExpected,jdbcType=DECIMAL},
+      QUANTITY_ALLOCATED = #{record.quantityAllocated,jdbcType=DECIMAL},
+      QUANTITY_PICKED = #{record.quantityPicked,jdbcType=DECIMAL},
+      QUANTITY_SHIPED = #{record.quantityShiped,jdbcType=DECIMAL},
+      STATUS = #{record.status,jdbcType=VARCHAR},
+      LOT_ATTRIBUTE1 = #{record.lotAttribute1,jdbcType=VARCHAR},
+      LOT_ATTRIBUTE2 = #{record.lotAttribute2,jdbcType=VARCHAR},
+      LOT_ATTRIBUTE3 = #{record.lotAttribute3,jdbcType=VARCHAR},
+      LOT_ATTRIBUTE4 = #{record.lotAttribute4,jdbcType=TIMESTAMP},
+      LOT_ATTRIBUTE5 = #{record.lotAttribute5,jdbcType=TIMESTAMP},
+      LOT_ATTRIBUTE6 = #{record.lotAttribute6,jdbcType=VARCHAR},
+      LOT_ATTRIBUTE7 = #{record.lotAttribute7,jdbcType=VARCHAR},
+      LOT_ATTRIBUTE8 = #{record.lotAttribute8,jdbcType=VARCHAR},
+      LOT_ATTRIBUTE9 = #{record.lotAttribute9,jdbcType=VARCHAR},
+      LOT_ATTRIBUTE10 = #{record.lotAttribute10,jdbcType=VARCHAR},
+      LOT_ATTRIBUTE11 = #{record.lotAttribute11,jdbcType=TIMESTAMP},
+      LOT_ATTRIBUTE12 = #{record.lotAttribute12,jdbcType=TIMESTAMP},
+      REMARK = #{record.remark,jdbcType=VARCHAR},
+      COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
+      WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL},
+      DEL_FLAG = #{record.delFlag,jdbcType=CHAR},
+      CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL},
+      WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL},
+      WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL},
+      VOLUME = #{record.volume,jdbcType=DECIMAL}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <select id="selectOneByExample" parameterType="com.wms.dao.example.OutboundDetailTExample" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    select
+    <include refid="Base_Column_List" />
+    from OUTBOUND_DETAIL_T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <update id="logicalDeleteByExample" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update OUTBOUND_DETAIL_T set DEL_FLAG = 'Y'
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="logicalDeleteWithVersionByExample" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update OUTBOUND_DETAIL_T
+    set UPDATE_VERSION = UPDATE_VERSION + 1,DEL_FLAG = 'Y'
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_With_Version_Where_Clause" />
+    </if>
+  </update>
+  <update id="logicalDeleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update OUTBOUND_DETAIL_T set DEL_FLAG = 'Y'
+    where OUTBOUND_DETAIL_ID = #{outboundDetailId,jdbcType=DECIMAL}
+  </update>
+  <update id="logicalDeleteWithVersionByPrimaryKey" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update OUTBOUND_DETAIL_T
+    set UPDATE_VERSION = UPDATE_VERSION + 1,DEL_FLAG = 'Y'
+    where UPDATE_VERSION = #{version,jdbcType=DECIMAL}
+      and OUTBOUND_DETAIL_ID = #{key,jdbcType=DECIMAL}
+  </update>
+  <select id="selectByPrimaryKeyWithLogicalDelete" parameterType="map" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from OUTBOUND_DETAIL_T
+    where OUTBOUND_DETAIL_ID = #{outboundDetailId,jdbcType=DECIMAL}
+      and DEL_FLAG = 
+    <choose>
+      <when test="andLogicalDeleted">
+        'Y'
+      </when>
+      <otherwise>
+        'N'
+      </otherwise>
+    </choose>
+  </select>
+  <delete id="deleteWithVersionByExample" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    delete from OUTBOUND_DETAIL_T
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_With_Version_Where_Clause" />
+    </if>
+  </delete>
+  <update id="updateWithVersionByExample" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update OUTBOUND_DETAIL_T
+    set UPDATE_VERSION = UPDATE_VERSION + 1,
+    OUTBOUND_DETAIL_ID = #{record.outboundDetailId,jdbcType=DECIMAL}, 
+    OUTBOUND_HEADER_ID = #{record.outboundHeaderId,jdbcType=DECIMAL}, 
+    LINE_NUMBER = #{record.lineNumber,jdbcType=DECIMAL}, 
+    SOURCE_LINE_NUMBER = #{record.sourceLineNumber,jdbcType=DECIMAL}, 
+    OWNER_ID = #{record.ownerId,jdbcType=DECIMAL}, 
+    OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR}, 
+    SKU_ID = #{record.skuId,jdbcType=DECIMAL}, 
+    SKU_CODE = #{record.skuCode,jdbcType=VARCHAR}, 
+    SKU_ALIAS = #{record.skuAlias,jdbcType=VARCHAR}, 
+    ALLOCATE_STRATEGY_ID = #{record.allocateStrategyId,jdbcType=DECIMAL}, 
+    ALLOCATE_STRATEGY_CODE = #{record.allocateStrategyCode,jdbcType=VARCHAR}, 
+    UOM = #{record.uom,jdbcType=VARCHAR}, 
+    UOM_QUANTITY = #{record.uomQuantity,jdbcType=DECIMAL}, 
+    PACK_ID = #{record.packId,jdbcType=DECIMAL}, 
+    PACK_CODE = #{record.packCode,jdbcType=VARCHAR}, 
+    QUANTITY_ORDER = #{record.quantityOrder,jdbcType=DECIMAL}, 
+    QUANTITY_EXPECTED = #{record.quantityExpected,jdbcType=DECIMAL}, 
+    QUANTITY_ALLOCATED = #{record.quantityAllocated,jdbcType=DECIMAL}, 
+    QUANTITY_PICKED = #{record.quantityPicked,jdbcType=DECIMAL}, 
+    QUANTITY_SHIPED = #{record.quantityShiped,jdbcType=DECIMAL}, 
+    STATUS = #{record.status,jdbcType=VARCHAR}, 
+    LOT_ATTRIBUTE1 = #{record.lotAttribute1,jdbcType=VARCHAR}, 
+    LOT_ATTRIBUTE2 = #{record.lotAttribute2,jdbcType=VARCHAR}, 
+    LOT_ATTRIBUTE3 = #{record.lotAttribute3,jdbcType=VARCHAR}, 
+    LOT_ATTRIBUTE4 = #{record.lotAttribute4,jdbcType=TIMESTAMP}, 
+    LOT_ATTRIBUTE5 = #{record.lotAttribute5,jdbcType=TIMESTAMP}, 
+    LOT_ATTRIBUTE6 = #{record.lotAttribute6,jdbcType=VARCHAR}, 
+    LOT_ATTRIBUTE7 = #{record.lotAttribute7,jdbcType=VARCHAR}, 
+    LOT_ATTRIBUTE8 = #{record.lotAttribute8,jdbcType=VARCHAR}, 
+    LOT_ATTRIBUTE9 = #{record.lotAttribute9,jdbcType=VARCHAR}, 
+    LOT_ATTRIBUTE10 = #{record.lotAttribute10,jdbcType=VARCHAR}, 
+    LOT_ATTRIBUTE11 = #{record.lotAttribute11,jdbcType=TIMESTAMP}, 
+    LOT_ATTRIBUTE12 = #{record.lotAttribute12,jdbcType=TIMESTAMP}, 
+    REMARK = #{record.remark,jdbcType=VARCHAR}, 
+    COMPANY_ID = #{record.companyId,jdbcType=DECIMAL}, 
+    WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL}, 
+    DEL_FLAG = #{record.delFlag,jdbcType=CHAR}, 
+    CREATE_BY = #{record.createBy,jdbcType=VARCHAR}, 
+    CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP}, 
+    UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR}, 
+    UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
+    DESCRIPTION = #{record.description,jdbcType=VARCHAR}, 
+    WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL}, 
+    WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL}, 
+    WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL}, 
+    VOLUME = #{record.volume,jdbcType=DECIMAL}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_With_Version_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateWithVersionByExampleSelective" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update OUTBOUND_DETAIL_T
+    <set>
+      <trim suffixOverrides=",">
+        UPDATE_VERSION = UPDATE_VERSION + 1,
+        <if test="record.outboundDetailId != null">
+          OUTBOUND_DETAIL_ID = #{record.outboundDetailId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.outboundHeaderId != null">
+          OUTBOUND_HEADER_ID = #{record.outboundHeaderId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.lineNumber != null">
+          LINE_NUMBER = #{record.lineNumber,jdbcType=DECIMAL},
+        </if>
+        <if test="record.sourceLineNumber != null">
+          SOURCE_LINE_NUMBER = #{record.sourceLineNumber,jdbcType=DECIMAL},
+        </if>
+        <if test="record.ownerId != null">
+          OWNER_ID = #{record.ownerId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.ownerCode != null">
+          OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR},
+        </if>
+        <if test="record.skuId != null">
+          SKU_ID = #{record.skuId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.skuCode != null">
+          SKU_CODE = #{record.skuCode,jdbcType=VARCHAR},
+        </if>
+        <if test="record.skuAlias != null">
+          SKU_ALIAS = #{record.skuAlias,jdbcType=VARCHAR},
+        </if>
+        <if test="record.allocateStrategyId != null">
+          ALLOCATE_STRATEGY_ID = #{record.allocateStrategyId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.allocateStrategyCode != null">
+          ALLOCATE_STRATEGY_CODE = #{record.allocateStrategyCode,jdbcType=VARCHAR},
+        </if>
+        <if test="record.uom != null">
+          UOM = #{record.uom,jdbcType=VARCHAR},
+        </if>
+        <if test="record.uomQuantity != null">
+          UOM_QUANTITY = #{record.uomQuantity,jdbcType=DECIMAL},
+        </if>
+        <if test="record.packId != null">
+          PACK_ID = #{record.packId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.packCode != null">
+          PACK_CODE = #{record.packCode,jdbcType=VARCHAR},
+        </if>
+        <if test="record.quantityOrder != null">
+          QUANTITY_ORDER = #{record.quantityOrder,jdbcType=DECIMAL},
+        </if>
+        <if test="record.quantityExpected != null">
+          QUANTITY_EXPECTED = #{record.quantityExpected,jdbcType=DECIMAL},
+        </if>
+        <if test="record.quantityAllocated != null">
+          QUANTITY_ALLOCATED = #{record.quantityAllocated,jdbcType=DECIMAL},
+        </if>
+        <if test="record.quantityPicked != null">
+          QUANTITY_PICKED = #{record.quantityPicked,jdbcType=DECIMAL},
+        </if>
+        <if test="record.quantityShiped != null">
+          QUANTITY_SHIPED = #{record.quantityShiped,jdbcType=DECIMAL},
+        </if>
+        <if test="record.status != null">
+          STATUS = #{record.status,jdbcType=VARCHAR},
+        </if>
+        <if test="record.lotAttribute1 != null">
+          LOT_ATTRIBUTE1 = #{record.lotAttribute1,jdbcType=VARCHAR},
+        </if>
+        <if test="record.lotAttribute2 != null">
+          LOT_ATTRIBUTE2 = #{record.lotAttribute2,jdbcType=VARCHAR},
+        </if>
+        <if test="record.lotAttribute3 != null">
+          LOT_ATTRIBUTE3 = #{record.lotAttribute3,jdbcType=VARCHAR},
+        </if>
+        <if test="record.lotAttribute4 != null">
+          LOT_ATTRIBUTE4 = #{record.lotAttribute4,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.lotAttribute5 != null">
+          LOT_ATTRIBUTE5 = #{record.lotAttribute5,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.lotAttribute6 != null">
+          LOT_ATTRIBUTE6 = #{record.lotAttribute6,jdbcType=VARCHAR},
+        </if>
+        <if test="record.lotAttribute7 != null">
+          LOT_ATTRIBUTE7 = #{record.lotAttribute7,jdbcType=VARCHAR},
+        </if>
+        <if test="record.lotAttribute8 != null">
+          LOT_ATTRIBUTE8 = #{record.lotAttribute8,jdbcType=VARCHAR},
+        </if>
+        <if test="record.lotAttribute9 != null">
+          LOT_ATTRIBUTE9 = #{record.lotAttribute9,jdbcType=VARCHAR},
+        </if>
+        <if test="record.lotAttribute10 != null">
+          LOT_ATTRIBUTE10 = #{record.lotAttribute10,jdbcType=VARCHAR},
+        </if>
+        <if test="record.lotAttribute11 != null">
+          LOT_ATTRIBUTE11 = #{record.lotAttribute11,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.lotAttribute12 != null">
+          LOT_ATTRIBUTE12 = #{record.lotAttribute12,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.remark != null">
+          REMARK = #{record.remark,jdbcType=VARCHAR},
+        </if>
+        <if test="record.companyId != null">
+          COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.warehouseId != null">
+          WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.delFlag != null">
+          DEL_FLAG = #{record.delFlag,jdbcType=CHAR},
+        </if>
+        <if test="record.createBy != null">
+          CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+        </if>
+        <if test="record.createTime != null">
+          CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.updateBy != null">
+          UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
+        </if>
+        <if test="record.updateTime != null">
+          UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.description != null">
+          DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+        </if>
+        <if test="record.weightGross != null">
+          WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightNet != null">
+          WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightTare != null">
+          WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL},
+        </if>
+        <if test="record.volume != null">
+          VOLUME = #{record.volume,jdbcType=DECIMAL},
+        </if>
+      </trim>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_With_Version_Where_Clause" />
+    </if>
+  </update>
+</mapper>

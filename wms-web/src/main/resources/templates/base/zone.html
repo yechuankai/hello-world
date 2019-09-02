@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${wms.zone.title}">库区</title>
+    <head th:replace="common/head"/>
+</head>
+<body class="easyui-layout">
+<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+    <div id="searchDiv">
+        <div style="margin-left: 10px;">
+            <form id="searchForm" data-table="#dataTable">
+                <div style="margin-bottom:10px">
+                    <input name="zoneCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.zonecode}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combobox" name="type" wms:data-options="
+						data: codelkups['ZONETYPE'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.zone.type}',
+						labelPosition: 'top'
+						">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combobox" name="active" wms:data-options="
+						data: codelkups['YESNO'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.active}',
+						labelPosition: 'top'
+						">
+                </div>
+            </form>
+        </div>
+        <div style="text-align: center;">
+            <a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-search'">
+                <span wms:text="${web.label.search}">Search</span>
+            </a>
+            <a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-clear'">
+                <span wms:text="${web.label.clear}">Clear</span>
+            </a>
+        </div>
+    </div>
+</div>
+<div data-options="region:'center',border:false">
+    <div id="dataTableToolbar" style="padding-left: 20px;">
+        <a href="#" class="easyui-linkbutton common-add" data-addpanel="#addDiv">
+            <span wms:text="${web.label.add}">Add</span>
+        </a>
+        <a href="#" class="easyui-linkbutton common-rowsave" data-table="#dataTable"
+           th:data-url="@{/services/inner/base/zone/save}">
+            <span wms:text="${web.label.save}">Save</span>
+        </a>
+        <a href="#" class="easyui-linkbutton" onclick="importExcel('ZONE')" wms:text="${web.label.import}">Import</a>
+        <a href="#" class="easyui-linkbutton" onclick="exportExcel('ZONE', '#searchForm')" wms:text="${web.label.export}">Export</a>
+        <a href="#" class="easyui-linkbutton common-rowdel" data-table="#dataTable"
+           th:data-url="@{/services/inner/base/zone/delete}">
+            <span wms:text="${web.label.delete}">Delete</span>
+        </a>
+    </div>
+    <div>
+        <table id="dataTable" wms:title="${web.label.zone.title}" class="easyui-datagrid"
+               th:data-delayUrl="@{/services/inner/base/zone/find}">
+            <thead>
+            <tr>
+                <th field="zoneId" data-options="checkbox:true"></th>
+                <th field="zoneCode" width="130" wms:text="${web.label.zonecode}" data-options="sortable:true">
+                    zoneCode
+                </th>
+                <th field="type" width="150" wms:text="${web.label.zone.type}" data-options="
+                            sortable:true,
+                            formatter:function(value,row){
+								return getCodelkupValue('ZONETYPE',value);
+							},
+                            editor:{
+								type:'combobox',
+								options:{
+									valueField:'code',
+									textField:'descr',
+									data: codelkups['ZONETYPE']
+								}
+							}
+                        ">type
+                </th>
+                <th field="pickToLocation" width="100" wms:text="${web.label.pickToLocation}"  wms:data-options="
+							sortable:true,
+							editor:{
+								type:'combogrid',
+								options:{
+									idField:'locationCode',
+	    							textField:'locationCode',
+									url:'../../services/inner/base/location/find',
+									queryParams: getParams(),
+								    columns:[[
+								    {field:'locationId',hidden:true},
+								    {field:'zoneId',hidden:true},
+								    {field:'locationCode',title:'${web.label.location}',width:80},
+								    {field:'zoneCode',title:'${web.label.zone}',width:80},
+								    {field:'locationType',title:'${web.label.location.locationType}',width:80,formatter:function(value,row){
+											return getCodelkupValue('LOCATIONTYPE',value);
+										}
+									}
+                                    ]],
+                                    onChange: function (newValue, oldValue) {
+                                        artChanged = true;//记录是否有改变（当手动输入时发生)
+                                    },
+                                    onHidePanel: function () {
+                                        var t = $(this).combogrid('getValue');
+                                        if (artChanged) {
+                                            if (selectRow == null || t != selectRow.locationCode) {//没有选择或者选项不相等时清除内容
+                                                alert('请选择，不要直接输入');
+                                            $(this).combogrid('setValue', '');
+                                            }
+                                        }
+                                        artChanged = false;
+                                        selectRow = null;
+                                    },
+                                    onSelect: function (index, row) {
+                                        selectRow = row;
+                                    }
+                                }
+					        }
+						">pickToLocation
+                </th>
+                <th field="companyId" data-options="hidden:true"></th>
+                <th field="active" width="50" wms:text="${web.label.active}" data-options="
+							sortable:true,
+							formatter:function(value,row){
+								return getCodelkupValue('YESNO',value);
+							},
+							editor:{
+								type:'combobox',
+								options:{
+									valueField:'code',
+									textField:'descr',
+									data: codelkups['YESNO']
+								}
+							}
+						">active
+                </th>
+                <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+                <th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true">
+                    createTime
+                </th>
+                <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+                <th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">
+                    updateTime
+                </th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div id="addDiv" wms:title="${web.label.add}" style="width:300px;height:400px; display: none;">
+    <div style="width: 100%;padding-left: 50px;">
+        <form method="post" id="addForm" th:data-url="@{/services/inner/base/zone/add}">
+            <table style="width: 100%;">
+                <tr>
+                    <td>
+                        <input name="zoneCode" class="easyui-textbox"
+                               wms:data-options="required:true,label:'${web.label.zonecode}',labelPosition:'top'">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="easyui-combobox" name="type" style="width: 100px;" wms:data-options="
+							required:true,
+							data: codelkups['ZONETYPE'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.type}',
+							labelPosition: 'top'
+							"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="pickToLocation" name="pickToLocation" value="PICKTO" class="easyui-combogrid" wms:data-options="
+								label: '${web.label.pickToLocation}',
+								labelPosition: 'top',
+								idField:'locationCode',
+    							textField:'locationCode',
+								url:'../../services/inner/base/location/find',
+								queryParams: getParams(),
+							    columns:[[
+								    {field:'locationId',hidden:true},
+								    {field:'zoneId',hidden:true},
+								    {field:'locationCode',title:'${web.label.location}',width:80},
+								    {field:'zoneCode',title:'${web.label.zone}',width:80},
+								    {field:'locationType',title:'${web.label.location.locationType}',width:80,formatter:function(value,row){
+											return getCodelkupValue('LOCATIONTYPE',value);
+										}
+									}
+							    ]],
+							    onChange: function (newValue, oldValue) {
+                                    artChanged = true;//记录是否有改变（当手动输入时发生)
+                                },
+                                onHidePanel: function () {
+                                    var t = $(this).combogrid('getValue');
+                                    if (artChanged) {
+                                        if (selectRow == null || t != selectRow.locationCode) {//没有选择或者选项不相等时清除内容
+                                            alert('请选择，不要直接输入');
+                                        $(this).combogrid('setValue', '');
+                                        }
+                                    }
+                                    artChanged = false;
+                                    selectRow = null;
+                                },
+                                onSelect: function (index, row) {
+                                    selectRow = row;
+                                }
+							" />
+                    </td>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="easyui-combobox" name="active" style="width: 100px;" wms:data-options="
+							required:true,
+							value: 'Y',
+							data: codelkups['YESNO'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.active}',
+							labelPosition: 'top'
+							"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="text-align: center;margin-top: 30px;">
+        <a href="#" class="easyui-linkbutton common-confirmadd" data-form="#addForm" data-table="#dataTable"
+           id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
+        </a>
+        <a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');"
+           data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
+        </a>
+    </div>
+</div>
+</div>
+</body>
+<script th:replace="common/js"/>
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=YESNO,ZONETYPE,LOCATIONTYPE}"></script>
+<script type="text/javascript" th:inline="text">
+var selectRow;
+var artChanged;
+
+function getParams (params){
+    var data = getBaseData();
+    data['active'] = 'Y';
+    if (typeof(params) == 'object'){
+        $.extend(data, params);
+    }
+    return data;
+}
+</script>
+</html>

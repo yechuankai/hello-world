@@ -1,0 +1,62 @@
+<input id="skuCode" name="skuCode" class="lazy-load" lazy-load="easyui-combogrid" wms:data-options="
+								required:true,
+								label: '${web.label.sku}',
+								labelPosition: 'top',
+								idField:'skuCode',
+    							textField:'skuCode',
+								url:'../../services/inner/base/sku/find',
+								queryParams: getSkuParams(),
+							    onBeforeLoad: function(param){
+									$.extend(param, getSkuParams());
+								},
+							    columns:[[
+								    {field:'skuId',hidden:true},
+								    {field:'packId',hidden:true},
+								    {field:'skuCode',title:'${web.label.sku}',width:80},
+								    {field:'skuAlias',title:'${web.label.skualias}',width:80},
+								    {field:'packCode',title:'${web.label.pack}',width:80},
+								    {field:'skuDescr',title:'${web.label.skudescr}',width:150}
+							    ]]
+							" />
+<script type="text/javascript">
+	function loadSkuLov(params, fn){
+		$('#skuCode').combogrid({
+			queryParams: getSkuParams(params),
+			onClickRow: function(rowIndex, rowData){
+				if (fn != undefined) {
+					fn(rowData);
+				}else{
+					setSkuResult(rowData);
+				}
+			}
+		});
+	}
+	
+	function getSkuParams (params){ 
+		var data = getBaseData();
+		data['active'] = 'Y';
+		if (typeof(params) == 'object'){
+			$.extend(data, params);
+		}
+		return data;
+	}
+	
+	function setSkuResult(data){ 
+		if ($("#skuDescr").length > 0) {
+			$("#skuDescr").textbox('setValue', data.skuDescr);
+		}
+		if ($("#skuAlias").length > 0) {
+			$("#skuAlias").textbox('setValue', data.skuAlias);
+		}
+		if ($("#skuId").length > 0) {
+			$("#skuId").val(data.skuId);
+		}
+		for(var i=1;i<13;i++){
+			if('4'== i||'5' == i||'11'== i||'12'== i){
+				$("#lotAttribute"+i).datebox('label').html(data['lotAttribute'+i+'Label']);
+			}else {
+				$("#lotAttribute"+i).textbox('label').html(data['lotAttribute'+i+'Label']);
+			}
+		}
+	}
+</script>

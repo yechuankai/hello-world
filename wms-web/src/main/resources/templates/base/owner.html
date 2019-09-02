@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${wms.base.owner.title}">货主</title>
+    <head th:replace="common/head"/>
+</head>
+<body class="easyui-layout">
+<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+    <div id="searchDiv">
+        <div style="margin-left: 10px;">
+            <form id="searchForm" data-table="#ownerData">
+                <div style="margin-bottom:10px">
+                    <input name="ownerCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.inventory.ownerCode}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="ownerDescr" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.descr}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="contact1" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.contact1}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="phone1" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.phone1}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="address1" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.address1}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combobox" name="active" wms:data-options="
+						data: codelkups['YESNO'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.active}',
+						labelPosition: 'top'
+						">
+                </div>
+            </form>
+        </div>
+        <div style="text-align: center;">
+            <a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-search'">
+                <span wms:text="${web.label.search}">Search</span>
+            </a>
+            <a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-clear'">
+                <span wms:text="${web.label.clear}">Clear</span>
+            </a>
+        </div>
+    </div>
+</div>
+<div data-options="region:'center',border:false">
+    <div id="tableToolbar" class="tableToolbar">
+        <a href="#" class="easyui-linkbutton common-add" data-addpanel="#addDiv">
+            <span wms:text="${web.label.add}">Add</span>
+        </a>
+        <a href="#" class="easyui-linkbutton common-rowsave" data-table="#ownerData"
+           th:data-url="@{/services/inner/base/owner/save}">
+            <span wms:text="${web.label.save}">Save</span>
+        </a>
+        <a href="#" class="easyui-linkbutton common-rowdel" data-table="#ownerData"
+           th:data-url="@{/services/inner/base/owner/delete}">
+            <span wms:text="${web.label.delete}">Delete</span>
+        </a>
+    </div>
+    <div>
+        <table id="ownerData" wms:title="${web.label.ownerlist.title}" class="easyui-datagrid"
+               data-options=" toolbar: '#tableToolbar'"
+               th:data-delayUrl="@{/services/inner/base/owner/find}">
+            <thead>
+            <tr>
+                <th field="ownerId" data-options="checkbox:true"></th>
+                <th field="ownerCode" width="80" wms:text="${web.inventory.ownerCode}" data-options="sortable:true">
+                    ownerCode
+                </th>
+                <th field="ownerDescr" width="150" wms:text="${web.label.descr}" data-options="sortable:false,editor:{
+																													type: 'validatebox',
+																													options: {
+																														required: true
+																													}
+																												}">
+                    ownerDescr
+                </th>
+                <th field="contact1" width="80" wms:text="${web.label.contact1}"
+                    data-options="sortable:false,editor:'text'">contact1
+                </th>
+                <th field="contact2" width="80" wms:text="${web.label.contact2}"
+                    data-options="sortable:false,editor:'text'">contact2
+                </th>
+                <th field="phone1" width="80" wms:text="${web.label.phone1}"
+                    data-options="sortable:false,editor:'text'">phone1
+                </th>
+                <th field="phone2" width="80" wms:text="${web.label.phone2}"
+                    data-options="sortable:false,editor:'text'">phone2
+                </th>
+                <th field="address1" width="80" wms:text="${web.label.address1}"
+                    data-options="sortable:false,editor:'text'">address1
+                </th>
+                <th field="address2" width="80" wms:text="${web.label.address2}"
+                    data-options="sortable:false,editor:'text'">address2
+                </th>
+                <th field="fax" width="80" wms:text="${web.label.fax}" data-options="sortable:false, editor:'text'">
+                    fax
+                </th>
+                <th field="email" width="80" wms:text="${web.label.email}"
+                    data-options="validType:'email',editor:'text'">email
+                </th>
+                <th field="barcodeStart" width="80" wms:text="${web.label.barcodestart}"
+                    data-options="sortable:false,editor:'numberbox'">barcodeStart
+                </th>
+                <th field="barcodePrefix" width="100" wms:text="${web.label.barcodeprefix}"
+                    data-options="sortable:false,editor:'text'">barcodePrefix
+                </th>
+                <th field="barcodeLength" width="80" wms:text="${web.label.barcodelength}"
+                    data-options="sortable:false,editor:'numberbox'">barcodeLength
+                </th>
+                <th field="active" width="50" wms:text="${web.label.active}" data-options="
+							sortable:true,
+							formatter:function(value,row){
+								return getCodelkupValue('YESNO',value);
+							},
+							editor:{
+								type:'combobox',
+								options:{
+									valueField:'code',
+									textField:'descr',
+									data: codelkups['YESNO'],
+									required: true
+								}
+							}
+						">active
+                </th>
+                <th field="remark" width="100" wms:text="${web.label.remark}"
+                    data-options="sortable:false,editor:'text'">remark
+                </th>
+                <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+                <th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true">
+                    createTime
+                </th>
+                <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+                <th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">
+                    updateTime
+                </th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div id="addDiv" wms:title="${web.label.add}" style="width:460px;height:550px; display: none;">
+    <div style="width: 100%;">
+        <form method="post" id="addForm" th:data-url="@{/services/inner/base/owner/add}">
+            <div class="lazy-load" lazy-load="easyui-tabs" style="width: 100%;">
+                <div wms:title="${web.label.normal}" style="padding-left: 50px;">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td>
+                                <input name="ownerCode" class="easyui-textbox"
+                                       wms:data-options="required:true,label:'${web.inventory.ownerCode}',labelPosition:'top'">
+                            </td>
+                            <td>
+                                <input name="ownerDescr" class="easyui-textbox"
+                                       wms:data-options="required:true,label:'${web.label.descr}',labelPosition:'top'">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input name="contact1" class="easyui-textbox"
+                                       wms:data-options="label:'${web.label.contact1}',labelPosition:'top'">
+                            </td>
+                            <td>
+                                <input name="contact2" class="easyui-textbox"
+                                       wms:data-options="label:'${web.label.contact2}',labelPosition:'top'">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input name="phone1" class="easyui-textbox"
+                                       wms:data-options="label:'${web.label.phone1}',labelPosition:'top'">
+                            </td>
+                            <td>
+                                <input name="phone2" class="easyui-textbox"
+                                       wms:data-options="label:'${web.label.phone2}',labelPosition:'top'">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input name="address1" class="easyui-textbox"
+                                       wms:data-options="label:'${web.label.address1}',labelPosition:'top'">
+                            </td>
+                            <td>
+                                <input name="address2" class="easyui-textbox"
+                                       wms:data-options="label:'${web.label.address2}',labelPosition:'top'">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input name="email" class="easyui-textbox"
+                                       wms:data-options="label:'${web.label.email}',labelPosition:'top' ">
+                            </td>
+                            <td>
+                                <input name="fax" class="easyui-textbox"
+                                       wms:data-options="label:'${web.label.fax}',labelPosition:'top'">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input class="easyui-combobox" name="active" style="width: 100px;" wms:data-options="
+							required:true,
+							value: 'Y',
+							data: codelkups['YESNO'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.active}',
+							labelPosition: 'top'
+							"/>
+                            </td>
+                            <td>
+                                <input name="remark" class="easyui-textbox"
+                                       wms:data-options="label:'${web.label.remark}',labelPosition:'top'">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div wms:title="${web.lable.control}" style="padding-left: 50px;">
+                    <table border="0">
+                        <tr>
+                            <td width="200">
+                                <input name="barcodeStart" class="easyui-numberbox"
+                                       wms:data-options="label:'${web.label.barcodestart}',labelPosition:'top'">
+                            </td>
+                            <td>
+                                <input name="barcodePrefix" class="easyui-textbox"
+                                       wms:data-options="label:'${web.label.barcodeprefix}',labelPosition:'top'">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input name="barcodeLength" class="easyui-numberbox"
+                                       wms:data-options="label:'${web.label.barcodelength}',labelPosition:'top'">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div style="text-align: center;margin-top: 15px;">
+        <a href="#" class="easyui-linkbutton common-confirmadd" data-form="#addForm" data-table="#ownerData"
+           id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
+        </a>
+        <a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');"
+           data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
+        </a>
+    </div>
+</div>
+</div>
+</body>
+<script th:replace="common/js"/>
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=YESNO}"></script>
+<script type="text/javascript" th:inline="text">
+
+</script>
+</html>

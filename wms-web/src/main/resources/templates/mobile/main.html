@@ -1,0 +1,139 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <title th:text="${user.warehouseDescr}">WMS管理系统</title>
+    <head th:replace="common/mobileHead" />
+</head>
+
+<body th:class="'easyui-layout wms-' + ${env}" id="main-content" style="opacity: 1;overflow: hidden;">
+	<div class="icon-loading" style="position: absolute; z-index: 999999;width: 100%; height: 100%;opacity: 1;background-color: white;" >&nbsp;</div>
+	<input type="hidden" id="warehouseId" th:value="${user.warehouseId}" />
+	<input type="hidden" id="companyId" th:value="${user.companyId}"/>
+	<input type="hidden" id="locale" th:value="${user.locale}"/>
+	<input type="hidden" id="userName" th:value="${user.userName}"/>
+	<div class="easyui-navpanel">
+		<header>
+	    	<div class="m-toolbar">
+	    		<div class="m-toolbar">
+		    		<div class="m-title" th:text="${user.warehouseDescr}" id="changeWarehouse"></div>
+					<div class="m-right">
+						<a href="javascript:void(0)" class="easyui-menubutton" data-options="iconCls:'icon-more',menu:'#navMenu',menuAlign:'right',hasDownArrow:false"></a>
+					</div>
+				</div>
+	    	</div>
+	    </header>
+	    <div id="navMenu" style="width:100px;">
+			<div>
+				<span wms:text="${web.label.language}">Language</span>
+				<div id="wmsLocaleMenu">
+					<div th:each="locale,localeStat : ${localeList}" th:text="${locale.descr}" th:name="${locale.code}" th:iconCls="${locale.code == user.locale} ? 'icon-ok' : ''" />
+				</div>
+			</div>
+		</div>
+		<div class="easyui-tabs" data-options="tabHeight:60,fit:true,tabPosition:'bottom',border:false,pill:true,narrow:true,justified:true">
+			<div shiro:hasPermission="mobile:receive" th:selected="${go=='receive'}" style="padding:10px">
+				<div class="panel-header tab-inner">
+					<img th:src='@{/static/images/receive.png}'/><br><span wms:text="${web.label.receive}">Receive</span>
+				</div>
+				<a shiro:hasPermission="mobile:receive:inboundReceive" th:href="@{/mobile/inbound/inboundReceive}" class="easyui-linkbutton func" data-options="iconCls:'icon-large-picture',iconAlign:'top',size:'large'" >
+					<span wms:text="${web.label.receive.inbound}"></span>
+				</a>
+				<a shiro:hasPermission="mobile:receive:noInboundReceive" href="#" class="easyui-linkbutton func" data-options="iconCls:'icon-large-shapes',iconAlign:'top',size:'large'" >
+					<span wms:text="${web.label.receive.noinbound}">
+				</a>
+				<a shiro:hasPermission="mobile:receive:putaway" href="#" class="easyui-linkbutton func" data-options="iconCls:'icon-large-shapes',iconAlign:'top',size:'large'" >
+					<span wms:text="${web.label.putaway}">
+				</a>
+			</div>
+			<div shiro:hasPermission="mobile:ship" th:selected="${go=='ship'}" style="padding:10px">
+				<div class="panel-header tab-inner">
+					<img th:src='@{/static/images/pick.png}'/><br><span wms:text="${web.label.shipment}">Shipment</span>
+				</div>
+				<a  shiro:hasPermission="mobile:ship:outboundPick" href="#" class="easyui-linkbutton func" data-options="iconCls:'icon-large-shapes',iconAlign:'top',size:'large'" >
+					<span wms:text="${web.label.pick.order}">
+				</a>
+				<a shiro:hasPermission="mobile:ship:taskPick" href="#" class="easyui-linkbutton func" data-options="iconCls:'icon-large-picture',iconAlign:'top',size:'large'" >
+					<span wms:text="${web.label.pick.task}"></span>
+				</a>
+				<a shiro:hasPermission="mobile:ship:inboundShip" href="#" class="easyui-linkbutton func" data-options="iconCls:'icon-large-picture',iconAlign:'top',size:'large'" >
+					<span wms:text="${web.label.ship}"></span>
+				</a>
+			</div>
+			<div shiro:hasPermission="mobile:inventory" th:selected="${go=='inventory'}" style="padding:10px">
+				<div class="panel-header tab-inner">
+					<img th:src='@{/static/images/inventory.png}'/><br><span wms:text="${web.label.inventory}">Inventory</span>
+				</div>
+				<a shiro:hasPermission="mobile:inventory:move" href="#" class="easyui-linkbutton func" data-options="iconCls:'icon-large-picture',iconAlign:'top',size:'large'" >
+					<span wms:text="${web.label.move}"></span>
+				</a>
+				<a shiro:hasPermission="mobile:inventory:count" href="#" class="easyui-linkbutton func" data-options="iconCls:'icon-large-picture',iconAlign:'top',size:'large'" >
+					<span wms:text="${web.label.inventory.count}"></span>
+				</a>
+			</div>
+			<div shiro:hasPermission="mobile:query" th:selected="${go=='query'}" style="padding:10px">
+				<div class="panel-header tab-inner">
+					<img th:src='@{/static/images/query.png}'/><br><span wms:text="${web.label.query}">Query</span>
+				</div>
+				<a shiro:hasPermission="mobile:query:inventory" href="#" class="easyui-linkbutton func" data-options="iconCls:'icon-large-picture',iconAlign:'top',size:'large'" >
+					<span wms:text="${web.lable.inventory.onhand}"></span>
+				</a>
+			</div>
+		</div>
+	</div>
+</body>
+<style scoped>
+.tab-inner{
+    display:inline-block;
+    line-height:12px;
+    padding-top:6px;
+    position: relative;
+}
+p{
+	line-height:150%;
+}
+.func{
+	width: 100px;
+	height: 100px;
+	margin: 10px;
+}
+.func .l-btn-text{
+	height: 50px;
+	padding: 4px;
+}
+.l-btn-icon-top{
+	top: 5px !important;
+}
+</style>
+<script th:replace="common/mobileJs" />
+<script type="text/javascript" th:src="@{/static/js/test.js}"></script>
+<script type="text/javascript" th:inline="text">
+$(function(){
+	$('#changeWarehouse').click(function(){
+		window.location.href = 'warehouses';
+	});
+	$('#wmsLocaleMenu .menu-item').click(function(){
+		var locale = ($(this).attr('name'));
+		setLocale(locale);
+	});
+});
+
+function setLocale(locale){
+	$.post({
+		url: '../services/web/setLocale',
+		contentType: 'application/x-www-form-urlencoded',
+		processData: true,
+		data:  {locale: locale},
+		success: function(data){
+			data = returnData(data);
+			closeLoading();
+			if (data.code == '0') {
+				showError(data.msg);
+				return;
+			}
+			window.location.reload();
+		}
+	});
+}
+
+</script>
+</html>

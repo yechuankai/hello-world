@@ -1,0 +1,758 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wms.dao.auto.IInboundHeaderTDao">
+  <resultMap id="BaseResultMap" type="com.wms.entity.auto.InboundHeaderTEntity">
+    <id column="INBOUND_HEADER_ID" jdbcType="DECIMAL" property="inboundHeaderId" />
+    <result column="INBOUND_NUMBER" jdbcType="VARCHAR" property="inboundNumber" />
+    <result column="SOURCE_NUMBER" jdbcType="VARCHAR" property="sourceNumber" />
+    <result column="REFERENCE_NUMBER" jdbcType="VARCHAR" property="referenceNumber" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="OWNER_ID" jdbcType="DECIMAL" property="ownerId" />
+    <result column="OWNER_CODE" jdbcType="VARCHAR" property="ownerCode" />
+    <result column="SUPPLIER_ID" jdbcType="DECIMAL" property="supplierId" />
+    <result column="SUPPLIER_CODE" jdbcType="VARCHAR" property="supplierCode" />
+    <result column="INBOUND_DATE" jdbcType="TIMESTAMP" property="inboundDate" />
+    <result column="EXPECTED_INBOUND_DATE" jdbcType="TIMESTAMP" property="expectedInboundDate" />
+    <result column="CLOSED_DATE" jdbcType="TIMESTAMP" property="closedDate" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="CARRIER_ID" jdbcType="DECIMAL" property="carrierId" />
+    <result column="CARRIER_CODE" jdbcType="VARCHAR" property="carrierCode" />
+    <result column="CARRIER_CAR_NUMBER" jdbcType="VARCHAR" property="carrierCarNumber" />
+    <result column="CARRIER_DRIVER" jdbcType="VARCHAR" property="carrierDriver" />
+    <result column="SHIP_ADDRESS1" jdbcType="VARCHAR" property="shipAddress1" />
+    <result column="SHIP_ADDRESS2" jdbcType="VARCHAR" property="shipAddress2" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="COMPANY_ID" jdbcType="DECIMAL" property="companyId" />
+    <result column="WAREHOUSE_ID" jdbcType="DECIMAL" property="warehouseId" />
+    <result column="DEL_FLAG" jdbcType="CHAR" property="delFlag" />
+    <result column="CREATE_BY" jdbcType="VARCHAR" property="createBy" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_BY" jdbcType="VARCHAR" property="updateBy" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATE_VERSION" jdbcType="DECIMAL" property="updateVersion" />
+    <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="TO_WAREHOUSE_CODE" jdbcType="VARCHAR" property="toWarehouseCode" />
+    <result column="TO_WAREHOUSE_ID" jdbcType="DECIMAL" property="toWarehouseId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach close=")" collection="example.oredCriteria" item="criteria" open="and (" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_With_Version_Where_Clause">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    <where >
+      UPDATE_VERSION = #{version,jdbcType=DECIMAL}
+      <if test="example.oredCriteria.size() > 0">
+        <foreach close=")" collection="example.oredCriteria" item="criteria" open="and (" separator="or">
+          <if test="criteria.valid">
+            <trim prefix="(" prefixOverrides="and" suffix=")">
+              <foreach collection="criteria.criteria" item="criterion">
+                <choose>
+                  <when test="criterion.noValue">
+                    and ${criterion.condition}
+                  </when>
+                  <when test="criterion.singleValue">
+                    and ${criterion.condition} #{criterion.value}
+                  </when>
+                  <when test="criterion.betweenValue">
+                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                  </when>
+                  <when test="criterion.listValue">
+                    and ${criterion.condition}
+                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                      #{listItem}
+                    </foreach>
+                  </when>
+                </choose>
+              </foreach>
+            </trim>
+          </if>
+        </foreach>
+      </if>
+    </where >
+  </sql>
+  <sql id="Base_Column_List">
+    INBOUND_HEADER_ID, INBOUND_NUMBER, SOURCE_NUMBER, REFERENCE_NUMBER, TYPE, OWNER_ID, 
+    OWNER_CODE, SUPPLIER_ID, SUPPLIER_CODE, INBOUND_DATE, EXPECTED_INBOUND_DATE, CLOSED_DATE, 
+    STATUS, CARRIER_ID, CARRIER_CODE, CARRIER_CAR_NUMBER, CARRIER_DRIVER, SHIP_ADDRESS1, 
+    SHIP_ADDRESS2, REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, 
+    UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, TO_WAREHOUSE_CODE, TO_WAREHOUSE_ID
+  </sql>
+  <select id="selectByExample" parameterType="com.wms.dao.example.InboundHeaderTExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from INBOUND_HEADER_T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.wms.dao.example.InboundHeaderTExample">
+    delete from INBOUND_HEADER_T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wms.entity.auto.InboundHeaderTEntity">
+    insert into INBOUND_HEADER_T (INBOUND_HEADER_ID, INBOUND_NUMBER, SOURCE_NUMBER, 
+      REFERENCE_NUMBER, TYPE, OWNER_ID, 
+      OWNER_CODE, SUPPLIER_ID, SUPPLIER_CODE, 
+      INBOUND_DATE, EXPECTED_INBOUND_DATE, CLOSED_DATE, 
+      STATUS, CARRIER_ID, CARRIER_CODE, 
+      CARRIER_CAR_NUMBER, CARRIER_DRIVER, SHIP_ADDRESS1, 
+      SHIP_ADDRESS2, REMARK, COMPANY_ID, 
+      WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
+      CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
+      UPDATE_VERSION, DESCRIPTION, TO_WAREHOUSE_CODE, 
+      TO_WAREHOUSE_ID)
+    values (#{inboundHeaderId,jdbcType=DECIMAL}, #{inboundNumber,jdbcType=VARCHAR}, #{sourceNumber,jdbcType=VARCHAR}, 
+      #{referenceNumber,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{ownerId,jdbcType=DECIMAL}, 
+      #{ownerCode,jdbcType=VARCHAR}, #{supplierId,jdbcType=DECIMAL}, #{supplierCode,jdbcType=VARCHAR}, 
+      #{inboundDate,jdbcType=TIMESTAMP}, #{expectedInboundDate,jdbcType=TIMESTAMP}, #{closedDate,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=VARCHAR}, #{carrierId,jdbcType=DECIMAL}, #{carrierCode,jdbcType=VARCHAR}, 
+      #{carrierCarNumber,jdbcType=VARCHAR}, #{carrierDriver,jdbcType=VARCHAR}, #{shipAddress1,jdbcType=VARCHAR}, 
+      #{shipAddress2,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, 
+      #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, #{toWarehouseCode,jdbcType=VARCHAR}, 
+      #{toWarehouseId,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wms.entity.auto.InboundHeaderTEntity">
+    insert into INBOUND_HEADER_T
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="inboundHeaderId != null">
+        INBOUND_HEADER_ID,
+      </if>
+      <if test="inboundNumber != null">
+        INBOUND_NUMBER,
+      </if>
+      <if test="sourceNumber != null">
+        SOURCE_NUMBER,
+      </if>
+      <if test="referenceNumber != null">
+        REFERENCE_NUMBER,
+      </if>
+      <if test="type != null">
+        TYPE,
+      </if>
+      <if test="ownerId != null">
+        OWNER_ID,
+      </if>
+      <if test="ownerCode != null">
+        OWNER_CODE,
+      </if>
+      <if test="supplierId != null">
+        SUPPLIER_ID,
+      </if>
+      <if test="supplierCode != null">
+        SUPPLIER_CODE,
+      </if>
+      <if test="inboundDate != null">
+        INBOUND_DATE,
+      </if>
+      <if test="expectedInboundDate != null">
+        EXPECTED_INBOUND_DATE,
+      </if>
+      <if test="closedDate != null">
+        CLOSED_DATE,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="carrierId != null">
+        CARRIER_ID,
+      </if>
+      <if test="carrierCode != null">
+        CARRIER_CODE,
+      </if>
+      <if test="carrierCarNumber != null">
+        CARRIER_CAR_NUMBER,
+      </if>
+      <if test="carrierDriver != null">
+        CARRIER_DRIVER,
+      </if>
+      <if test="shipAddress1 != null">
+        SHIP_ADDRESS1,
+      </if>
+      <if test="shipAddress2 != null">
+        SHIP_ADDRESS2,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="companyId != null">
+        COMPANY_ID,
+      </if>
+      <if test="warehouseId != null">
+        WAREHOUSE_ID,
+      </if>
+      <if test="delFlag != null">
+        DEL_FLAG,
+      </if>
+      <if test="createBy != null">
+        CREATE_BY,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateBy != null">
+        UPDATE_BY,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="updateVersion != null">
+        UPDATE_VERSION,
+      </if>
+      <if test="description != null">
+        DESCRIPTION,
+      </if>
+      <if test="toWarehouseCode != null">
+        TO_WAREHOUSE_CODE,
+      </if>
+      <if test="toWarehouseId != null">
+        TO_WAREHOUSE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="inboundHeaderId != null">
+        #{inboundHeaderId,jdbcType=DECIMAL},
+      </if>
+      <if test="inboundNumber != null">
+        #{inboundNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceNumber != null">
+        #{sourceNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="referenceNumber != null">
+        #{referenceNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerId != null">
+        #{ownerId,jdbcType=DECIMAL},
+      </if>
+      <if test="ownerCode != null">
+        #{ownerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierId != null">
+        #{supplierId,jdbcType=DECIMAL},
+      </if>
+      <if test="supplierCode != null">
+        #{supplierCode,jdbcType=VARCHAR},
+      </if>
+      <if test="inboundDate != null">
+        #{inboundDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expectedInboundDate != null">
+        #{expectedInboundDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closedDate != null">
+        #{closedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierId != null">
+        #{carrierId,jdbcType=DECIMAL},
+      </if>
+      <if test="carrierCode != null">
+        #{carrierCode,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierCarNumber != null">
+        #{carrierCarNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="carrierDriver != null">
+        #{carrierDriver,jdbcType=VARCHAR},
+      </if>
+      <if test="shipAddress1 != null">
+        #{shipAddress1,jdbcType=VARCHAR},
+      </if>
+      <if test="shipAddress2 != null">
+        #{shipAddress2,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="companyId != null">
+        #{companyId,jdbcType=DECIMAL},
+      </if>
+      <if test="warehouseId != null">
+        #{warehouseId,jdbcType=DECIMAL},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateVersion != null">
+        #{updateVersion,jdbcType=DECIMAL},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="toWarehouseCode != null">
+        #{toWarehouseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="toWarehouseId != null">
+        #{toWarehouseId,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.wms.dao.example.InboundHeaderTExample" resultType="java.lang.Long">
+    select count(*) from INBOUND_HEADER_T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update INBOUND_HEADER_T
+    <set>
+      <if test="record.inboundHeaderId != null">
+        INBOUND_HEADER_ID = #{record.inboundHeaderId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.inboundNumber != null">
+        INBOUND_NUMBER = #{record.inboundNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sourceNumber != null">
+        SOURCE_NUMBER = #{record.sourceNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.referenceNumber != null">
+        REFERENCE_NUMBER = #{record.referenceNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null">
+        TYPE = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ownerId != null">
+        OWNER_ID = #{record.ownerId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.ownerCode != null">
+        OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supplierId != null">
+        SUPPLIER_ID = #{record.supplierId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.supplierCode != null">
+        SUPPLIER_CODE = #{record.supplierCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inboundDate != null">
+        INBOUND_DATE = #{record.inboundDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.expectedInboundDate != null">
+        EXPECTED_INBOUND_DATE = #{record.expectedInboundDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.closedDate != null">
+        CLOSED_DATE = #{record.closedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null">
+        STATUS = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carrierId != null">
+        CARRIER_ID = #{record.carrierId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.carrierCode != null">
+        CARRIER_CODE = #{record.carrierCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carrierCarNumber != null">
+        CARRIER_CAR_NUMBER = #{record.carrierCarNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carrierDriver != null">
+        CARRIER_DRIVER = #{record.carrierDriver,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shipAddress1 != null">
+        SHIP_ADDRESS1 = #{record.shipAddress1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shipAddress2 != null">
+        SHIP_ADDRESS2 = #{record.shipAddress2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null">
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyId != null">
+        COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.warehouseId != null">
+        WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.delFlag != null">
+        DEL_FLAG = #{record.delFlag,jdbcType=CHAR},
+      </if>
+      <if test="record.createBy != null">
+        CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null">
+        UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateVersion != null">
+        UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
+      </if>
+      <if test="record.description != null">
+        DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.toWarehouseCode != null">
+        TO_WAREHOUSE_CODE = #{record.toWarehouseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.toWarehouseId != null">
+        TO_WAREHOUSE_ID = #{record.toWarehouseId,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update INBOUND_HEADER_T
+    set INBOUND_HEADER_ID = #{record.inboundHeaderId,jdbcType=DECIMAL},
+      INBOUND_NUMBER = #{record.inboundNumber,jdbcType=VARCHAR},
+      SOURCE_NUMBER = #{record.sourceNumber,jdbcType=VARCHAR},
+      REFERENCE_NUMBER = #{record.referenceNumber,jdbcType=VARCHAR},
+      TYPE = #{record.type,jdbcType=VARCHAR},
+      OWNER_ID = #{record.ownerId,jdbcType=DECIMAL},
+      OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR},
+      SUPPLIER_ID = #{record.supplierId,jdbcType=DECIMAL},
+      SUPPLIER_CODE = #{record.supplierCode,jdbcType=VARCHAR},
+      INBOUND_DATE = #{record.inboundDate,jdbcType=TIMESTAMP},
+      EXPECTED_INBOUND_DATE = #{record.expectedInboundDate,jdbcType=TIMESTAMP},
+      CLOSED_DATE = #{record.closedDate,jdbcType=TIMESTAMP},
+      STATUS = #{record.status,jdbcType=VARCHAR},
+      CARRIER_ID = #{record.carrierId,jdbcType=DECIMAL},
+      CARRIER_CODE = #{record.carrierCode,jdbcType=VARCHAR},
+      CARRIER_CAR_NUMBER = #{record.carrierCarNumber,jdbcType=VARCHAR},
+      CARRIER_DRIVER = #{record.carrierDriver,jdbcType=VARCHAR},
+      SHIP_ADDRESS1 = #{record.shipAddress1,jdbcType=VARCHAR},
+      SHIP_ADDRESS2 = #{record.shipAddress2,jdbcType=VARCHAR},
+      REMARK = #{record.remark,jdbcType=VARCHAR},
+      COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
+      WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL},
+      DEL_FLAG = #{record.delFlag,jdbcType=CHAR},
+      CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      TO_WAREHOUSE_CODE = #{record.toWarehouseCode,jdbcType=VARCHAR},
+      TO_WAREHOUSE_ID = #{record.toWarehouseId,jdbcType=DECIMAL}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <select id="selectOneByExample" parameterType="com.wms.dao.example.InboundHeaderTExample" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    select
+    <include refid="Base_Column_List" />
+    from INBOUND_HEADER_T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <update id="logicalDeleteByExample" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update INBOUND_HEADER_T set DEL_FLAG = 'Y'
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="logicalDeleteWithVersionByExample" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update INBOUND_HEADER_T
+    set UPDATE_VERSION = UPDATE_VERSION + 1,DEL_FLAG = 'Y'
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_With_Version_Where_Clause" />
+    </if>
+  </update>
+  <update id="logicalDeleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update INBOUND_HEADER_T set DEL_FLAG = 'Y'
+    where INBOUND_HEADER_ID = #{inboundHeaderId,jdbcType=DECIMAL}
+  </update>
+  <update id="logicalDeleteWithVersionByPrimaryKey" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update INBOUND_HEADER_T
+    set UPDATE_VERSION = UPDATE_VERSION + 1,DEL_FLAG = 'Y'
+    where UPDATE_VERSION = #{version,jdbcType=DECIMAL}
+      and INBOUND_HEADER_ID = #{key,jdbcType=DECIMAL}
+  </update>
+  <select id="selectByPrimaryKeyWithLogicalDelete" parameterType="map" resultMap="BaseResultMap">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    select 
+    <include refid="Base_Column_List" />
+    from INBOUND_HEADER_T
+    where INBOUND_HEADER_ID = #{inboundHeaderId,jdbcType=DECIMAL}
+      and DEL_FLAG = 
+    <choose>
+      <when test="andLogicalDeleted">
+        'Y'
+      </when>
+      <otherwise>
+        'N'
+      </otherwise>
+    </choose>
+  </select>
+  <delete id="deleteWithVersionByExample" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    delete from INBOUND_HEADER_T
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_With_Version_Where_Clause" />
+    </if>
+  </delete>
+  <update id="updateWithVersionByExample" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update INBOUND_HEADER_T
+    set UPDATE_VERSION = UPDATE_VERSION + 1,
+    INBOUND_HEADER_ID = #{record.inboundHeaderId,jdbcType=DECIMAL}, 
+    INBOUND_NUMBER = #{record.inboundNumber,jdbcType=VARCHAR}, 
+    SOURCE_NUMBER = #{record.sourceNumber,jdbcType=VARCHAR}, 
+    REFERENCE_NUMBER = #{record.referenceNumber,jdbcType=VARCHAR}, 
+    TYPE = #{record.type,jdbcType=VARCHAR}, 
+    OWNER_ID = #{record.ownerId,jdbcType=DECIMAL}, 
+    OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR}, 
+    SUPPLIER_ID = #{record.supplierId,jdbcType=DECIMAL}, 
+    SUPPLIER_CODE = #{record.supplierCode,jdbcType=VARCHAR}, 
+    INBOUND_DATE = #{record.inboundDate,jdbcType=TIMESTAMP}, 
+    EXPECTED_INBOUND_DATE = #{record.expectedInboundDate,jdbcType=TIMESTAMP}, 
+    CLOSED_DATE = #{record.closedDate,jdbcType=TIMESTAMP}, 
+    STATUS = #{record.status,jdbcType=VARCHAR}, 
+    CARRIER_ID = #{record.carrierId,jdbcType=DECIMAL}, 
+    CARRIER_CODE = #{record.carrierCode,jdbcType=VARCHAR}, 
+    CARRIER_CAR_NUMBER = #{record.carrierCarNumber,jdbcType=VARCHAR}, 
+    CARRIER_DRIVER = #{record.carrierDriver,jdbcType=VARCHAR}, 
+    SHIP_ADDRESS1 = #{record.shipAddress1,jdbcType=VARCHAR}, 
+    SHIP_ADDRESS2 = #{record.shipAddress2,jdbcType=VARCHAR}, 
+    REMARK = #{record.remark,jdbcType=VARCHAR}, 
+    COMPANY_ID = #{record.companyId,jdbcType=DECIMAL}, 
+    WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL}, 
+    DEL_FLAG = #{record.delFlag,jdbcType=CHAR}, 
+    CREATE_BY = #{record.createBy,jdbcType=VARCHAR}, 
+    CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP}, 
+    UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR}, 
+    UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
+    DESCRIPTION = #{record.description,jdbcType=VARCHAR}, 
+    TO_WAREHOUSE_CODE = #{record.toWarehouseCode,jdbcType=VARCHAR}, 
+    TO_WAREHOUSE_ID = #{record.toWarehouseId,jdbcType=DECIMAL}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_With_Version_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateWithVersionByExampleSelective" parameterType="map">
+    <!--
+      WARNING - @mbg.generated
+      This element is automatically generated by MyBatis Generator, do not modify.
+      @project https://github.com/itfsw/mybatis-generator-plugin
+    -->
+    update INBOUND_HEADER_T
+    <set>
+      <trim suffixOverrides=",">
+        UPDATE_VERSION = UPDATE_VERSION + 1,
+        <if test="record.inboundHeaderId != null">
+          INBOUND_HEADER_ID = #{record.inboundHeaderId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.inboundNumber != null">
+          INBOUND_NUMBER = #{record.inboundNumber,jdbcType=VARCHAR},
+        </if>
+        <if test="record.sourceNumber != null">
+          SOURCE_NUMBER = #{record.sourceNumber,jdbcType=VARCHAR},
+        </if>
+        <if test="record.referenceNumber != null">
+          REFERENCE_NUMBER = #{record.referenceNumber,jdbcType=VARCHAR},
+        </if>
+        <if test="record.type != null">
+          TYPE = #{record.type,jdbcType=VARCHAR},
+        </if>
+        <if test="record.ownerId != null">
+          OWNER_ID = #{record.ownerId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.ownerCode != null">
+          OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR},
+        </if>
+        <if test="record.supplierId != null">
+          SUPPLIER_ID = #{record.supplierId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.supplierCode != null">
+          SUPPLIER_CODE = #{record.supplierCode,jdbcType=VARCHAR},
+        </if>
+        <if test="record.inboundDate != null">
+          INBOUND_DATE = #{record.inboundDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.expectedInboundDate != null">
+          EXPECTED_INBOUND_DATE = #{record.expectedInboundDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.closedDate != null">
+          CLOSED_DATE = #{record.closedDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.status != null">
+          STATUS = #{record.status,jdbcType=VARCHAR},
+        </if>
+        <if test="record.carrierId != null">
+          CARRIER_ID = #{record.carrierId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.carrierCode != null">
+          CARRIER_CODE = #{record.carrierCode,jdbcType=VARCHAR},
+        </if>
+        <if test="record.carrierCarNumber != null">
+          CARRIER_CAR_NUMBER = #{record.carrierCarNumber,jdbcType=VARCHAR},
+        </if>
+        <if test="record.carrierDriver != null">
+          CARRIER_DRIVER = #{record.carrierDriver,jdbcType=VARCHAR},
+        </if>
+        <if test="record.shipAddress1 != null">
+          SHIP_ADDRESS1 = #{record.shipAddress1,jdbcType=VARCHAR},
+        </if>
+        <if test="record.shipAddress2 != null">
+          SHIP_ADDRESS2 = #{record.shipAddress2,jdbcType=VARCHAR},
+        </if>
+        <if test="record.remark != null">
+          REMARK = #{record.remark,jdbcType=VARCHAR},
+        </if>
+        <if test="record.companyId != null">
+          COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.warehouseId != null">
+          WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.delFlag != null">
+          DEL_FLAG = #{record.delFlag,jdbcType=CHAR},
+        </if>
+        <if test="record.createBy != null">
+          CREATE_BY = #{record.createBy,jdbcType=VARCHAR},
+        </if>
+        <if test="record.createTime != null">
+          CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.updateBy != null">
+          UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
+        </if>
+        <if test="record.updateTime != null">
+          UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.description != null">
+          DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+        </if>
+        <if test="record.toWarehouseCode != null">
+          TO_WAREHOUSE_CODE = #{record.toWarehouseCode,jdbcType=VARCHAR},
+        </if>
+        <if test="record.toWarehouseId != null">
+          TO_WAREHOUSE_ID = #{record.toWarehouseId,jdbcType=DECIMAL},
+        </if>
+      </trim>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_With_Version_Where_Clause" />
+    </if>
+  </update>
+</mapper>

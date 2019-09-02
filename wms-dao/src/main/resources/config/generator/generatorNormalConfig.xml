@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<properties resource="config/generator/jdbc.properties" />
+
+	<context id="oracleTables" targetRuntime="MyBatis3">
+		<property name="autoDelimitKeywords" value="true" />
+		<!--可以使用``包括字段名，避免字段名与sql保留字冲突报错 -->
+		<property name="beginningDelimiter" value="" />
+		<property name="endingDelimiter" value="" />
+		<!-- 覆盖XML -->
+		<plugin type="com.wms.common.mybatis.generator.plugins.OverwriteXmlPlugin" />
+		<!-- 自动生成toString方法 -->
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+		<!-- 自动生成equals方法和hashcode方法 -->
+		<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+
+		<!-- 非官方插件 https://github.com/itfsw/mybatis-generator-plugin -->
+		<!-- 查询单条数据插件 -->
+		<plugin type="com.wms.common.mybatis.generator.plugins.SelectOneByExamplePlugin" />
+		<!-- 查询结果选择性返回插件
+		<plugin type="com.itfsw.mybatis.generator.plugins.SelectSelectivePlugin" />
+		 -->
+		<!-- Example Criteria 增强插件 -->
+		<plugin type="com.itfsw.mybatis.generator.plugins.ExampleEnhancedPlugin" />
+		<!-- 数据Model属性对应Column获取插件 -->
+		<plugin type="com.itfsw.mybatis.generator.plugins.ModelColumnPlugin" />
+		<!-- 数据Model链式构建插件 -->
+		<plugin type="com.itfsw.mybatis.generator.plugins.ModelBuilderPlugin"/>
+
+		
+		<!-- 表重命名配置插件 -->
+	    <plugin type="com.wms.common.mybatis.generator.plugins.DaoRenameConfigurationPlugin">
+	        <!-- TbMapper -> TbDao, TbMapper.xml -> TbDao.xml -->
+	        <property name="clientPrefix" value="I"/>
+	        <property name="clientSuffix" value="Dao"/>
+	        <!-- TbExmaple -> TbQuery -->
+	        <property name="exampleSuffix" value="Example"/>
+	        <!-- Tb -> TbEntity -->
+	        <property name="modelSuffix" value="Entity"/>
+	    </plugin>
+	    
+	    <!-- 逻辑删除插件 -->
+	    <plugin type="com.itfsw.mybatis.generator.plugins.LogicalDeletePlugin">
+	        <!-- 这里配置的是全局逻辑删除列和逻辑删除值，当然在table中配置的值会覆盖该全局配置 -->
+	        <!-- 逻辑删除列类型只能为数字、字符串或者布尔类型 -->
+	        <property name="logicalDeleteColumn" value="del_flag"/>
+	        <!-- 逻辑删除-已删除值 -->
+	        <property name="logicalDeleteValue" value="Y"/>
+	        <!-- 逻辑删除-未删除值 -->
+	        <property name="logicalUnDeleteValue" value="N"/>
+	        
+	        <!-- 是否生成逻辑删除常量(只有开启时 logicalDeleteConstName、logicalUnDeleteConstName 才生效) -->
+	        <property name="enableLogicalDeleteConst" value="false"/>
+	        <!-- 逻辑删除常量名称，不配置默认为 IS_DELETED -->
+	        <property name="logicalDeleteConstName" value="IS_DELETED"/>
+	        <!-- 逻辑删除常量（未删除）名称，不配置默认为 NOT_DELETED -->
+	        <property name="logicalUnDeleteConstName" value="NOT_DELETED"/>
+	    </plugin>
+	    
+		<!-- 乐观锁插件 -->
+	    <plugin type="com.itfsw.mybatis.generator.plugins.OptimisticLockerPlugin">
+	        <!-- 是否启用自定义nextVersion，默认不启用(插件会默认使用sql的 set column = column + 1) -->
+	        <property name="customizedNextVersion" value="false"/>
+	    </plugin>
+	    
+	    <!-- Example 目标包修改插件 -->
+		<plugin type="com.itfsw.mybatis.generator.plugins.ExampleTargetPlugin">
+		    <!-- 修改Example类生成到目标包下 -->
+		    <property name="targetPackage" value="com.wms.dao.example"/>
+		</plugin>
+
+		<!--去掉注解 -->
+		<commentGenerator>
+			<property name="suppressDate" value="true" />
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+
+		<jdbcConnection 
+			driverClass="${jdbc.driver}"
+			connectionURL="${jdbc.url}" 
+			userId="${jdbc.username}"
+			password="${jdbc.password}" />
+
+		<!--指定生成的类型为java类型，避免数据库中number等类型字段 -->
+		<javaTypeResolver type="com.wms.common.mybatis.generator.plugins.MyBatisJavaTypeResolver">
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!--自动生成的实体的存放包路径 -->
+		<javaModelGenerator
+			targetPackage="com.wms.entity.auto" targetProject="src/main/java">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+			<property name="immutable" value="false"/>
+			<property name="rootClass" value="com.wms.entity.BaseEntity"/>
+		</javaModelGenerator>
+
+		<!--自动生成的*Mapper.xml文件存放路径 -->
+		<sqlMapGenerator
+			targetPackage="mapper.com.wms.dao.auto"
+			targetProject="src/main/resources">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!--自动生成的*Mapper.java存放路径 -->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.wms.dao.auto" targetProject="src/main/java">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<!--
+		enableDeleteByPrimaryKey="false" 
+		enableSelectByPrimaryKey="false" 
+		enableUpdateByPrimaryKey="false"
+		不可使用主键更新方法，为后续分库分表做准
+		 -->
+		
+		
+		<table tableName="sys_user_v" domainObjectName="SysUserT" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="sys_role_v" domainObjectName="SysRoleT" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="sys_permission_v" domainObjectName="SysPermissionT" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="sys_user_role_v" domainObjectName="SysUserRoleT" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="sys_role_permission_v" domainObjectName="SysRolePermissionT"  enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="sys_warehouses_v" domainObjectName="SysWarehousesT" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="sys_companys_v" domainObjectName="SysCompanysT" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="sys_oper_log_t"  enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="sys_config_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="sys_role_data_v" domainObjectName="SysRoleDataT"  enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="sys_user_online_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		 <table tableName="sys_login_infor_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table> 
+		<table tableName="sys_locale_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table> 
+		<table tableName="sys_locale_v" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table> 
+		<table tableName="sys_user_default_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table> 
+		<table tableName="sys_codelkup_t"  enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="sys_codelist_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="sys_monitor_log_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="sys_order_number_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="barcode_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="owner_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="customer_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="supplier_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="carrier_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="pack_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="sku_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="lot_validate_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="putaway_strategy_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="putaway_strategy_detail_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="putaway_location_lock_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="allocate_strategy_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="allocate_strategy_detail_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="zone_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="location_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="area_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="area_detail_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="inbound_header_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="inbound_detail_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="inbound_cancel_header_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="inbound_cancel_detail_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="task_detail_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="lot_attribute_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="lpn_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="inventory_onhand_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="outbound_header_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="outbound_detail_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="wave_build_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="wave_build_detail_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="wave_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="wave_detail_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="allocate_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="allocate_short_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="inventory_adjustment_header_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="inventory_adjustment_detail_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="inventory_transaction_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="inventory_locked_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="inventory_count_request_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="inventory_count_header_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="inventory_count_detail_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="sys_file_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="status_history_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="ent_owner_v" domainObjectName="EntOwnerT" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="ent_customer_v" domainObjectName="EntCustomerT" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="ent_supplier_v" domainObjectName="EntSupplierT" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="ent_carrier_v" domainObjectName="EntCarrierT" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="ent_pack_v" domainObjectName="EntPackT" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="ent_sku_v" domainObjectName="EntSkuT" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="ent_invetnroy_onhand_v" domainObjectName="EntInventoryOnhandT" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="warehouse_active_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+	</context>
+</generatorConfiguration>

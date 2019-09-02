@@ -1,0 +1,70 @@
+<input id="packCode" name="packCode" class="lazy-load" lazy-load="easyui-combogrid" wms:data-options="
+								required:true,
+								label: '${web.label.pack}',
+								labelPosition: 'top',
+								idField:'packCode',
+    							textField:'packCode',
+    							value: 'STD',
+								url:'../../services/inner/base/pack/find',
+							    onBeforeLoad: function(param){
+									$.extend(param, getPackParams());
+								},
+							    columns:[[
+								    {field:'packId',hidden:true},
+								    {field:'packCode',title:'${web.label.pack}',width:80},
+								    {field:'packDescr',title:'${web.label.descr}',width:150},
+								    {field:'qty',hidden:true},
+								    {field:'uom',hidden:true},
+								    {field:'qtyInner',hidden:true},
+								    {field:'uomInner',hidden:true},
+								    {field:'qtyCase',hidden:true},
+								    {field:'uomCase',hidden:true}
+							    ]]
+							" />
+<script type="text/javascript">
+	function loadPackLov(params, fn){ 
+		$('#packCode').combogrid({
+			queryParams: getPackParams(params),
+			onClickRow: function(rowIndex, rowData){
+				if (fn != undefined) {
+					fn(rowData);
+				}else{
+					setPackResult(rowData);
+				}
+			}
+		});
+	}
+	
+	function getPackParams (params){ 
+		var data = getBaseData();
+		data['active'] = 'Y';
+		if (typeof(params) == 'object'){
+			$.extend(data, params);
+		}
+		return data;
+	}
+	
+	function setPackResult (data){ 
+		if ($("#packDescr").length > 0) {
+			$("#packDescr").textbox('setValue', data.packDescr);
+		}
+		if ($("#packId").length > 0) {
+			$("#packId").val(data.packId);
+		}
+		if ($("#uom").length > 0) {
+			
+			var comData = [];
+			
+			comData.push({label: data.uom, value: data.uom});
+			comData.push({label: data.uomInner, value: data.uomInner});
+			comData.push({label: data.uomCase, value: data.uomCase});
+			
+			$("#uom").combobox({
+				data : comData,
+				value : data.uom,
+				idField: 'value',
+				textField: 'label'
+			});
+		}
+	}
+</script>

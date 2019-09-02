@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${wms.outnbound.title}">出库单</title>
+    <head th:replace="common/head"/>
+    <script th:replace="common/js"/>
+    <script type="text/javascript" th:src="@{/js/codelkupList?listName=OUTBOUNDSTATUS,OUTBOUNDTYPE,ALLOCATESTRATEGYTYPE,SHIPLABEL,UOM}"></script>
+</head>
+<body class="easyui-layout" style="opacity: 1;">
+<div class="icon-loading"
+     style="position: absolute; z-index: 999999;width: 100%; height: 100%;opacity: 1;background-color: white;">&nbsp;
+</div>
+<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+    <div id="searchDiv" class="easyui-layout" style="height: 100%;">
+        <div style="margin-left: 10px;height: 100%;" data-options="region:'north',border:false">
+            <form id="searchForm" data-table="#outboundData" style="height: 830px;">
+                <div style="margin-bottom:10px">
+                    <input name="outboundNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.outboundnumber}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="sourceNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.sourcenumber}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="ownerCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.owner}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combobox" name="type" wms:data-options="
+						data: codelkups['OUTBOUNDTYPE'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.type}',
+						labelPosition: 'top'
+						"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combobox" name="status" wms:data-options="
+						data: codelkups['OUTBOUNDSTATUS'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.status}',
+						labelPosition: 'top'
+						">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="createTimeBegin" class="easyui-datebox"
+                           wms:data-options="label:'${web.label.createtimebegin}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="createTimeEnd" class="easyui-datebox"
+                           wms:data-options="label:'${web.label.createtimeend}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="expectedOutboundDateBegin" class="easyui-datebox" style="width: 185px;"
+                           wms:data-options="label:'${web.label.expectedoutbounddatebegin}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="expectedOutboundDateDateEnd" class="easyui-datebox"
+                           wms:data-options="label:'${web.label.expectedoutbounddateend}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="outboundDateBegin" class="easyui-datebox"
+                           wms:data-options="label:'${web.label.outbounddatebegin}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="outboundDateEnd" class="easyui-datebox"
+                           wms:data-options="label:'${web.label.outbounddateend}',labelPosition:'top'"/>
+                </div>
+            </form>
+        </div>
+        <div style="text-align: center;height:50px;" data-options="region:'south',border:false">
+            <a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-search'">
+                <span wms:text="${web.label.search}">Search</span>
+            </a>
+            <a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-clear'">
+                <span wms:text="${web.label.clear}">Clear</span>
+            </a>
+        </div>
+    </div>
+</div>
+<div data-options="region:'center',border:false">
+    <div class="easyui-layout" style="width: 100%;height: 100%;">
+        <div data-options="region:'north',collapsible:false" style="height:35px;">
+            <div class="tableToolbar">
+                <a href="#" class="easyui-menubutton" data-options="menu:'#addMenuButton',plain:false"
+                   wms:text="${web.label.add}">Add</a>
+                <div id="addMenuButton">
+                    <div wms:text="${web.label.addheader}" class="header-add" data-addpanel="#addHeaderDiv">add Header
+                    </div>
+                    <div wms:text="${web.label.addheaderanddetail}" class="outbound-addheaderdetail"
+                         wms:title="${web.label.outbound.add}">add Header & Detail
+                    </div>
+                </div>
+               <!-- <a href="#" class="easyui-menubutton" data-options="menu:'#viewMenuButton',plain:false"
+                   wms:text="${web.label.view}">View</a>
+                <div id="viewMenuButton">
+                    <div wms:text="${web.label.viewheader}">View Header</div>
+                    <div wms:text="${web.label.viewdetail}" class="viewDetail">View Detail</div>
+                    <div wms:text="${web.label.viewheaderanddetail}">View Header & Detail</div>
+                </div>-->
+                <a href="#" class="easyui-menubutton" data-options="menu:'#optionsMenuButton',plain:false" wms:text="${web.label.options}">Actions</a>
+                <div id="optionsMenuButton">
+                    <div  wms:text="${web.label.allocate}" onclick="action('allocate')">Allocate</div>
+                    <div  wms:text="${web.label.unallocate}" onclick="action('unallocate')">Unallocate</div>
+                    <div  wms:text="${web.label.release}" onclick="action('release')">Release</div>
+                    <div  wms:text="${web.label.pick}" onclick="action('pick')">Pick</div>
+                    <div  wms:text="${web.label.unpick}" onclick="action('unpick')">Unpick</div>
+                    <div  wms:text="${web.label.ship}" onclick="action('ship')">Ship</div>
+                    <div  wms:text="${web.label.cancel}" onclick="action('cancel')">Cancel</div>
+                </div>
+                <a href="#" class="easyui-menubutton" data-options="menu:'#optionsOutboundReport',plain:false" wms:text="${web.label.report}">Report</a>
+                <div id="optionsOutboundReport">
+                    <div  wms:text="${wms.label.pickreport}" onclick="exportPDFReport('outbound')">Allocate</div>
+                    <div  wms:text="${web.label.shiplabel}" onclick="exportPDFReport('A01')">Ship Label</div>
+                </div>
+                <a href="#" class="easyui-linkbutton" onclick="importExcel('OUTBOUND')" wms:text="${web.label.import}">Import</a>
+                <a href="#" class="easyui-linkbutton" onclick="exportExcel('OUTBOUND', '#searchForm')" wms:text="${web.label.export}">Export</a>
+                <a href="#" class="easyui-linkbutton common-rowdel" data-table="#outboundData"
+                   th:data-url="@{/services/inner/outbound/delete}" wms:text="${web.label.delete}">Delete</a>
+            </div>
+        </div>
+        <div data-options="region:'center',collapsible:false,border:false">
+            <div class="easyui-layout" id="detailLayout" style="width: 100%;height: 100%;" data-options="fix:true">
+                <div data-options="region:'center',collapsible:false,border:false">
+                    <table id="outboundData" wms:title="${web.label.outboundlist.title}" class="easyui-datagrid"
+                           wms:data-options="
+										sortOrder: 'desc',
+										sortName: 'outboundHeaderId',
+										"
+                           th:data-delayUrl="@{/services/inner/outbound/find}">
+                        <thead>
+                        <th field="outboundHeaderId" data-options="checkbox:true"></th>
+                        <th field="detail" data-options="
+										formatter:function(value,row){
+											var data = JSON.stringify(row);
+											var detail = '<span title = \'查看\' onclick=\'viewDetail('+data+')\' class=\'icon-detail\'>&nbsp;</span>';
+											return detail;
+										}
+									"></th>
+                        <th field="edit" data-options="
+										formatter:function(value,row){
+											var data = JSON.stringify(row);
+											var detail = '<span title = \'编辑\' onclick=\'toEditHeader('+data+')\' class=\'icon-edit\'>&nbsp;</span>';
+											return detail;
+										}
+									"></th>
+                        <th field="outboundNumber" width="100" wms:text="${web.label.outboundnumber}"
+                            data-options="sortable:true">outboundNumber
+                        </th>
+                        <th field="sourceNumber" width="100" wms:text="${web.label.sourcenumber}">sourceNumber</th>
+                        <th field="type" width="80" wms:text="${web.label.type}" data-options="
+										sortable:true,
+										formatter:function(value,row){
+											return getCodelkupValue('OUTBOUNDTYPE',value);
+										}
+									">type
+                        </th>
+                        <th field="status" width="80" wms:text="${web.label.status}" data-options="
+										sortable:true,
+										formatter:function(value,row){
+											return getCodelkupValue('OUTBOUNDSTATUS',value);
+										}
+									">status
+                        </th>
+                        <th field="ownerCode" width="80" wms:text="${web.label.owner}">ownerCode</th>
+                        <th field="customerCode" width="80" wms:text="${web.label.customercode}">customerCode</th>
+                        <th field="expectedoutbounddate" width="130" wms:text="${web.label.expectedoutbounddate}">
+                            expectedoutbounddate
+                        </th>
+                        <th field="outboundDate" width="130" wms:text="${web.label.outbounddate}">outboundDate</th>
+                        <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+                        <th field="createTime" width="130" wms:text="${web.label.createtime}"
+                            data-options="sortable:true">createTime
+                        </th>
+                        <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+                        <th field="updateTime" width="130" wms:text="${web.label.updatetime}"
+                            data-options="sortable:true">updateTime
+                        </th>
+                        </thead>
+                    </table>
+                </div>
+                <div id="detailPanel" data-options="
+								region:'south',
+								border:false,
+								split:true,
+								minimized:true,
+								onBeforeExpand: function(){
+									if (headerData == undefined)
+										return false;
+								}
+								" title=" " style="height: 300px;">
+                    <div th:replace="outbound/detail"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- add header -->
+<div id="addHeaderDiv" wms:title="${web.label.header.add}" style="height: 350px;width: 800px;display: none;" data-options="buttons: '#headerAddButton'">
+    <div id="headerAddButton">
+        <a href="#" class="easyui-linkbutton common-confirmadd" wms:text="${web.label.save}" data-form="#outboundHeaderForm" data-table="#outboundData">Save</a>
+        <a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#outboundHeaderForm').form('clear');" wms:text="${web.label.clear}" data-options="iconCls:'icon-clear'">Clear</a>
+    </div>
+    <div id="headerEditButton" style="display:none;">
+        <a href="#" class="easyui-linkbutton outboundHeader-save" wms:text="${web.label.save}" data-form="#outboundHeaderForm" data-table="#outboundData">Save</a>
+    </div>
+    <div th:replace="outbound/header" />
+</div>
+</body>
+<script type="text/javascript" th:inline="text">
+    var headerData;
+    $(function(){
+        $('.outbound-addheaderdetail').click(function(){
+            window.parent.addPanel($(this).attr('title'), 'outbound/edit');
+        });
+
+        $('.common-search').click(function(){
+            $('#detailLayout').layout('collapse', 'south');
+        });
+
+        $('.header-add').click(function(){
+            outboundHeaderEditable(0);
+            $('#headerAddButton').show();
+            $('#headerEditButton').hide();
+            var panel = $(this).attr('data-addpanel');
+            lazyLoadView(panel);
+            $(panel).dialog({
+                closed: true,
+                modal: true,
+                fix: true,
+                buttons: '#headerAddButton'
+            }).dialog('open');
+            $(panel).find('form').form('reset');
+            $('#outboundHeaderId').val("");
+            
+            loadCustomerLov(null,function(data){
+            	setCustomerResult(data);
+            })
+        });
+
+        $('.viewDetail').click(function(){
+            viewDetail();
+        });
+
+        //头部编辑保存
+        $('.outboundHeader-save').click(function(){
+            var from = $(this).attr('data-form');
+            var datagrid = $(this).attr('data-table');
+            var url ='../../services/inner/outbound/save';
+            var valid = $(from).form('validate');
+            if (!valid) {
+                return;
+            }
+            var data = $(from).serializeObject();
+            data = getBaseData(data);
+            loading();
+            $.post({
+                url: url,
+                data:data,
+                success: function(data){
+                    data = returnData(data);
+                    closeLoading();
+                    if (data.code == '0') {
+                        showError(data.msg);
+                        return;
+                    }
+                    $(from).parents('.window-body').dialog('close');
+                    $(datagrid).datagrid('reload').datagrid('clearChecked');
+                }
+            });
+        });
+    });
+
+    function viewDetail(data) {
+        if (typeof(data) == 'object') {
+            headerData = data;
+        }else{
+            var checkedRows = $('#outboundData').datagrid('getChecked');
+            if (checkedRows.length != 1) {
+                showError($.locale.selectOneRow);
+                return;
+            }
+            headerData = checkedRows[0];
+        }
+
+        var detailPanelOptions = $('#detailPanel').panel('options');
+        var collapsed = detailPanelOptions.collapsed;
+        if (collapsed){
+            $('#detailPanel').panel({
+                height: 300,
+                minimized: false
+            });
+            $('#detailLayout').layout('expand', 'south');
+        }
+        loadDetailListToolbarView();
+        refreshOutboundDetail(headerData);
+    }
+    function getOwnerId(){
+        return headerData.ownerId;
+    }
+
+    function getOutboundHeaderData(){
+        return headerData;
+    }
+
+    function refreshOutbound(data){
+        var outboundData = '#outboundData';
+        var checkedRows = $(outboundData).datagrid('getEditingRowIndexs');
+        if (checkedRows.length == 1) {
+            $(outboundData).datagrid('updateRow', {
+                index: checkedRows[0],
+                row: data
+            });
+        }
+    }
+
+    function toEditHeader(data) {
+        if (typeof(data) == 'object') {
+            headerData = data;
+        }else{
+            var checkedRows = $('#outboundData').datagrid('getChecked');
+            if (checkedRows.length != 1) {
+                showError($.locale.selectOneRow);
+                return;
+            }
+            headerData = checkedRows[0];
+        }
+        $('#headerAddButton').hide();
+        $('#headerEditButton').show();
+        var panel = '#addHeaderDiv';
+        lazyLoadView(panel);
+        $(panel).dialog({
+            closed: true,
+            modal: true,
+            fix: true,
+            buttons: '#headerEditButton'
+        }).dialog('open');
+        $(panel).find('form').form('reset');
+
+        refreshEditHeader(headerData);
+
+    }
+
+    function action(type) {
+        var checkedRows = $('#outboundData').datagrid('getChecked');
+        if (checkedRows.length == 0) {
+            showError($.locale.selectOneRow);
+            return;
+        }
+        confirmMsg($.locale.lineConfirm,{type:type,row:checkedRows.length}, function(r){
+            if (!r){
+                return;
+            }
+            var data = getBaseData(checkedRows);
+            loading();
+            $.post({
+                url: '../../services/inner/outbound/'+type,
+                data:data,
+                success: function(data){
+                    data = returnData(data);
+                    closeLoading();
+                    if (data.code == '0') {
+                        showError(data.msg);
+                        return;
+                    }
+                    $('#outboundData').datagrid('reload').datagrid('clearChecked');
+                    var collapse = $('#detailLayout').layout('panel','south').panel("options").collapsed;
+                    headerData = checkedRows[0];
+                    if(!collapse){
+                        //展开状态并且只选择了一行刷新明细
+                        refreshOutboundDetail(headerData);
+                    }else {
+                        $('#detailLayout').layout('collapse', 'south');
+                    }
+                }
+            });
+        });
+    }
+    
+    function exportPDFReport(type) {
+        var checkedRows = $('#outboundData').datagrid('getChecked');
+		if (checkedRows.length != 1) {
+			showError($.locale.selectOneRow);
+			return;
+		}
+		rowData = checkedRows[0];
+		exportReport({
+			__codelkup: "OUTBOUNDTYPE",
+			fileType: "pdf",
+			reportType: type,
+			id: rowData.outboundHeaderId
+		});
+    }
+
+</script>
+</html>

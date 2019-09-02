@@ -1,0 +1,56 @@
+<input id="ownerCode" name="ownerCode" class="lazy-load" lazy-load="easyui-combogrid" wms:data-options="
+								required:true,
+								label: '${web.label.owner}',
+								labelPosition: 'top',
+								idField:'ownerCode',
+    							textField:'ownerCode',
+								url:'../../services/inner/base/owner/find',
+								onBeforeLoad: function(param){
+									$.extend(param, getOwnerParams());
+								},
+							    columns:[[
+								    {field:'ownerId',hidden:true},
+								    {field:'phone1',hidden:true},
+								    {field:'phone2',hidden:true},
+								    {field:'contact1',hidden:true},
+								    {field:'contact2',hidden:true},
+								    {field:'address1',hidden:true},
+								    {field:'address2',hidden:true},
+								    {field:'fax',hidden:true},
+								    {field:'email',hidden:true},
+								    {field:'ownerCode',title:'${web.label.owner}',width:80},
+								    {field:'ownerDescr',title:'${web.label.descr}',width:150}
+							    ]]
+							" />
+<script type="text/javascript">
+	function loadOwnerLov(params, fn){ 
+		$('#ownerCode').combogrid({
+			queryParams: getOwnerParams(params),
+			onClickRow: function(rowIndex, rowData){
+				if (fn != undefined) {
+					fn(rowData);
+				}else{
+					setOwnerResult(rowData);
+				}
+			}
+		});
+	}
+	
+	function getOwnerParams (params){ 
+		var data = getBaseData();
+		data['active'] = 'Y';
+		if (typeof(params) == 'object'){
+			$.extend(data, params);
+		}
+		return data;
+	}
+	
+	function setOwnerResult (data){ 
+		if ($("#ownerDescr").length > 0) {
+			$("#ownerDescr").textbox('setValue', data.ownerDescr);
+		}
+		if ($("#ownerId").length > 0) {
+			$("#ownerId").val(data.ownerId);
+		}
+	}
+</script>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${wms.allocateStrategy.title}">分配策略</title>
+    <head th:replace="common/head"/>
+</head>
+<body class="easyui-layout" style="opacity: 1;">
+<div class="icon-loading" style="position: absolute; z-index: 999999;width: 100%; height: 100%;opacity: 1;background-color: white;" >&nbsp;</div>
+<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+    <div id="searchDiv">
+        <div style="margin-left: 10px;">
+            <form id="searchForm" data-table="#dataTable">
+                <div style="margin-bottom:10px">
+                    <input name="allocateStrategyCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.allocatestrategycode}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="allocateStrategyDescr" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.descr}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combobox" name="allocateStrategyType" wms:data-options="
+						data: codelkups['ALLOCATESTRATEGYTYPE'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.allocatestrategytype}',
+						labelPosition: 'top'
+						">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combobox" name="active" wms:data-options="
+						data: codelkups['YESNO'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.active}',
+						labelPosition: 'top'
+						">
+                </div>
+            </form>
+        </div>
+        <div style="text-align: center;">
+            <a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-search'">
+                <span wms:text="${web.label.search}">Search</span>
+            </a>
+            <a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-clear'">
+                <span wms:text="${web.label.clear}">Clear</span>
+            </a>
+        </div>
+    </div>
+</div>
+<div data-options="region:'center'">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'north',collapsible:false" style="height:35px;">
+            <div id="dataTableToolbar" style="padding-left: 20px;">
+                <a href="#" class="easyui-linkbutton common-add" data-addpanel="#addDiv">
+                    <span wms:text="${web.label.add}">Add</span>
+                </a>
+                <a href="#" class="easyui-linkbutton common-rowsave" data-table="#dataTable"
+                   th:data-url="@{/services/inner/base/allocateStrategy/save}">
+                    <span wms:text="${web.label.save}">Save</span>
+                </a>
+                <a href="#" class="easyui-linkbutton allocateHeader-rowdel" data-table="#dataTable"
+                   th:data-url="@{/services/inner/base/allocateStrategy/delete}">
+                    <span wms:text="${web.label.delete}">Delete</span>
+                </a>
+            </div>
+        </div>
+        <div data-options="region:'center',collapsible:false,border:false">
+            <div class="easyui-layout" id="detailLayout" style="width: 100%;height: 100%;"
+                 data-options="fix:true">
+                <div data-options="region:'center',collapsible:false,border:false">
+                    <table id="dataTable" wms:title="${web.label.allocateStrategylist.title}" class="easyui-datagrid"
+                           th:data-delayUrl="@{/services/inner/base/allocateStrategy/find}">
+                        <thead>
+                        <th field="allocateStrategyId" data-options="checkbox:true"></th>
+                        <th field="detail" data-options="
+										formatter:function(value,row){
+											var data = JSON.stringify(row);
+											var detail = '<span onclick=\'viewDetail('+data+')\' class=\'icon-detail\'>&nbsp;</span>';
+											return detail;
+										}
+									"></th>
+                        <th field="allocateStrategyCode" width="130" wms:text="${web.label.allocatestrategycode}"
+                            data-options="sortable:true">code
+                        </th>
+                        <th field="allocateStrategyDescr" width="200" wms:text="${web.label.descr}"
+                            data-options="editor:'text'">descr
+                        </th>
+                        <th field="allocateStrategyType" width="150" wms:text="${web.label.allocatestrategytype}"
+                            data-options="
+                                        sortable:true,
+                                        formatter:function(value,row){
+								            return getCodelkupValue('ALLOCATESTRATEGYTYPE',value);
+							            },
+                                        editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['ALLOCATESTRATEGYTYPE']
+								            }
+							            }
+                                    ">type
+                        </th>
+                        <th field="active" width="50" wms:text="${web.label.active}" data-options="
+							            sortable:true,
+							            formatter:function(value,row){
+								            return getCodelkupValue('YESNO',value);
+							            },
+							            editor:{
+								            type:'combobox',
+								            options:{
+									            valueField:'code',
+									            textField:'descr',
+									            data: codelkups['YESNO']
+								            }
+							            }
+						            ">active
+                        </th>
+                        <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+                        <th field="createTime" width="150" wms:text="${web.label.createtime}"
+                            data-options="sortable:true">createTime
+                        </th>
+                        <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+                        <th field="updateTime" width="150" wms:text="${web.label.updatetime}"
+                            data-options="sortable:true">updateTime
+                        </th>
+                        <th field="remark" width="500" wms:text="${web.label.remark}"
+                            data-options="
+                                        editor:'text',
+                                        formatter: function(value,row,index){
+                                            if(null != value){
+                                                return '<span title='+value+'>'+value+'</span>'
+                                            }
+                                        }
+                            ">remark
+                        </th>
+                        </thead>
+                    </table>
+                </div>
+                <div id="detailPanel" data-options="region:'south',border:false,split:true,minimized:true"
+                     title=" " style="height: 300px;">
+                    <div th:replace="base/allocateStrategyDetail"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="addDiv" wms:title="${web.label.add}" style="width:400px;height:380px; display: none;">
+    <div style="width: 100%;padding-left: 50px;">
+        <form method="post" id="addForm" th:data-url="@{/services/inner/base/allocateStrategy/add}">
+            <table style="width: 100%;">
+                <tr>
+                    <td>
+                        <input name="allocateStrategyCode" class="easyui-textbox"
+                               wms:data-options="required:true,label:'${web.label.allocatestrategycode}',labelPosition:'top'">
+                    </td>
+                    <td>
+                        <input name="allocateStrategyDescr" class="easyui-textbox"
+                               wms:data-options="required:true,label:'${web.label.descr}',labelPosition:'top'">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="easyui-combobox" name="active" style="width: 100px;" wms:data-options="
+							required:true,
+							value: 'Y',
+							data: codelkups['YESNO'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.active}',
+							labelPosition: 'top'
+							"/>
+                    </td>
+                    <td style="padding-left: 30px;">
+                        <input class="easyui-combobox" name="allocateStrategyType" style="width: 100px;" wms:data-options="
+							required:true,
+							value: '10',
+							data: codelkups['ALLOCATESTRATEGYTYPE'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.type}',
+							labelPosition: 'top'
+							"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input name="remark" class="easyui-textbox"
+                               wms:data-options="label:'${web.label.remark}',labelPosition:'top',multiline:true"
+                               style="width: 300px;height:100px;"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="text-align: center;margin-top: 30px;">
+        <a href="#" class="easyui-linkbutton common-confirmadd" data-form="#addForm" data-table="#dataTable"
+           id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
+        </a>
+        <a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');"
+           data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
+        </a>
+    </div>
+</div>
+</body>
+<script th:replace="common/js"/>
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=YESNO,ALLOCATESTRATEGYTYPE,ALLOCATETYPE,ALLOCATEUOM,ALLOCATESORT,ALLOCATEFIFO,AREATYPE}"></script>
+<script type="text/javascript" th:inline="text">
+    var headerData;
+    $(function () {
+        $('.common-search').click(function () {
+            $('#detailLayout').layout('collapse', 'south');
+        });
+
+        $('.allocateStrategydetail-add').click(function () {
+            var total = $("#detailTable").datagrid('getData').total;
+            var linenumber_increment = 10;
+            var linenumber = ( total + 1 ) * linenumber_increment;
+            $("#lineNumber").numberbox('setValue', linenumber);
+            var panel = $(this).attr('data-addpanel');
+            $(panel).dialog({
+                closed: true,
+                modal: true,
+                fix: true
+            }).dialog('open');
+        });
+
+        $('.detail-confirmadd').click(function () {
+            var from = $(this).attr('data-form');
+            var datagrid = $(this).attr('data-table');
+            var url = $(from).attr('data-url');
+            var valid = $(from).form('validate');
+            if (!valid) {
+                return;
+            }
+            var data = $(from).serializeObject();
+            data = getBaseData(data);
+            loading();
+            $.post({
+                url: url,
+                data:data,
+                success: function(data){
+                    data = returnData(data);
+                    closeLoading();
+                    if (data.code == '0') {
+                        showError(data.msg);
+                        return;
+                    }
+                    confirmMsg(data.msg + '<br /> ' + $.locale.goOn, function(r){
+                        $(from).form('reset');
+                        $(datagrid).datagrid('reload').datagrid('clearChecked');
+                        if (!r) {
+                            $(from).parents('.window-body').dialog('close');
+                        }else {
+                            var total = $(datagrid).datagrid('getData').total;
+                            var linenumber_increment = 10;
+                            var linenumber = ( total + 2 ) * linenumber_increment;
+                            $("#lineNumber").numberbox('setValue', linenumber);
+                        }
+                    });
+                }
+            });
+        });
+        /**
+         * 删除头行数据
+         */
+        $('.allocateHeader-rowdel').click(function () {
+
+            var datagrid = $(this).attr('data-table');
+            var url = $(this).attr('data-url');
+
+            var checkedRows = $(datagrid).datagrid('getChecked');
+            if (checkedRows.length == 0) {
+                showError($.locale.selectOneRow);
+                return;
+            }
+            confirmMsg($.locale.deleteOneRow,{row:checkedRows.length}, function (r) {
+                if (!r) {
+                    return;
+                }
+                var data = getBaseData(checkedRows);
+                loading();
+                $.post({
+                    url: url,
+                    data: data,
+                    success: function (data) {
+                        data = returnData(data);
+                        closeLoading();
+                        if (data.code == '0') {
+                            showError(data.msg);
+                            return;
+                        }
+                        $(datagrid).datagrid('reload').datagrid('clearChecked');
+                        $('#detailTable').datagrid('reload').datagrid('clearChecked');
+                        $('#detailLayout').layout('collapse', 'south');
+                    }
+                });
+            });
+        });
+
+    });
+
+    function viewDetail(data) {
+        if (typeof (data) == 'object') {
+            headerData = data;
+        } else {
+            var checkedRows = $('#dataTable').datagrid('getChecked');
+            if (checkedRows.length != 1) {
+                showError($.locale.selectOneRow);
+                return;
+            }
+            headerData = checkedRows[0];
+        }
+
+        var detailPanelOptions = $('#detailPanel').panel('options');
+        var collapsed = detailPanelOptions.collapsed;
+        if (collapsed) {
+            $('#detailPanel').panel({
+                height: 300,
+                minimized: false
+            });
+            $('#detailLayout').layout('expand', 'south');
+        }
+        refreshallocateStrategy(headerData);
+    }
+
+    function getAllocateStrategyHeaderData() {
+        return headerData;
+    }
+</script>
+</html>

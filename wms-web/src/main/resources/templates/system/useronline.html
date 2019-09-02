@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${wms.useronline.title}">在线用户</title>
+    <head th:replace="common/head" />
+</head>
+<body class="easyui-layout" >
+	<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+		<div id="searchDiv">
+			<div style="margin-left: 10px;">
+				<form id="searchForm" data-table="#onlineData" >
+					<div style="margin-bottom:10px">
+						<input name="loginName" class="easyui-textbox" wms:data-options="label:'${web.label.user.loginname}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="ipaddr" class="easyui-textbox" wms:data-options="label:'${web.label.ip}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input class="easyui-combobox" name="status" wms:data-options="
+						data: codelkups['YESNO'],
+						valueField: 'code',
+						textField: 'descr',
+						value: 'Y',
+						label: '${web.label.online}',
+						labelPosition: 'top'
+						">
+					</div>
+				</form>
+			</div>
+			<div style="text-align: center;">
+				<a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;" data-options="iconCls:'icon-search'" >
+					<span wms:text="${web.label.search}">Search</span>
+				</a>	
+				<a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;" data-options="iconCls:'icon-clear'" >
+					<span wms:text="${web.label.clear}">Clear</span>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div data-options="region:'center',border:false" >
+		<div class="tableToolbar">
+			<a href="#" class="easyui-linkbutton common-offline" >
+				<span wms:text="${web.label.offline}">Off line</span>
+			</a>
+		</div>
+		<div>
+			<table id="onlineData"  wms:title="${web.label.onlinelist.title}" class="easyui-datagrid" 
+							th:data-delayUrl="@{/services/inner/useronline/find}">
+				<thead>
+					<tr>
+						<th field="sessionid" data-options="checkbox:true"></th>
+						<th field="loginName" width="150" wms:text="${web.label.user.loginname}" data-options="sortable:true">loginName</th>
+						<th field="ipaddr" width="150" wms:text="${web.label.ip}" data-options="sortable:true">ip</th>
+						<th field="browser" width="80" wms:text="${web.label.browser}">browser</th>
+						<th field="os" width="80" wms:text="${web.label.os}">os</th>
+						<th field="status" width="50" wms:text="${web.label.online}" data-options="
+							formatter:function(value,row){
+								return getCodelkupValue('YESNO',value);
+							}
+						" >online</th>
+						<th field="startTimestamp" width="150" wms:text="${web.label.starttime}" data-options="sortable:true">start Time</th>
+						<th field="lastAccessTime" width="150" wms:text="${web.label.lastaccesstime}" data-options="sortable:true">last Access Time</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</body>
+<script th:replace="common/js" />
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=YESNO}"></script>
+<script type="text/javascript">
+	$(function(){
+		$('.common-offline').click(function(){
+			var checkedRows = $('#onlineData').datagrid('getChecked');
+			if (checkedRows.length == 0) {
+				showError($.locale.selectOneRow);
+				return;
+			}
+			confirmMsg($.locale.offLine,{row:checkedRows.length}, function(r){
+				if (!r){
+					return;
+				}
+				var data = getBaseData(checkedRows);
+				loading();
+				$.post({
+					url: '../../services/web/offline',
+					data:data,
+					success: function(data){
+						data = returnData(data);
+						closeLoading();
+						if (data.code == '0') {
+							showError(data.msg);
+							return;
+						}
+						$('#onlineData').datagrid('reload').datagrid('clearChecked');
+					}
+				});
+			});
+		});
+	});
+</script>
+</html>

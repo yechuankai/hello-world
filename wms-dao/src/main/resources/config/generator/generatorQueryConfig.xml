@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<properties resource="config/generator/jdbc.properties" />
+
+	<context id="oracleTables" targetRuntime="MyBatis3">
+		<property name="autoDelimitKeywords" value="true" />
+		<!--可以使用``包括字段名，避免字段名与sql保留字冲突报错 -->
+		<property name="beginningDelimiter" value="" />
+		<property name="endingDelimiter" value="" />
+		<!-- 覆盖XML -->
+		<plugin type="com.wms.common.mybatis.generator.plugins.OverwriteXmlPlugin" />
+		<!-- 自动生成toString方法 -->
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+		<!-- 自动生成equals方法和hashcode方法 -->
+		<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+
+		<!-- 非官方插件 https://github.com/itfsw/mybatis-generator-plugin -->
+		<!-- 查询单条数据插件 -->
+		<plugin type="com.wms.common.mybatis.generator.plugins.SelectOneByExamplePlugin" />
+		<!-- 查询结果选择性返回插件
+		<plugin type="com.itfsw.mybatis.generator.plugins.SelectSelectivePlugin" />
+		 -->
+		<!-- Example Criteria 增强插件 -->
+		<plugin type="com.itfsw.mybatis.generator.plugins.ExampleEnhancedPlugin" />
+		<!-- 数据Model属性对应Column获取插件 -->
+		<plugin type="com.itfsw.mybatis.generator.plugins.ModelColumnPlugin" />
+		<!-- 数据Model链式构建插件 -->
+		<plugin type="com.itfsw.mybatis.generator.plugins.ModelBuilderPlugin"/>
+
+		
+		<!-- 表重命名配置插件 -->
+	    <plugin type="com.wms.common.mybatis.generator.plugins.DaoRenameConfigurationPlugin">
+	        <!-- TbMapper -> TbDao, TbMapper.xml -> TbDao.xml -->
+	        <property name="clientPrefix" value="I"/>
+	        <property name="clientSuffix" value="Dao"/>
+	        <!-- TbExmaple -> TbQuery -->
+	        <property name="exampleSuffix" value="Example"/>
+	        <!-- Tb -> TbEntity -->
+	        <property name="modelSuffix" value="Entity"/>
+	    </plugin>
+	    
+	    <!-- Example 目标包修改插件 -->
+		<plugin type="com.itfsw.mybatis.generator.plugins.ExampleTargetPlugin">
+		    <!-- 修改Example类生成到目标包下 -->
+		    <property name="targetPackage" value="com.wms.dao.query"/>
+		</plugin>
+
+		<!--去掉注解 -->
+		<commentGenerator>
+			<property name="suppressDate" value="true" />
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+
+		<jdbcConnection 
+			driverClass="${jdbc.driver}"
+			connectionURL="${jdbc.url}" 
+			userId="${jdbc.username}"
+			password="${jdbc.password}" />
+
+		<!--指定生成的类型为java类型，避免数据库中number等类型字段 -->
+		<javaTypeResolver type="com.wms.common.mybatis.generator.plugins.MyBatisJavaTypeResolver">
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!--自动生成的实体的存放包路径 -->
+		<javaModelGenerator
+			targetPackage="com.wms.entity.query" targetProject="src/main/java">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+			<property name="immutable" value="false"/>
+			<property name="rootClass" value="com.wms.entity.BaseEntity"/>
+		</javaModelGenerator>
+
+		<!--自动生成的*Mapper.xml文件存放路径 -->
+		<sqlMapGenerator
+			targetPackage="mapper.com.wms.dao.query"
+			targetProject="src/main/resources">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!--自动生成的*Mapper.java存放路径 -->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.wms.dao.query" targetProject="src/main/java">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<!-- -->
+		<table tableName="user_default_v" 
+					enableSelectByPrimaryKey="false"
+					enableDeleteByExample="false"
+					enableDeleteByPrimaryKey="false"
+					enableUpdateByExample="false"
+					enableUpdateByPrimaryKey="false"
+					enableInsert="false"
+		 />
+	</context>
+</generatorConfiguration>

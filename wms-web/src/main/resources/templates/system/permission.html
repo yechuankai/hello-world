@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${wms.permission.title}">WMS管理系统</title>
+    <head th:replace="common/head" />
+</head>
+<body class="easyui-layout">
+	<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+		<div id="searchDiv">
+			<div style="margin-left: 10px;">
+				<form id="searchForm" data-table="#permissionData" >
+					<div style="margin-bottom:10px">
+						<input class="easyui-combobox" name="parentId" wms:data-options="
+							url: '../../services/inner/permission/findMenuDropdown',
+							valueField: 'permissionId',
+							textField: 'show',
+							label: '${web.label.parentid}',
+							labelPosition: 'top',
+							onSelect: function(d){
+								showName = d.permissionName;
+							},
+							onHidePanel: function(){
+								$(this).combo('setText', showName);
+							}
+						" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="permissionName" class="easyui-textbox" wms:data-options="label:'${web.label.permissionname}',labelPosition:'top'">
+					</div>
+					<div style="margin-bottom:10px">
+						<input class="easyui-combobox" name="permissionType" wms:data-options="
+						data: codelkups['PERMISSIONTYPE'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.type}',
+						labelPosition: 'top'
+						">
+					</div>
+					<div style="margin-bottom:10px">
+						<input class="easyui-combobox" name="warehouseFlag" wms:data-options="
+						data: codelkups['YESNO'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.warehouseflag}',
+						labelPosition: 'top'
+						">
+					</div>
+					<div style="margin-bottom:10px">
+						<input class="easyui-combobox" name="visible" wms:data-options="
+						data: codelkups['YESNO'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.visible}',
+						labelPosition: 'top'
+						">
+					</div>
+				</form>
+			</div>
+			<div style="text-align: center;">
+				<a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;" data-options="iconCls:'icon-search'" >
+					<span wms:text="${web.label.search}">Search</span>
+				</a>	
+				<a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm"  style="width:80px;" data-options="iconCls:'icon-clear'" >
+					<span wms:text="${web.label.clear}">Clear</span>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div data-options="region:'center',border:false">
+		<div data-options="region:'center',border:false" >
+		<div class="tableToolbar">
+			<a href="#" class="easyui-linkbutton common-add" data-addpanel="#addDiv">
+				<span wms:text="${web.label.add}">Add</span>
+			</a>
+			<a href="#" class="easyui-linkbutton common-rowsave" data-table="#permissionData" th:data-url="@{/services/inner/permission/save}" >
+				<span wms:text="${web.label.save}">Save</span>
+			</a>
+			<a href="#" class="easyui-linkbutton common-rowdel"  data-table="#permissionData" th:data-url="@{/services/inner/permission/delete}">
+				<span wms:text="${web.label.delete}">Delete</span>
+			</a>
+		</div>
+		<div>
+			<table id="permissionData" wms:title="${web.label.permission.list.title}" class="easyui-datagrid" 
+							data-options="
+							pagination: false,
+							onEndEdit: function(rowIndex,rowData){
+					        	var ed = $(this).datagrid('getEditor', {
+									index: rowIndex,
+									field: 'parentId'
+								});
+								if (ed == null){return;}
+								rowData.parentName = $(ed.target).combogrid('getText');
+					        }
+					        "
+							th:data-delayUrl="@{/services/inner/permission/find}">
+				<thead>
+					<tr>
+						<th field="permissionId" data-options="checkbox:true"></th>
+						<th field="level" data-options="hidden:true">level</th>
+						<th field="updateVersion" data-options="hidden:true">updateVersion</th>
+						<th field="show" data-options="hidden:true">show</th>
+						<th field="parentName" data-options="hidden:true">show</th>
+						<th field="permissionName" width="200" wms:text="${web.label.permissionname}" data-options="
+								editor:'text',
+								formatter:function(value,row){
+									return row.show + value;
+								}
+								">permissionName</th>
+						<th field="url" width="150" wms:text="${web.label.url}" data-options="editor:'text'">url</th>
+						<th field="perms" width="80" wms:text="${web.label.permission}" data-options="editor:'text'">perms</th>
+						<th field="parentId" width="100" wms:text="${web.label.parentid}" data-options="
+								formatter:function(value,row){
+									return row.parentName;
+								},
+								editor:{
+									type:'combobox',
+									options:{
+										url: '../../services/inner/permission/findMenuDropdown',
+										valueField: 'permissionId',
+										textField: 'show',
+										panelWidth: 200,
+										onSelect: function(d){
+											showName = d.permissionName;
+										},
+										onHidePanel: function(){
+											$(this).combo('setText', showName);
+										},
+										onLoadSuccess: function(e){
+											var val = $(this).combo('getValue');
+											var text = '<p>' + $(this).combo('getText') + '</p>';
+											$(this).combo('setText', $(text).text());
+										}
+									}
+								}
+						">parentId</th>
+						<th field="sort" width="50" wms:text="${web.label.sort}" data-options="editor:'numberbox'">sort</th>
+						<th field="permissionType" width="50" wms:text="${web.label.type}" data-options="
+								formatter:function(value,row){
+									return getCodelkupValue('PERMISSIONTYPE',value);
+								},
+								editor:{
+									type:'combobox',
+									options:{
+										valueField:'code',
+										textField:'descr',
+										data: codelkups['PERMISSIONTYPE']
+									}
+								}
+						">permissionType</th>
+						<th field="warehouseFlag" width="80" wms:text="${web.label.warehouseflag}" data-options="
+								formatter:function(value,row){
+									return getCodelkupValue('YESNO',value);
+								},
+								editor:{
+									type:'combobox',
+									options:{
+										valueField:'code',
+										textField:'descr',
+										data: codelkups['YESNO']
+									}
+								}
+						">warehouseFlag</th>
+						<th field="visible" width="50" wms:text="${web.label.visible}" data-options="
+								formatter:function(value,row){
+									return getCodelkupValue('YESNO',value);
+								},
+								editor:{
+									type:'combobox',
+									options:{
+										valueField:'code',
+										textField:'descr',
+										data: codelkups['YESNO']
+									}
+								}
+						">visible</th>
+						<th field="createBy" width="80" wms:text="${web.label.createby}" >createBy</th>
+						<th field="createTime" width="150" wms:text="${web.label.createtime}" >createTime</th>
+						<th field="updateBy" width="80" wms:text="${web.label.updateby}" >updateBy</th>
+						<th field="updateTime" width="150" wms:text="${web.label.updatetime}" >updateTime</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+	<div id="addDiv" wms:title="${web.label.add}" style="width:500px;height:450px; display: none;">
+		<div style="width: 100%;padding-left: 50px;">
+			<form method="post" id="addForm" th:data-url="@{/services/inner/permission/add}">
+				<table style="width: 100%;">
+					<tr>
+						<td>
+							<input name="permissionName" class="easyui-textbox" wms:data-options="required:true,label:'${web.label.permissionname}',labelPosition:'top'">
+						</td>
+						<td>
+							<input class="easyui-combobox" name="permissionType" wms:data-options="
+								required:true,
+								data: codelkups['PERMISSIONTYPE'],
+								valueField: 'code',
+								textField: 'descr',
+								label: '${web.label.type}',
+								labelPosition: 'top'
+								" />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input name="url" class="easyui-textbox" style="width: 400px;"  wms:data-options="label:'${web.label.url}',labelPosition:'top'">
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input class="lazy-load" lazy-load="easyui-combobox" name="parentId" style="width: 300px;" wms:data-options="
+								required:true,
+								url: '../../services/inner/permission/findMenuDropdown',
+								valueField: 'permissionId',
+								textField: 'show',
+								label: '${web.label.parentid}',
+								labelPosition: 'top',
+								onSelect: function(d){
+									showName = d.permissionName;
+								},
+								onHidePanel: function(){
+									$(this).combo('setText', showName);
+								}
+							" />
+							</td>
+					</tr>
+					<tr>
+						<td>
+							<input name="perms" class="easyui-textbox" style="width: 100px;" wms:data-options="label:'${web.label.permission}',labelPosition:'top',required:true">
+						</td>
+						<td>
+							<input name="sort" class="easyui-numberbox" style="width: 100px;" value="1" wms:data-options="label:'${web.label.sort}',labelPosition:'top'">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input class="easyui-combobox" name="warehouseFlag" wms:data-options="
+								required:true,
+								data: codelkups['YESNO'],
+								valueField: 'code',
+								textField: 'descr',
+								label: '${web.label.warehouseflag}',
+								labelPosition: 'top'
+								" />
+						</td>
+						<td>
+							<input class="easyui-combobox" name="active" style="width: 100px;" wms:data-options="
+								required:true,
+								value: 'Y',
+								data: codelkups['YESNO'],
+								valueField: 'code',
+								textField: 'descr',
+								label: '${web.label.active}',
+								labelPosition: 'top'
+							" />
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<div style="text-align: center;margin-top: 20px;">
+				<a href="#" class="easyui-linkbutton common-confirmadd" data-form="#addForm" data-table="#configData" id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
+					<span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
+				</a>
+				<a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');" data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
+					<span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
+				</a>
+			</div>
+		</div>
+	</div>
+</body>
+<script th:replace="common/js" />
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=PERMISSIONTYPE,YESNO}"></script>
+<script type="text/javascript" th:inline="text">
+showName = '';
+</script>
+</html>

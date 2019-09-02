@@ -1,0 +1,50 @@
+<input id="locationCode" name="locationCode" class="lazy-load" lazy-load="easyui-combogrid" wms:data-options="
+								required:true,
+								label: '${web.label.location}',
+								labelPosition: 'top',
+								idField:'locationCode',
+    							textField:'locationCode',
+								url:'../../services/inner/base/location/find',
+								onBeforeLoad: function(param){
+									$.extend(param, getLocationParams());
+								},
+							    columns:[[
+								    {field:'locationId',hidden:true},
+								    {field:'zoneId',hidden:true},
+								    {field:'locationCode',title:'${web.label.location}',width:80},
+								    {field:'zoneCode',title:'${web.label.zone}',width:80},
+								    {field:'locationType',title:'${web.label.location.locationType}',width:80,formatter:function(value,row){
+											return getCodelkupValue('LOCATIONTYPE',value);
+										}
+									}
+							    ]]
+							" />
+<script type="text/javascript">
+	function loadLocationLov(params, fn){ 
+		$('#locationCode').combogrid({
+			queryParams: getLocationParams(params),
+			onClickRow: function(rowIndex, rowData){
+				if (fn != undefined) {
+					fn(rowData);
+				}else{
+					setLocationResult(rowData);
+				}
+			}
+		});
+	}
+	
+	function getLocationParams (params){ 
+		var data = getBaseData();
+		data['active'] = 'Y';
+		if (typeof(params) == 'object'){
+			$.extend(data, params);
+		}
+		return data;
+	}
+	
+	function setLocationResult(data){
+		if ($("#locationId").length > 0) {
+			$("#locationId").textbox('setValue', data.locationId);
+		}
+	}
+</script>

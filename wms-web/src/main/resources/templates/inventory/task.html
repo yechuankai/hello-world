@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${wms.task.title}"></title>
+    <head th:replace="common/head"/>
+</head>
+<body class="easyui-layout">
+<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+    <div id="searchDiv" class="easyui-layout" style="height: 100%;">
+        <div style="margin-left: 10px;height: 100%;" data-options="region:'center',border:false">
+            <form id="searchForm" data-table="#dataTable">
+                <input id="taskType" name="taskType" type="hidden" th:value="${type}">
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combobox" name="sourceType" wms:data-options="
+						data: codelkups['SOURCETYPE'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.sourcetype}',
+						labelPosition: 'top'
+						" />
+                </div>
+                <!--  
+                <div style="margin-bottom:10px">
+                    <input name="sourceLineNumber" class="easyui-numberbox"
+                           wms:data-options="label:'${web.label.souceline}',labelPosition:'top'">
+                </div>
+                -->
+                <div style="margin-bottom:10px">
+                    <input name="sourceBillNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.sourcebillnumber}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combobox" name="status" wms:data-options="
+						data: codelkups['TASKSTATUS'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.status}',
+						labelPosition: 'top'
+						" />
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="taskDetailNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.taskdetailnumber}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="ownerCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.inventory.ownerCode}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="skuCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.inventory.skuCode}',labelPosition:'top'">
+                </div>
+                <!--  
+                <div style="margin-bottom:10px">
+                    <input name="uom" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.uom}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="packCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.packcode}',labelPosition:'top'">
+                </div>
+                -->
+                <div style="margin-bottom:10px">
+                    <input name="lotNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.lotnumber}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="fromLpnNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.fromLpnNumber}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="fromLocationCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.fromlocationcode}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="fromZoneCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.fromzonecode}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="toLpnNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.tolpnnumber}',labelPosition:'top'">
+                </div>
+                <input name="toLocationCode" class="easyui-textbox"
+                       wms:data-options="label:'${web.label.tolocationcode}',labelPosition:'top'">
+                <div style="margin-bottom:10px">
+                </div>
+                <!--  
+                <div style="margin-bottom:10px">
+                    <input name="toZoneCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.tozonecode}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="fromLocationLogical" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.fromlocationlogical}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="toLocationLogical" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.tolocationlogical}',labelPosition:'top'">
+                </div>
+                -->
+                <div style="margin-bottom:10px">
+                    <input name="suserName" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.username}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="releaseTimeBegin" class="easyui-datebox"
+                           wms:data-options="label:'${web.inventory.releasetimebegin}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="releaseTimeEnd" class="easyui-datebox"
+                           wms:data-options="label:'${web.inventory.releasetimeend}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="completeTimeBegin" class="easyui-datebox"
+                           wms:data-options="label:'${web.inventory.completetimebegin}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="completeTimeEnd" class="easyui-datebox"
+                           wms:data-options="label:'${web.inventory.completetimeend}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="startTimeBegin" class="easyui-datebox"
+                           wms:data-options="label:'${web.inventory.starttimebegin}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="startTimeEnd" class="easyui-datebox"
+                           wms:data-options="label:'${web.inventory.starttimeend}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="endTimeBegin" class="easyui-datebox"
+                           wms:data-options="label:'${web.inventory.endtimebegin}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="endTimeEnd" class="easyui-datebox"
+                           wms:data-options="label:'${web.inventory.endtimeend}',labelPosition:'top'"/>
+                </div>
+                <!--  
+                <div style="margin-bottom:10px">
+                    <input name="quantity" class="easyui-numberbox"
+                           wms:data-options="label:'${web.label.quantity}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="sourceNumber" class="easyui-numberbox"
+                           wms:data-options="label:'${web.label.sourcenumber}',labelPosition:'top'">
+                </div>
+                -->
+            </form>
+        </div>
+        <div style="text-align: center;height:50px;" data-options="region:'south',border:false">
+            <a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-search'">
+                <span wms:text="${web.label.search}">Search</span>
+            </a>
+            <a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-clear'">
+                <span wms:text="${web.label.clear}">Clear</span>
+            </a>
+        </div>
+    </div>
+</div>
+<div data-options="region:'center',border:false">
+    <div>
+        <table id="dataTable" wms:title="${web.label.task.title}" class="easyui-datagrid"
+               th:data-delayUrl="@{/services/inner/inventory/task/find}">
+            <thead>
+            	<tr>
+	            <th field="taskDetailNumber" width="130" wms:text="${web.label.taskdetailnumber}" data-options="sortable:true">taskdetailNumber</th>
+	            <th field="taskType" width="60" wms:text="${web.label.type}" data-options="
+								sortable:true,
+								formatter:function(value,row){
+									return getCodelkupValue('TASKTYPE',value);
+								}
+							">taskType</th>
+	            <th field="sourceType" width="100" wms:text="${web.label.sourcetype}" data-options="
+								sortable:true,
+								formatter:function(value,row){
+									return getCodelkupValue('SOURCETYPE',value);
+								}
+							">sourceType</th>
+	            <th field="sourceBillNumber" width="150" wms:text="${web.label.sourcebillnumber}" data-options="sortable:true" >sourceBillNumber</th>
+	            <th field="sourceLineNumber" width="80" wms:text="${web.label.souceline}" data-options="sortable:true" >sourceLineNumber</th>
+	            <th field="status" width="70" wms:text="${web.label.status}" data-options="
+								sortable:true,
+								formatter:function(value,row){
+									return getCodelkupValue('TASKSTATUS',value);
+								}
+							">status</th>
+	            <th field="ownerCode" width="130" wms:text="${web.inventory.ownerCode}" data-options="sortable:true">ownerCode</th>
+	            <th field="skuCode" width="130" wms:text="${web.inventory.skuCode}" data-options="sortable:true">skuCode</th>
+	            <th field="packCode" width="130" wms:text="${web.label.packcode}" data-options="sortable:true">packCode</th>
+	            <th field="uom" width="60" wms:text="${web.label.uom}" data-options="sortable:true">uom</th>
+	            <th field="lotNumber" width="130" wms:text="${web.label.lotnumber}" data-options="sortable:true">lotNumber</th>
+	            <th field="quantity" width="80" wms:text="${web.label.quantity}" data-options="sortable:true" >quantity</th>
+	            <th field="fromLpnNumber" width="130" wms:text="${web.label.fromLpnNumber}" data-options="sortable:true">fromLpnNumber</th>
+	            <th field="fromLocationCode" width="130" wms:text="${web.label.fromlocationcode}" data-options="sortable:true">fromLocationCode</th>
+	            <th field="fromZoneCode" width="130" wms:text="${web.label.fromzonecode}" data-options="sortable:true">fromZoneCode</th>
+	            <th field="toLpnNumber" width="130" wms:text="${web.label.tolpnnumber}" data-options="sortable:true">toLpnNumber</th>
+	            <th field="toLocationCode" width="130" wms:text="${web.label.tolocationcode}" data-options="sortable:true">toLocationCode</th>
+	            <th field="toZoneCode" width="130" wms:text="${web.label.tozonecode}" data-options="sortable:true">toZoneCode</th>
+	            <th field="fromLocationLogical" width="130" wms:text="${web.label.fromlocationlogical}" data-options="sortable:true">fromLocationLogical</th>
+	            <th field="toLocationLogical" width="130" wms:text="${web.label.tolocationlogical}" data-options="sortable:true">toLocationLogical</th>
+	            <th field="userName" width="100" wms:text="${web.label.username}" data-options="sortable:true">userName</th>
+	            <th field="releaseTime" width="150" wms:text="${web.label.releasetime}" data-options="sortable:true" >releaseTime</th>
+	            <th field="completeTime" width="150" wms:text="${web.label.completetime}" data-options="sortable:true" >completeTime</th>
+	            <th field="startTime" width="150" wms:text="${web.label.starttime}" data-options="sortable:true" >startTime</th>
+	            <th field="endTime" width="150" wms:text="${web.label.endtime}" data-options="sortable:true" >endTime</th>
+	            <th field="reason" width="150" wms:text="${web.label.reason}" data-options="sortable:true" >reason</th>
+	            <th field="createBy" width="80" wms:text="${web.label.createby}" >createBy</th>
+	            <th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true" >createTime</th>
+	            <th field="updateBy" width="80" wms:text="${web.label.updateby}" >updateBy</th>
+	            <th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">updateTime</th>
+            	</tr>
+            </thead>
+    </div>
+</div>
+</body>
+<script th:replace="common/js"/>
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=YESNO,TASKTYPE,SOURCETYPE,TASKSTATUS}"></script>
+<script type="text/javascript" th:inline="text">
+
+</script>
+</html>

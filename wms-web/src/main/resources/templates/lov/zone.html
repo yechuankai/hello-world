@@ -1,0 +1,49 @@
+<input id="zoneCode" name="zoneCode" class="lazy-load" lazy-load="easyui-combogrid" wms:data-options="
+								label: '${web.label.zone}',
+								labelPosition: 'top',
+								idField:'zoneCode',
+    							textField:'zoneCode',
+								url:'../../services/inner/base/zone/find',
+							    onBeforeLoad: function(param){
+									$.extend(param, getZoneParams());
+								},
+							    columns:[[
+								    {field:'zoneId',hidden:true},
+								    {field:'zoneCode',title:'${web.label.zone}',width:100},
+								    {field:'pickToLocation',title:'${web.label.pickToLocation}',width:100},
+								    {field:'type',title:'${web.label.type}',width:80,formatter:function(value,row){
+											return getCodelkupValue('ZONETYPE',value);
+										}
+									}
+							    ]]
+							" />
+<script type="text/javascript">
+    function loadZoneLov(params, fn){
+        $("#zoneCode").combogrid({
+            queryParams: getZoneParams(params),
+            onClickRow: function(rowIndex, rowData){
+                if (fn != undefined) {
+                    fn(rowData);
+                }else{
+                    setZoneResult(rowData);
+                }
+            }
+        });
+        
+    }
+    
+    function getZoneParams (params){
+        var data = getBaseData();
+        data['active'] = 'Y';
+        if (typeof(params) == 'object'){
+            $.extend(data, params);
+        }
+        return data;
+    }
+
+    function setZoneResult(data){
+        if ($("#zoneId").length > 0) {
+            $("#zoneId").val(data.zoneId);
+        }
+    }
+</script>

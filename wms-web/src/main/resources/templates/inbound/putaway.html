@@ -1,0 +1,205 @@
+<div id="viewputwayDiv" wms:title="${web.label.viewputaway}"  style="display: none;width: 1000px; height:500px;">
+	<div id="putawayToolbar" class="tableToolbar detailToolbar">
+		<a href="#" class="lazy-load common-putaway-ok" lazy-load="easyui-linkbutton" data-table="#putawayDetailData" th:data-url="@{/services/inner/inventory/task/putawayConfirm}" >
+			<span wms:text="${web.label.putawayconfirm}">putawayconfirm</span>
+		</a>
+		<a href="#" class="lazy-load common-rowsave" lazy-load="easyui-linkbutton" data-table="#putawayDetailData" th:data-url="@{/services/inner/inventory/task/save}" >
+			<span wms:text="${web.label.save}">Save</span>
+		</a>
+		<a href="#" class="lazy-load putaway-cancel" lazy-load="easyui-linkbutton" data-table="#putawayDetailData" th:data-url="@{/services/inner/inventory/task/cancel}">
+			<span wms:text="${web.label.cancel}">Cancel</span>
+		</a>
+	</div>
+	<div>
+		<table id="putawayDetailData"
+			   			wms:data-options="toolbar: '#putawayToolbar'"
+			   th:data-delayUrl="@{/services/inner/inventory/task/find}">
+			<thead>
+				<tr>
+					<th field="taskDetailId" data-options="checkbox:true"></th>
+					<th field="taskDetailNumber" width="130" wms:text="${web.label.taskdetailnumber}" data-options="sortable:true">taskDetailNumber</th>
+		            <th field="sourceType" width="100" wms:text="${web.label.sourcetype}" data-options="
+									sortable:true,
+									formatter:function(value,row){
+										return getCodelkupValue('SOURCETYPE',value);
+									}
+								">sourceType</th>
+		            <th field="ownerCode" width="130" wms:text="${web.inventory.ownerCode}" data-options="sortable:true">ownerCode</th>
+		            <th field="skuCode" width="130" wms:text="${web.inventory.skuCode}" data-options="sortable:true">skuCode</th>
+		            <th field="packCode" width="130" wms:text="${web.label.packcode}" data-options="sortable:true">packCode</th>
+		            <th field="uom" width="60" wms:text="${web.label.uom}" data-options="sortable:true">uom</th>
+		            <th field="lotNumber" width="130" wms:text="${web.label.lotnumber}" data-options="sortable:true">lotNumber</th>
+		            <th field="quantity" width="80" wms:text="${web.label.quantity}" data-options="sortable:true" >quantity</th>
+		            <th field="fromLpnNumber" width="130" wms:text="${web.label.fromLpnNumber}" data-options="sortable:true">fromLpnNumber</th>
+		            <th field="fromLocationCode" width="130" wms:text="${web.label.fromlocationcode}" data-options="sortable:true">fromLocationCode</th>
+		            <th field="toLpnNumber" width="130" wms:text="${web.label.tolpnnumber}" data-options="sortable:true">toLpnNumber</th>
+		            <th field="toLocationCode" width="130" wms:text="${web.label.tolocationcode}" wms:data-options="
+		            		sortable:true,
+		            		editor:{
+								type:'combogrid',
+								options:{
+									idField:'locationCode',
+	    							textField:'locationCode',
+									url:'../../services/inner/base/location/find',
+									queryParams: getParams(),
+								    columns:[[
+								    {field:'locationId',hidden:true},
+								    {field:'zoneId',hidden:true},
+								    {field:'locationCode',title:'${web.label.location}',width:80},
+								    {field:'zoneCode',title:'${web.label.zone}',width:80},
+								    {field:'locationType',title:'${web.label.location.locationType}',width:80,formatter:function(value,row){
+											return getCodelkupValue('LOCATIONTYPE',value);
+										}
+									}
+                                    ]],
+                                    onChange: function (newValue, oldValue) {
+                                        artChanged = true;//记录是否有改变（当手动输入时发生)
+                                    },
+                                    onHidePanel: function () {
+                                        var t = $(this).combogrid('getValue');
+                                        if (artChanged) {
+                                            if (selectRow == null || t != selectRow.locationCode) {//没有选择或者选项不相等时清除内容
+                                                alert('请选择，不要直接输入');
+                                            $(this).combogrid('setValue', '');
+                                            }
+                                        }
+                                        artChanged = false;
+                                        selectRow = null;
+                                    },
+                                    onSelect: function (index, row) {
+                                        selectRow = row;
+                                    }
+                                }
+					        }
+						">toLocationCode</th>
+		             <th field="status" width="70" wms:text="${web.label.status}" wms:data-options="
+									sortable:true,
+									formatter:function(value,row){
+										return getCodelkupValue('TASKSTATUS',value);
+									}
+								">status</th>
+		            <th field="userName" width="100" wms:text="${web.label.username}" data-options="sortable:true">userName</th>
+		            <th field="releaseTime" width="150" wms:text="${web.label.releasetime}" data-options="sortable:true" >releaseTime</th>
+		            <th field="startTime" width="150" wms:text="${web.label.starttime}" data-options="sortable:true" >startTime</th>
+		            <th field="endTime" width="150" wms:text="${web.label.endtime}" data-options="sortable:true" >endTime</th>
+		            <th field="completeTime" width="150" wms:text="${web.label.completetime}" data-options="sortable:true" >completeTime</th>
+		            <th field="reason" width="150" wms:text="${web.label.reason}" data-options="sortable:true" >reason</th>
+		            <th field="createBy" width="80" wms:text="${web.label.createby}" >createBy</th>
+		            <th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true" >createTime</th>
+		            <th field="updateBy" width="80" wms:text="${web.label.updateby}" >updateBy</th>
+		            <th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">updateTime</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+</div>
+<script type="text/javascript" th:inline="text">
+	var selectRow;
+	var artChanged;
+	var putawayDetailFilterRules = [
+	{
+		field:'releaseTime',
+		type:'datebox',
+		op:['contains','less','greater']
+	},
+	{
+		field:'completeTime',
+		type:'datebox',
+		op:['contains','less','greater']
+	},
+	{
+		field:'startTime',
+		type:'datebox',
+		op:['contains','less','greater']
+	},
+	{
+		field:'endTime',
+		type:'datebox',
+		op:['contains','less','greater']
+	},
+	{
+		field:'createTime',
+		type:'datebox',
+		op:['contains','less','greater']
+	},
+	{
+		field:'updateTime',
+		type:'datebox',
+		op:['contains','less','greater']
+	},{
+		field:'status',
+		type:'combobox',
+		options:{
+			panelHeight:'auto',
+			data:getFilterCodelkupValue('TASKSTATUS'),
+			onChange:function(value){
+				if (value == '---' || value == ''){
+					$('#putawayDetailData').datagrid('removeFilterRule', 'status');
+				} else {
+					$('#putawayDetailData').datagrid('addFilterRule', {
+						field: 'status',
+						op: 'equal',
+						value: value
+					});
+				}
+				$('#putawayDetailData').datagrid('doFilter');
+			}
+		}
+	}];
+
+
+
+	function viewputaway(){
+		lazyLoadView('#viewputwayDiv');
+		//加载列表
+		var checkedRows = $('#inboundData').datagrid('getChecked');
+		if (checkedRows.length == 0) {
+			showError($.locale.selectOneRow);
+			return;
+		}
+		var headerData = checkedRows[0];
+		var data = getBaseData();
+		data['sourceBillNumber'] = headerData.inboundNumber;
+		data['sourceType']='PA';
+		var url = $('#putawayDetailData').attr('data-delayUrl');
+
+		$('#viewputwayDiv').dialog({
+			closed: true,
+			modal: true,
+			fix: true
+		}).dialog('open');
+
+		$('#putawayDetailData').datagrid({
+			url: url,
+			queryParams: data,
+			filterPosition: 'top',
+			remoteFilter: true,
+			clientPaging: false,
+			oldLoadFilter: undefined,
+			filterCache: [],
+			filterRules: [],
+			filterStringify: function(params, filter) {
+				var obj = params;
+				if (typeof(params) != 'object'){
+					return;
+				}
+				for (var i in filter){
+					var q = filter[i];
+					var qObj = {};
+					qObj[q.field] = q.value;
+					$.extend(obj, qObj);
+				}
+			}
+		}).datagrid('clearChecked').datagrid('enableFilter', putawayDetailFilterRules);
+	}
+
+	function getParams (params){
+		var data = getBaseData();
+		data['active'] = 'Y';
+		if (typeof(params) == 'object'){
+			$.extend(data, params);
+		}
+		return data;
+	}
+	
+</script>

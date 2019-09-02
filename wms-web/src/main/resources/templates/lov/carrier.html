@@ -1,0 +1,52 @@
+<input id="carrierCode" name="carrierCode" class="lazy-load" lazy-load="easyui-combogrid" wms:data-options="
+								label: '${web.label.carrier}',
+								labelPosition: 'top',
+								idField:'carrierCode',
+    							textField:'carrierCode',
+								url:'../../services/inner/base/carrier/find',
+							    onBeforeLoad: function(param){
+									$.extend(param, getCarrierParams());
+								},
+							    columns:[[
+								    {field:'carrierId',hidden:true},
+								    {field:'phone1',hidden:true},
+								    {field:'phone2',hidden:true},
+								    {field:'contact1',hidden:true},
+								    {field:'contact2',hidden:true},
+								    {field:'address1',hidden:true},
+								    {field:'address2',hidden:true},
+								    {field:'fax',hidden:true},
+								    {field:'email',hidden:true},
+								    {field:'carrierCode',title:'${web.label.carrier}',width:80},
+								    {field:'carrierDescr',title:'${web.label.descr}',width:150}
+							    ]]
+							" />
+<script type="text/javascript">
+	function loadCarrierLov(params, fn){ 
+		$('#carrierCode').combogrid({
+			queryParams: getCarrierParams(params),
+			onClickRow: function(rowIndex, rowData){
+				if (fn != undefined) {
+					fn(rowData);
+				}else{
+					setCarrierResult(rowData);
+				}
+			}
+		});
+	}
+	
+	function getCarrierParams (params){ 
+		var data = getBaseData();
+		data['active'] = 'Y';
+		if (typeof(params) == 'object'){
+			$.extend(data, params);
+		}
+		return data;
+	}
+	
+	function setCarrierResult (data){ 
+		if ($("#carrierDescr").length > 0) {
+			$("#carrierDescr").textbox('setValue', data.carrierDescr);
+		}
+	}
+</script>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>wms-startup</groupId>
+	<artifactId>wms-startup-tomcat</artifactId>
+	<name>wms-startup-tomcat</name>
+	<version>0.0.1-SNAPSHOT</version>
+	<description>wms-startup</description>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+	</properties>
+
+	<dependencies>
+		
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-tomcat</artifactId>
+		    <version>2.0.3.RELEASE</version>
+		    <scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>wms.base</groupId>
+			<artifactId>wms-web</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<exclusions>
+		        <exclusion>
+		            <groupId>org.springframework.boot</groupId>
+		            <artifactId>spring-boot-starter-tomcat</artifactId>
+		        </exclusion>
+		    </exclusions>
+		</dependency>
+	</dependencies>
+	
+	<!-- 
+	   使用tomcat部署时修改如下如下：
+	   <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-tomcat</artifactId>
+		    <version>2.0.3.RELEASE</version>
+		    <scope>provided</scope>
+		</dependency>
+		
+		<exclusions>
+	        <exclusion>
+	            <groupId>org.springframework.boot</groupId>
+	            <artifactId>spring-boot-starter-tomcat</artifactId>
+	        </exclusion>
+	    </exclusions>
+	 -->
+	
+	<build>
+		<!-- <finalName>wms-startup-tomcat</finalName> -->
+		<finalName>WMS-JBT</finalName>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<!-- 把放在根目录下的脚本文件.sh,.bat拷贝到bin目录中 -->
+			<resource>
+				<directory>src/main/bin</directory>
+				<!--具体的脚本放置位置可以改，不一定是当前目录-->
+				<includes>
+					<include>**/run*.sh</include>
+					<include>**/run*.bat</include>
+				</includes>
+				<targetPath>${project.build.directory}/bin</targetPath>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <!--如果想在没有web.xml文件的情况下构建WAR，请设置为false。-->
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+			<!-- 用于编译的plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<fork>true</fork>
+					<defaultLibBundleDir>lib</defaultLibBundleDir>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+					<!-- 如果配置了JAVA_HOME,下面应该可以不用配
+					<executable>C:\Program Files (x86)\Java\jdk1.8.0_91\bin\javac.exe</executable>
+					 -->
+				</configuration>
+			</plugin>
+
+			<!-- 用于生成jar包的plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<!-- 把生成的jar包放在lib目录下（和其他所有jar包一起） -->
+					<outputDirectory>${project.build.directory}</outputDirectory>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+							<mainClass>com.wms.startup.WmsApplication</mainClass>
+						</manifest>
+					</archive>
+					<!-- 
+					<excludes>
+						排除掉一些文件,不要放到jar包中， 这里是为了排除掉src/main/resources中的文件（它们应该放到conf目录） 
+							这里只能指定要排除的目标文件，而不能指定源文件，虽然不够完美，但是基本能达到目的
+						<exclude>*.xml</exclude>
+						<exclude>*.properties</exclude>
+						<exclude>*.yml</exclude>
+					</excludes>
+					。 -->
+				</configuration>
+			</plugin>
+
+			<!-- 用于拷贝maven依赖的plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.10</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<!-- 把依赖的所有maven jar包拷贝到lib目录中（这样所有的jar包都在lib目录中） -->
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- 用于拷贝resource的plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			
+			
+			<!-- 自定义打zip包   war 时不需要
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2.1</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/assembly-config.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            -->
+		</plugins>
+	</build>
+	<packaging>war</packaging>
+</project>

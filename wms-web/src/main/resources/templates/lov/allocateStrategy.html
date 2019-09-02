@@ -1,0 +1,49 @@
+<input id="allocateStrategyCode" name="allocateStrategyCode" class="lazy-load" lazy-load="easyui-combogrid" wms:data-options="
+								label: '${web.label.allocatestrategycode}',
+								labelPosition: 'top',
+								idField:'allocateStrategyCode',
+    							textField:'allocateStrategyCode',
+    							value: 'STD',
+								url:'../../services/inner/base/allocateStrategy/find',
+								onBeforeLoad: function(param){
+									$.extend(param, getAllocateStrategyParams());
+								},
+							    columns:[[
+								    {field:'allocateStrategyId',hidden:true},
+								    {field:'allocateStrategyCode',title:'${web.label.allocatestrategycode}',width:80},
+								    {field:'allocateStrategyDescr',title:'${web.label.descr}',width:150},
+								    {field:'allocateStrategyType',title:'${web.label.type}',width:80,formatter:function(value,row){
+											return getCodelkupValue('ALLOCATESTRATEGYTYPE',value);
+										}
+									}
+							    ]]
+							" />
+<script type="text/javascript">
+    function loadAllocateStrategyLov(params, fn){
+        $('#allocateStrategyCode').combogrid({
+            queryParams: getAllocateStrategyParams(params),
+            onClickRow: function(rowIndex, rowData){
+                if (fn != undefined) {
+                    fn(rowData);
+                }else{
+                    setAllocateStrategyResult(rowData);
+                }
+            }
+        });
+    }
+
+    function getAllocateStrategyParams (params){
+        var data = getBaseData();
+        data['active'] = 'Y';
+        if (typeof(params) == 'object'){
+            $.extend(data, params);
+        }
+        return data;
+    }
+
+    function setAllocateStrategyResult(data){
+        if ($("#allocateStrategyId").length > 0) {
+            $("#allocateStrategyId").val(data.allocateStrategyId);
+        }
+    }
+</script>

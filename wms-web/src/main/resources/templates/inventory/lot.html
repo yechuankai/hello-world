@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${web.lable.lotattribute}">批属性</title>
+    <head th:replace="common/head" />
+</head>
+<body class="easyui-layout" >
+	<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+		<div id="searchDiv">
+			<div style="margin-left: 10px;">
+				<form id="searchForm" data-table="#lotData" >
+					<div style="margin-bottom:10px">
+						<input name="lotNumber" class="easyui-textbox" wms:data-options="label:'${web.label.lotnumber}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="ownerCode" class="easyui-textbox" wms:data-options="label:'${web.inventory.ownerCode}',labelPosition:'top'" />
+					</div>
+					<div style="margin-bottom:10px">
+						<input name="skuCode" class="easyui-textbox" wms:data-options="label:'${web.inventory.skuCode}',labelPosition:'top'" />
+					</div>	
+				</form>
+			</div>
+			<div style="text-align: center;">
+				<a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;" data-options="iconCls:'icon-search'" >
+					<span wms:text="${web.label.search}">Search</span>
+				</a>	
+				<a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;" data-options="iconCls:'icon-clear'" >
+					<span wms:text="${web.label.clear}">Clear</span>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div data-options="region:'center',border:false" >
+	<!-- 仅查询，这里去掉界面按钮增删改按钮-->
+		<div>
+			<table id="lotData" wms:title="${web.label.lotlist.title}" class="easyui-datagrid" 
+							th:data-delayUrl="@{/services/inner/inventory/lot/find}">
+				<thead>
+					<tr>
+						<th field="lotNumber" width="100" wms:text="${web.label.lotnumber}" data-options="sortable:true">lotNumber</th>
+						<th field="ownerCode" width="100" wms:text="${web.inventory.ownerCode}" data-options="sortable:true" >ownerCode</th>
+						<th field="skuCode" width="100" wms:text="${web.inventory.skuCode}" data-options="sortable:true" >skuCode</th>
+						<th field="skuAlias" width="100" wms:text="${web.inventory.skuAlias}" data-options="sortable:true" >skuAlias</th>
+						<th field="lotAttribute1" width="100" wms:text="${web.label.lotattribute1}">lotAttribute1</th>
+						<th field="lotAttribute2" width="100" wms:text="${web.label.lotattribute2}">lotAttribute2</th>
+						<th field="lotAttribute3" width="100" wms:text="${web.label.lotattribute3}">lotAttribute3</th>
+						<th field="lotAttribute4" width="100" wms:text="${web.label.lotattribute4}">lotAttribute4</th>
+						<th field="lotAttribute5" width="100" wms:text="${web.label.lotattribute5}">lotAttribute5</th>
+						<th field="lotAttribute6" width="100" wms:text="${web.label.lotattribute6}">lotAttribute6</th>
+						<th field="lotAttribute7" width="100" wms:text="${web.label.lotattribute7}">lotAttribute7</th>
+						<th field="lotAttribute8" width="100" wms:text="${web.label.lotattribute8}">lotAttribute8</th>
+						<th field="lotAttribute9" width="100" wms:text="${web.label.lotattribute9}">lotAttribute9</th>
+						<th field="lotAttribute10" width="100" wms:text="${web.label.lotattribute10}">lotAttribute10</th>
+						<th field="lotAttribute11" width="100" wms:text="${web.label.lotattribute11}">lotAttribute11</th>
+						<th field="lotAttribute12" width="100" wms:text="${web.label.lotattribute12}">lotAttribute12</th>
+						<th field="createBy" width="80" wms:text="${web.label.createby}" >createBy</th>
+						<th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true" >createTime</th>
+						<th field="updateBy" width="80" wms:text="${web.label.updateby}" >updateBy</th>
+						<th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">updateTime</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+	</div>
+</body>
+<script th:replace="common/js" />
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=CONFIGTYPE,YESNO}"></script>
+
+</html>

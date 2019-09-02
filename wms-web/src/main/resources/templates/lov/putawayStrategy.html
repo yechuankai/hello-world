@@ -1,0 +1,46 @@
+<input id="putawayStrategyCode" name="putawayStrategyCode" class="lazy-load" lazy-load="easyui-combogrid" wms:data-options="
+								label: '${web.label.putawayStrategycode}',
+								labelPosition: 'top',
+								idField:'putawayStrategyCode',
+    							textField:'putawayStrategyCode',
+    							value: 'STD',
+								url:'../../services/inner/base/putawayStrategy/find',
+							    onBeforeLoad: function(param){
+									$.extend(param, getPutawayStrategyParams());
+								},
+							    columns:[[
+								   {field:'putawayStrategyId',hidden:true},
+								   {field:'putawayStrategyCode',title:'${web.label.code}',width:100},
+								    {field:'putawayStrategyDescr',title:'${web.label.descr}',width:150}
+							    ]]
+							" />
+<script type="text/javascript">
+    function loadPutawayStrategyLov(params, fn){
+        $('#putawayStrategyCode').combogrid({
+            queryParams: getPutawayStrategyParams(params),
+            onClickRow: function(rowIndex, rowData){
+                if (fn != undefined) {
+                    fn(rowData);
+                }else{
+                    setPutawayStrategyResult(rowData);
+                }
+            }
+        });
+        
+    }
+    
+    function getPutawayStrategyParams (params){
+        var data = getBaseData();
+        data['active'] = 'Y';
+        if (typeof(params) == 'object'){
+            $.extend(data, params);
+        }
+        return data;
+    }
+
+    function setPutawayStrategyResult(data){
+        if ($("#putawayStrategyId").length > 0) {
+            $("#putawayStrategyId").val(data.putawayStrategyId);
+        }
+    }
+</script>

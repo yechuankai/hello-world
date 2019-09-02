@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${web.lable.inventory.transaction}">交易</title>
+    <head th:replace="common/head"/>
+</head>
+<body class="easyui-layout">
+<!-- ella start -->
+<div class="icon-loading"
+     style="position: absolute; z-index: 999999;width: 100%; height: 100%;opacity: 1;background-color: white;">&nbsp;
+</div>
+<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px; ">
+    <div id="searchDiv" class="easyui-layout" style="height: 100%;">
+        <div style="margin-left: 10px;height: 100%;" data-options="region:'north',border:false">
+            <form id="searchForm" data-table="#transactionData" style="height: 830px;">
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combobox" name="transactionType" wms:data-options="
+						data: codelkups['TRANSACTIONTYPE'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.inventory.transactiontype}',
+						labelPosition: 'top'
+						"/>
+                </div>
+                <div style="margin-bottom:10px">
+                	 <input name="transactionCategory" class="easyui-textbox"
+                           wms:data-options="label:'${web.inventory.transactioncategory}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="transactionDateBegin" class="easyui-datebox"
+                           wms:data-options="label:'${web.inventory.transactiondatebegin}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="transactionDateEnd" class="easyui-datebox"
+                           wms:data-options="label:'${web.inventory.transactiondateend}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="ownerCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.inventory.ownerCode}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="skuCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.inventory.skuCode}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="skuAlias" class="easyui-textbox"
+                           wms:data-options="label:'${web.inventory.skuAlias}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="locationCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.locationcode}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="lpnNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.lpnnumber}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="lotNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.lotnumber}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="sourceNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.sourcenumber}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="sourceLineNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.sourcelinenumber}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="sourceBillNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.sourcebillnumber}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="fromOwnerCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.fromOwnerCode}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="fromSkuCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.fromSkuCode}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="fromSkuAlias" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.fromSkuAlias}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="fromLocationCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.fromlocationcode}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="fromLpnNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.fromLpnNumber}',labelPosition:'top'"/>
+                </div>
+                <div style="margin-bottom:60px">
+                    <input name="fromLotNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.fromLotNumber}',labelPosition:'top'"/>
+                </div>
+            </form>
+        </div>
+        <div style="text-align: center;height:50px;" data-options="region:'south',border:false">
+            <a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-search'">
+                <span wms:text="${web.label.search}">Search</span>
+            </a>
+            <a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-clear'">
+                <span wms:text="${web.label.clear}">Clear</span>
+            </a>
+        </div>
+
+    </div>
+</div>
+<!--  ella end-->
+<div data-options="region:'center',border:false">
+    <div class="easyui-layout" style="width: 100%;height: 100%;">
+        <div data-options="region:'north',collapsible:false" style="height:35px;">
+            <div id="tableToolbar" class="tableToolbar">
+                <a href="#" class="easyui-linkbutton" onclick="exportExcel('TRANSACTION', '#searchForm')"
+                   wms:text="${web.label.export}">Export</a>
+            </div>
+        </div>
+        <div data-options="region:'center',collapsible:false,border:false">
+            <table id="transactionData" wms:title="${web.label.transactionlist.title}" class="easyui-datagrid"
+                   th:data-delayUrl="@{/services/inner/inventory/transaction/find}">
+                <thead>
+                <tr>
+                    <th field="transactionType" width="100" wms:text="${web.inventory.transactiontype}" data-options="
+							sortable:true,
+							formatter:function(value,row){
+								return getCodelkupValue('TRANSACTIONTYPE',value);
+							}
+						">transactionType
+                    </th>
+                    <th field="transactionCategory" width="100" wms:text="${web.inventory.transactioncategory}"
+                        data-options="
+							sortable:true
+						">transactionCategory
+                    </th>
+                    <th field="transactionDate" width="150" wms:text="${web.inventory.transactiondate}"
+                        data-options="sortable:true">transactionDate
+                    </th>
+                    <th field="ownerCode" width="100" wms:text="${web.inventory.ownerCode}"
+                        data-options="sortable:true">ownerCode
+                    </th>
+                    <th field="skuCode" width="100" wms:text="${web.inventory.skuCode}" data-options="sortable:true">
+                        skuCode
+                    </th>
+                    <th field="skuAlias" width="100" wms:text="${web.inventory.skuAlias}" data-options="sortable:true">
+                        skuAlias
+                    </th>
+                    <th field="quantity" width="100" wms:text="${web.inventory.quantity}" data-options="sortable:true">
+                        quantity
+                    </th>
+                    <th field="locationCode" width="100" wms:text="${web.label.locationcode}">locationCode</th>
+                    <th field="lpnNumber" width="100" wms:text="${web.label.lpnnumber}">lpnNumber</th>
+                    <th field="lotNumber" width="100" wms:text="${web.label.lotnumber}">lotNumber</th>
+                    <th field="sourceNumber" width="100" wms:text="${web.label.sourcenumber}">sourceNumber</th>
+                    <th field="sourceLineNumber" width="100" wms:text="${web.label.sourcelinenumber}">sourceLineNumber
+                    </th>
+                    <th field="sourceBillNumber" width="100" wms:text="${web.label.sourcebillnumber}">sourceBillNumber
+                    </th>
+                    <th field="fromOwnerCode" width="100" wms:text="${web.label.fromOwnerCode}">fromOwnerCode</th>
+                    <th field="fromSkuCode" width="100" wms:text="${web.label.fromSkuCode}">fromSkuCode</th>
+                    <th field="fromSkuAlias" width="100" wms:text="${web.label.fromSkuAlias}">fromSkuAlias</th>
+                    <th field="fromLocationCode" width="100" wms:text="${web.label.fromlocationcode}">fromLocationCode
+                    </th>
+                    <th field="fromLpnNumber" width="100" wms:text="${web.label.fromLpnNumber}">fromLpnNumber</th>
+                    <th field="fromLotNumber" width="100" wms:text="${web.label.fromLotNumber}">fromLotNumber</th>
+                    <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+                    <th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true">
+                        createTime
+                    </th>
+                    <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+                    <th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">
+                        updateTime
+                    </th>
+
+                    <!--
+                    <th field="warehouseId" width="100" wms:text="${web.label.warehouse.code}">warehouseId</th>
+                    <th field="ownerId" width="100" wms:text="${web.inventory.ownerId}" data-options="sortable:true">ownerId</th>
+                    <th field="skuId" width="100" wms:text="${web.inventory.skuId}" data-options="sortable:true" >skuId</th>
+                    <th field="updateVersion" width="80" wms:text="${web.label.updateVersion}" >updateVersion</th>
+                    <th field="description" width="80" wms:text="${web.label.description}" >description</th>
+                    <th field="delFlag" width="100" wms:text="${web.label.delete.flag}" data-options="
+                        formatter:function(value,row){
+                            return getCodelkupValue('YESNO',value);
+                        }
+                    ">delFlag</th>
+                    <th field="companyId" width="100" wms:text="${web.label.company.code}" data-options="sortable:true" >companyId</th>
+                    <th field="warehouseId" width="100" wms:text="${web.label.warehouse.code}">warehouseId</th>
+                    -->
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+<script th:replace="common/js"/>
+<script type="text/javascript"
+        th:src="@{/js/codelkupList?listName=CONFIGTYPE,YESNO,TRANSACTIONTYPE,TRANSACTIONCATEGORY}"></script>
+
+</html>

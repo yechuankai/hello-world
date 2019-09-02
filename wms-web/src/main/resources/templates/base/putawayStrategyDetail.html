@@ -1,0 +1,495 @@
+<div id="detailToolbar" class="tableToolbar">
+    <a href="#" class="easyui-linkbutton detail-add" data-addpanel="#detailAddDiv">
+        <span wms:text="${web.label.add}">Add</span>
+    </a>
+    <a href="#" class="easyui-linkbutton common-rowsave" data-table="#detailTable"
+       th:data-url="@{/services/inner/base/putawayStrategyDetail/save}">
+        <span wms:text="${web.label.save}">Save</span>
+    </a>
+    <a href="#" class="easyui-linkbutton common-rowdel" data-table="#detailTable"
+       th:data-url="@{/services/inner/base/putawayStrategyDetail/delete}">
+        <span wms:text="${web.label.delete}">Delete</span>
+    </a>
+</div>
+<div>
+    <table id="detailTable" wms:title="${web.label.putawayStrategydetail.title}" class="easyui-datagrid"
+           th:data-delayUrl="@{/services/inner/base/putawayStrategyDetail/find}"
+           data-options="sortName: 'lineNumber', sortOrder: 'asc',
+                         toolbar: '#detailToolbar'">
+        <thead>
+	        <tr>
+		        <th field="putawayStrategyDetailId" data-options="checkbox:true"></th>
+		        <th field="putawayStrategyId" data-options="hidden:true"></th>
+		        <th field="lineNumber" width="50" wms:text="${web.label.linenumber}"
+		             data-options="sortable:true,
+		                             editor:{
+		                                type:'numberbox',
+		                                options:{
+		                                    required:true
+		                                }
+		                             }">lineNumber
+		        </th>
+		        <th field="type" width="280" wms:text="${web.label.type}" data-options="
+									            sortable:true,
+									            formatter:function(value,row){
+										            return getCodelkupValue('PUTAWAYTYPE',value);
+									            },
+									            editor:{
+										            type:'combobox',
+										            options:{
+											            valueField:'code',
+											            textField:'descr',
+											            panelWidth: 300,
+											            data: codelkups['PUTAWAYTYPE']
+										            }
+									            }
+								            ">type
+		        </th>
+		        <th field="fromLocationCode" width="80" wms:text="${web.label.fromlocationcode}" wms:data-options="
+									sortable:true,
+									editor:{
+										type:'combogrid',
+										options:{
+											idField:'locationCode',
+			    							textField:'locationCode',
+											url:'../../services/inner/base/location/find',
+											queryParams: getParams(),
+										    columns:[[
+		                                        {field:'locationId',hidden:true},
+		                                        {field:'zoneId',hidden:true},
+		                                        {field:'locationCode',title:'${web.label.location}',width:80},
+		                                        {field:'zoneCode',title:'${web.label.zone}',width:80},
+		                                        {field:'locationType',title:'${web.label.location.locationType}',width:80,formatter:function(value,row){
+		                                                return getCodelkupValue('LOCATIONTYPE',value);
+		                                            }
+		                                        }
+		                                    ]],
+		                                    onChange: function (newValue, oldValue) {
+		                                        artChanged = true;//记录是否有改变（当手动输入时发生)
+		                                    },
+		                                    onHidePanel: function () {
+		                                        var t = $(this).combogrid('getValue');
+		                                        if (artChanged) {
+		                                            if (selectRow == null || t != selectRow.locationCode) {//没有选择或者选项不相等时清除内容
+		                                                alert('请选择，不要直接输入');
+		                                            $(this).combogrid('setValue', '');
+		                                            }
+		                                        }
+		                                        artChanged = false;
+		                                        selectRow = null;
+		                                    },
+		                                    onSelect: function (index, row) {
+		                                        selectRow = row;
+		                                    }
+									    }
+									}
+								">fromLocationCode
+		        </th>
+		
+		        <th field="fromZoneCode" width="80" wms:text="${web.label.fromzonecode}"  wms:data-options="
+									sortable:true,
+									editor:{
+										type:'combogrid',
+										options:{
+											idField:'zoneCode',
+			    							textField:'zoneCode',
+											url:'../../services/inner/base/zone/find',
+											queryParams: getParams(),
+										   columns:[[
+										    {field:'zoneId',hidden:true},
+										    {field:'zoneCode',title:'${web.label.zonecode}',width:80},
+										    {field:'pickToLocation',title:'${web.label.pickToLocation}',width:80},
+										    {field:'type',title:'${web.label.zone.type}',width:80,formatter:function(value,row){
+													return getCodelkupValue('ZONETYPE',value);
+												}
+											}
+		                                    ]],
+		                                    onChange: function (newValue, oldValue) {
+		                                        artChanged = true;//记录是否有改变（当手动输入时发生)
+		                                    },
+		                                    onHidePanel: function () {
+		                                        var t = $(this).combogrid('getValue');
+		                                        if (artChanged) {
+		                                            if (selectRow == null || t != selectRow.zoneCode) {//没有选择或者选项不相等时清除内容
+		                                                alert('请选择，不要直接输入');
+		                                            $(this).combogrid('setValue', '');
+		                                            }
+		                                        }
+		                                        artChanged = false;
+		                                        selectRow = null;
+		                                    },
+		                                    onSelect: function (index, row) {
+		                                        selectRow = row;
+		                                    }
+									    }
+									}
+								">fromZoneCode
+		        </th>
+		        <th field="toLocationCode" width="80" wms:text="${web.label.tolocationcode}"  wms:data-options="
+									sortable:true,
+									editor:{
+										type:'combogrid',
+										options:{
+											idField:'locationCode',
+			    							textField:'locationCode',
+											url:'../../services/inner/base/location/find',
+											queryParams: getParams(),
+										    columns:[[
+										    {field:'locationId',hidden:true},
+										    {field:'zoneId',hidden:true},
+										    {field:'locationCode',title:'${web.label.location}',width:80},
+										    {field:'zoneCode',title:'${web.label.zone}',width:80},
+										    {field:'locationType',title:'${web.label.location.locationType}',width:80,formatter:function(value,row){
+													return getCodelkupValue('LOCATIONTYPE',value);
+												}
+											}
+		                                    ]],
+		                                    onChange: function (newValue, oldValue) {
+		                                        artChanged = true;//记录是否有改变（当手动输入时发生)
+		                                    },
+		                                    onHidePanel: function () {
+		                                        var t = $(this).combogrid('getValue');
+		                                        if (artChanged) {
+		                                            if (selectRow == null || t != selectRow.locationCode) {//没有选择或者选项不相等时清除内容
+		                                                alert('请选择，不要直接输入');
+		                                            $(this).combogrid('setValue', '');
+		                                            }
+		                                        }
+		                                        artChanged = false;
+		                                        selectRow = null;
+		                                    },
+		                                    onSelect: function (index, row) {
+		                                        selectRow = row;
+		                                    }
+		                                }
+							        }
+								">toLocationCode
+		        </th>
+		        <th field="toZoneCode" width="80" wms:text="${web.label.tozonecode}"  wms:data-options="
+									sortable:true,
+									editor:{
+										type:'combogrid',
+										options:{
+											idField:'zoneCode',
+			    							textField:'zoneCode',
+											url:'../../services/inner/base/zone/find',
+											queryParams: getParams(),
+										   columns:[[
+										    {field:'zoneId',hidden:true},
+										    {field:'zoneCode',title:'${web.label.zonecode}',width:80},
+										    {field:'pickToLocation',title:'${web.label.pickToLocation}',width:80},
+										    {field:'type',title:'${web.label.zone.type}',width:80,formatter:function(value,row){
+													return getCodelkupValue('ZONETYPE',value);
+												}
+											}
+		                                    ]],
+		                                    onChange: function (newValue, oldValue) {
+		                                        artChanged = true;//记录是否有改变（当手动输入时发生)
+		                                    },
+		                                    onHidePanel: function () {
+		                                        var t = $(this).combogrid('getValue');
+		                                        if (artChanged) {
+		                                            if (selectRow == null || t != selectRow.zoneCode) {//没有选择或者选项不相等时清除内容
+		                                                alert('请选择，不要直接输入');
+		                                            $(this).combogrid('setValue', '');
+		                                            }
+		                                        }
+		                                        artChanged = false;
+		                                        selectRow = null;
+		                                    },
+		                                    onSelect: function (index, row) {
+		                                        selectRow = row;
+		                                    }
+		                                }
+									}
+								">toZoneCode
+		        </th>
+		        <th field="sortRule" width="120" wms:text="${web.label.sortrule}" data-options="
+									            sortable:true,
+									            formatter:function(value,row){
+										            return getCodelkupValue('PUTAWAYSORT',value);
+									            },
+									            editor:{
+										            type:'combobox',
+										            options:{
+											            valueField:'code',
+											            textField:'descr',
+											            data: codelkups['PUTAWAYSORT']
+										            }
+									            }
+								            ">sortRule
+		        </th>
+		        <th field="active" width="50" wms:text="${web.label.active}" data-options="
+									            sortable:true,
+									            formatter:function(value,row){
+										            return getCodelkupValue('YESNO',value);
+									            },
+									            editor:{
+										            type:'combobox',
+										            options:{
+											            valueField:'code',
+											            textField:'descr',
+											            data: codelkups['YESNO']
+										            }
+									            }
+								            ">active
+		        </th>
+		        <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+		        <th field="createTime" width="150" wms:text="${web.label.createtime}"
+		            data-options="sortable:true">createTime
+		        </th>
+		        <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+		        <th field="updateTime" width="150" wms:text="${web.label.updatetime}"
+		            data-options="sortable:true">updateTime
+		        </th>
+		        <th field="remark" width="200" wms:text="${web.label.remark}"
+		            data-options="
+		                editor:'text',
+		                formatter: function(value,row,index){
+		                    if(null != value){
+		                        return '<span title='+value+'>'+value+'</span>'
+		                    }
+		                }
+		                ">remark
+		        </th>
+	        </tr>
+        </thead>
+    </table>
+</div>
+<div id="detailAddDiv" wms:title="${web.label.detail.add}" style="width:500px;height:480px; display: none;">
+    <div style="width: 100%;padding-left: 50px;">
+        <form method="post" id="addDetailForm" th:data-url="@{/services/inner/base/putawayStrategyDetail/add}">
+            <table style="width: 100%;">
+                <tr>
+                    <td>
+                        <input id="lineNumber" name="lineNumber" class="easyui-numberbox" wms:data-options="required:true,label:'${web.label.linenumber}',labelPosition:'top'">
+                    </td>
+                    <td style="padding-left: 20px;">
+                        <input class="easyui-combobox" name="type" style="width: 150px;" wms:data-options="
+							required:true,
+							panelWidth: 300,
+							data: codelkups['PUTAWAYTYPE'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.type}',
+							labelPosition: 'top'
+							"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="fromLocationCode" name="fromLocationCode" class="easyui-combogrid" wms:data-options="
+								label: '${web.label.fromlocationcode}',
+								labelPosition: 'top',
+								idField:'locationCode',
+    							textField:'locationCode',
+								url:'../../services/inner/base/location/find',
+								queryParams: getParams(),
+							    columns:[[
+								    {field:'locationId',hidden:true},
+								    {field:'zoneId',hidden:true},
+								    {field:'locationCode',title:'${web.label.location}',width:80},
+								    {field:'zoneCode',title:'${web.label.zone}',width:80},
+								    {field:'locationType',title:'${web.label.location.locationType}',width:80,formatter:function(value,row){
+											return getCodelkupValue('LOCATIONTYPE',value);
+										}
+									}
+							    ]],
+							    onChange: function (newValue, oldValue) {
+                                    artChanged = true;//记录是否有改变（当手动输入时发生)
+                                },
+                                onHidePanel: function () {
+                                    var t = $(this).combogrid('getValue');
+                                    if (artChanged) {
+                                        if (selectRow == null || t != selectRow.locationCode) {//没有选择或者选项不相等时清除内容
+                                            alert('请选择，不要直接输入');
+                                        $(this).combogrid('setValue', '');
+                                        }
+                                    }
+                                    artChanged = false;
+                                    selectRow = null;
+                                },
+                                onSelect: function (index, row) {
+                                    selectRow = row;
+                                }
+							" />
+                    </td>
+                    <td style="padding-left: 20px;">
+                        <input name="fromZoneCode" class="easyui-combogrid" wms:data-options="
+								label: '${web.label.fromzonecode}',
+								labelPosition: 'top',
+								idField:'zoneCode',
+    							textField:'zoneCode',
+								url:'../../services/inner/base/zone/find',
+								queryParams: getParams(),
+							    columns:[[
+								    {field:'zoneId',hidden:true},
+								    {field:'zoneCode',title:'${web.label.zonecode}',width:80},
+								    {field:'pickToLocation',title:'${web.label.pickToLocation}',width:80},
+								    {field:'type',title:'${web.label.zone.type}',width:80,formatter:function(value,row){
+											return getCodelkupValue('ZONETYPE',value);
+										}
+									}
+							    ]],
+							    onChange: function (newValue, oldValue) {
+                                    artChanged = true;//记录是否有改变（当手动输入时发生)
+                                },
+                                onHidePanel: function () {
+                                    var t = $(this).combogrid('getValue');
+                                    if (artChanged) {
+                                        if (selectRow == null || t != selectRow.zoneCode) {//没有选择或者选项不相等时清除内容
+                                            alert('请选择，不要直接输入');
+                                        $(this).combogrid('setValue', '');
+                                        }
+                                    }
+                                    artChanged = false;
+                                    selectRow = null;
+                                },
+                                onSelect: function (index, row) {
+                                    selectRow = row;
+                                }
+							" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="toLocationCode" name="toLocationCode" class="easyui-combogrid" wms:data-options="
+								label: '${web.label.tolocationcode}',
+								labelPosition: 'top',
+								idField:'locationCode',
+    							textField:'locationCode',
+								url:'../../services/inner/base/location/find',
+								queryParams: getParams(),
+							    columns:[[
+								    {field:'locationId',hidden:true},
+								    {field:'zoneId',hidden:true},
+								    {field:'locationCode',title:'${web.label.location}',width:80},
+								    {field:'zoneCode',title:'${web.label.zone}',width:80},
+								    {field:'locationType',title:'${web.label.location.locationType}',width:80,formatter:function(value,row){
+											return getCodelkupValue('LOCATIONTYPE',value);
+										}
+									}
+							    ]],
+							    onChange: function (newValue, oldValue) {
+                                    artChanged = true;//记录是否有改变（当手动输入时发生)
+                                },
+                                onHidePanel: function () {
+                                    var t = $(this).combogrid('getValue');
+                                    if (artChanged) {
+                                        if (selectRow == null || t != selectRow.locationCode) {//没有选择或者选项不相等时清除内容
+                                            alert('请选择，不要直接输入');
+                                        $(this).combogrid('setValue', '');
+                                        }
+                                    }
+                                    artChanged = false;
+                                    selectRow = null;
+                                },
+                                onSelect: function (index, row) {
+                                    selectRow = row;
+                                }
+							" />
+                    </td>
+                    <td style="padding-left: 20px;">
+                        <input name="toZoneCode" class="easyui-combogrid" wms:data-options="
+								label: '${web.label.tozonecode}',
+								labelPosition: 'top',
+								idField:'zoneCode',
+    							textField:'zoneCode',
+								url:'../../services/inner/base/zone/find',
+								queryParams: getParams(),
+							    columns:[[
+								    {field:'zoneId',hidden:true},
+								    {field:'zoneCode',title:'${web.label.zonecode}',width:80},
+								    {field:'pickToLocation',title:'${web.label.pickToLocation}',width:80},
+								    {field:'type',title:'${web.label.zone.type}',width:80,formatter:function(value,row){
+											return getCodelkupValue('ZONETYPE',value);
+										}
+									}
+							    ]],
+							    onChange: function (newValue, oldValue) {
+                                    artChanged = true;//记录是否有改变（当手动输入时发生)
+                                },
+                                onHidePanel: function () {
+                                    var t = $(this).combogrid('getValue');
+                                    if (artChanged) {
+                                        if (selectRow == null || t != selectRow.zoneCode) {//没有选择或者选项不相等时清除内容
+                                            alert('请选择，不要直接输入');
+                                        $(this).combogrid('setValue', '');
+                                        }
+                                    }
+                                    artChanged = false;
+                                    selectRow = null;
+                                },
+                                onSelect: function (index, row) {
+                                    selectRow = row;
+                                }
+							" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="easyui-combobox" name="sortRule" style="width: 150px;" wms:data-options="
+							required:true,
+							data: codelkups['PUTAWAYSORT'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.sortrule}',
+							labelPosition: 'top'
+							"/>
+                    </td>
+                    <td style="padding-left: 20px;">
+                        <input class="easyui-combobox" name="active" style="width: 100px;" wms:data-options="
+							required:true,
+							value: 'Y',
+							data: codelkups['YESNO'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.active}',
+							labelPosition: 'top'
+							"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input name="remark" class="easyui-textbox"
+                               wms:data-options="label:'${web.label.remark}',labelPosition:'top',multiline:true"
+                               style="width: 400px;height:100px;"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="text-align: center;margin-top: 30px;">
+        <a href="#" class="easyui-linkbutton detail-confirmadd" data-form="#addDetailForm" data-table="#detailTable" id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
+        </a>
+        <a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');" data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
+        </a>
+    </div>
+</div>
+<script type="text/javascript" th:inline="text">
+    var selectRow;
+    var artChanged;
+    function refreshDetail(data) {
+        var detailTable = '#detailTable';
+        var url = $(detailTable).attr('data-delayUrl');
+
+        var searchData = {putawayStrategyId: data.putawayStrategyId};
+        var data = getBaseData();
+        $.extend(data, searchData);
+
+        $(detailTable).datagrid({
+            url: url,
+            queryParams: data
+        }).datagrid('clearChecked');
+    }
+    function getParams (params){
+        var data = getBaseData();
+        data['active'] = 'Y';
+        if (typeof(params) == 'object'){
+            $.extend(data, params);
+        }
+        return data;
+    }
+</script>

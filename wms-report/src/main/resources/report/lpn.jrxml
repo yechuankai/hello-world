@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="lpn" pageWidth="283" pageHeight="226" columnWidth="227" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="26f12172-70d7-438a-aa90-a8514f102e3f">
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="WMS"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="163"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="831"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<parameter name="warehouseId" class="java.lang.String" nestedType="java.lang.Long"/>
+	<parameter name="companyId" class="java.lang.String" nestedType="java.lang.Long"/>
+	<parameter name="batchId" class="java.lang.String" nestedType="java.lang.Long"/>
+	<queryString>
+		<![CDATA[SELECT "BARCODE_T"."BARCODE"
+FROM "BARCODE_T" where warehouse_id = $P{warehouseId} and company_id = $P{companyId} and batch_id = $P{batchId}]]>
+	</queryString>
+	<field name="BARCODE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="BARCODE"/>
+	</field>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{BARCODE}]]></groupExpression>
+		<groupHeader>
+			<band height="170">
+				<componentElement>
+					<reportElement x="-21" y="0" width="268" height="150" uuid="5ea94da9-e6fe-474f-81df-374759a12b2d"/>
+					<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" barWidth="10" barHeight="600">
+						<jr:codeExpression><![CDATA[$F{BARCODE}]]></jr:codeExpression>
+					</jr:barbecue>
+				</componentElement>
+				<textField>
+					<reportElement x="0" y="140" width="230" height="30" uuid="5b3452ab-37e1-454a-b447-0231d9e09e98"/>
+					<textElement textAlignment="Center">
+						<font size="16"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{BARCODE}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+</jasperReport>

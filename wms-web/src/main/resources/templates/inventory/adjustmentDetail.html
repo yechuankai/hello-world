@@ -1,0 +1,340 @@
+<div id="tableToolbar" class="tableToolbar">
+    <a href="#" class="easyui-linkbutton adjustmentDetail-add" data-addpanel="#addDetailDiv">
+        <span wms:text="${web.label.add}">Add</span>
+    </a>
+</div>
+<div style="width: 100%; height: 100%">
+    <table id="detailTable" wms:title="${web.label.adjustmentdetail.list}" class="easyui-datagrid"
+           wms:data-options="toolbar: '#tableToolbar'"
+           th:data-delayUrl="@{/services/inner/inventory/adjustment/findDetail}"  style="width: 100%; height: 100%">
+        <thead>
+        <tr>
+            <th field="inventoryAdjustmentDetailId" data-options="checkbox:true"></th>
+            <th field="inventoryAdjustmentId" data-options="hidden:true"></th>
+            <th field="lineNumber" width="50" wms:text="${web.label.linenumber}" data-options="sortable:true">lineNumber</th>
+            <th field="sourceLineNumber" width="80" wms:text="${web.label.sourcelinenumber}" data-options="sortable:true">
+                sourceLineNumber
+            </th>
+            <th field="ownerCode" width="80" wms:text="${web.label.owner}">
+                ownerCode
+            </th>
+            <th field="skuCode" width="100" wms:text="${web.inventory.skuCode}">
+                skuCode
+            </th>
+            <th field="skuAlias" width="100" wms:text="${web.inventory.skuAlias}">
+                skuAlias
+            </th>
+            <th field="skuDescr" width="100" wms:text="${web.label.skudescr}">
+                skuDescr
+            </th>
+            <th field="packCode" width="100" wms:text="${web.label.packcode}">
+                packCode
+            </th>
+            <th field="uom" width="60" wms:text="${web.label.uom}">
+                uom
+            </th>
+            <th field="uomQuantity" width="80" wms:text="${web.inventory.uomquantity}">
+                uomQuantity
+            </th>
+            <th field="lotNumber" width="100" wms:text="${web.label.lotnumber}">
+                lotNumber
+            </th>
+            <th field="locationCode" width="100" wms:text="${web.label.location}">
+                locationCode
+            </th>
+            <th field="lpnNumber" width="100" wms:text="${web.label.lpnnumber}">
+                lpnNumber
+            </th>
+            <th field="quantityOnhand" width="80" wms:text="${web.lable.inventory.onhand}">
+                quantityOnhand
+            </th>
+            <th field="quantityAdjustment" width="80" wms:text="${web.label.quantityadjustment}">
+                quantityAdjustment
+            </th>
+            <th field="reason" width="150" wms:text="${web.label.reason}" data-options="
+						    sortable:true,
+							formatter:function(value,row){
+								return getCodelkupValue('ADJUSTMENTREASON',value);
+							}">reason</th>
+            <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+            <th field="createTime" width="150" wms:text="${web.label.createtime}"
+                data-options="sortable:true">createTime
+            </th>
+            <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+            <th field="updateTime" width="150" wms:text="${web.label.updatetime}"
+                data-options="sortable:true">updateTime
+            </th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<div id="addDetailDiv" wms:title="${web.label.detail.add}" style="height: 500px;width: 1000px;display: none;">
+    <div id="addDetailToolbar" style="padding-left: 30px;">
+        <a href="#" class="easyui-linkbutton adjustmentdetail-confirmadd" data-table="#addDetailData"
+           th:data-url="@{/services/inner/inventory/adjustment/adjustment}">
+            <span wms:text="${web.label.adjustconfirm}">Adjust</span>
+        </a>
+        <input class="easyui-combobox" name="reason" id="reason" style="width: 300px;margin-left: 30px;"
+               wms:data-options="
+						data: codelkups['ADJUSTMENTREASON'],
+						required: true,
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.reason}',
+						labelPosition: 'before',
+						labelAlign:'right'
+						">
+    </div>
+        <input type="hidden" name="inventoryAdjustmentId" id="inventoryAdjustmentId"/>
+        <table id="addDetailData"  class="easyui-datagrid" style="height: 100%;width:100%;"
+               wms:data-options="toolbar: '#addDetailToolbar'"
+                th:data-delayUrl="@{/services/inner/inventory/onhand/find}">
+            <thead>
+            <tr>
+                <th field="inventoryOnhandId" data-options="checkbox:true"></th>
+                <th field="ownerCode" width="80" wms:text="${web.label.owner}" wms:data-options="
+							sortable:true">
+                    ownerCode
+                </th>
+                <th field="ownerId" data-options="hidden:true"></th>
+                <th field="skuCode" width="100" wms:text="${web.inventory.skuCode}" wms:data-options="
+							sortable:true">
+                    skuCode
+                </th>
+                <th field="skuAlias" width="100" wms:text="${web.inventory.skuAlias}">
+                    skuAlias
+                </th>
+                <th field="skuId" data-options="hidden:true"></th>
+                <th field="packCode" width="60" wms:text="${web.label.pack}" data-options="
+										formatter:function(value,row){
+										    var packCode = 'STD';
+										    return packCode;
+										}
+						">packCode</th>
+                <th field="lpnId" data-options="hidden:true"></th>
+                <th field="lotNumber" width="100" wms:text="${web.label.lotnumber}" wms:data-options="
+							sortable:true">
+                    lotNumber
+                </th>
+                <th field="lotId" data-options="hidden:true"></th>
+                 <th field="locationCode" width="100" wms:text="${web.label.location}" wms:data-options="
+							sortable:true">
+                    locationCode
+                </th>
+                <th field="locationId" data-options="hidden:true"></th>
+                <th field="lpnNumber" width="100" wms:text="${web.label.lpnnumber}" wms:data-options="
+							sortable:true">
+                    lpnNumber
+                </th>
+                <th field="quantityOnhand" width="80" wms:text="${web.label.quantity.onhand}">
+                    quantityOnhand
+                </th>
+                <th field="quantityAllocated" width="100" wms:text="${web.label.quantity.allocated}" data-options="sortable:true">
+                	quantityAllocated
+                </th>
+				<th field="quantityLocked" width="100" wms:text="${web.label.quantity.locked}" data-options="sortable:true">
+					quantityLocked
+				</th>
+				<th field="quantityAvailable" width="100" wms:text="${web.label.quantity.available}" data-options="sortable:false">
+					quantityAvailable
+				</th>
+                <th field="quantityAdjustment" width="80" wms:text="${web.label.quantityadjustment}" data-options="editor:{type:'numberbox'}">
+                    quantityAdjustment
+                </th>
+                <th field="targetQuantity" width="80" wms:text="${web.label.targetquantity}"></th>
+            </tr>
+            </thead>
+        </table>
+</div>
+<script type="text/javascript" th:src="@{/static/ui/plugins/datagrid-filter.js}"></script>
+<script type="text/javascript" th:inline="text">
+    var detailFilterRules = [{
+        field:'quantityLocked',
+        type:'numberbox',
+        op:['contains','less','greater']
+    }];
+    $(function () {
+        $('.adjustmentDetail-add').click(function () {
+            var panel = $(this).attr('data-addpanel');
+            $(panel).dialog({
+                closed: true,
+                modal: true,
+                fix: true
+            }).dialog('open');
+          refreshAddDetail();
+        });
+
+        $('#addDetailData').datagrid({
+            onAfterEdit: function (index, row, changes) {
+                var quantityOnhand = row.quantityOnhand;
+                var quantityAdjustment =row.quantityAdjustment;
+                if(null !=quantityAdjustment && undefined != quantityAdjustment && "" != quantityAdjustment){
+                    var targetQuantity = Number(quantityOnhand) + Number(quantityAdjustment);
+                    if(targetQuantity < 0){
+                        showError("The number of targets cannot be less than 0!");
+                    }else {
+                        var td=$('.datagrid-body td[field="targetQuantity"]')[index];
+                        var div = $(td).find('div')[0];
+                        $(div).text(targetQuantity);
+                    }
+                }
+            }
+        });
+
+        $('.adjustmentdetail-confirmadd').click(function(){
+            var datagrid = $(this).attr('data-table');
+            var url = $(this).attr('data-url');
+
+            var editingRows = $(datagrid).datagrid('getEditingRowIndexs');
+            for(var i in editingRows) {
+                var flag = $(datagrid).datagrid('validateRow', editingRows[i]);
+                if (!flag){
+                    showError($.locale.errorRow,{row:editingRows[i]});
+                    return;
+                }
+            }
+
+            var rows = $(datagrid).datagrid('getChanges');
+
+            if (editingRows.length == 0 && rows.length == 0) {
+                showError($.locale.noChange);
+                return;
+            }
+            if (editingRows.length > 0){
+                $(datagrid).datagrid('endCellEdit');
+                rows = $(datagrid).datagrid('getChanges');
+            }
+
+            var headerData = getAdjustmentHeaderData();
+            headerData['detail'] = [];
+            var inventoryAdjustmentId =$('#inventoryAdjustmentId').val();
+            var reason =$('#reason').val();
+            var total = $("#detailTable").datagrid('getData').total;
+            var linenumber_increment = 10;
+            for(var j in rows) {
+                if(rows[j].quantityAdjustment == 0 || undefined == rows[j].quantityAdjustment || null == rows[j].quantityAdjustment || ""==rows[j].quantityAdjustment){
+                    //调整数量为空或为0时不传入后台
+                    continue;
+                }
+               var lineNumber= (Number(total)+Number(j)+1)*linenumber_increment;
+                headerData.detail.push({
+                    inventoryAdjustmentId : inventoryAdjustmentId,
+                    inventoryOnhandId : rows[j].inventoryOnhandId,
+                    lineNumber :lineNumber,
+                    ownerCode : rows[j].ownerCode,
+                    ownerId : rows[j].ownerId,
+                    skuCode : rows[j].skuCode,
+                    skuAlias : rows[j].skuAlias,
+                    skuId : rows[j].skuId,
+                    quantityOnhand : rows[j].quantityOnhand,
+                    quantityAdjustment : rows[j].quantityAdjustment,
+                    lpnId : rows[j].lpnId,
+                    lpnNumber : rows[j].lpnNumber,
+                    locationId : rows[j].locationId,
+                    locationCode : rows[j].locationCode,
+                    lotId : rows[j].lotId,
+                    lotNumber : rows[j].lotNumber,
+                    reason : reason
+                });
+            }
+            var data = getBaseData(headerData);
+            loading();
+            $.post({
+                url: url,
+                data:data,
+                success: function(data){
+                    data = returnData(data);
+                    closeLoading();
+                    if (data.code == '0') {
+                        showError(data.msg);
+                        return;
+                    }
+                    $('#addDetailData').parents('.window-body').dialog('close');
+                    refreshAdjustmentDetail(headerData);
+                }
+            });
+        });
+    });
+    function refreshAdjustmentDetail(data) {
+
+        var detailTable = '#detailTable';
+        var url = $(detailTable).attr('data-delayUrl');
+        $("#inventoryAdjustmentId").val(data.inventoryAdjustmentId);
+        var searchData = {inventoryAdjustmentId: data.inventoryAdjustmentId};
+        var baseData = getBaseData();
+        $.extend(baseData, searchData);
+
+        $(detailTable).datagrid({
+            url: url,
+            sortName: 'lineNumber',
+            sortOrder: 'asc',
+            queryParams: baseData
+        }).datagrid('clearChecked');
+    }
+
+    function getPack(row) {
+        var searchData = {ownerId:row.ownerId};
+        searchData = getBaseData(searchData);
+        $.post({
+            url:'../../services/inner/base/sku/find',
+            data:searchData,
+            success: function(data){
+                data = returnData(data);
+                if (data.code == '0') {
+                    showError(data.msg);
+                    return;
+                }
+                var packCode=data.rows[0].packCode;
+                return packCode;
+            }
+        });
+    }
+
+    function refreshAddDetail() {
+        var data = getBaseData();
+        var url = $('#addDetailData').attr('data-delayUrl');
+        $('#addDetailData').datagrid({
+            url: url,
+            queryParams: data,
+            filterPosition: 'top',
+            remoteFilter: true,
+            clientPaging: false,
+            oldLoadFilter: undefined,
+            filterStringify: function(params, filter) {
+                var obj = params;
+                if (typeof(params) != 'object'){
+                    return;
+                }
+                for (var i in filter){
+                    var q = filter[i];
+                    var qObj = {};
+                    qObj[q.field] = q.value;
+                    $.extend(obj, qObj);
+                }
+            }
+        }).datagrid('clearChecked').datagrid('destroyFilter').datagrid('enableFilter');
+    }
+
+    function getUom(packId) {
+        $.post({
+            url: '../../services/inner/base/pack/findById',
+            data:getBaseData(packId),
+            success: function(data){
+                data = returnData(data);
+                if (data.code == '0') {
+                    showError(data.msg);
+                    return;
+                }
+
+                data = data.data;
+
+                var comData = [];
+
+                comData.push({label: data.uom, value: data.uom});
+                comData.push({label: data.uomInner, value: data.uomInner});
+                comData.push({label: data.uomCase, value: data.uomCase});
+                return comData;
+            }
+        });
+    }
+</script>

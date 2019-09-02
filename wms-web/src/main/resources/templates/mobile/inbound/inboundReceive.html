@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${web.label.receive.inbound}">收货</title>
+    <head th:replace="common/mobileHead" />
+    <script>
+        if(window.top!==window.self){window.top.location=window.location};
+    </script>
+</head>
+
+<body style="text-align: center;">
+	<div class="easyui-navpanel" style="position:relative">
+		<header>
+			<div class="m-toolbar">
+				<div class="m-left">
+					<a href="javascript:void(0)" class="easyui-linkbutton wms-m-back" go="receive" plain="true" outline="true"  style="width:60px"  wms:text="${web.label.back}">Back</a>
+				</div>
+				<div class="m-title" wms:text="${web.label.receive.inbound}">按单收货</div>
+			</div>
+		</header>
+		<div class="m-content" >
+			<input type="hidden" id="userId" th:value="${user.userId}" />
+			<input type="hidden" id="warehouseId" th:value="${user.warehouseId}" />
+			<input type="hidden" id="companyId" th:value="${user.companyId}"/>
+			<input type="hidden" id="locale" th:value="${user.locale}"/>
+			<input type="hidden" id="userName" th:value="${user.userName}"/>
+			<table border="0"  width="100%">
+				<tr>
+					<td style="width: 50%">
+						<input class="easyui-textbox" name="inboundNumber" id="inboundNumber" style="width:95%;" wms:data-options="
+						label: '${web.label.inboundnumber}',
+						labelPosition: 'top',
+						required: true
+						" />
+					</td>
+					<td colspan="2">
+						<input class="easyui-combobox" name="type" id="type" readonly="readonly" style="width:95%;" wms:data-options="
+						label: '${web.label.type}',
+						labelPosition: 'top',
+						data: codelkups['INBOUNDTYPE'],
+						valueField: 'code',
+						textField: 'descr',
+						" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input class="easyui-textbox" name="skuCode" id="skuCode" style="width:95%;" wms:data-options="
+							label: '${web.label.sku}',
+							labelPosition: 'top',
+							required: true
+							" />
+					</td>
+					<td width="25%">
+						<input class="easyui-textbox" name="packCode" id="packCode" readonly="readonly"  style="width:90%;" wms:data-options="
+							label: '${web.label.pack}',
+							labelPosition: 'top'
+							" />
+					</td>
+					<td width="25%">
+						<input class="easyui-combobox" name="uom" id="uom" style="width:90%;" wms:data-options="
+							label: '${web.label.uom}',
+							labelPosition: 'top',
+							panelHeight: 100
+							" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input class="easyui-textbox" name="containerNumber" id="containerNumber" style="width:95%;" wms:data-options="
+							label: '${web.label.containernumber}',
+							labelPosition: 'top'
+							" />
+					</td>
+					<td colspan="2">
+						<input class="easyui-textbox" name="locationCode" readonly="readonly" value="STAGE" id="locationCode" style="width:95%;" wms:data-options="
+							label: '${web.label.location}',
+							labelPosition: 'top',
+							required: true
+							" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3">
+						<input class="easyui-textbox" name="lpnNumber" id="lpnNumber" style="width:97%;" wms:data-options="
+							label: '${web.label.lpnnumber}',
+							labelPosition: 'top'
+							" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input class="easyui-numberbox" name="volume" id="volume" value="0" readonly="readonly" style="width:95%;" wms:data-options="
+							label: '${web.label.volume}',
+							labelPosition: 'top'
+							" />
+					</td>
+					<td colspan="2">
+						<input class="easyui-numberbox" name="weight" id="weight" value="0" readonly="readonly" style="width:94%;" wms:data-options="
+							label: '${web.label.weight}',
+							labelPosition: 'top'
+							" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input class="easyui-numberbox" pattern="[0-9]*" name="uomQuantityReceive" id="uomQuantityReceive" style="width:95%;" wms:data-options="
+							label: '${web.label.quantityreceive}',
+							labelPosition: 'top'
+							" />
+					</td>
+					<td colspan="2" valign="bottom" align="left">
+						<span style="margin-right: 10px;">
+							<a href="javascript:void(0)" class="easyui-linkbutton" onclick="lotAttribute(true)" style="width:60px"  wms:text="${web.lable.lotattribute}">lotAttribute</a>
+						</span>
+						<span>
+							<a href="javascript:void(0)" class="easyui-linkbutton" id="ok" onclick="scanQuantity()" style="width:60px"   wms:text="${web.label.ok}">ok</a>
+						</span>
+					</td>
+				</tr>
+			</table>
+			<table id="receiveList" class="easyui-datagrid" wms:title="${web.label.inbounddetaillist.title}" style="width: 100%;" data-options="
+						border:false,
+						scrollbarSize:0,
+						pagination: false,
+						textField: 'lpnNumber',
+						idField: 'lpnNumber'
+						">  
+		        <thead>  
+		            <tr>  
+		                <th field="lpnNumber" width="30%" wms:text="${web.label.lpnnumber}">lpnNumber</th>  
+		                <th field="volume" width="15%" data-options="align:'right'" wms:text="${web.label.volume}">volume</th>  
+		                <th field="weight" width="15%" data-options="align:'right'" wms:text="${web.label.weight}">weight</th>  
+		                <th field="uom" width="15%" wms:text="${web.label.uom}">uom</th>  
+		                <th field="uomQuantityReceive" width="25%" data-options="align:'right'" wms:text="${web.label.quantity}">quantity</th>  
+		            </tr>
+		        </thead>
+		    </table>
+		    <div id="lot" class="easyui-dialog" wms:title="${web.lable.lotattribute}" style="width: 80%;padding: 10px;" data-options="inline:true,modal:true,closed:true,closable:true">
+	    		<table border="0"  width="100%">
+					<tr id="row_lotAttribute1">
+						<td>
+							<input id="lotAttribute1" style="width: 100%;" name="lotAttribute1" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute1}',labelPosition:'top'" />
+						</td>
+					</tr>
+					<tr id="row_lotAttribute2">
+						<td>
+							<input id="lotAttribute2" style="width: 100%;" name="lotAttribute1" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute2}',labelPosition:'top'" />
+						</td>
+					</tr>
+					<tr id="row_lotAttribute3">
+						<td>
+							<input id="lotAttribute3" style="width: 100%;" name="lotAttribute1" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute3}',labelPosition:'top'" />
+						</td>
+					</tr>
+					<tr id="row_lotAttribute4">
+						<td>
+							<input id="lotAttribute4" style="width: 100%;" name="lotAttribute1" class="lazy-load" lazy-load="easyui-datebox"  wms:data-options="label:'${web.label.lotattribute4}',labelPosition:'top'" />
+						</td>
+					</tr>
+					<tr id="row_lotAttribute5">
+						<td>
+							<input id="lotAttribute5" style="width: 100%;" name="lotAttribute1" class="lazy-load" lazy-load="easyui-datebox"  wms:data-options="label:'${web.label.lotattribute5}',labelPosition:'top'" />
+						</td>
+					</tr>
+					<tr id="row_lotAttribute6">
+						<td>
+							<input id="lotAttribute6" style="width: 100%;" name="lotAttribute1" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute6}',labelPosition:'top'" />
+						</td>
+					</tr>
+					<tr id="row_lotAttribute7">
+						<td>
+							<input id="lotAttribute7" style="width: 100%;" name="lotAttribute1" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute7}',labelPosition:'top'" />
+						</td>
+					</tr>
+					<tr id="row_lotAttribute8">
+						<td>
+							<input id="lotAttribute8" style="width: 100%;"name="lotAttribute1" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute8}',labelPosition:'top'" />
+						</td>
+					</tr>
+					<tr id="row_lotAttribute9">
+						<td>
+							<input id="lotAttribute9" style="width: 100%;" name="lotAttribute1" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute9}',labelPosition:'top'" />
+						</td>
+					</tr>
+					<tr id="row_lotAttribute10">
+						<td>
+							<input id="lotAttribute10" style="width: 100%;" name="lotAttribute1" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute10}',labelPosition:'top'" />
+						</td>
+					</tr>
+					<tr id="row_lotAttribute11">
+						<td>
+							<input id="lotAttribute11" style="width: 100%;" name="lotAttribute1" class="lazy-load" lazy-load="easyui-datebox"  wms:data-options="label:'${web.label.lotattribute11}',labelPosition:'top'" />
+						</td>
+					</tr>
+					<tr id="row_lotAttribute12">
+						<td>
+							<input id="lotAttribute12" style="width: 100%;" name="lotAttribute1" class="lazy-load" lazy-load="easyui-datebox"  wms:data-options="label:'${web.label.lotattribute12}',labelPosition:'top'" />
+						</td>
+					</tr>
+					<tr>
+						<td align="center" style="padding-top: 20px;">
+							<a href="javascript:void(0)" class="easyui-linkbutton" style="width: 60px;" onclick="lotConfirm()"  wms:text="${web.label.ok}">ok</a>
+						</td>
+					</tr>
+		    	</table>
+		    </div>
+		</div>
+		<footer>
+			<div class="m-toolbar">
+				<div class="m-left" style="width: 49%;">
+	            	<a href="javascript:void(0)" class="easyui-linkbutton" id="submitForm" outline="true" data-options="iconCls:'icon-ok'" onclick="submit()" style="width:100%;"  wms:text="${web.label.commit}">Commit</a>
+				</div>
+				<div class="m-right" style="width: 49%;">
+	            	<a href="javascript:void(0)" class="easyui-linkbutton" id="clearForm" outline="true" data-options="iconCls:'icon-clear'" onclick="clean()" style="width:100%;"  wms:text="${web.label.clear}">Clear</a>
+				</div>
+			</div>
+        </footer>
+	</div>
+	<script th:replace="common/mobileJs" />
+	<script type="text/javascript" th:src="@{/static/js/mobile/inbound/inboundReceive.js}"></script>
+	 <script type="text/javascript" th:src="@{/js/codelkupList?listName=INBOUNDTYPE}"></script>
+	<script type="text/javascript">
+	 
+	</script>
+</body>
+</html>
