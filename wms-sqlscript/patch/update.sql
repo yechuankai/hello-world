@@ -29,3 +29,7 @@ values ('1168591847642759168', '1168590157904478208', 'PICKLIST', '3', 'Pick Lis
 insert into WMS.SYS_CODELKUP_T (CODELKUP_ID, CODELIST_ID, CODE, SORT, DESCR, REMARK, TYPE, ACTIVE, IS_DEFAULT, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
 values ('1168591938462023680', '1168590157904478208', 'A01', '4', 'Ship label', null, '10', 'Y', 'N', '0', '0', 'N', 'yechuankai', to_date('02-09-2019 21:30:04', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('02-09-2019 21:30:04', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
 
+
+--新增"出库单创建"的子菜单
+insert into uums.WEB_FUNC (FUNC_ID, FUNC_NAME, MENU_ID, FUNC_DESC, FUNC_URL, FUNC_ID_SEQ, SYS_CODE, IS_VALID, SYS_URL, REAL_SYS_CODE, INVALID_TIME, INVALID_USER, CREATE_TIME, VERSION, FUNC_UNIQUE_ID)
+values ('wms:outbound:add', '出库单创建', 'wms:outbound', '出库单创建', 'outbound/edit', 10, 'WMS', 'Y', null, null, null, null, to_date('21-08-2019 14:08:28', 'dd-mm-yyyy hh24:mi:ss'), '0', 1.15571722259636E18);
