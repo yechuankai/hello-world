@@ -227,7 +227,7 @@ public class FileRest extends BaseController {
 		try {
 			StandardMultipartHttpServletRequest fileReq =  (StandardMultipartHttpServletRequest) req;
 			Map<String, List<MultipartFile>> fileMap = fileReq.getMultiFileMap();
-			List<MultipartFile> fileList = fileMap.get("short_pick");
+			List<MultipartFile> fileList = fileMap.get("file");
 			MultipartFile [] file = fileList.toArray(new MultipartFile [fileList.size()]);
 			if (file == null || file.length == 0)
 				return fail("upload.nofile");
