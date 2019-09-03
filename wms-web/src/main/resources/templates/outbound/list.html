@@ -115,7 +115,7 @@
                 <a href="#" class="easyui-menubutton" data-options="menu:'#optionsOutboundReport',plain:false" wms:text="${web.label.report}">Report</a>
                 <div id="optionsOutboundReport">
                     <div  wms:text="${wms.label.pickreport}" onclick="exportPDFReport('PICKLIST')">Allocate</div>
-                    <div  wms:text="${web.label.shiplabel}" onclick="exportPDFReport('A01')">Ship Label</div>
+                    <div  wms:text="${web.label.shiplabel}" onclick="exportPDFShipLabel()">Ship Label</div>
                 </div>
                 <a href="#" class="easyui-linkbutton" onclick="importExcel('OUTBOUND')" wms:text="${web.label.import}">Import</a>
                 <a href="#" class="easyui-linkbutton" onclick="exportExcel('OUTBOUND', '#searchForm')" wms:text="${web.label.export}">Export</a>
@@ -387,13 +387,32 @@
 			showError($.locale.selectOneRow);
 			return;
 		}
-		rowData = checkedRows[0];
+		var rowData = checkedRows[0];
 		exportReport({
 			__codelkup: "OUTBOUNDTYPE",
 			fileType: "pdf",
 			reportType: type,
 			id: rowData.outboundHeaderId
 		});
+    }
+    
+    function exportPDFShipLabel(){
+    	var checkedRows = $('#outboundData').datagrid('getChecked');
+		if (checkedRows.length != 1) {
+			showError($.locale.selectOneRow);
+			return;
+		}
+		
+		var rowData = checkedRows[0];
+		if(rowData.shipLabel){
+			exportReport({
+				fileType: "pdf",
+				reportType: rowData.shipLabel,
+				id: rowData.outboundHeaderId
+			});
+		}else{
+			showError("no shipLabel template");
+		}
     }
 
 </script>
