@@ -64,8 +64,8 @@ public class PublicInterceptor implements HandlerInterceptor,InitializingBean  {
     	String locale = request.getHeader(LOCALE);
     	if (StringUtils.isEmpty(locale)) {
     		locale = Global.locale;  
-    		LocaleUtils.setLocale(locale); //设置当前语言
     	}
+    	LocaleUtils.setLocale(locale); //设置当前语言
     	return true;
     }
     

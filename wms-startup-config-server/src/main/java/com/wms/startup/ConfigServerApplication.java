@@ -5,11 +5,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cloud.config.server.EnableConfigServer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import se.jiderhamn.classloader.leak.prevention.ClassLoaderLeakPreventorListener;
 
 @EnableConfigServer
 @SpringBootApplication
+@Configuration
 public class ConfigServerApplication  extends SpringBootServletInitializer{
 	private static final Logger log = LoggerFactory.getLogger(ConfigServerApplication.class);
 
@@ -22,4 +28,12 @@ public class ConfigServerApplication  extends SpringBootServletInitializer{
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 		return builder.sources(ConfigServerApplication.class);
 	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+    @Bean
+    public ServletListenerRegistrationBean listenerRegist() {
+        ServletListenerRegistrationBean srb = new ServletListenerRegistrationBean();
+        srb.setListener(new ClassLoaderLeakPreventorListener());
+        return srb;
+    }
 }
