@@ -1,0 +1,3 @@
+#初始化加载时需要创建的文件
+logging:
+ path: C:\\logs
