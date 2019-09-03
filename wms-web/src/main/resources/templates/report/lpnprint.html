@@ -56,7 +56,7 @@
 				}
 				baseData['batchId'] =  data.data;
 				var reportUrl = getReportUrl('/report/pdf/LPN', baseData);
-				$('#lpnContent')[0].src = reportUrl;
+				window.open(reportUrl);
 			}
 		});
 	}
