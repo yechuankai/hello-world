@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title wms:text="${wms.label.files}">文件列表</title>
+    <title wms:text="${web.label.report}">报表</title>
     <head th:replace="common/head" />
     <style>
     	#uploadAppForm input{
@@ -19,25 +19,27 @@
 			<a href="#" class="easyui-linkbutton" onclick="upload()">
 				<span wms:text="${web.label.upload}">upload</span>
 			</a>
-			<a href="#" class="easyui-linkbutton common-rowdel"  data-table="#tableData" th:data-url="@{/services/inner/file/delete}" wms:text="${web.label.delete}">Delete</a>
 		</div>
 		<div>
-			<table id="tableData"  wms:title="${web.label.files}" class="easyui-datagrid">
+			<table id="tableData"  wms:title="${web.label.files}" class="easyui-datagrid" >
 				<thead>
 					<tr>
 						<th field="fileId" width="80" data-options="checkbox:true">fileId</th>
+						<th field="code" width="80" wms:text="${web.label.code}" data-options="sortable:true">code</th>
+			            <th field="descr" width="130" wms:text="${web.label.descr}"
+			                data-options="sortable:true">descr
+			            </th>
 						<th field="fileName" width="250" wms:text="${web.label.filename}" data-options="sortable:true">fileName</th>
 						<th field="download" wms:text="${web.label.download}" data-options="
 											formatter:function(value,row){
 												var fileId = row.fileId;
-												var detail = '<span title = \'download\' onclick=downloadApp(\''+fileId+'\') class=\'icon-detail\'>&nbsp;</span>';
+												var detail = '<span title = \'download\' onclick=downloadReport(\''+fileId+'\') class=\'icon-detail\'>&nbsp;</span>';
+												if (fileId == null || fileId == '' || fileId == undefined){
+													detail = '';
+												}
 												return detail;
 											}
 										"></th>
-						<th field="fileSize" width="70" wms:text="${web.label.filesize}" data-options="sortable:true">fileSize</th>
-						<th field="template" width="100" wms:text="${web.label.version}">version</th>
-						<th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
-						<th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true">createTime</th>
 						<th field="updateBy" width="80" wms:text="${web.label.updateby}" >updateBy</th>
 						<th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">updateTime</th>
 					</tr>
@@ -45,13 +47,19 @@
 			</table>
 		</div>
 	</div>
-	
-	<div id="uploadAppContent" style="display: none;">
-		<form id="uploadAppForm" enctype="multipart/form-data">
+	<div id="uploadReportContent" style="display: none;" wms:title="${web.label.upload}">
+		<form id="uploadReportForm" enctype="multipart/form-data">
 			<table>
 				<tr>
 					<td>
-						<input id="template" name="template" class="easyui-textbox" wms:data-options="required:true,label:'${web.label.version}',labelPosition:'top'" />
+						 <input class="easyui-combobox"  name="template" id="template" style="width: 140px;" wms:data-options="
+							required:true,
+							data: codelkups['REPORT'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.report}',
+							labelPosition: 'top'
+							"/>
 					</td>
 				</tr>
 				<tr>
@@ -61,13 +69,8 @@
 				</tr>
 				<tr>
 					<td>
-						<input id="description" name="description" class="easyui-textbox" wms:data-options="label:'${web.label.remark}',labelPosition:'top'" />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="#" class="easyui-linkbutton" id="uploadVersion" onclick="uploadVersion()" wms:text="${web.label.upload}" data-form="#uploadAppForm" data-options="iconCls:'icon-ok'">Save</a>
-						<a href="#" class="easyui-linkbutton" id="clearForm" onclick="$('#uploadAppForm').form('clear');" wms:text="${web.label.clear}" data-options="iconCls:'icon-clear'">Clear</a>
+						<a href="#" class="easyui-linkbutton" id="uploadVersion" onclick="uploadReport()" wms:text="${web.label.upload}" data-form="#uploadReportForm" data-options="iconCls:'icon-ok'">Save</a>
+						<a href="#" class="easyui-linkbutton" id="clearForm" onclick="$('#uploadReportForm').form('clear');" wms:text="${web.label.clear}" data-options="iconCls:'icon-clear'">Clear</a>
 					</td>
 				</tr>
 			</table>
@@ -75,18 +78,17 @@
 	</div>
 </body>
 <script th:replace="common/js" />
-<script type="text/javascript" th:src="@{/js/codelkupList?listName=FILETYPE,FILESTATUS,TEMPLATE}"></script>
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=REPORT}"></script>
 <script type="text/javascript">
 /**
  * 打开上传弹出框
  */
 function upload(obj){
-	$("#uploadAppForm").form('clear');
-	$('#uploadAppContent').dialog({
+	$("#uploadReportForm").form('clear');
+	$('#uploadReportContent').dialog({
 	    closed: true,
 	    modal: true,
-	    fix: true,
-	    title:$.locale.uploadAppName
+	    fix: true
 	}).dialog('open');
 }
 
@@ -99,15 +101,11 @@ $(function(){
  */
 function search(){
 	$('#tableData').datagrid({
-		url: getServiceUrl() + '/services/inner/file/find',
-		pagination:true,
-		queryParams: {
-			fileType:"MOBILE"
-		}
-	}).datagrid('clearChecked');
+		url: getServiceUrl() + '/services/inner/report/find'
+	});
 }
 
-function downloadApp(fileId){
+function downloadReport(fileId){
 	var d = new Date();
 	var url = getFileUrl() + '/file/download?v='+d.getTime();
 	url = url + "&warehouseId=0&companyId=0&fileId=" + fileId
@@ -117,9 +115,9 @@ function downloadApp(fileId){
 /**
  * 上传文件
  */
-function uploadVersion(){
+function uploadReport(){
 	loading();
-	var data = new FormData($("#uploadAppForm")[0]);
+	var data = new FormData($("#uploadReportForm")[0]);
 	var baseData = getBaseData();
 	baseData['warehouseId'] = 0;
 	baseData['companyId'] = 0;
@@ -127,7 +125,7 @@ function uploadVersion(){
 	keys.forEach(function(key){
 		data.append(key,baseData[key]);
 	})
-	var url = getFileUrl() + '/file/uploadApp';
+	var url = getFileUrl() + '/file/uploadReport';
 	loading();
 	$.post({
 		url: url,
@@ -143,7 +141,7 @@ function uploadVersion(){
 				return;
 			}
 			showMsg($.locale.uploadSuccess,function(){
-				$('#uploadAppContent').dialog('close');
+				$('#uploadReportContent').dialog('close');
 				search();
 			});
 		},

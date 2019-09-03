@@ -38,6 +38,7 @@ import com.wms.common.utils.key.KeyUtils;
 import com.wms.dao.auto.IAllocateTDao;
 import com.wms.dao.example.AllocateTExample;
 import com.wms.dao.example.AllocateTExample.Criteria;
+import com.wms.entity.auto.AllocateShortTEntity;
 import com.wms.entity.auto.AllocateTEntity;
 import com.wms.entity.auto.InventoryOnhandTEntity;
 import com.wms.entity.auto.LocationTEntity;

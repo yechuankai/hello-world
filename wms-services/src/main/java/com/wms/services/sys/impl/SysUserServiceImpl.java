@@ -105,7 +105,9 @@ public class SysUserServiceImpl implements ISysUserService {
 		if (userVo.getCompanyId() != null) {
 			if (companys == null)
 				companys = Lists.newArrayList();
-			companys.add(SysCompanysTEntity.builder().companyId(userVo.getCompanyId()).descr(userVo.getCompanyDescr()).build());
+			
+			if (!userVo.isAdmin())
+				companys.add(SysCompanysTEntity.builder().companyId(userVo.getCompanyId()).descr(userVo.getCompanyDescr()).build());
 		}
 		
 		//合并公司、仓库

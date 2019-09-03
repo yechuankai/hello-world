@@ -84,6 +84,9 @@
 						labelPosition: 'before',
 						labelAlign:'right'
 						">
+        <input id="remark" name="remark" class="easyui-textbox"
+               wms:data-options="label:'${web.label.remark}',labelPosition:'before',labelAlign:'right'"
+               style="width: 300px;margin-left: 30px;"/>
     </div>
         <input type="hidden" name="inventoryAdjustmentId" id="inventoryAdjustmentId"/>
         <table id="addDetailData"  class="easyui-datagrid" style="height: 100%;width:100%;"
@@ -209,6 +212,7 @@
             headerData['detail'] = [];
             var inventoryAdjustmentId =$('#inventoryAdjustmentId').val();
             var reason =$('#reason').val();
+            var remark =$('#remark').val();
             var total = $("#detailTable").datagrid('getData').total;
             var linenumber_increment = 10;
             for(var j in rows) {
@@ -234,7 +238,8 @@
                     locationCode : rows[j].locationCode,
                     lotId : rows[j].lotId,
                     lotNumber : rows[j].lotNumber,
-                    reason : reason
+                    reason : reason,
+                    remark : remark
                 });
             }
             var data = getBaseData(headerData);

@@ -96,8 +96,8 @@
 					</div>
 					<a href="#" class="easyui-menubutton" data-options="menu:'#reportMenuButton',plain:false" wms:text="${web.label.report}">Report</a>
 					<div id="reportMenuButton">
-						<div  wms:text="${wms.label.receivereport}" onclick="exportPDFReport('inbound')">Receive Peport</div>
-						<div  wms:text="${wms.label.receivedsummaryreport}" onclick="exportPDFReport('inboundConfirm')">Receive Summary Report</div>
+						<div  wms:text="${wms.label.receivereport}" onclick="exportPDFReport('INBOUND')">Receive Peport</div>
+						<div  wms:text="${wms.label.receivedsummaryreport}" onclick="exportPDFReport('INBOUNDCONFIRM')">Receive Summary Report</div>
 					</div>
 					<a href="#" class="easyui-linkbutton" onclick="importExcel('INBOUND')" wms:text="${web.label.import}">Import</a>
 					<a href="#" class="easyui-linkbutton" onclick="exportExcel('INBOUND', '#searchForm')" wms:text="${web.label.export}">Export</a>

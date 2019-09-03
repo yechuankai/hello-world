@@ -69,7 +69,7 @@ public class RestControler extends BaseController {
 	}
 	
 	@PostMapping("/setLocale")
-	public AjaxResult setWarehouse(String locale, HttpServletResponse response) {
+	public AjaxResult setLocale(String locale, HttpServletResponse response) {
 		UserVO user = ShiroUtils.getSysUser();
 		if (user == null) {
 			return nologin();
