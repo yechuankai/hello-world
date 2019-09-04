@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 /**
  * 通用http发送方法
  * 
- * @author ruoyi
  */
 public class HttpUtils
 {

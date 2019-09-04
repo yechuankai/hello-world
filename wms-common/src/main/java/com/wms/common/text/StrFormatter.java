@@ -5,7 +5,6 @@ import com.wms.common.utils.StringUtils;
 /**
  * 字符串格式化
  * 
- * @author ruoyi
  */
 public class StrFormatter
 {
