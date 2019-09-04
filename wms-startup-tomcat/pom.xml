@@ -16,14 +16,12 @@
 	</properties>
 
 	<dependencies>
-		
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-tomcat</artifactId>
 		    <version>2.0.3.RELEASE</version>
 		    <scope>provided</scope>
 		</dependency>
-		
 		<dependency>
 			<groupId>wms.base</groupId>
 			<artifactId>wms-web</artifactId>
@@ -45,6 +43,12 @@
 		    <version>2.0.3.RELEASE</version>
 		    <scope>provided</scope>
 		</dependency>
+		使用tomcat部署时内存泄漏解决方案
+		<dependency>
+		    <groupId>se.jiderhamn.classloader-leak-prevention</groupId>
+		    <artifactId>classloader-leak-prevention-servlet</artifactId>
+		    <version>2.1.0</version>
+		</dependency>
 		
 		<exclusions>
 	        <exclusion>
@@ -52,6 +56,7 @@
 	            <artifactId>spring-boot-starter-tomcat</artifactId>
 	        </exclusion>
 	    </exclusions>
+	    
 	 -->
 	
 	<build>

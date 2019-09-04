@@ -16,6 +16,7 @@ import com.wms.common.enums.FileTypeEnum;
 import com.wms.common.enums.YesNoEnum;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.common.utils.ExampleUtils;
+import com.wms.common.utils.StringUtils;
 import com.wms.common.utils.key.KeyUtils;
 import com.wms.dao.auto.ISysFileTDao;
 import com.wms.dao.example.SysFileTExample;
@@ -178,13 +179,17 @@ public class SysFileServiceImpl implements ISysFileService {
 		
 		return Boolean.TRUE;
 	}
-
+	
 	@Override
-	public List<SysFileTEntity> findByType(FileTypeEnum type) throws BusinessServiceException {
+	public List<SysFileTEntity> find(FileTypeEnum type, String template) throws BusinessServiceException {
 		SysFileTExample example = new SysFileTExample();
-		example.createCriteria()
+		SysFileTExample.Criteria criteria = example.createCriteria()
 		.andFileTypeEqualTo(type.getCode())
 		.andDelFlagEqualTo(YesNoEnum.No.getCode());
+		
+		if (StringUtils.isNotEmpty(template))
+			criteria.andTemplateEqualTo(template);
+		
 		List<SysFileTEntity> list = fileDao.selectByExample(example);
 		return list;
 	}

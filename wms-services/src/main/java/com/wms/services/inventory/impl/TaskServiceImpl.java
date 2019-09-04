@@ -232,6 +232,7 @@ public class TaskServiceImpl implements ITaskService {
 		List<TaskDetailTEntity> list = request.getData();
 
 		for (TaskDetailTEntity task : list) {
+			notProcess(task);
 			TaskDetailTEntity update = TaskDetailTEntity.builder()
 					.updateBy(request.getUserName())
 					.updateTime(new Date())
@@ -253,13 +254,16 @@ public class TaskServiceImpl implements ITaskService {
 	}
 
 	@Override
-	public Boolean putawayCnfirm(AjaxRequest<List<TaskDetailTEntity>> request) throws BusinessServiceException {
+	public Boolean putawayConfirm(AjaxRequest<List<TaskDetailTEntity>> request) throws BusinessServiceException {
 		if (CollectionUtils.isEmpty(request.getData())) {
 			throw new BusinessServiceException("no record update.");
 		}
 
 		List<TaskDetailTEntity> list = request.getData();
 		list.forEach(d ->{
+			if(!StringUtils.equals(TaskStatusEnum.New.getCode(),d.getStatus())){
+				return;
+			}
 			List<LpnTEntity> lpns =Lists.newArrayList();
 			LpnTEntity lpnTEntity = LpnTEntity.builder()
 					.warehouseId(d.getWarehouseId())

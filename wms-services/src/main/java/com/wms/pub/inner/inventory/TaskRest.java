@@ -88,13 +88,13 @@ public class TaskRest extends BaseController {
         return fail();
     }
     @RequestMapping(value = "/putawayConfirm")
-    public AjaxResult putawayCnfirm(@RequestBody String req) {
+    public AjaxResult putawayConfirm(@RequestBody String req) {
         try {
             AjaxRequest<List<TaskDetailTEntity>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<TaskDetailTEntity>>>() {});
             if (CollectionUtils.isEmpty(request.getData())) {
                 return fail("no record update.");
             }
-            boolean flag = taskService.putawayCnfirm(request);
+            boolean flag = taskService.putawayConfirm(request);
             if (flag) {
                 return success();
             }

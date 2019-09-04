@@ -51,19 +51,27 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 	@Override
 	public List<OutboundHeaderTEntity> find(PageRequest request) throws BusinessServiceException {
 		OutboundHeaderTExample example = new OutboundHeaderTExample();
-		OutboundHeaderTExample.Criteria exampleCriteria  = example.createCriteria();
+		OutboundHeaderTExample.Criteria exampleCriteria = example.createCriteria();
 
 		//转换查询方法
 		ExampleUtils.create(OutboundHeaderTEntity.Column.class, OutboundHeaderTExample.Criterion.class)
 				.criteria(exampleCriteria)
 				.data(request)
-				.betweenDate(	OutboundHeaderTEntity.Column.createTime.getJavaProperty() ,
-						OutboundHeaderTEntity.Column.expectedOutboundDate.getJavaProperty() ,
+				.betweenDate(OutboundHeaderTEntity.Column.createTime.getJavaProperty(),
+						OutboundHeaderTEntity.Column.expectedOutboundDate.getJavaProperty(),
 						OutboundHeaderTEntity.Column.outboundDate.getJavaProperty()
 				)
 				.build(request)
 				.orderby(example);
 
+		if (StringUtils.isBlank(request.getString("from")) && StringUtils.isBlank(request.getString("status"))) {
+			//WMS自己查询排除草稿、待接单、待出货三个状态的订单
+			List<String> excludeStatus = Lists.newArrayList();
+			excludeStatus.add(OutboundStatusEnum.Draft.getCode());
+			excludeStatus.add(OutboundStatusEnum.Waitingorder.getCode());
+			excludeStatus.add(OutboundStatusEnum.WaitingShip.getCode());
+			exampleCriteria.andStatusNotIn(excludeStatus);
+		}
 		exampleCriteria.andDelFlagEqualTo(YesNoEnum.No.getCode());
 
 		List<OutboundHeaderTEntity> inboundList = outboundHeaderDao.selectByExample(example);

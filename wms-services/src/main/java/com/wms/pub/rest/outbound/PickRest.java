@@ -214,10 +214,16 @@ public class PickRest extends BaseController {
 	        
 	        //硬分配
 	        if (AllocateStrategyTypeEnum.Hard.getCode().equals(selectAll.getAllocateStrategyType())) {
-	        	//验证LPN
+	        	//验证LPN 不为空时
 	        	if (StringUtils.isNotBlank(selectAll.getLpnNumber())
 	        			&& !selectAll.getLpnNumber().equals(allocate.getLpnNumber()))
 	        		throw new BusinessServiceException("PickRest", "pick.lpn.different" , new Object[] {selectAll.getLpnNumber(), allocate.getLpnNumber()});
+	        	
+	        	if (StringUtils.isBlank(selectAll.getLpnNumber())
+	        			&& !StringUtils.isBlank(allocate.getLpnNumber()))
+	        		throw new BusinessServiceException("PickRest", "pick.lpn.different" , new Object[] {selectAll.getLpnNumber(), allocate.getLpnNumber()});
+	        	
+	        	
 	        	
 	        }else { //软分配，确认批次信息
 	        	InventoryOnhandVO onhandSelect = new InventoryOnhandVO();

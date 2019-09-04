@@ -16,7 +16,7 @@ public interface ISysFileService {
 	
 	public SysFileTEntity find(SysFileTEntity file) throws BusinessServiceException;
 	
-	public List<SysFileTEntity> findByType(FileTypeEnum type) throws BusinessServiceException;
+	public List<SysFileTEntity> find(FileTypeEnum type, String template) throws BusinessServiceException;
 	
 	public Boolean add(SysFileTEntity file) throws BusinessServiceException;
 	

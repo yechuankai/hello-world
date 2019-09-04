@@ -56,7 +56,14 @@ public class AppUserRestServiceImpl implements IAppUserRestService {
 	 */
 	@Override
 	public List<PermissionVO> queryAppUserPermByUser(SysUserTEntity paramUser, String locale) {
-		List<SysPermissionTEntity> list = sysPermissionServiceImpl.findUserPermission(paramUser, PermissionTypeEnum.Function, locale);
+		List<SysPermissionTEntity> list = Lists.newArrayList();
+		UserVO user = new UserVO();
+		BeanUtils.copyBeanProp(user, paramUser, Boolean.FALSE);
+		if (user.isAdmin()) {
+			list = sysPermissionServiceImpl.findPermission(PermissionTypeEnum.Function, locale);
+		} else {
+			list = sysPermissionServiceImpl.findUserPermission(paramUser, PermissionTypeEnum.Function, locale);
+		}
 		return getMobileMenu(list);
 	}
 
@@ -65,8 +72,8 @@ public class AppUserRestServiceImpl implements IAppUserRestService {
 	 */
 	@Override
 	public UserVO appLogin(SysUserTEntity user) {
-		String username = StringUtils.equals("null", user.getUserName())?null: user.getUserName();
-		String password = StringUtils.equals("null", user.getPassword())?null: user.getPassword();
+		String username = user.getUserName();
+		String password = user.getPassword();
 		String token = CasClientUtil.getTicketGrantingTicket(server, username, password);
 		if (StringUtils.isBlank(token)) {
 			throw new UserPasswordNotMatchException();

@@ -4,10 +4,10 @@
     <title wms:text="${web.label.report}">报表</title>
     <head th:replace="common/head" />
     <style>
-    	#uploadAppForm input{
+    	#uploadReportContent input{
     		width: 300px;
     	}
-    	#uploadAppForm td{
+    	#uploadReportContent td{
     		height: 50px;
     		text-align: center;
     	}
@@ -52,7 +52,7 @@
 			<table>
 				<tr>
 					<td>
-						 <input class="easyui-combobox"  name="template" id="template" style="width: 140px;" wms:data-options="
+						 <input class="easyui-combobox"  name="template" id="template" wms:data-options="
 							required:true,
 							data: codelkups['REPORT'],
 							valueField: 'code',
@@ -100,6 +100,13 @@ $(function(){
  * 表格数据加载
  */
 function search(){
+	$('#tableData').datagrid({
+		url: getServiceUrl() + '/services/inner/file/find',
+		pagination:true,
+		queryParams: {
+			fileType:"MOBILE"
+		}
+	}).datagrid('clearChecked');
 	$('#tableData').datagrid({
 		url: getServiceUrl() + '/services/inner/report/find'
 	});
