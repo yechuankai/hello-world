@@ -27,7 +27,14 @@
 		<undeploy url="${server.wms-report.host}" username="${server.wms-report.username}" password="${server.wms-report.password}" path="${server.wms-report.path}"/>
 	</target>
 	<target name="wms-report-deploy" description="deploy web application wms-report" depends="wms-report-undeploy">
-		<deploy url="${server.wms-report.host}" username="${server.wms-report.username}" password="${report.wms-report.password}" path="${server.wms-report.path}" war="${server.wms-service.from}"/>
+		<deploy url="${server.wms-report.host}" username="${server.wms-report.username}" password="${server.wms-report.password}" path="${server.wms-report.path}" war="${server.wms-service.from}"/>
+	</target>
+	
+	<target name="wms-config-undeploy" description="Remove web application">
+		<undeploy url="${server.wms-config.host}" username="${server.wms-config.username}" password="${server.wms-config.password}" path="${server.wms-config.path}"/>
+	</target>
+	<target name="wms-config-deploy" description="deploy web application wms-config" depends="wms-config-undeploy">
+		<deploy url="${server.wms-config.host}" username="${server.wms-config.username}" password="${server.wms-config.password}" path="${server.wms-config.path}" war="${server.wms-service.from}"/>
 	</target>
 	
 	<target name="deploy" description="deploy all web application" depends="wms-service-deploy,wms-file-deploy,wms-report-deploy">
