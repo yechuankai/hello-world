@@ -1,6 +1,8 @@
 package com.wms.report.utils;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -12,6 +14,7 @@ import java.util.Set;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -27,8 +30,11 @@ import com.wms.common.exception.BusinessServiceException;
 import com.wms.common.utils.StringUtils;
 import com.wms.common.utils.cache.CodelkUpUtils;
 import com.wms.common.utils.cache.LocaleUtils;
+import com.wms.common.utils.mongodb.MongoUtils;
 import com.wms.common.utils.spring.SpringUtils;
+import com.wms.entity.auto.SysFileTEntity;
 import com.wms.report.vo.ReportParameter;
+import com.wms.services.report.IReportService;
 
 import net.sf.jasperreports.engine.JRAbstractExporter;
 import net.sf.jasperreports.engine.JRParameter;
@@ -96,14 +102,25 @@ public class JasperUtils {
 		// ByteArrayOutputStream 底层维护了一个byte[]，可以自动扩容
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		Connection conn = null;
+		InputStream is = null;
 		try {
-			ClassPathResource cpr = new ClassPathResource(StringUtils.join(PREFIX, rptParam.getReportName(), SUFFIX));
+			
+			//优先查询最新文件
+			IReportService reportService = SpringUtils.getBean(IReportService.class);
+			Map<String, SysFileTEntity> fileMap = reportService.getReportFile(rptParam.getReportName());
+			if (fileMap != null && fileMap.containsKey(rptParam.getReportName())) {
+				ObjectId fileId = new ObjectId(fileMap.get(rptParam.getReportName()).getObjectId());
+				is = MongoUtils.getResource(fileId);
+			}else {
+				ClassPathResource cpr = new ClassPathResource(StringUtils.join(PREFIX, rptParam.getReportName(), SUFFIX));
+				is = cpr.getInputStream();
+			}
 
 			// 注入数据连接对象， 方式2，从系统中获取连接对象
 			SqlSession sqlSession = SpringUtils.getBean(SqlSessionFactory.class).openSession();
 			conn = sqlSession.getConnection();
 
-			JasperReport jasperReport = (JasperReport) JRLoader.loadObject(cpr.getInputStream());
+			JasperReport jasperReport = (JasperReport) JRLoader.loadObject(is);
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,
 					setParameters(jasperReport, rptParam.getParameter()), conn);
 
@@ -124,12 +141,20 @@ public class JasperUtils {
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		} finally {
-			if (conn != null)
+			if (conn != null) {
 				try {
 					conn.close();
 				} catch (SQLException e) {
 					conn = null;
 				}
+			}
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					is = null;
+				}
+			}
 		}
 		return baos;
 	}

@@ -33,7 +33,7 @@ public class ReportServiceImpl implements IReportService {
 	public List<ReportVO> find() {
 		
 		List<CodelkupVO> list = CodelkUpUtils.getCodelkup(LISTNAME);
-		Map<String, SysFileTEntity> fileMap = getReportFile();
+		Map<String, SysFileTEntity> fileMap = getReportFile(null);
 		
 		List<ReportVO> reportList = Lists.newArrayList();
 		
@@ -43,7 +43,7 @@ public class ReportServiceImpl implements IReportService {
 			report.setDescr(l.getDescr());
 			
 			//查询是否存在上传的文件
-			SysFileTEntity file = fileMap.get(l);
+			SysFileTEntity file = fileMap.get(l.getCode());
 			if (file != null) {
 				report.setFileId(file.getFileId());
 				report.setFileName(file.getFileName());
@@ -57,10 +57,11 @@ public class ReportServiceImpl implements IReportService {
 		return reportList;
 	}
 	
-	private Map<String, SysFileTEntity> getReportFile() {
+	@Override
+	public Map<String, SysFileTEntity> getReportFile(String template) {
 		Map<String, SysFileTEntity> map = Maps.newHashMap();
 		
-		List<SysFileTEntity> fileList = fileService.findByType(FileTypeEnum.Report);
+		List<SysFileTEntity> fileList = fileService.find(FileTypeEnum.Report, template);
 		if (CollectionUtils.isEmpty(fileList))
 			return map;
 		
