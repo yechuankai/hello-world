@@ -530,6 +530,11 @@ public class AllocateServiceImpl implements IAllocateService , IExcelService<All
 			List<AllocateVO> pickList = Lists.newArrayList();
 			//明细
 			v.forEach(d -> {
+				
+				//无拣选数量时直接跳过
+				if (d.getQuantityPick() == null 
+						|| BigDecimal.ZERO.compareTo(d.getQuantityPick()) == 0)
+					return;
 
 				//必须为硬分配
 				if (AllocateStrategyTypeEnum.Soft.getCode().equals(d.getAllocateStrategyType())) {
@@ -780,12 +785,19 @@ public class AllocateServiceImpl implements IAllocateService , IExcelService<All
 		});
 		boolean pickFlag = pick(list);
 		
-		//处理短拣
+		//处理短拣   ------------------- start
+		List<AllocateTEntity> deleteList = Lists.newArrayList();
 		list.forEach(a -> {
 			if (!YesNoEnum.Yes.getCode().equals(a.getShortFlag()))
 				return;
 			if (a.getAllocateShort() == null)
 				return;
+			
+			//按0提交，直接放弃整行
+			if (a.getQuantityPick() == null 
+					|| BigDecimal.ZERO.compareTo(a.getQuantityPick()) == 0) {
+				deleteList.add(a);
+			}
 			
 			AllocateShortTEntity allshort = new AllocateShortTEntity();
 			BeanUtils.copyBeanProp(allshort, a);
@@ -796,6 +808,9 @@ public class AllocateServiceImpl implements IAllocateService , IExcelService<All
 			allshort.setQuantityOriginal(a.getQuantityAllocated());
 			allocateShortService.add(new AjaxRequest<AllocateShortTEntity>(allshort, request));
 		});
+		//释放分配明细
+		delete(deleteList);
+		//处理短拣   ------------------- end
 		
 		Set<String> headerNumber = list.stream().map(AllocateTEntity::getSourceBillNumber).collect(Collectors.toSet());
 		headerNumber.forEach(h -> {

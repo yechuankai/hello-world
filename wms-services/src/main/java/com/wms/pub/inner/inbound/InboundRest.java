@@ -140,6 +140,13 @@ public class InboundRest extends BaseController{
         return fail();
     }
 
+    /** 
+    * @Description: 生成上架 
+    * @Param: [req] 
+    * @return: com.wms.common.core.domain.response.AjaxResult<com.wms.vo.inbound.InboundVO> 
+    * @Author: pengzhen@cmhit.com 
+    * @Date: 2019/9/4 
+    */ 
 	@RequestMapping(value = "/createPutaway")
 	public AjaxResult<InboundVO> createPutaway(@RequestBody String req) {
 		try {

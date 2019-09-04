@@ -31,5 +31,12 @@ public interface ITaskService {
 
     Boolean cancel(AjaxRequest<List<TaskDetailTEntity>> request) throws BusinessServiceException;
 
-    Boolean putawayCnfirm(AjaxRequest<List<TaskDetailTEntity>> request) throws BusinessServiceException;
+    /** 
+    * @Description: 上架确认 
+    * @Param: [request] 
+    * @return: java.lang.Boolean 
+    * @Author: pengzhen@cmhit.com 
+    * @Date: 2019/9/4 
+    */ 
+    Boolean putawayConfirm(AjaxRequest<List<TaskDetailTEntity>> request) throws BusinessServiceException;
 }

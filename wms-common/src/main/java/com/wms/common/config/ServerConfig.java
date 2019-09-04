@@ -27,4 +27,5 @@ public class ServerConfig {
 		String contextPath = request.getServletContext().getContextPath();
 		return url.delete(url.length() - request.getRequestURI().length(), url.length()).append(contextPath).toString();
 	}
+	
 }
