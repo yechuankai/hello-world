@@ -8,9 +8,7 @@ import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.core.domain.response.AjaxResult;
 import com.wms.common.core.domain.response.PageResult;
 import com.wms.common.enums.OperatorTypeEnum;
-import com.wms.common.enums.OutboundStatusEnum;
 import com.wms.common.utils.MessageUtils;
-import com.wms.common.utils.StringUtils;
 import com.wms.entity.auto.OutboundHeaderTEntity;
 import com.wms.services.outbound.IOutboundHeaderService;
 import com.wms.vo.outbound.OutboundVO;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/services/inner/outbound")
@@ -53,23 +50,15 @@ public class OutboundRest extends BaseController{
 
 	@RequestMapping(value = "/find")
 	public PageResult<OutboundHeaderTEntity> find(@RequestBody String req) {
-		List<OutboundHeaderTEntity> returnlist = null;
+		List<OutboundHeaderTEntity> list = null;
 		try {
 			PageRequest pageRequest = pageRequest(req);
 			PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
-			List<OutboundHeaderTEntity> list = outboundService.find(pageRequest);
-			//排除订单草稿、待接单、待出货三个状态的订单
-			if(CollectionUtils.isNotEmpty(list)){
-				 returnlist=list.stream().filter(v->
-						!StringUtils.equals(v.getStatus(),OutboundStatusEnum.Draft.getCode())
-								&& !StringUtils.equals(v.getStatus(),OutboundStatusEnum.Waitingorder.getCode())
-								&& !StringUtils.equals(v.getStatus(),OutboundStatusEnum.WaitingShip.getCode()))
-						.collect(Collectors.toList());
-			}
+			list = outboundService.find(pageRequest);
 		} catch (Exception e) {
 			return pageFail(e.getMessage());
 		}
-		return page(returnlist);
+		return page(list);
 	}
 
 	@RequestMapping(value = "/save")

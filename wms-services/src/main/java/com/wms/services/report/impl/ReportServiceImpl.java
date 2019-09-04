@@ -1,10 +1,13 @@
 package com.wms.services.report.impl;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.swing.text.html.parser.Entity;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.wms.common.core.domain.CodelkupVO;
 import com.wms.common.enums.FileTypeEnum;
+import com.wms.common.utils.StringUtils;
 import com.wms.common.utils.cache.CodelkUpUtils;
 import com.wms.entity.auto.SysFileTEntity;
 import com.wms.services.report.IReportService;
@@ -64,6 +68,15 @@ public class ReportServiceImpl implements IReportService {
 		List<SysFileTEntity> fileList = fileService.find(FileTypeEnum.Report, template);
 		if (CollectionUtils.isEmpty(fileList))
 			return map;
+		
+		//移除所有模板为空的数据
+		HashSet<SysFileTEntity> noTemplateEntity = new HashSet<>();
+		fileList.stream().forEach(entity -> {
+			if (StringUtils.isEmpty(entity.getTemplate())) {
+				noTemplateEntity.add(entity);
+			}
+		});
+		fileList.removeAll(noTemplateEntity);
 		
 		//分组获取时间最新的数据
 		Map<String, Optional<SysFileTEntity>> groupMap = fileList.stream().collect(Collectors.groupingBy(SysFileTEntity::getTemplate, Collectors.maxBy(new Comparator<SysFileTEntity>() {
