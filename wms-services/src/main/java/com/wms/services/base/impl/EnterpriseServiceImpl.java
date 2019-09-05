@@ -1,5 +1,7 @@
 package com.wms.services.base.impl;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.enums.YesNoEnum;
 import com.wms.common.exception.BusinessServiceException;
@@ -9,10 +11,15 @@ import com.wms.dao.auto.*;
 import com.wms.dao.example.*;
 import com.wms.entity.auto.*;
 import com.wms.services.base.IEnterpriseService;
+import com.wms.services.sys.ISysWarehouseService;
+import com.wms.vo.inventory.EntInventoryOnhandVO;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @description:
@@ -42,6 +49,9 @@ public class EnterpriseServiceImpl implements IEnterpriseService {
 
     @Autowired
     IEntInventoryOnhandTDao inventoryOnhandDao;
+
+    @Autowired
+    ISysWarehouseService warehouseService;
 
     @Override
     public EntSkuTEntity findSku(EntSkuTEntity sku) throws BusinessServiceException {
@@ -280,7 +290,7 @@ public class EnterpriseServiceImpl implements IEnterpriseService {
     }
 
     @Override
-    public List<EntInventoryOnhandTEntity> findInventoryOnhand(PageRequest request) throws BusinessServiceException {
+    public List<EntInventoryOnhandVO> findInventoryOnhand(PageRequest request) throws BusinessServiceException {
         EntInventoryOnhandTExample example = new EntInventoryOnhandTExample();
         EntInventoryOnhandTExample.Criteria exampleCriteria  = example.createCriteria();
 
@@ -294,8 +304,24 @@ public class EnterpriseServiceImpl implements IEnterpriseService {
         exampleCriteria.andDelFlagEqualTo(YesNoEnum.No.getCode());
 
         List<EntInventoryOnhandTEntity> list = inventoryOnhandDao.selectByExample(example);
+        List<EntInventoryOnhandVO> returnList = Lists.newArrayList();
+        if(CollectionUtils.isNotEmpty(list)){
+            //补全仓库code
+            Set<Long> ids = Sets.newHashSet(list.stream().map(EntInventoryOnhandTEntity::getWarehouseId).collect(Collectors.toSet()));
+            List<SysWarehousesTEntity> selectList =warehouseService.findByIds(ids);
+            list.forEach(d ->{
+                EntInventoryOnhandVO inventoryOnhandVO = new EntInventoryOnhandVO(d);
+                selectList.forEach(v ->{
+                    if(d.getWarehouseId().longValue()==v.getWarehouseId().longValue()){
+                        inventoryOnhandVO.setWarehouseCode(v.getCode());
+                        returnList.add(inventoryOnhandVO);
+                    }
+                });
+            });
 
-        return list;
+        }
+
+        return returnList;
     }
 
     @Override

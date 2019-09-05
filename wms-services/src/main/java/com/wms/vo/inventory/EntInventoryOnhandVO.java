@@ -14,6 +14,16 @@ import java.math.BigDecimal;
 public class EntInventoryOnhandVO extends EntInventoryOnhandTEntity {
     private BigDecimal quantityExpected;
 
+    private String warehouseCode;
+
+    public String getWarehouseCode() {
+        return warehouseCode;
+    }
+
+    public void setWarehouseCode(String warehouseCode) {
+        this.warehouseCode = warehouseCode;
+    }
+
     public EntInventoryOnhandVO() {
     }
     public EntInventoryOnhandVO(EntInventoryOnhandTEntity entInventoryOnhandTEntity) {

@@ -2,6 +2,7 @@ package com.wms.pub.rest.inbound;
 
 import com.alibaba.fastjson.TypeReference;
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
 import com.wms.common.core.controller.BaseController;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
@@ -14,6 +15,7 @@ import com.wms.services.inbound.IInboundDetailService;
 import com.wms.services.inbound.IInboundHeaderService;
 import com.wms.vo.inbound.InboundDetailVO;
 import com.wms.vo.inbound.InboundVO;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,6 +43,9 @@ public class InboundRest extends BaseController {
             PageRequest pageRequest = pageRequest(req);
             PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
             list = inboundHeaderService.find(pageRequest);
+            if(CollectionUtils.isEmpty(list)){
+                return page(Lists.newArrayList());
+            }
         } catch (Exception e) {
             return pageFail(e.getMessage());
         }
@@ -89,6 +94,9 @@ public class InboundRest extends BaseController {
             PageRequest pageRequest = pageRequest(req);
             PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
             list = inboundDetailService.find(pageRequest);
+            if(CollectionUtils.isEmpty(list)){
+                return page(Lists.newArrayList());
+            }
         } catch (Exception e) {
             return pageFail(e.getMessage());
         }

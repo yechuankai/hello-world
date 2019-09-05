@@ -11,12 +11,12 @@ import com.wms.common.core.domain.response.AjaxResult;
 import com.wms.common.core.domain.response.PageResult;
 import com.wms.common.enums.OperatorTypeEnum;
 import com.wms.common.exception.BusinessServiceException;
-import com.wms.entity.auto.EntInventoryOnhandTEntity;
 import com.wms.entity.auto.OutboundDetailTEntity;
 import com.wms.entity.auto.OutboundHeaderTEntity;
 import com.wms.services.base.IEnterpriseService;
 import com.wms.services.outbound.IOutboundDetailService;
 import com.wms.services.outbound.IOutboundHeaderService;
+import com.wms.vo.inventory.EntInventoryOnhandVO;
 import com.wms.vo.outbound.OutboundDetailVO;
 import com.wms.vo.outbound.OutboundVO;
 import org.apache.commons.collections.CollectionUtils;
@@ -51,6 +51,9 @@ public class OutboundRest extends BaseController {
             PageRequest pageRequest = pageRequest(req);
             PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
             list = outboundHeaderService.find(pageRequest);
+            if(CollectionUtils.isEmpty(list)){
+                return page(Lists.newArrayList());
+            }
         } catch (Exception e) {
             return pageFail(e.getMessage());
         }
@@ -78,12 +81,15 @@ public class OutboundRest extends BaseController {
     }
 
     @RequestMapping(value = "/findInventoryOnhand")
-    public PageResult<EntInventoryOnhandTEntity> findInventoryOnhand(@RequestBody String req){
-        List<EntInventoryOnhandTEntity> list = null;
+    public PageResult<EntInventoryOnhandVO> findInventoryOnhand(@RequestBody String req){
+        List<EntInventoryOnhandVO> list = null;
         try {
             PageRequest pageRequest = pageRequest(req);
             PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
             list = enterpriseService.findInventoryOnhand(pageRequest);
+            if(CollectionUtils.isEmpty(list)){
+                return page(Lists.newArrayList());
+            }
         } catch (Exception e) {
             return pageFail(e.getMessage());
         }
