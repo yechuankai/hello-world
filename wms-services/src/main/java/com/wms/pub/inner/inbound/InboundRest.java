@@ -151,8 +151,9 @@ public class InboundRest extends BaseController{
 	public AjaxResult<InboundVO> createPutaway(@RequestBody String req) {
 		try {
 			AjaxRequest<List<InboundVO>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<InboundVO>>>() {});
-			inboundHeaderService.createPutaway(request);
-			return success();
+			long taskcount = inboundHeaderService.createPutaway(request);
+			String message = MessageUtils.message("create.task.success", taskcount);
+			return success(message);
 		} catch (Exception e) {
 			return fail(e.getMessage());
 		}

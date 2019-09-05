@@ -2983,7 +2983,7 @@ remark varchar2(500),
   description             varchar2(500)   default null
 );
 
-alter table inventory_locked_t add constraint pk_inventory_locked_t primary key (inbound_locked_id);
+alter table inventory_locked_t add constraint pk_inventory_locked_t primary key (inventory_locked_id);
 comment on table  inventory_locked_t               is '冻结表';
 comment on column inventory_locked_t.inbound_locked_id is '调整单明细ID';
 comment on column inventory_locked_t.inventory_onhand_id is '库存行ID';
@@ -3000,48 +3000,6 @@ comment on column inventory_locked_t.update_time   is '更新时间';
 comment on column inventory_locked_t.update_version   is '更新时间';
 comment on column inventory_locked_t.description   is '数据描述';
 
-
-
--- ----------------------------
--- 冻结
--- ----------------------------
-
-drop table inventory_locked_t cascade constraints;
-create table inventory_locked_t (
-inbound_locked_id number,
-inventory_onhand_id number,
-quantity_locked number(20,5) default 0,
-lock_flag char(1),
-reason varchar2(50),
-remark varchar2(500),
-  company_id         number        default '0',
-  warehouse_id       number        default '0',
-  del_flag                char(1)         default 'N',
-  create_by               varchar2(64)    default '',
-  create_time             date            default sysdate,
-  update_by               varchar2(64)    default '',
-  update_time             date            default sysdate,
-  update_version          number          default '1',
-  description             varchar2(500)   default null
-);
-
-alter table inventory_locked_t add constraint pk_inventory_locked_t primary key (inbound_locked_id);
-comment on table  inventory_locked_t               is '冻结';
-comment on column inventory_locked_t.inbound_locked_id is '冻结明细ID';
-comment on column inventory_locked_t.inventory_onhand_id is '库存行ID';
-comment on column inventory_locked_t.quantity_locked is '冻结数量';
-comment on column inventory_locked_t.lock_flag is '冻结标识';
-comment on column inventory_locked_t.reason is '原因';
-comment on column inventory_locked_t.remark is '备注';
-comment on column inventory_locked_t.company_id      is '公司ID';
-comment on column inventory_locked_t.warehouse_id    is '仓库ID';
-comment on column inventory_locked_t.del_flag    is '删除标志（N代表存在 Y代表删除）';
-comment on column inventory_locked_t.create_by     is '创建者';
-comment on column inventory_locked_t.create_time   is '创建时间';
-comment on column inventory_locked_t.update_by     is '更新者';
-comment on column inventory_locked_t.update_time   is '更新时间';
-comment on column inventory_locked_t.update_version   is '更新时间';
-comment on column inventory_locked_t.description   is '数据描述';
 
 
 -- ----------------------------

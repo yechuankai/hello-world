@@ -471,13 +471,13 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 	}
 
 	@Override
-	public Boolean createPutaway(List<InboundDetailVO> detail) throws BusinessServiceException {
+	public Long createPutaway(List<InboundDetailVO> detail) throws BusinessServiceException {
+		long taskCount = 0;
 		List<InboundDetailVO> newList = getListGroupByLpn(detail);
-		newList.forEach(d -> {
+		for (InboundDetailVO d : newList) {
 			try {
 				String lpnNumber = null;
 				LpnTypeEnum lpnType = null;
-				List<LpnTEntity> lpns = Lists.newArrayList();
 				LocationTEntity fromLocation = locationService.find(LocationTEntity.builder()
 						.companyId(d.getCompanyId())
 						.warehouseId(d.getWarehouseId())
@@ -524,7 +524,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 						.build());
 				//根据SkuId和Lpn或容器号查询有重复的上架任务就不生成
 				if(CollectionUtils.isNotEmpty(details)){
-					return;
+					continue;
 				}
 				//生成上架任务
 				TaskDetailTEntity taskdetail = TaskDetailTEntity.builder()
@@ -559,14 +559,14 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 						.sourceLineNumber(d.getLineNumber())
 						.sourceBillNumber(d.getInboundNumber())
 						.build();
-
 				taskService.add(taskdetail);
+				taskCount ++;
 			} catch (Exception e) {
 				log.error(e.getMessage(),e);
-				return;
+				continue;
 			}
-		});
-		return Boolean.TRUE;
+		}
+		return taskCount;
 	}
 
 
