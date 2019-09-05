@@ -3,6 +3,7 @@ package com.wms.services.base;
 import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.entity.auto.*;
+import com.wms.vo.inventory.EntInventoryOnhandVO;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public interface IEnterpriseService {
 
     List<EntCustomerTEntity> findCustomer(PageRequest request) throws BusinessServiceException;
 
-    List<EntInventoryOnhandTEntity> findInventoryOnhand(PageRequest request) throws BusinessServiceException;
+    List<EntInventoryOnhandVO> findInventoryOnhand(PageRequest request) throws BusinessServiceException;
 
     List<EntCarrierTEntity> findCarrier(PageRequest request) throws BusinessServiceException;
 

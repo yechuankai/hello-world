@@ -69,22 +69,16 @@ public class ReportServiceImpl implements IReportService {
 		if (CollectionUtils.isEmpty(fileList))
 			return map;
 		
-		//移除所有模板为空的数据
-		HashSet<SysFileTEntity> noTemplateEntity = new HashSet<>();
-		fileList.stream().forEach(entity -> {
-			if (StringUtils.isEmpty(entity.getTemplate())) {
-				noTemplateEntity.add(entity);
-			}
-		});
-		fileList.removeAll(noTemplateEntity);
-		
 		//分组获取时间最新的数据
-		Map<String, Optional<SysFileTEntity>> groupMap = fileList.stream().collect(Collectors.groupingBy(SysFileTEntity::getTemplate, Collectors.maxBy(new Comparator<SysFileTEntity>() {
-			@Override
-			public int compare(SysFileTEntity o1, SysFileTEntity o2) {
-				return o1.getCreateTime().compareTo(o2.getCreateTime());
-			}
-		})));
+		Map<String, Optional<SysFileTEntity>> groupMap = fileList.stream()
+				.filter(v -> StringUtils.isNotEmpty(v.getTemplate()))
+				.collect(Collectors.groupingBy(SysFileTEntity::getTemplate, Collectors.maxBy(new Comparator<SysFileTEntity>() {
+								@Override
+								public int compare(SysFileTEntity o1, SysFileTEntity o2) {
+									return o1.getCreateTime().compareTo(o2.getCreateTime());
+								}
+							}))
+						);
 		
 		groupMap.forEach((k, v) -> {
 			map.put(k, v.get());
