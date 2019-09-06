@@ -860,6 +860,10 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 			return Boolean.TRUE;
 		}
 
+		if(detail.getQuantityExpected().compareTo(BigDecimal.ZERO)>0){
+			throw new BusinessServiceException("OutboundDetailServiceImpl", "outbound.expectedquantity.equaltozero", new Object[]{outboundVO.getOutboundNumber(), detail.getLineNumber()});
+		}
+
 		OwnerTEntity owner = ownerService.find(OwnerTEntity.builder()
 				.warehouseId(outboundVO.getWarehouseId())
 				.companyId(outboundVO.getCompanyId())

@@ -1,16 +1,5 @@
 package com.wms.services.core.impl;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.wms.common.enums.TransactionTypeEnum;
@@ -21,22 +10,8 @@ import com.wms.common.exception.BusinessServiceException;
 import com.wms.common.utils.MessageUtils;
 import com.wms.common.utils.StringUtils;
 import com.wms.common.utils.bean.BeanUtils;
-import com.wms.entity.auto.AllocateTEntity;
-import com.wms.entity.auto.InboundDetailTEntity;
-import com.wms.entity.auto.InboundHeaderTEntity;
-import com.wms.entity.auto.InventoryOnhandTEntity;
-import com.wms.entity.auto.InventoryTransactionTEntity;
-import com.wms.entity.auto.LocationTEntity;
-import com.wms.entity.auto.LotAttributeTEntity;
-import com.wms.entity.auto.LpnTEntity;
-import com.wms.entity.auto.OwnerTEntity;
-import com.wms.entity.auto.PackTEntity;
-import com.wms.entity.auto.SkuTEntity;
-import com.wms.services.base.ILocationService;
-import com.wms.services.base.ILotValidateService;
-import com.wms.services.base.IOwnerService;
-import com.wms.services.base.IPackService;
-import com.wms.services.base.ISkuService;
+import com.wms.entity.auto.*;
+import com.wms.services.base.*;
 import com.wms.services.core.IInventoryCoreService;
 import com.wms.services.inbound.IInboundDetailService;
 import com.wms.services.inbound.IInboundHeaderService;
@@ -50,6 +25,16 @@ import com.wms.vo.InventoryTranVO;
 import com.wms.vo.allocate.AllocateVO;
 import com.wms.vo.inbound.InboundDetailVO;
 import com.wms.vo.inbound.InboundVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class InventoryCoreServiceImpl implements IInventoryCoreService {
@@ -671,13 +656,11 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 	}
 	
 	private Boolean insertTransaction(InventoryTranVO tran, InventoryTranDetailVO detail) {
-		
+		String userName = tran.getUserName();
 		InventoryTransactionTEntity transaction = InventoryTransactionTEntity.builder()
 													.warehouseId(tran.getWarehouseId())
 													.companyId(tran.getCompanyId())
-													.createBy(tran.getUserName())
 													.createTime(new Date())
-													.updateBy(tran.getUserName())
 													.updateTime(new Date())
 													.transactionType(tran.getTransationType())
 													.transactionDate(new Date())
@@ -704,7 +687,8 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 			default:
 			break;
 		}
-		
+		transaction.setUpdateBy(userName);
+		transaction.setCreateBy(userName);
 		transactionService.add(transaction);
 		
 		return Boolean.TRUE;

@@ -78,7 +78,7 @@ public class TaskServiceImpl implements ITaskService {
     public Boolean add(TaskDetailTEntity task) throws BusinessServiceException {
         task.setTaskDetailId(KeyUtils.getUID());
         task.setStatus(TaskStatusEnum.New.getCode());
-        task.setTaskDetailNumber(KeyUtils.getOrderNumber(task.getCompanyId(), task.getWarehouseId(), OrderNumberTypeEnum.TASKNUMBER));
+        task.setTaskDetailNumber(KeyUtils.getOrderNumber(task.getCompanyId(), task.getWarehouseId(), OrderNumberTypeEnum.TaskNumber));
         int rowcount = taskdetailTDao.insertSelective(task);
         if (rowcount == 0) {
             throw new BusinessServiceException("record add error.");

@@ -11,7 +11,8 @@ public enum OrderNumberTypeEnum {
 	Adjustment("ADJUSTMENT", "调整单"),
 	Transfer("TRANSFER", "移动单"),
 	Lot("LOT", "批次号"),
-	TASKNUMBER("TASKNUMBER","任务号");
+	TaskNumber("TASKNUMBER","任务号"),
+	CountNumber("COUNT", "盘点单号");
 
 	private final String code;
 	private final String desc;

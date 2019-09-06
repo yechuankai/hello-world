@@ -59,6 +59,27 @@
             <tr>
                 <th field="inventoryLockedId" data-options="checkbox:true"></th>
                 <th field="inventoryOnhandId" data-options="hidden:true"></th>
+                 <th field="ownerCode" width="100" wms:text="${web.inventory.ownerCode}"
+                     data-options="sortable:true">ownerCode
+                 </th>
+                 <th field="skuCode" width="100" wms:text="${web.inventory.skuCode}" data-options="sortable:true">
+                     skuCode
+                 </th>
+                 <th field="skuAlias" width="100" wms:text="${web.inventory.skuAlias}" data-options="sortable:true">
+                     skuAlias
+                 </th>
+                 <th field="lotNumber" width="100" wms:text="${web.label.lotnumber}" data-options="sortable:true">
+                     lotNumber
+                 </th>
+                 <th field="locationCode" width="100" wms:text="${web.label.locationcode}"
+                     data-options="sortable:true">locationCode
+                 </th>
+                 <th field="containerNumber" width="100" wms:text="${web.label.containernumber}"
+                     data-options="sortable:true">containerNumber
+                 </th>
+                 <th field="lpnNumber" width="100" wms:text="${web.label.lpnnumber}" data-options="sortable:true">
+                     lpnNumber
+                 </th>
                 <th field="quantityLocked" width="80" wms:text="${web.label.quantity.locked}"
                     data-options="sortable:true">quantityLocked
                 </th>

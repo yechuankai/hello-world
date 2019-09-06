@@ -1,19 +1,5 @@
 package com.wms.services.outbound.impl;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -21,13 +7,7 @@ import com.wms.common.core.domain.ExcelTemplate;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.core.services.IExcelService;
-import com.wms.common.enums.ExcelTemplateEnum;
-import com.wms.common.enums.TaskReasonEnum;
-import com.wms.common.enums.TaskSourceTypeEnum;
-import com.wms.common.enums.TaskStatusEnum;
-import com.wms.common.enums.TaskTypeEnum;
-import com.wms.common.enums.TransactionTypeEnum;
-import com.wms.common.enums.YesNoEnum;
+import com.wms.common.enums.*;
 import com.wms.common.enums.allocate.AllocateStatusEnum;
 import com.wms.common.enums.allocate.AllocateStrategyTypeEnum;
 import com.wms.common.exception.BusinessServiceException;
@@ -38,13 +18,7 @@ import com.wms.common.utils.key.KeyUtils;
 import com.wms.dao.auto.IAllocateTDao;
 import com.wms.dao.example.AllocateTExample;
 import com.wms.dao.example.AllocateTExample.Criteria;
-import com.wms.entity.auto.AllocateShortTEntity;
-import com.wms.entity.auto.AllocateTEntity;
-import com.wms.entity.auto.InventoryOnhandTEntity;
-import com.wms.entity.auto.LocationTEntity;
-import com.wms.entity.auto.OutboundHeaderTEntity;
-import com.wms.entity.auto.TaskDetailTEntity;
-import com.wms.entity.auto.ZoneTEntity;
+import com.wms.entity.auto.*;
 import com.wms.services.base.ILocationService;
 import com.wms.services.base.IZoneService;
 import com.wms.services.core.IInventoryCoreService;
@@ -59,6 +33,19 @@ import com.wms.vo.InventoryTranVO;
 import com.wms.vo.allocate.AllocateVO;
 import com.wms.vo.excel.AllocateImportVO;
 import com.wms.vo.outbound.OutboundDetailVO;
+import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @description:
@@ -669,7 +656,7 @@ public class AllocateServiceImpl implements IAllocateService , IExcelService<All
 
 				//必须为硬分配
 				if (AllocateStrategyTypeEnum.Soft.getCode().equals(d.getAllocateStrategyType()))
-						throw new BusinessServiceException("AllocateServiceImpl", "allocate.line.pick.must.hardallocate",new Object[] {d.getSourceLineNumber()}) ;
+						throw new BusinessServiceException("AllocateServiceImpl", "allocate.line.pick.must.hardallocate",new Object[] {d.getSourceBillNumber()}) ;
 
 				InventoryOnhandTEntity sourceOnhand = new InventoryOnhandTEntity();
 				BeanUtils.copyBeanProp(sourceOnhand, d, Boolean.FALSE);
