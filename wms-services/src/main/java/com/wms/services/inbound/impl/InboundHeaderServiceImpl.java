@@ -507,15 +507,15 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
     }
 
 	@Override
-	public Boolean createPutaway(AjaxRequest<List<InboundVO>> request) throws BusinessServiceException {
+	public Long createPutaway(AjaxRequest<List<InboundVO>> request) throws BusinessServiceException {
 		List<InboundVO> list = request.getData();
 		if (CollectionUtils.isEmpty(list)) {
 			throw new BusinessServiceException("no data release.");
 		}
 		List<InboundDetailVO> detailList = getInboundDetail(request);
 
-		boolean releaseFlag = inboundDetailService.createPutaway(detailList);
-		return releaseFlag;
+		long taskCount = inboundDetailService.createPutaway(detailList);
+		return taskCount;
 	}
 
 	@Override

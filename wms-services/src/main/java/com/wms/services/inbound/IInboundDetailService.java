@@ -44,7 +44,7 @@ public interface IInboundDetailService {
 	
 	InboundStatusEnum inboundDetailStatus(InboundDetailTEntity detail, Boolean updateFlag) throws BusinessServiceException;
 
-	Boolean createPutaway(List<InboundDetailVO> detail) throws BusinessServiceException;
+	Long createPutaway(List<InboundDetailVO> detail) throws BusinessServiceException;
 
 	/**
 	 * @Description 更新时不做状态校验，取消、关闭时用

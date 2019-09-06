@@ -471,13 +471,13 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 	}
 
 	@Override
-	public Boolean createPutaway(List<InboundDetailVO> detail) throws BusinessServiceException {
+	public Long createPutaway(List<InboundDetailVO> detail) throws BusinessServiceException {
+		long taskCount = 0;
 		List<InboundDetailVO> newList = getListGroupByLpn(detail);
-		newList.forEach(d -> {
+		for (InboundDetailVO d : newList) {
 			try {
 				String lpnNumber = null;
 				LpnTypeEnum lpnType = null;
-				List<LpnTEntity> lpns = Lists.newArrayList();
 				LocationTEntity fromLocation = locationService.find(LocationTEntity.builder()
 						.companyId(d.getCompanyId())
 						.warehouseId(d.getWarehouseId())
@@ -524,7 +524,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 						.build());
 				//根据SkuId和Lpn或容器号查询有重复的上架任务就不生成
 				if(CollectionUtils.isNotEmpty(details)){
-					return;
+					continue;
 				}
 				//生成上架任务
 				TaskDetailTEntity taskdetail = TaskDetailTEntity.builder()
@@ -559,14 +559,14 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 						.sourceLineNumber(d.getLineNumber())
 						.sourceBillNumber(d.getInboundNumber())
 						.build();
-
 				taskService.add(taskdetail);
+				taskCount ++;
 			} catch (Exception e) {
 				log.error(e.getMessage(),e);
-				return;
+				continue;
 			}
-		});
-		return Boolean.TRUE;
+		}
+		return taskCount;
 	}
 
 
@@ -836,46 +836,50 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 			for (InboundDetailVO d : v) {
 				InboundDetailTEntity detailObj = find((InboundDetailTEntity)d);
 				notProcess(detailObj); //验证状态
-				if (BigDecimal.ZERO.compareTo(detailObj.getQuantityReceive()) >= 0)
-					return;
-				
-				//行号累加
-				adjustmentLineNumber += DefaultConstants.LINE_INCREMENT;
-				
-				AdjustmentDetailVO detailVO = new AdjustmentDetailVO();
-				BeanUtils.copyBeanProp(detailVO, detailObj, Boolean.FALSE);
-				detailVO.setLineNumber(adjustmentLineNumber);
-				detailVO.setUpdateBy(request.getUserName());
-				detailVO.setCreateBy(request.getUserName());
-				detailVO.setSourceLineNumber(String.valueOf(d.getLineNumber()));
-				detailVO.setSourceNumber(String.valueOf(d.getInboundDetailId()));
-				detailVO.setQuantityAdjustment(BigDecimal.ZERO.subtract(d.getQuantityReceive()));
-				detailVO.setReason(AdjustmentReasonEnum.UnReceive.getCode());
-				detailVO.setTransactionCategory(AdjustmentReasonEnum.UnReceive.getCode());
-				adjustmentDetail.add(detailVO);
+				boolean flag = true;
+				if (BigDecimal.ZERO.compareTo(detailObj.getQuantityReceive()) >= 0){
+					flag= false;
+				}
+				if(flag){
+					//行号累加
+					adjustmentLineNumber += DefaultConstants.LINE_INCREMENT;
 
-				//更新入库单数量
-				InboundDetailTEntity updateDetail  = InboundDetailTEntity.builder()
-														.warehouseId(detailObj.getWarehouseId())
-														.companyId(detailObj.getCompanyId())
-														.updateBy(d.getUpdateBy())
-														.updateTime(new Date())
-														.lotNumber("")
-														.quantityReceive(detailObj.getQuantityReceive().add(detailVO.getQuantityAdjustment()))
-														.quantityCancel(detailObj.getQuantityCancel().add(detailVO.getQuantityAdjustment().abs()))
-														.build();
-				InboundDetailTExample example = new InboundDetailTExample();
-				example.createCriteria()
-				.andWarehouseIdEqualTo(request.getWarehouseId())
-				.andCompanyIdEqualTo(request.getCompanyId())
-				.andInboundDetailIdEqualTo(detailObj.getInboundDetailId());
-				
-				int rowcount = inboundDetailDao.updateWithVersionByExampleSelective(detailObj.getUpdateVersion(), updateDetail, example);
-				if (rowcount == 0)
-					throw new BusinessServiceException("record update error.");
-				
-				detailObj.setQuantityReceive(detailObj.getQuantityReceive().add(detailVO.getQuantityAdjustment()));
-				unReceiveDetail.add(detailObj);
+					AdjustmentDetailVO detailVO = new AdjustmentDetailVO();
+					BeanUtils.copyBeanProp(detailVO, detailObj, Boolean.FALSE);
+					detailVO.setLineNumber(adjustmentLineNumber);
+					detailVO.setUpdateBy(request.getUserName());
+					detailVO.setCreateBy(request.getUserName());
+					detailVO.setSourceLineNumber(String.valueOf(d.getLineNumber()));
+					detailVO.setSourceNumber(String.valueOf(d.getInboundDetailId()));
+					detailVO.setQuantityAdjustment(BigDecimal.ZERO.subtract(d.getQuantityReceive()));
+					detailVO.setReason(AdjustmentReasonEnum.UnReceive.getCode());
+					detailVO.setTransactionCategory(AdjustmentReasonEnum.UnReceive.getCode());
+					adjustmentDetail.add(detailVO);
+
+					//更新入库单数量
+					InboundDetailTEntity updateDetail  = InboundDetailTEntity.builder()
+							.warehouseId(detailObj.getWarehouseId())
+							.companyId(detailObj.getCompanyId())
+							.updateBy(d.getUpdateBy())
+							.updateTime(new Date())
+							.lotNumber("")
+							.quantityReceive(detailObj.getQuantityReceive().add(detailVO.getQuantityAdjustment()))
+							.quantityCancel(detailObj.getQuantityCancel().add(detailVO.getQuantityAdjustment().abs()))
+							.build();
+					InboundDetailTExample example = new InboundDetailTExample();
+					example.createCriteria()
+							.andWarehouseIdEqualTo(request.getWarehouseId())
+							.andCompanyIdEqualTo(request.getCompanyId())
+							.andInboundDetailIdEqualTo(detailObj.getInboundDetailId());
+
+					int rowcount = inboundDetailDao.updateWithVersionByExampleSelective(detailObj.getUpdateVersion(), updateDetail, example);
+					if (rowcount == 0)
+						throw new BusinessServiceException("record update error.");
+
+					detailObj.setQuantityReceive(detailObj.getQuantityReceive().add(detailVO.getQuantityAdjustment()));
+					unReceiveDetail.add(detailObj);
+				}
+
 				
 			}
 

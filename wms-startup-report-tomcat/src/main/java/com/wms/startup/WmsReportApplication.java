@@ -13,6 +13,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @ComponentScan("com.wms.report")
 @ComponentScan("com.wms.services.sys")
+@ComponentScan("com.wms.services.report")
 @ComponentScan("com.wms.common")
 @MapperScan("com.wms.dao")
 @SpringBootApplication

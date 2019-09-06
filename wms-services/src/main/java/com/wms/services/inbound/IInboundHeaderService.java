@@ -43,7 +43,7 @@ public interface IInboundHeaderService {
 
 	Boolean close(AjaxRequest<List<InboundHeaderTEntity>> request) throws BusinessServiceException;
 
-	Boolean createPutaway(AjaxRequest<List<InboundVO>> request) throws BusinessServiceException;
+	Long createPutaway(AjaxRequest<List<InboundVO>> request) throws BusinessServiceException;
 
 	/** 
 	* @Description: OMS生成并操作入库单 

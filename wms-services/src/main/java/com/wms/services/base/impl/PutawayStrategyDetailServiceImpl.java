@@ -149,10 +149,10 @@ public class PutawayStrategyDetailServiceImpl implements IPutawayStrategyDetailS
             	detail.setFromZoneCode(detail.getFromZoneCode().toUpperCase());
             }
             if (StringUtils.isNotEmpty(detail.getToLocationCode())) {
-            	detail.setFromZoneCode(detail.getToLocationCode().toUpperCase());
+            	detail.setToLocationCode(detail.getToLocationCode().toUpperCase());
             }
             if (StringUtils.isNotEmpty(detail.getToZoneCode())) {
-            	detail.setFromZoneCode(detail.getToZoneCode().toUpperCase());
+            	detail.setToZoneCode(detail.getToZoneCode().toUpperCase());
             }
 
             PutawayStrategyDetailTEntity insert = PutawayStrategyDetailTEntity.builder()
