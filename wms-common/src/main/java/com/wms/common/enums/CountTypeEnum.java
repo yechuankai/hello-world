@@ -1,3 +1,4 @@
+
 package com.wms.common.enums;
 
 /**
@@ -7,6 +8,7 @@ package com.wms.common.enums;
  */
 public enum CountTypeEnum {
 
+	Detail("0","按明细"),
 	Normal("10", "普通");
 	
 	private final String code;

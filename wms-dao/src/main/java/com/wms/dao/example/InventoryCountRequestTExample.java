@@ -463,7 +463,7 @@ public class InventoryCountRequestTExample {
             return (Criteria) this;
         }
 
-        public Criteria andRequestDescrEqualTo(Long value) {
+        public Criteria andRequestDescrEqualTo(String value) {
             addCriterion("REQUEST_DESCR =", value, "requestDescr");
             return (Criteria) this;
         }
@@ -480,7 +480,7 @@ public class InventoryCountRequestTExample {
             return (Criteria) this;
         }
 
-        public Criteria andRequestDescrNotEqualTo(Long value) {
+        public Criteria andRequestDescrNotEqualTo(String value) {
             addCriterion("REQUEST_DESCR <>", value, "requestDescr");
             return (Criteria) this;
         }
@@ -497,7 +497,7 @@ public class InventoryCountRequestTExample {
             return (Criteria) this;
         }
 
-        public Criteria andRequestDescrGreaterThan(Long value) {
+        public Criteria andRequestDescrGreaterThan(String value) {
             addCriterion("REQUEST_DESCR >", value, "requestDescr");
             return (Criteria) this;
         }
@@ -514,7 +514,7 @@ public class InventoryCountRequestTExample {
             return (Criteria) this;
         }
 
-        public Criteria andRequestDescrGreaterThanOrEqualTo(Long value) {
+        public Criteria andRequestDescrGreaterThanOrEqualTo(String value) {
             addCriterion("REQUEST_DESCR >=", value, "requestDescr");
             return (Criteria) this;
         }
@@ -531,7 +531,7 @@ public class InventoryCountRequestTExample {
             return (Criteria) this;
         }
 
-        public Criteria andRequestDescrLessThan(Long value) {
+        public Criteria andRequestDescrLessThan(String value) {
             addCriterion("REQUEST_DESCR <", value, "requestDescr");
             return (Criteria) this;
         }
@@ -548,7 +548,7 @@ public class InventoryCountRequestTExample {
             return (Criteria) this;
         }
 
-        public Criteria andRequestDescrLessThanOrEqualTo(Long value) {
+        public Criteria andRequestDescrLessThanOrEqualTo(String value) {
             addCriterion("REQUEST_DESCR <=", value, "requestDescr");
             return (Criteria) this;
         }
@@ -565,22 +565,32 @@ public class InventoryCountRequestTExample {
             return (Criteria) this;
         }
 
-        public Criteria andRequestDescrIn(List<Long> values) {
+        public Criteria andRequestDescrLike(String value) {
+            addCriterion("REQUEST_DESCR like", value, "requestDescr");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestDescrNotLike(String value) {
+            addCriterion("REQUEST_DESCR not like", value, "requestDescr");
+            return (Criteria) this;
+        }
+
+        public Criteria andRequestDescrIn(List<String> values) {
             addCriterion("REQUEST_DESCR in", values, "requestDescr");
             return (Criteria) this;
         }
 
-        public Criteria andRequestDescrNotIn(List<Long> values) {
+        public Criteria andRequestDescrNotIn(List<String> values) {
             addCriterion("REQUEST_DESCR not in", values, "requestDescr");
             return (Criteria) this;
         }
 
-        public Criteria andRequestDescrBetween(Long value1, Long value2) {
+        public Criteria andRequestDescrBetween(String value1, String value2) {
             addCriterion("REQUEST_DESCR between", value1, value2, "requestDescr");
             return (Criteria) this;
         }
 
-        public Criteria andRequestDescrNotBetween(Long value1, Long value2) {
+        public Criteria andRequestDescrNotBetween(String value1, String value2) {
             addCriterion("REQUEST_DESCR not between", value1, value2, "requestDescr");
             return (Criteria) this;
         }

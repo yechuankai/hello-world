@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.wms.entity.auto.InventoryCountRequestTEntity">
     <id column="INVENTORY_COUNT_REQUEST_ID" jdbcType="DECIMAL" property="inventoryCountRequestId" />
     <result column="REQUEST_NUMBER" jdbcType="VARCHAR" property="requestNumber" />
-    <result column="REQUEST_DESCR" jdbcType="DECIMAL" property="requestDescr" />
+    <result column="REQUEST_DESCR" jdbcType="VARCHAR" property="requestDescr" />
     <result column="REQUEST_TYPE" jdbcType="VARCHAR" property="requestType" />
     <result column="QUANTITY_SHOW_FLAG" jdbcType="CHAR" property="quantityShowFlag" />
     <result column="FROM_ZONE_CODE" jdbcType="VARCHAR" property="fromZoneCode" />
@@ -163,7 +163,7 @@
       UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
       )
     values (#{inventoryCountRequestId,jdbcType=DECIMAL}, #{requestNumber,jdbcType=VARCHAR}, 
-      #{requestDescr,jdbcType=DECIMAL}, #{requestType,jdbcType=VARCHAR}, #{quantityShowFlag,jdbcType=CHAR}, 
+      #{requestDescr,jdbcType=VARCHAR}, #{requestType,jdbcType=VARCHAR}, #{quantityShowFlag,jdbcType=CHAR}, 
       #{fromZoneCode,jdbcType=VARCHAR}, #{toZoneCode,jdbcType=VARCHAR}, #{fromLocationCode,jdbcType=VARCHAR}, 
       #{toLocationCode,jdbcType=VARCHAR}, #{fromSkuCode,jdbcType=VARCHAR}, #{toSkuCode,jdbcType=VARCHAR}, 
       #{skuCodeIn,jdbcType=VARCHAR}, #{fromLpnNumber,jdbcType=VARCHAR}, #{toLpnNumber,jdbcType=VARCHAR}, 
@@ -263,7 +263,7 @@
         #{requestNumber,jdbcType=VARCHAR},
       </if>
       <if test="requestDescr != null">
-        #{requestDescr,jdbcType=DECIMAL},
+        #{requestDescr,jdbcType=VARCHAR},
       </if>
       <if test="requestType != null">
         #{requestType,jdbcType=VARCHAR},
@@ -352,7 +352,7 @@
         REQUEST_NUMBER = #{record.requestNumber,jdbcType=VARCHAR},
       </if>
       <if test="record.requestDescr != null">
-        REQUEST_DESCR = #{record.requestDescr,jdbcType=DECIMAL},
+        REQUEST_DESCR = #{record.requestDescr,jdbcType=VARCHAR},
       </if>
       <if test="record.requestType != null">
         REQUEST_TYPE = #{record.requestType,jdbcType=VARCHAR},
@@ -432,7 +432,7 @@
     update INVENTORY_COUNT_REQUEST_T
     set INVENTORY_COUNT_REQUEST_ID = #{record.inventoryCountRequestId,jdbcType=DECIMAL},
       REQUEST_NUMBER = #{record.requestNumber,jdbcType=VARCHAR},
-      REQUEST_DESCR = #{record.requestDescr,jdbcType=DECIMAL},
+      REQUEST_DESCR = #{record.requestDescr,jdbcType=VARCHAR},
       REQUEST_TYPE = #{record.requestType,jdbcType=VARCHAR},
       QUANTITY_SHOW_FLAG = #{record.quantityShowFlag,jdbcType=CHAR},
       FROM_ZONE_CODE = #{record.fromZoneCode,jdbcType=VARCHAR},
@@ -560,7 +560,7 @@
     set UPDATE_VERSION = UPDATE_VERSION + 1,
     INVENTORY_COUNT_REQUEST_ID = #{record.inventoryCountRequestId,jdbcType=DECIMAL}, 
     REQUEST_NUMBER = #{record.requestNumber,jdbcType=VARCHAR}, 
-    REQUEST_DESCR = #{record.requestDescr,jdbcType=DECIMAL}, 
+    REQUEST_DESCR = #{record.requestDescr,jdbcType=VARCHAR}, 
     REQUEST_TYPE = #{record.requestType,jdbcType=VARCHAR}, 
     QUANTITY_SHOW_FLAG = #{record.quantityShowFlag,jdbcType=CHAR}, 
     FROM_ZONE_CODE = #{record.fromZoneCode,jdbcType=VARCHAR}, 
@@ -604,7 +604,7 @@
           REQUEST_NUMBER = #{record.requestNumber,jdbcType=VARCHAR},
         </if>
         <if test="record.requestDescr != null">
-          REQUEST_DESCR = #{record.requestDescr,jdbcType=DECIMAL},
+          REQUEST_DESCR = #{record.requestDescr,jdbcType=VARCHAR},
         </if>
         <if test="record.requestType != null">
           REQUEST_TYPE = #{record.requestType,jdbcType=VARCHAR},

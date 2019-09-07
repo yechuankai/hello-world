@@ -12,6 +12,7 @@ public enum OrderNumberTypeEnum {
 	Transfer("TRANSFER", "移动单"),
 	Lot("LOT", "批次号"),
 	TaskNumber("TASKNUMBER","任务号"),
+	RequestNumber("REQUESTNUMBER","请求单号"),
 	CountNumber("COUNT", "盘点单号");
 
 	private final String code;

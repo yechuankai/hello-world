@@ -10,7 +10,7 @@ public class InventoryCountRequestTEntity extends BaseEntity {
 
     private String requestNumber;
 
-    private Long requestDescr;
+    private String requestDescr;
 
     private String requestType;
 
@@ -74,12 +74,12 @@ public class InventoryCountRequestTEntity extends BaseEntity {
         this.requestNumber = requestNumber == null ? null : requestNumber.trim();
     }
 
-    public Long getRequestDescr() {
+    public String getRequestDescr() {
         return requestDescr;
     }
 
-    public void setRequestDescr(Long requestDescr) {
-        this.requestDescr = requestDescr;
+    public void setRequestDescr(String requestDescr) {
+        this.requestDescr = requestDescr == null ? null : requestDescr.trim();
     }
 
     public String getRequestType() {
@@ -462,7 +462,7 @@ public class InventoryCountRequestTEntity extends BaseEntity {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder requestDescr(Long requestDescr) {
+        public Builder requestDescr(String requestDescr) {
             obj.setRequestDescr(requestDescr);
             return this;
         }
@@ -886,7 +886,7 @@ public class InventoryCountRequestTEntity extends BaseEntity {
     public enum Column {
         inventoryCountRequestId("INVENTORY_COUNT_REQUEST_ID", "inventoryCountRequestId", "DECIMAL", false),
         requestNumber("REQUEST_NUMBER", "requestNumber", "VARCHAR", false),
-        requestDescr("REQUEST_DESCR", "requestDescr", "DECIMAL", false),
+        requestDescr("REQUEST_DESCR", "requestDescr", "VARCHAR", false),
         requestType("REQUEST_TYPE", "requestType", "VARCHAR", false),
         quantityShowFlag("QUANTITY_SHOW_FLAG", "quantityShowFlag", "CHAR", false),
         fromZoneCode("FROM_ZONE_CODE", "fromZoneCode", "VARCHAR", false),

@@ -860,7 +860,7 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 			return Boolean.TRUE;
 		}
 
-		if(detail.getQuantityExpected().compareTo(BigDecimal.ZERO)>0){
+		if(detail.getQuantityExpected().compareTo(BigDecimal.ZERO) <= 0){
 			throw new BusinessServiceException("OutboundDetailServiceImpl", "outbound.expectedquantity.equaltozero", new Object[]{outboundVO.getOutboundNumber(), detail.getLineNumber()});
 		}
 

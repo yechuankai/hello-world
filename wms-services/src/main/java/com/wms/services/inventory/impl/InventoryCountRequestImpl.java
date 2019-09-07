@@ -1,21 +1,16 @@
 package com.wms.services.inventory.impl;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.google.common.collect.Lists;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
+import com.wms.common.enums.CountTypeEnum;
+import com.wms.common.enums.OrderNumberTypeEnum;
 import com.wms.common.enums.YesNoEnum;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.common.utils.ExampleUtils;
 import com.wms.common.utils.StringUtils;
+import com.wms.common.utils.bean.BeanUtils;
+import com.wms.common.utils.key.KeyUtils;
 import com.wms.dao.auto.IInventoryCountRequestTDao;
 import com.wms.dao.auto.IInventoryOnhandTDao;
 import com.wms.dao.auto.ILocationTDao;
@@ -26,6 +21,15 @@ import com.wms.entity.auto.InventoryCountRequestTEntity;
 import com.wms.entity.auto.InventoryOnhandTEntity;
 import com.wms.entity.auto.LocationTEntity;
 import com.wms.services.inventory.IInventoryCountRequestService;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class InventoryCountRequestImpl implements IInventoryCountRequestService {
@@ -87,20 +91,93 @@ public class InventoryCountRequestImpl implements IInventoryCountRequestService 
 
 	@Override
 	public Boolean modify(AjaxRequest<List<InventoryCountRequestTEntity>> request) throws BusinessServiceException {
-		// TODO Auto-generated method stub
-		return null;
+		if (CollectionUtils.isEmpty(request.getData())) {
+			throw new BusinessServiceException("no record update.");
+		}
+
+		List<InventoryCountRequestTEntity> list = request.getData();
+
+		for (InventoryCountRequestTEntity w : list) {
+
+			InventoryCountRequestTEntity update = InventoryCountRequestTEntity.builder()
+					.requestDescr(w.getRequestDescr())
+					.requestType(w.getRequestType())
+					.quantityShowFlag(w.getQuantityShowFlag())
+					.updateBy(request.getUserName())
+					.updateTime(new Date())
+					.build();
+
+			InventoryCountRequestTExample example = new InventoryCountRequestTExample();
+			example.createCriteria()
+					.andWarehouseIdEqualTo(w.getWarehouseId())
+					.andCompanyIdEqualTo(w.getCompanyId())
+					.andInventoryCountRequestIdEqualTo(w.getInventoryCountRequestId());
+
+			int row = inventoryCountRequestDao.updateWithVersionByExampleSelective(w.getUpdateVersion(), update, example);
+			if (row == 0) {
+				throw new BusinessServiceException("record update error.");
+			}
+		}
+		return Boolean.TRUE;
 	}
 
 	@Override
 	public Boolean add(AjaxRequest<List<InventoryCountRequestTEntity>> request) throws BusinessServiceException {
-		// TODO Auto-generated method stub
-		return null;
+		if (CollectionUtils.isEmpty(request.getData())) {
+			throw new BusinessServiceException("no record add.");
+		}
+
+		List<InventoryCountRequestTEntity> list = request.getData();
+
+		for (InventoryCountRequestTEntity w : list) {
+			InventoryCountRequestTEntity update = new InventoryCountRequestTEntity();
+			BeanUtils.copyBeanProp(update,w,Boolean.FALSE);
+			update.setInventoryCountRequestId(KeyUtils.getUID());
+			update.setRequestNumber(KeyUtils.getOrderNumber(request.getCompanyId(),request.getWarehouseId(), OrderNumberTypeEnum.RequestNumber));
+			//新建默认盘点类型为按明细
+			update.setRequestType(CountTypeEnum.Detail.getCode());
+			update.setCreateBy(request.getUserName());
+			update.setCreateTime(new Date());
+			update.setUpdateBy(request.getUserName());
+			update.setUpdateTime(new Date());
+			update.setWarehouseId(request.getWarehouseId());
+			update.setCompanyId(request.getCompanyId());
+
+			int row = inventoryCountRequestDao.insertSelective(update);
+			if (row == 0) {
+				throw new BusinessServiceException("record update error.");
+			}
+		}
+		return Boolean.TRUE;
 	}
 
 	@Override
 	public Boolean delete(AjaxRequest<List<InventoryCountRequestTEntity>> request) throws BusinessServiceException {
-		// TODO Auto-generated method stub
-		return null;
+		if (CollectionUtils.isEmpty(request.getData())) {
+			throw new BusinessServiceException("no record delete.");
+		}
+		List<InventoryCountRequestTEntity> list = request.getData();
+
+		for (InventoryCountRequestTEntity w : list) {
+			InventoryCountRequestTEntity update = InventoryCountRequestTEntity.builder()
+					.updateBy(request.getUserName())
+					.updateTime(new Date())
+					.delFlag(YesNoEnum.Yes.getCode())
+					.build();
+
+			InventoryCountRequestTExample example = new InventoryCountRequestTExample();
+			example.createCriteria()
+					.andWarehouseIdEqualTo(w.getWarehouseId())
+					.andCompanyIdEqualTo(w.getCompanyId())
+					.andInventoryCountRequestIdEqualTo(w.getInventoryCountRequestId());
+
+
+			int row = inventoryCountRequestDao.updateWithVersionByExampleSelective(w.getUpdateVersion(), update, example);
+			if (row == 0) {
+				throw new BusinessServiceException("delete update error.");
+			}
+		}
+		return Boolean.TRUE;
 	}
 
 	
