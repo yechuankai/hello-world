@@ -3010,7 +3010,7 @@ drop table inventory_count_request_t cascade constraints;
 create table inventory_count_request_t (
 inventory_count_request_id number,
 request_number  varchar2(50),
-request_descr number,
+request_descr varchar2(500),
 request_type varchar2(50),
 quantity_show_flag char(1) default 'N',
 from_zone_code varchar2(50),

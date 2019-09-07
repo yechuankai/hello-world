@@ -76,35 +76,35 @@ insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JO
 values ('1150590036726005760', 'en_US', 'web.label.uomquantityshiped', 'Shiped Quantity', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('15-07-2019 10:16:56', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('03-09-2019 17:23:39', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
 
 
---菜单
+--菜单波次模板
 delete uums.WEB_FUNC where func_id = 'wms:outbound:wave:template';
 insert into UUMS.WEB_FUNC (func_id, func_name, menu_id, func_desc, func_url, func_id_seq, sys_code, is_valid, sys_url, real_sys_code, invalid_time, invalid_user, create_time, version, func_unique_id)
 values ('wms:outbound:wave:template', '波次模板', 'wms:outbound', '波次模板', 'outbound/wareTemplate', 10, 'WMS', 'Y', null, null, null, null, to_date('16-08-2019 13:53:20', 'dd-mm-yyyy hh24:mi:ss'), '0', 1136869832319441001);
 
 delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:outbound:wave:template';
 insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
-values (1301, 'WEB_FUNC', 'FUNC_NAME', 'en_US', 'Wave Template', 'Wave Template', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave:template', 'WMS');
+values (1311, 'WEB_FUNC', 'FUNC_NAME', 'en_US', 'Wave Template', 'Wave Template', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave:template', 'WMS');
 
 insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
-values (1302, 'WEB_FUNC', 'FUNC_NAME', 'fr_FR', 'Rapport de gestion', 'Rapport de gestion', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave:template', 'WMS');
+values (1312, 'WEB_FUNC', 'FUNC_NAME', 'fr_FR', 'Rapport de gestion', 'Rapport de gestion', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave:template', 'WMS');
 
 insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
-values (1303, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '波次模板', '波次模板', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave:template', 'WMS');
+values (1313, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '波次模板', '波次模板', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave:template', 'WMS');
 
---菜单
+--菜单波次
 delete uums.WEB_FUNC where func_id = 'wms:outbound:wave';
 insert into UUMS.WEB_FUNC (func_id, func_name, menu_id, func_desc, func_url, func_id_seq, sys_code, is_valid, sys_url, real_sys_code, invalid_time, invalid_user, create_time, version, func_unique_id)
 values ('wms:outbound:wave', '波次', 'wms:outbound:wave', '波次', 'outbound/wave', 9, 'WMS', 'Y', null, null, null, null, to_date('16-08-2019 13:53:20', 'dd-mm-yyyy hh24:mi:ss'), '0', 1136869832319441001);
 
 delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:outbound:wave';
 insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
-values (1301, 'WEB_FUNC', 'FUNC_NAME', 'en_US', 'Wave Template', 'Wave Template', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave', 'WMS');
+values (1314, 'WEB_FUNC', 'FUNC_NAME', 'en_US', 'Wave Template', 'Wave Template', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave', 'WMS');
 
 insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
-values (1302, 'WEB_FUNC', 'FUNC_NAME', 'fr_FR', 'Rapport de gestion', 'Rapport de gestion', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave', 'WMS');
+values (1315, 'WEB_FUNC', 'FUNC_NAME', 'fr_FR', 'Rapport de gestion', 'Rapport de gestion', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave', 'WMS');
 
 insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
-values (1303, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '波次', '波次', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave', 'WMS');
+values (1316, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '波次', '波次', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave', 'WMS');
 
 
 
@@ -170,4 +170,35 @@ values ('1164072373274148867', 'en_US', 'ZONETYPE_30', 'Asrs', 'ZONETYPE', '30',
 insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
 values ('1164072373274148864', 'en_US', 'ZONETYPE_0', 'Normal', 'ZONETYPE', '0', null, null, null, 'CODELKUP', 'Y', 'N', 'YECHUANKAI', to_date('21-08-2019 15:10:55', 'dd-mm-yyyy hh24:mi:ss'), 'YECHUANKAI', to_date('21-08-2019 15:11:57', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
 
+
+
+--菜单盘点请求
+delete uums.WEB_FUNC where func_id = 'wms:inventory:count:request';
+insert into UUMS.WEB_FUNC (func_id, func_name, menu_id, func_desc, func_url, func_id_seq, sys_code, is_valid, sys_url, real_sys_code, invalid_time, invalid_user, create_time, version, func_unique_id)
+values ('wms:inventory:count:request', '盘点请求', 'wms:inventory', '盘点请求', 'inventory/countRequest', 10, 'WMS', 'Y', null, null, null, null, to_date('16-08-2019 13:53:20', 'dd-mm-yyyy hh24:mi:ss'), '0', 1136869832319441001);
+
+delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:inventory:count:request';
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1321, 'WEB_FUNC', 'FUNC_NAME', 'en_US', 'Count Request', 'Count Request', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:inventory:count:request', 'WMS');
+
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1302, 'WEB_FUNC', 'FUNC_NAME', 'fr_FR', 'Demande de comptage', 'Demande de comptage', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:inventory:count:request', 'WMS');
+
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1303, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '盘点请求', '盘点请求', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:inventory:count:request', 'WMS');
+
+--菜单盘点
+delete uums.WEB_FUNC where func_id = 'wms:outbound:wave';
+insert into UUMS.WEB_FUNC (func_id, func_name, menu_id, func_desc, func_url, func_id_seq, sys_code, is_valid, sys_url, real_sys_code, invalid_time, invalid_user, create_time, version, func_unique_id)
+values ('wms:outbound:wave', '波次', 'wms:outbound:wave', '波次', 'outbound/wave', 9, 'WMS', 'Y', null, null, null, null, to_date('16-08-2019 13:53:20', 'dd-mm-yyyy hh24:mi:ss'), '0', 1136869832319441001);
+
+delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:outbound:wave';
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1301, 'WEB_FUNC', 'FUNC_NAME', 'en_US', 'Wave Template', 'Wave Template', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave', 'WMS');
+
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1302, 'WEB_FUNC', 'FUNC_NAME', 'fr_FR', 'Rapport de gestion', 'Rapport de gestion', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave', 'WMS');
+
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1303, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '波次', '波次', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave', 'WMS');
 
