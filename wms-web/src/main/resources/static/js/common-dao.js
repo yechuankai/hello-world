@@ -12,6 +12,7 @@ $.extend($.fn.datagrid.methods, {
     }
 });
 $.extend($.fn.combogrid.defaults, {
+	striped: true,
 	panelWidth: 400,
 	delay: 100,
 	mode: 'remote',
@@ -23,6 +24,7 @@ $.extend($.fn.combogrid.defaults, {
 	pageList: [20,50,100,500,1000]
 });
 $.extend($.fn.datagrid.defaults, {
+	striped: true,
 	rownumbers: true,
 	selectOnCheck:true,
 	checkOnSelect:false,

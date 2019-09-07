@@ -296,12 +296,20 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 			status = detailStatusSet.iterator().next();
 		}
 		else if (detailStatusSet.size() > 1) {
-			status = detailStatusSet.stream().max(new Comparator<OutboundStatusEnum>() {
-				@Override
-				public int compare(OutboundStatusEnum o1, OutboundStatusEnum o2) {
-					return o1.ordinal() - o2.ordinal();
-				}
-			}).get();
+			if (detailStatusSet.contains(OutboundStatusEnum.Shiped)) {
+				status = OutboundStatusEnum.PartShiped;
+			}else if (detailStatusSet.contains(OutboundStatusEnum.Picked)) {
+				status = OutboundStatusEnum.PartPicked;
+			}else if (detailStatusSet.contains(OutboundStatusEnum.Allocated)) {
+				status = OutboundStatusEnum.PartAllocated;
+			}else {
+				status = detailStatusSet.stream().max(new Comparator<OutboundStatusEnum>() {
+					@Override
+					public int compare(OutboundStatusEnum o1, OutboundStatusEnum o2) {
+						return o1.ordinal() - o2.ordinal();
+					}
+				}).get();
+			}
 		}
 
 		if (!updateFlag)
