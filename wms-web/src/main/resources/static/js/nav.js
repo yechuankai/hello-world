@@ -110,7 +110,7 @@ $(function(){
 					&& ( checkData['code'] == '5' || checkData['code'] == '0')){
 				showError(checkData.msg, function(){
 					if (checkData.code == '5'){
-						window.location.href='/web/login';
+						window.location.href=getServiceUrl();
 					}
 				});
 				return;

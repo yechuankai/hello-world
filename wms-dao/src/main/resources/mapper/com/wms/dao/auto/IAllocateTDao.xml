@@ -41,6 +41,8 @@
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="UPDATE_VERSION" jdbcType="DECIMAL" property="updateVersion" />
     <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="FROM_LOCATION_CODE" jdbcType="VARCHAR" property="fromLocationCode" />
+    <result column="FROM_LPN_NUMBER" jdbcType="VARCHAR" property="fromLpnNumber" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -144,7 +146,7 @@
     SKU_ALIAS, QUANTITY_ALLOCATED, LOCATION_ID, LOCATION_CODE, ZONE_CODE, LPN_ID, LPN_NUMBER, 
     LOT_ID, LOT_NUMBER, LOAD_LPN_NUMBER, STATUS, FULL_LPN_FLAG, FULL_LOCATION_FLAG, TO_LOCATION_CODE, 
     REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
-    UPDATE_VERSION, DESCRIPTION
+    UPDATE_VERSION, DESCRIPTION, FROM_LOCATION_CODE, FROM_LPN_NUMBER
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.AllocateTExample" resultMap="BaseResultMap">
     select
@@ -180,7 +182,8 @@
       REMARK, COMPANY_ID, WAREHOUSE_ID, 
       DEL_FLAG, CREATE_BY, CREATE_TIME, 
       UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, 
-      DESCRIPTION)
+      DESCRIPTION, FROM_LOCATION_CODE, FROM_LPN_NUMBER
+      )
     values (#{allocateId,jdbcType=DECIMAL}, #{allocateBatchId,jdbcType=DECIMAL}, #{sourceNumber,jdbcType=DECIMAL}, 
       #{sourceLineNumber,jdbcType=DECIMAL}, #{sourceBillNumber,jdbcType=VARCHAR}, #{sourceWaveNumber,jdbcType=VARCHAR}, 
       #{allocateType,jdbcType=VARCHAR}, #{allocateStrategyType,jdbcType=VARCHAR}, #{allocateStrategyId,jdbcType=DECIMAL}, 
@@ -194,7 +197,8 @@
       #{remark,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, 
       #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, 
-      #{description,jdbcType=VARCHAR})
+      #{description,jdbcType=VARCHAR}, #{fromLocationCode,jdbcType=VARCHAR}, #{fromLpnNumber,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.AllocateTEntity">
     insert into ALLOCATE_T
@@ -316,6 +320,12 @@
       <if test="description != null">
         DESCRIPTION,
       </if>
+      <if test="fromLocationCode != null">
+        FROM_LOCATION_CODE,
+      </if>
+      <if test="fromLpnNumber != null">
+        FROM_LPN_NUMBER,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="allocateId != null">
@@ -434,6 +444,12 @@
       </if>
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="fromLocationCode != null">
+        #{fromLocationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fromLpnNumber != null">
+        #{fromLpnNumber,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -563,6 +579,12 @@
       <if test="record.description != null">
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       </if>
+      <if test="record.fromLocationCode != null">
+        FROM_LOCATION_CODE = #{record.fromLocationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fromLpnNumber != null">
+        FROM_LPN_NUMBER = #{record.fromLpnNumber,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -608,7 +630,9 @@
       UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
       UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
       UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
-      DESCRIPTION = #{record.description,jdbcType=VARCHAR}
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      FROM_LOCATION_CODE = #{record.fromLocationCode,jdbcType=VARCHAR},
+      FROM_LPN_NUMBER = #{record.fromLpnNumber,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -748,7 +772,9 @@
     CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP}, 
     UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR}, 
     UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
-    DESCRIPTION = #{record.description,jdbcType=VARCHAR}
+    DESCRIPTION = #{record.description,jdbcType=VARCHAR}, 
+    FROM_LOCATION_CODE = #{record.fromLocationCode,jdbcType=VARCHAR}, 
+    FROM_LPN_NUMBER = #{record.fromLpnNumber,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
     </if>
@@ -876,6 +902,12 @@
         </if>
         <if test="record.description != null">
           DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+        </if>
+        <if test="record.fromLocationCode != null">
+          FROM_LOCATION_CODE = #{record.fromLocationCode,jdbcType=VARCHAR},
+        </if>
+        <if test="record.fromLpnNumber != null">
+          FROM_LPN_NUMBER = #{record.fromLpnNumber,jdbcType=VARCHAR},
         </if>
       </trim>
     </set>

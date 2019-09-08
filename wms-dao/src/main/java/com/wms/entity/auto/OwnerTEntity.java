@@ -28,6 +28,12 @@ public class OwnerTEntity extends BaseEntity {
 
     private String email;
 
+    private String barcodePrefix;
+
+    private Long barcodeLength;
+
+    private Long barcodeStart;
+
     private String active;
 
     private String remark;
@@ -49,12 +55,6 @@ public class OwnerTEntity extends BaseEntity {
     private Long updateVersion;
 
     private String description;
-
-    private String barcodePrefix;
-
-    private Long barcodeLength;
-
-    private Long barcodeStart;
 
     public Long getOwnerId() {
         return ownerId;
@@ -142,6 +142,30 @@ public class OwnerTEntity extends BaseEntity {
 
     public void setEmail(String email) {
         this.email = email == null ? null : email.trim();
+    }
+
+    public String getBarcodePrefix() {
+        return barcodePrefix;
+    }
+
+    public void setBarcodePrefix(String barcodePrefix) {
+        this.barcodePrefix = barcodePrefix == null ? null : barcodePrefix.trim();
+    }
+
+    public Long getBarcodeLength() {
+        return barcodeLength;
+    }
+
+    public void setBarcodeLength(Long barcodeLength) {
+        this.barcodeLength = barcodeLength;
+    }
+
+    public Long getBarcodeStart() {
+        return barcodeStart;
+    }
+
+    public void setBarcodeStart(Long barcodeStart) {
+        this.barcodeStart = barcodeStart;
     }
 
     public String getActive() {
@@ -243,30 +267,6 @@ public class OwnerTEntity extends BaseEntity {
         this.description = description == null ? null : description.trim();
     }
 
-    public String getBarcodePrefix() {
-        return barcodePrefix;
-    }
-
-    public void setBarcodePrefix(String barcodePrefix) {
-        this.barcodePrefix = barcodePrefix == null ? null : barcodePrefix.trim();
-    }
-
-    public Long getBarcodeLength() {
-        return barcodeLength;
-    }
-
-    public void setBarcodeLength(Long barcodeLength) {
-        this.barcodeLength = barcodeLength;
-    }
-
-    public Long getBarcodeStart() {
-        return barcodeStart;
-    }
-
-    public void setBarcodeStart(Long barcodeStart) {
-        this.barcodeStart = barcodeStart;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -284,6 +284,9 @@ public class OwnerTEntity extends BaseEntity {
         sb.append(", address2=").append(address2);
         sb.append(", fax=").append(fax);
         sb.append(", email=").append(email);
+        sb.append(", barcodePrefix=").append(barcodePrefix);
+        sb.append(", barcodeLength=").append(barcodeLength);
+        sb.append(", barcodeStart=").append(barcodeStart);
         sb.append(", active=").append(active);
         sb.append(", remark=").append(remark);
         sb.append(", companyId=").append(companyId);
@@ -295,9 +298,6 @@ public class OwnerTEntity extends BaseEntity {
         sb.append(", updateTime=").append(updateTime);
         sb.append(", updateVersion=").append(updateVersion);
         sb.append(", description=").append(description);
-        sb.append(", barcodePrefix=").append(barcodePrefix);
-        sb.append(", barcodeLength=").append(barcodeLength);
-        sb.append(", barcodeStart=").append(barcodeStart);
         sb.append("]");
         return sb.toString();
     }
@@ -325,6 +325,9 @@ public class OwnerTEntity extends BaseEntity {
             && (this.getAddress2() == null ? other.getAddress2() == null : this.getAddress2().equals(other.getAddress2()))
             && (this.getFax() == null ? other.getFax() == null : this.getFax().equals(other.getFax()))
             && (this.getEmail() == null ? other.getEmail() == null : this.getEmail().equals(other.getEmail()))
+            && (this.getBarcodePrefix() == null ? other.getBarcodePrefix() == null : this.getBarcodePrefix().equals(other.getBarcodePrefix()))
+            && (this.getBarcodeLength() == null ? other.getBarcodeLength() == null : this.getBarcodeLength().equals(other.getBarcodeLength()))
+            && (this.getBarcodeStart() == null ? other.getBarcodeStart() == null : this.getBarcodeStart().equals(other.getBarcodeStart()))
             && (this.getActive() == null ? other.getActive() == null : this.getActive().equals(other.getActive()))
             && (this.getRemark() == null ? other.getRemark() == null : this.getRemark().equals(other.getRemark()))
             && (this.getCompanyId() == null ? other.getCompanyId() == null : this.getCompanyId().equals(other.getCompanyId()))
@@ -335,10 +338,7 @@ public class OwnerTEntity extends BaseEntity {
             && (this.getUpdateBy() == null ? other.getUpdateBy() == null : this.getUpdateBy().equals(other.getUpdateBy()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
             && (this.getUpdateVersion() == null ? other.getUpdateVersion() == null : this.getUpdateVersion().equals(other.getUpdateVersion()))
-            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
-            && (this.getBarcodePrefix() == null ? other.getBarcodePrefix() == null : this.getBarcodePrefix().equals(other.getBarcodePrefix()))
-            && (this.getBarcodeLength() == null ? other.getBarcodeLength() == null : this.getBarcodeLength().equals(other.getBarcodeLength()))
-            && (this.getBarcodeStart() == null ? other.getBarcodeStart() == null : this.getBarcodeStart().equals(other.getBarcodeStart()));
+            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()));
     }
 
     @Override
@@ -356,6 +356,9 @@ public class OwnerTEntity extends BaseEntity {
         result = prime * result + ((getAddress2() == null) ? 0 : getAddress2().hashCode());
         result = prime * result + ((getFax() == null) ? 0 : getFax().hashCode());
         result = prime * result + ((getEmail() == null) ? 0 : getEmail().hashCode());
+        result = prime * result + ((getBarcodePrefix() == null) ? 0 : getBarcodePrefix().hashCode());
+        result = prime * result + ((getBarcodeLength() == null) ? 0 : getBarcodeLength().hashCode());
+        result = prime * result + ((getBarcodeStart() == null) ? 0 : getBarcodeStart().hashCode());
         result = prime * result + ((getActive() == null) ? 0 : getActive().hashCode());
         result = prime * result + ((getRemark() == null) ? 0 : getRemark().hashCode());
         result = prime * result + ((getCompanyId() == null) ? 0 : getCompanyId().hashCode());
@@ -367,9 +370,6 @@ public class OwnerTEntity extends BaseEntity {
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getUpdateVersion() == null) ? 0 : getUpdateVersion().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
-        result = prime * result + ((getBarcodePrefix() == null) ? 0 : getBarcodePrefix().hashCode());
-        result = prime * result + ((getBarcodeLength() == null) ? 0 : getBarcodeLength().hashCode());
-        result = prime * result + ((getBarcodeStart() == null) ? 0 : getBarcodeStart().hashCode());
         return result;
     }
 
@@ -568,6 +568,48 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column OWNER_T.BARCODE_PREFIX
+         *
+         * @param barcodePrefix the value for OWNER_T.BARCODE_PREFIX
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder barcodePrefix(String barcodePrefix) {
+            obj.setBarcodePrefix(barcodePrefix);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column OWNER_T.BARCODE_LENGTH
+         *
+         * @param barcodeLength the value for OWNER_T.BARCODE_LENGTH
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder barcodeLength(Long barcodeLength) {
+            obj.setBarcodeLength(barcodeLength);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column OWNER_T.BARCODE_START
+         *
+         * @param barcodeStart the value for OWNER_T.BARCODE_START
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder barcodeStart(Long barcodeStart) {
+            obj.setBarcodeStart(barcodeStart);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
          * This method sets the value of the database column OWNER_T.ACTIVE
          *
          * @param active the value for OWNER_T.ACTIVE
@@ -722,48 +764,6 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.BARCODE_PREFIX
-         *
-         * @param barcodePrefix the value for OWNER_T.BARCODE_PREFIX
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        public Builder barcodePrefix(String barcodePrefix) {
-            obj.setBarcodePrefix(barcodePrefix);
-            return this;
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.BARCODE_LENGTH
-         *
-         * @param barcodeLength the value for OWNER_T.BARCODE_LENGTH
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        public Builder barcodeLength(Long barcodeLength) {
-            obj.setBarcodeLength(barcodeLength);
-            return this;
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.BARCODE_START
-         *
-         * @param barcodeStart the value for OWNER_T.BARCODE_START
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        public Builder barcodeStart(Long barcodeStart) {
-            obj.setBarcodeStart(barcodeStart);
-            return this;
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
          * This method corresponds to the database table OWNER_T
          *
          * @mbg.generated
@@ -868,6 +868,9 @@ public class OwnerTEntity extends BaseEntity {
         address2("ADDRESS2", "address2", "VARCHAR", false),
         fax("FAX", "fax", "VARCHAR", false),
         email("EMAIL", "email", "VARCHAR", false),
+        barcodePrefix("BARCODE_PREFIX", "barcodePrefix", "VARCHAR", false),
+        barcodeLength("BARCODE_LENGTH", "barcodeLength", "DECIMAL", false),
+        barcodeStart("BARCODE_START", "barcodeStart", "DECIMAL", false),
         active("ACTIVE", "active", "CHAR", false),
         remark("REMARK", "remark", "VARCHAR", false),
         companyId("COMPANY_ID", "companyId", "DECIMAL", false),
@@ -878,10 +881,7 @@ public class OwnerTEntity extends BaseEntity {
         updateBy("UPDATE_BY", "updateBy", "VARCHAR", false),
         updateTime("UPDATE_TIME", "updateTime", "TIMESTAMP", false),
         updateVersion("UPDATE_VERSION", "updateVersion", "DECIMAL", false),
-        description("DESCRIPTION", "description", "VARCHAR", false),
-        barcodePrefix("BARCODE_PREFIX", "barcodePrefix", "VARCHAR", false),
-        barcodeLength("BARCODE_LENGTH", "barcodeLength", "DECIMAL", false),
-        barcodeStart("BARCODE_START", "barcodeStart", "DECIMAL", false);
+        description("DESCRIPTION", "description", "VARCHAR", false);
 
         /**
          * This field was generated by MyBatis Generator.

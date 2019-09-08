@@ -42,4 +42,5 @@ public interface IPutawayCoreService {
 	 */
 	PutawayVO inventoryPutaway(InventoryOnhandVO inventory) throws BusinessServiceException;
 	
+	
 }

@@ -15,6 +15,7 @@
     <result column="WEIGHT_TARE" jdbcType="DECIMAL" property="weightTare" />
     <result column="PARENT_LPN_ID" jdbcType="DECIMAL" property="parentLpnId" />
     <result column="PARENT_LPN_CODE" jdbcType="VARCHAR" property="parentLpnCode" />
+    <result column="CONTAINER_NUMBER" jdbcType="VARCHAR" property="containerNumber" />
     <result column="COMPANY_ID" jdbcType="DECIMAL" property="companyId" />
     <result column="WAREHOUSE_ID" jdbcType="DECIMAL" property="warehouseId" />
     <result column="DEL_FLAG" jdbcType="CHAR" property="delFlag" />
@@ -24,7 +25,6 @@
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="UPDATE_VERSION" jdbcType="DECIMAL" property="updateVersion" />
     <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
-    <result column="CONTAINER_NUMBER" jdbcType="VARCHAR" property="containerNumber" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -123,9 +123,9 @@
   </sql>
   <sql id="Base_Column_List">
     LPN_ID, LPN_NUMBER, LPN_TYPE, LPN_SIZE, VOLUME, LENGTH, WIDTH, HEIGHT, WEIGHT_GROSS, 
-    WEIGHT_NET, WEIGHT_TARE, PARENT_LPN_ID, PARENT_LPN_CODE, COMPANY_ID, WAREHOUSE_ID, 
-    DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, 
-    CONTAINER_NUMBER
+    WEIGHT_NET, WEIGHT_TARE, PARENT_LPN_ID, PARENT_LPN_CODE, CONTAINER_NUMBER, COMPANY_ID, 
+    WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, 
+    DESCRIPTION
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.LpnTExample" resultMap="BaseResultMap">
     select
@@ -152,18 +152,18 @@
       LPN_SIZE, VOLUME, LENGTH, 
       WIDTH, HEIGHT, WEIGHT_GROSS, 
       WEIGHT_NET, WEIGHT_TARE, PARENT_LPN_ID, 
-      PARENT_LPN_CODE, COMPANY_ID, WAREHOUSE_ID, 
-      DEL_FLAG, CREATE_BY, CREATE_TIME, 
-      UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, 
-      DESCRIPTION, CONTAINER_NUMBER)
+      PARENT_LPN_CODE, CONTAINER_NUMBER, COMPANY_ID, 
+      WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
+      CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
+      UPDATE_VERSION, DESCRIPTION)
     values (#{lpnId,jdbcType=DECIMAL}, #{lpnNumber,jdbcType=VARCHAR}, #{lpnType,jdbcType=VARCHAR}, 
       #{lpnSize,jdbcType=VARCHAR}, #{volume,jdbcType=DECIMAL}, #{length,jdbcType=DECIMAL}, 
       #{width,jdbcType=DECIMAL}, #{height,jdbcType=DECIMAL}, #{weightGross,jdbcType=DECIMAL}, 
       #{weightNet,jdbcType=DECIMAL}, #{weightTare,jdbcType=DECIMAL}, #{parentLpnId,jdbcType=DECIMAL}, 
-      #{parentLpnCode,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, 
-      #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, 
-      #{description,jdbcType=VARCHAR}, #{containerNumber,jdbcType=VARCHAR})
+      #{parentLpnCode,jdbcType=VARCHAR}, #{containerNumber,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, 
+      #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.LpnTEntity">
     insert into LPN_T
@@ -207,6 +207,9 @@
       <if test="parentLpnCode != null">
         PARENT_LPN_CODE,
       </if>
+      <if test="containerNumber != null">
+        CONTAINER_NUMBER,
+      </if>
       <if test="companyId != null">
         COMPANY_ID,
       </if>
@@ -233,9 +236,6 @@
       </if>
       <if test="description != null">
         DESCRIPTION,
-      </if>
-      <if test="containerNumber != null">
-        CONTAINER_NUMBER,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -278,6 +278,9 @@
       <if test="parentLpnCode != null">
         #{parentLpnCode,jdbcType=VARCHAR},
       </if>
+      <if test="containerNumber != null">
+        #{containerNumber,jdbcType=VARCHAR},
+      </if>
       <if test="companyId != null">
         #{companyId,jdbcType=DECIMAL},
       </if>
@@ -304,9 +307,6 @@
       </if>
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="containerNumber != null">
-        #{containerNumber,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -358,6 +358,9 @@
       <if test="record.parentLpnCode != null">
         PARENT_LPN_CODE = #{record.parentLpnCode,jdbcType=VARCHAR},
       </if>
+      <if test="record.containerNumber != null">
+        CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR},
+      </if>
       <if test="record.companyId != null">
         COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
       </if>
@@ -385,9 +388,6 @@
       <if test="record.description != null">
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       </if>
-      <if test="record.containerNumber != null">
-        CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR},
-      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -408,6 +408,7 @@
       WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL},
       PARENT_LPN_ID = #{record.parentLpnId,jdbcType=DECIMAL},
       PARENT_LPN_CODE = #{record.parentLpnCode,jdbcType=VARCHAR},
+      CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR},
       COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
       WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL},
       DEL_FLAG = #{record.delFlag,jdbcType=CHAR},
@@ -416,8 +417,7 @@
       UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
       UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
       UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
-      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-      CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR}
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -533,6 +533,7 @@
     WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL}, 
     PARENT_LPN_ID = #{record.parentLpnId,jdbcType=DECIMAL}, 
     PARENT_LPN_CODE = #{record.parentLpnCode,jdbcType=VARCHAR}, 
+    CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR}, 
     COMPANY_ID = #{record.companyId,jdbcType=DECIMAL}, 
     WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL}, 
     DEL_FLAG = #{record.delFlag,jdbcType=CHAR}, 
@@ -540,8 +541,7 @@
     CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP}, 
     UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR}, 
     UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
-    DESCRIPTION = #{record.description,jdbcType=VARCHAR}, 
-    CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR}
+    DESCRIPTION = #{record.description,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
     </if>
@@ -595,6 +595,9 @@
         <if test="record.parentLpnCode != null">
           PARENT_LPN_CODE = #{record.parentLpnCode,jdbcType=VARCHAR},
         </if>
+        <if test="record.containerNumber != null">
+          CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR},
+        </if>
         <if test="record.companyId != null">
           COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
         </if>
@@ -618,9 +621,6 @@
         </if>
         <if test="record.description != null">
           DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-        </if>
-        <if test="record.containerNumber != null">
-          CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR},
         </if>
       </trim>
     </set>

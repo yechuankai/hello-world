@@ -117,93 +117,99 @@
     <div>
         <table id="dataTable" wms:title="${web.label.allocate.title}" class="easyui-datagrid"
                th:data-delayUrl="@{/services/inner/outbound/allocate/find}">
+            <thead data-options="frozen:true">
+				<tr>
+		            <th field="allocateId" data-options="checkbox:true"></th>
+			 	</tr>
+			 </thead>
             <thead>
-            <th field="allocateId" data-options="checkbox:true"></th>
-            <th field="sourceBillNumber" width="100" wms:text="${web.label.sourcebillnumber}" data-options="sortable:true">
-                sourceBillNumber
-            </th>
-            <th field="sourceLineNumber" width="100" wms:text="${web.label.sourcelinenumber}" data-options="sortable:true">
-                sourceLineNumber
-            </th>
-            <th field="sourceWaveNumber" width="100" wms:text="${web.label.sourcewavenumber}" data-options="sortable:true">
-                sourceWaveNumber
-            </th>
-            <th field="allocateStrategyType" width="100" wms:text="${web.label.allocatestrategytype}" data-options="
-                            sortable:true,
-                            formatter:function(value,row){
-								return getCodelkupValue('ALLOCATESTRATEGYTYPE',value);
-							}
-                        ">allocateStrategyType
-            </th>
-            <th field="ownerCode" width="50" wms:text="${web.label.owner}">
-                ownerCode
-            </th>
-            <th field="skuCode" width="100" wms:text="${web.inventory.skuCode}">
-                skuCode
-            </th>
-            <th field="skuAlias" width="100" wms:text="${web.inventory.skuAlias}">
-                skuAlias
-            </th>
-             <th field="lotNumber" width="100" wms:text="${web.label.lotnumber}">
-                lotNumber
-            </th>
-             <th field="zoneCode" width="80" wms:text="${web.label.zone}">
-                zoneCode
-            </th>
-             <th field="locationCode" width="80" wms:text="${web.label.location}">
-                locationCode
-            </th>
-             <th field="lpnNumber" width="80" wms:text="${web.label.lpnnumber}">
-                lpnNumber
-            </th>
-             <th field="fullLpnFlag" width="85" wms:text="${web.label.fulllpnflag}" data-options="
-                            sortable:true,
-                            formatter:function(value,row){
-								return getCodelkupValue('YESNO',value);
-							}
-                        ">fullLpnFlag
-             </th>
-            <th field="quantityAllocated" width="50" wms:text="${web.label.quantity.allocated}" data-options="
-            	editor: {
-            		type: 'numberbox',
-            		options: {
-            			required: true
-            		}
-            	}
-            	">
-                quantityAllocated
-            </th>
-            <th field="loadLpnNumber" width="100" wms:text="${web.label.loadlpnnumber}">
-                loadLpnNumber
-            </th>
-            <th field="status" width="70" wms:text="${web.label.status}" data-options="
-                            sortable:true,
-                            formatter:function(value,row){
-								return getCodelkupValue('ALLOCATESTATUS',value);
-							}
-                        ">status
-            </th>
-            <th field="toLocationCode" width="80" wms:text="${web.label.tolocationcode}">
-                toLocationCode
-            </th>
-             <th field="allocateType" width="80" wms:text="${web.label.allocatetype}" data-options="
-                            sortable:true,
-                            formatter:function(value,row){
-								return getCodelkupValue('ALLOCATETYPE',value);
-							}
-                        ">allocateType
-            </th>
-            <th field="allocateStrategyCode" width="100" wms:text="${wms.allocateStrategy.title}">
-                allocateStrategyCode
-            </th>
-            <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
-            <th field="createTime" width="150" wms:text="${web.label.createtime}"
-                data-options="sortable:true">createTime
-            </th>
-            <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
-            <th field="updateTime" width="150" wms:text="${web.label.updatetime}"
-                data-options="sortable:true">updateTime
-            </th>
+            	<tr>
+		            <th field="sourceBillNumber" width="100" wms:text="${web.label.sourcebillnumber}" data-options="sortable:true">
+		                sourceBillNumber
+		            </th>
+		            <th field="sourceLineNumber" width="100" wms:text="${web.label.sourcelinenumber}" data-options="sortable:true">
+		                sourceLineNumber
+		            </th>
+		            <th field="sourceWaveNumber" width="100" wms:text="${web.label.sourcewavenumber}" data-options="sortable:true">
+		                sourceWaveNumber
+		            </th>
+		            <th field="allocateStrategyType" width="100" wms:text="${web.label.allocatestrategytype}" data-options="
+		                            sortable:true,
+		                            formatter:function(value,row){
+										return getCodelkupValue('ALLOCATESTRATEGYTYPE',value);
+									}
+		                        ">allocateStrategyType
+		            </th>
+		            <th field="ownerCode" width="50" wms:text="${web.label.owner}">
+		                ownerCode
+		            </th>
+		            <th field="skuCode" width="100" wms:text="${web.inventory.skuCode}">
+		                skuCode
+		            </th>
+		            <th field="skuAlias" width="100" wms:text="${web.inventory.skuAlias}">
+		                skuAlias
+		            </th>
+		             <th field="lotNumber" width="100" wms:text="${web.label.lotnumber}">
+		                lotNumber
+		            </th>
+		             <th field="zoneCode" width="80" wms:text="${web.label.zone}">
+		                zoneCode
+		            </th>
+		             <th field="locationCode" width="80" wms:text="${web.label.location}">
+		                locationCode
+		            </th>
+		             <th field="lpnNumber" width="80" wms:text="${web.label.lpnnumber}">
+		                lpnNumber
+		            </th>
+		             <th field="fullLpnFlag" width="85" wms:text="${web.label.fulllpnflag}" data-options="
+		                            sortable:true,
+		                            formatter:function(value,row){
+										return getCodelkupValue('YESNO',value);
+									}
+		                        ">fullLpnFlag
+		             </th>
+		            <th field="quantityAllocated" width="50" wms:text="${web.label.quantity.allocated}" data-options="
+		            	editor: {
+		            		type: 'numberbox',
+		            		options: {
+		            			required: true
+		            		}
+		            	}
+		            	">
+		                quantityAllocated
+		            </th>
+		            <th field="loadLpnNumber" width="100" wms:text="${web.label.loadlpnnumber}">
+		                loadLpnNumber
+		            </th>
+		            <th field="status" width="70" wms:text="${web.label.status}" data-options="
+		                            sortable:true,
+		                            formatter:function(value,row){
+										return getCodelkupValue('ALLOCATESTATUS',value);
+									}
+		                        ">status
+		            </th>
+		            <th field="toLocationCode" width="80" wms:text="${web.label.tolocationcode}">
+		                toLocationCode
+		            </th>
+		             <th field="allocateType" width="80" wms:text="${web.label.allocatetype}" data-options="
+		                            sortable:true,
+		                            formatter:function(value,row){
+										return getCodelkupValue('ALLOCATETYPE',value);
+									}
+		                        ">allocateType
+		            </th>
+		            <th field="allocateStrategyCode" width="100" wms:text="${wms.allocateStrategy.title}">
+		                allocateStrategyCode
+		            </th>
+		            <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+		            <th field="createTime" width="150" wms:text="${web.label.createtime}"
+		                data-options="sortable:true">createTime
+		            </th>
+		            <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+		            <th field="updateTime" width="150" wms:text="${web.label.updatetime}"
+		                data-options="sortable:true">updateTime
+		            </th>
+		           </tr>
             </thead>
         </table>
     </div>

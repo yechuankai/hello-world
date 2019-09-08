@@ -53,4 +53,10 @@ public class ReportParameter {
 		this.params = params;
 	}
 
+	public Map<String, String> getParams() {
+		return params;
+	}
+	
+	
+
 }

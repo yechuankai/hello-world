@@ -92,60 +92,64 @@
         <table id="addDetailData"  class="easyui-datagrid" style="height: 100%;width:100%;"
                wms:data-options="toolbar: '#addDetailToolbar'"
                 th:data-delayUrl="@{/services/inner/inventory/onhand/find}">
+            <thead data-options="frozen:true">
+				<tr>
+					<th field="inventoryOnhandId" data-options="checkbox:true"></th>
+			 	</tr>
+			 </thead>
             <thead>
-            <tr>
-                <th field="inventoryOnhandId" data-options="checkbox:true"></th>
-                <th field="ownerCode" width="80" wms:text="${web.label.owner}" wms:data-options="
-							sortable:true">
-                    ownerCode
-                </th>
-                <th field="ownerId" data-options="hidden:true"></th>
-                <th field="skuCode" width="100" wms:text="${web.inventory.skuCode}" wms:data-options="
-							sortable:true">
-                    skuCode
-                </th>
-                <th field="skuAlias" width="100" wms:text="${web.inventory.skuAlias}">
-                    skuAlias
-                </th>
-                <th field="skuId" data-options="hidden:true"></th>
-                <th field="packCode" width="60" wms:text="${web.label.pack}" data-options="
-										formatter:function(value,row){
-										    var packCode = 'STD';
-										    return packCode;
-										}
-						">packCode</th>
-                <th field="lpnId" data-options="hidden:true"></th>
-                <th field="lotNumber" width="100" wms:text="${web.label.lotnumber}" wms:data-options="
-							sortable:true">
-                    lotNumber
-                </th>
-                <th field="lotId" data-options="hidden:true"></th>
-                 <th field="locationCode" width="100" wms:text="${web.label.location}" wms:data-options="
-							sortable:true">
-                    locationCode
-                </th>
-                <th field="locationId" data-options="hidden:true"></th>
-                <th field="lpnNumber" width="100" wms:text="${web.label.lpnnumber}" wms:data-options="
-							sortable:true">
-                    lpnNumber
-                </th>
-                <th field="quantityOnhand" width="80" wms:text="${web.label.quantity.onhand}">
-                    quantityOnhand
-                </th>
-                <th field="quantityAllocated" width="100" wms:text="${web.label.quantity.allocated}" data-options="sortable:true">
-                	quantityAllocated
-                </th>
-				<th field="quantityLocked" width="100" wms:text="${web.label.quantity.locked}" data-options="sortable:true">
-					quantityLocked
-				</th>
-				<th field="quantityAvailable" width="100" wms:text="${web.label.quantity.available}" data-options="sortable:false">
-					quantityAvailable
-				</th>
-                <th field="quantityAdjustment" width="80" wms:text="${web.label.quantityadjustment}" data-options="editor:{type:'numberbox'}">
-                    quantityAdjustment
-                </th>
-                <th field="targetQuantity" width="80" wms:text="${web.label.targetquantity}"></th>
-            </tr>
+	            <tr>
+	                <th field="ownerCode" width="80" wms:text="${web.label.owner}" wms:data-options="
+								sortable:true">
+	                    ownerCode
+	                </th>
+	                <th field="ownerId" data-options="hidden:true"></th>
+	                <th field="skuCode" width="100" wms:text="${web.inventory.skuCode}" wms:data-options="
+								sortable:true">
+	                    skuCode
+	                </th>
+	                <th field="skuAlias" width="100" wms:text="${web.inventory.skuAlias}">
+	                    skuAlias
+	                </th>
+	                <th field="skuId" data-options="hidden:true"></th>
+	                <th field="packCode" width="60" wms:text="${web.label.pack}" data-options="
+											formatter:function(value,row){
+											    var packCode = 'STD';
+											    return packCode;
+											}
+							">packCode</th>
+	                <th field="lpnId" data-options="hidden:true"></th>
+	                <th field="lotNumber" width="100" wms:text="${web.label.lotnumber}" wms:data-options="
+								sortable:true">
+	                    lotNumber
+	                </th>
+	                <th field="lotId" data-options="hidden:true"></th>
+	                 <th field="locationCode" width="100" wms:text="${web.label.location}" wms:data-options="
+								sortable:true">
+	                    locationCode
+	                </th>
+	                <th field="locationId" data-options="hidden:true"></th>
+	                <th field="lpnNumber" width="100" wms:text="${web.label.lpnnumber}" wms:data-options="
+								sortable:true">
+	                    lpnNumber
+	                </th>
+	                <th field="quantityOnhand" width="80" wms:text="${web.label.quantity.onhand}">
+	                    quantityOnhand
+	                </th>
+	                <th field="quantityAllocated" width="100" wms:text="${web.label.quantity.allocated}" data-options="sortable:true">
+	                	quantityAllocated
+	                </th>
+					<th field="quantityLocked" width="100" wms:text="${web.label.quantity.locked}" data-options="sortable:true">
+						quantityLocked
+					</th>
+					<th field="quantityAvailable" width="100" wms:text="${web.label.quantity.available}" data-options="sortable:false">
+						quantityAvailable
+					</th>
+	                <th field="quantityAdjustment" width="80" wms:text="${web.label.quantityadjustment}" data-options="editor:{type:'numberbox'}">
+	                    quantityAdjustment
+	                </th>
+	                <th field="targetQuantity" width="80" wms:text="${web.label.targetquantity}"></th>
+	            </tr>
             </thead>
         </table>
 </div>

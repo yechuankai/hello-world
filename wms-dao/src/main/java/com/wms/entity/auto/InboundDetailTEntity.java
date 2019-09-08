@@ -13,6 +13,8 @@ public class InboundDetailTEntity extends BaseEntity {
 
     private Long lineNumber;
 
+    private Long parentLineNumber;
+
     private Long sourceLineNumber;
 
     private String poNumber;
@@ -34,6 +36,8 @@ public class InboundDetailTEntity extends BaseEntity {
     private String putawayStrategyCode;
 
     private String uom;
+
+    private BigDecimal uomQuantity;
 
     private Long packId;
 
@@ -105,10 +109,6 @@ public class InboundDetailTEntity extends BaseEntity {
 
     private String description;
 
-    private BigDecimal uomQuantity;
-
-    private Long parentLineNumber;
-
     private BigDecimal weightGross;
 
     private BigDecimal weightNet;
@@ -141,6 +141,14 @@ public class InboundDetailTEntity extends BaseEntity {
 
     public void setLineNumber(Long lineNumber) {
         this.lineNumber = lineNumber;
+    }
+
+    public Long getParentLineNumber() {
+        return parentLineNumber;
+    }
+
+    public void setParentLineNumber(Long parentLineNumber) {
+        this.parentLineNumber = parentLineNumber;
     }
 
     public Long getSourceLineNumber() {
@@ -229,6 +237,14 @@ public class InboundDetailTEntity extends BaseEntity {
 
     public void setUom(String uom) {
         this.uom = uom == null ? null : uom.trim();
+    }
+
+    public BigDecimal getUomQuantity() {
+        return uomQuantity;
+    }
+
+    public void setUomQuantity(BigDecimal uomQuantity) {
+        this.uomQuantity = uomQuantity;
     }
 
     public Long getPackId() {
@@ -522,22 +538,6 @@ public class InboundDetailTEntity extends BaseEntity {
         this.description = description == null ? null : description.trim();
     }
 
-    public BigDecimal getUomQuantity() {
-        return uomQuantity;
-    }
-
-    public void setUomQuantity(BigDecimal uomQuantity) {
-        this.uomQuantity = uomQuantity;
-    }
-
-    public Long getParentLineNumber() {
-        return parentLineNumber;
-    }
-
-    public void setParentLineNumber(Long parentLineNumber) {
-        this.parentLineNumber = parentLineNumber;
-    }
-
     public BigDecimal getWeightGross() {
         return weightGross;
     }
@@ -587,6 +587,7 @@ public class InboundDetailTEntity extends BaseEntity {
         sb.append(", inboundDetailId=").append(inboundDetailId);
         sb.append(", inboundHeaderId=").append(inboundHeaderId);
         sb.append(", lineNumber=").append(lineNumber);
+        sb.append(", parentLineNumber=").append(parentLineNumber);
         sb.append(", sourceLineNumber=").append(sourceLineNumber);
         sb.append(", poNumber=").append(poNumber);
         sb.append(", poLineNumber=").append(poLineNumber);
@@ -598,6 +599,7 @@ public class InboundDetailTEntity extends BaseEntity {
         sb.append(", putawayStrategyId=").append(putawayStrategyId);
         sb.append(", putawayStrategyCode=").append(putawayStrategyCode);
         sb.append(", uom=").append(uom);
+        sb.append(", uomQuantity=").append(uomQuantity);
         sb.append(", packId=").append(packId);
         sb.append(", packCode=").append(packCode);
         sb.append(", quantityExpected=").append(quantityExpected);
@@ -633,8 +635,6 @@ public class InboundDetailTEntity extends BaseEntity {
         sb.append(", updateTime=").append(updateTime);
         sb.append(", updateVersion=").append(updateVersion);
         sb.append(", description=").append(description);
-        sb.append(", uomQuantity=").append(uomQuantity);
-        sb.append(", parentLineNumber=").append(parentLineNumber);
         sb.append(", weightGross=").append(weightGross);
         sb.append(", weightNet=").append(weightNet);
         sb.append(", weightTare=").append(weightTare);
@@ -659,6 +659,7 @@ public class InboundDetailTEntity extends BaseEntity {
         return (this.getInboundDetailId() == null ? other.getInboundDetailId() == null : this.getInboundDetailId().equals(other.getInboundDetailId()))
             && (this.getInboundHeaderId() == null ? other.getInboundHeaderId() == null : this.getInboundHeaderId().equals(other.getInboundHeaderId()))
             && (this.getLineNumber() == null ? other.getLineNumber() == null : this.getLineNumber().equals(other.getLineNumber()))
+            && (this.getParentLineNumber() == null ? other.getParentLineNumber() == null : this.getParentLineNumber().equals(other.getParentLineNumber()))
             && (this.getSourceLineNumber() == null ? other.getSourceLineNumber() == null : this.getSourceLineNumber().equals(other.getSourceLineNumber()))
             && (this.getPoNumber() == null ? other.getPoNumber() == null : this.getPoNumber().equals(other.getPoNumber()))
             && (this.getPoLineNumber() == null ? other.getPoLineNumber() == null : this.getPoLineNumber().equals(other.getPoLineNumber()))
@@ -670,6 +671,7 @@ public class InboundDetailTEntity extends BaseEntity {
             && (this.getPutawayStrategyId() == null ? other.getPutawayStrategyId() == null : this.getPutawayStrategyId().equals(other.getPutawayStrategyId()))
             && (this.getPutawayStrategyCode() == null ? other.getPutawayStrategyCode() == null : this.getPutawayStrategyCode().equals(other.getPutawayStrategyCode()))
             && (this.getUom() == null ? other.getUom() == null : this.getUom().equals(other.getUom()))
+            && (this.getUomQuantity() == null ? other.getUomQuantity() == null : this.getUomQuantity().equals(other.getUomQuantity()))
             && (this.getPackId() == null ? other.getPackId() == null : this.getPackId().equals(other.getPackId()))
             && (this.getPackCode() == null ? other.getPackCode() == null : this.getPackCode().equals(other.getPackCode()))
             && (this.getQuantityExpected() == null ? other.getQuantityExpected() == null : this.getQuantityExpected().equals(other.getQuantityExpected()))
@@ -705,8 +707,6 @@ public class InboundDetailTEntity extends BaseEntity {
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
             && (this.getUpdateVersion() == null ? other.getUpdateVersion() == null : this.getUpdateVersion().equals(other.getUpdateVersion()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
-            && (this.getUomQuantity() == null ? other.getUomQuantity() == null : this.getUomQuantity().equals(other.getUomQuantity()))
-            && (this.getParentLineNumber() == null ? other.getParentLineNumber() == null : this.getParentLineNumber().equals(other.getParentLineNumber()))
             && (this.getWeightGross() == null ? other.getWeightGross() == null : this.getWeightGross().equals(other.getWeightGross()))
             && (this.getWeightNet() == null ? other.getWeightNet() == null : this.getWeightNet().equals(other.getWeightNet()))
             && (this.getWeightTare() == null ? other.getWeightTare() == null : this.getWeightTare().equals(other.getWeightTare()))
@@ -721,6 +721,7 @@ public class InboundDetailTEntity extends BaseEntity {
         result = prime * result + ((getInboundDetailId() == null) ? 0 : getInboundDetailId().hashCode());
         result = prime * result + ((getInboundHeaderId() == null) ? 0 : getInboundHeaderId().hashCode());
         result = prime * result + ((getLineNumber() == null) ? 0 : getLineNumber().hashCode());
+        result = prime * result + ((getParentLineNumber() == null) ? 0 : getParentLineNumber().hashCode());
         result = prime * result + ((getSourceLineNumber() == null) ? 0 : getSourceLineNumber().hashCode());
         result = prime * result + ((getPoNumber() == null) ? 0 : getPoNumber().hashCode());
         result = prime * result + ((getPoLineNumber() == null) ? 0 : getPoLineNumber().hashCode());
@@ -732,6 +733,7 @@ public class InboundDetailTEntity extends BaseEntity {
         result = prime * result + ((getPutawayStrategyId() == null) ? 0 : getPutawayStrategyId().hashCode());
         result = prime * result + ((getPutawayStrategyCode() == null) ? 0 : getPutawayStrategyCode().hashCode());
         result = prime * result + ((getUom() == null) ? 0 : getUom().hashCode());
+        result = prime * result + ((getUomQuantity() == null) ? 0 : getUomQuantity().hashCode());
         result = prime * result + ((getPackId() == null) ? 0 : getPackId().hashCode());
         result = prime * result + ((getPackCode() == null) ? 0 : getPackCode().hashCode());
         result = prime * result + ((getQuantityExpected() == null) ? 0 : getQuantityExpected().hashCode());
@@ -767,8 +769,6 @@ public class InboundDetailTEntity extends BaseEntity {
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getUpdateVersion() == null) ? 0 : getUpdateVersion().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
-        result = prime * result + ((getUomQuantity() == null) ? 0 : getUomQuantity().hashCode());
-        result = prime * result + ((getParentLineNumber() == null) ? 0 : getParentLineNumber().hashCode());
         result = prime * result + ((getWeightGross() == null) ? 0 : getWeightGross().hashCode());
         result = prime * result + ((getWeightNet() == null) ? 0 : getWeightNet().hashCode());
         result = prime * result + ((getWeightTare() == null) ? 0 : getWeightTare().hashCode());
@@ -855,6 +855,20 @@ public class InboundDetailTEntity extends BaseEntity {
          */
         public Builder lineNumber(Long lineNumber) {
             obj.setLineNumber(lineNumber);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column INBOUND_DETAIL_T.PARENT_LINE_NUMBER
+         *
+         * @param parentLineNumber the value for INBOUND_DETAIL_T.PARENT_LINE_NUMBER
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder parentLineNumber(Long parentLineNumber) {
+            obj.setParentLineNumber(parentLineNumber);
             return this;
         }
 
@@ -1518,20 +1532,6 @@ public class InboundDetailTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column INBOUND_DETAIL_T.PARENT_LINE_NUMBER
-         *
-         * @param parentLineNumber the value for INBOUND_DETAIL_T.PARENT_LINE_NUMBER
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        public Builder parentLineNumber(Long parentLineNumber) {
-            obj.setParentLineNumber(parentLineNumber);
-            return this;
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
          * This method sets the value of the database column INBOUND_DETAIL_T.WEIGHT_GROSS
          *
          * @param weightGross the value for INBOUND_DETAIL_T.WEIGHT_GROSS
@@ -1698,6 +1698,7 @@ public class InboundDetailTEntity extends BaseEntity {
         inboundDetailId("INBOUND_DETAIL_ID", "inboundDetailId", "DECIMAL", false),
         inboundHeaderId("INBOUND_HEADER_ID", "inboundHeaderId", "DECIMAL", false),
         lineNumber("LINE_NUMBER", "lineNumber", "DECIMAL", false),
+        parentLineNumber("PARENT_LINE_NUMBER", "parentLineNumber", "DECIMAL", false),
         sourceLineNumber("SOURCE_LINE_NUMBER", "sourceLineNumber", "DECIMAL", false),
         poNumber("PO_NUMBER", "poNumber", "VARCHAR", false),
         poLineNumber("PO_LINE_NUMBER", "poLineNumber", "VARCHAR", false),
@@ -1709,6 +1710,7 @@ public class InboundDetailTEntity extends BaseEntity {
         putawayStrategyId("PUTAWAY_STRATEGY_ID", "putawayStrategyId", "DECIMAL", false),
         putawayStrategyCode("PUTAWAY_STRATEGY_CODE", "putawayStrategyCode", "VARCHAR", false),
         uom("UOM", "uom", "VARCHAR", false),
+        uomQuantity("UOM_QUANTITY", "uomQuantity", "DECIMAL", false),
         packId("PACK_ID", "packId", "DECIMAL", false),
         packCode("PACK_CODE", "packCode", "VARCHAR", false),
         quantityExpected("QUANTITY_EXPECTED", "quantityExpected", "DECIMAL", false),
@@ -1744,8 +1746,6 @@ public class InboundDetailTEntity extends BaseEntity {
         updateTime("UPDATE_TIME", "updateTime", "TIMESTAMP", false),
         updateVersion("UPDATE_VERSION", "updateVersion", "DECIMAL", false),
         description("DESCRIPTION", "description", "VARCHAR", false),
-        uomQuantity("UOM_QUANTITY", "uomQuantity", "DECIMAL", false),
-        parentLineNumber("PARENT_LINE_NUMBER", "parentLineNumber", "DECIMAL", false),
         weightGross("WEIGHT_GROSS", "weightGross", "DECIMAL", false),
         weightNet("WEIGHT_NET", "weightNet", "DECIMAL", false),
         weightTare("WEIGHT_TARE", "weightTare", "DECIMAL", false),

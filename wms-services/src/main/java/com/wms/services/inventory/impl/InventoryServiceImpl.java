@@ -327,6 +327,7 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 		.andDelFlagEqualTo(YesNoEnum.No.getCode())
 		.andWarehouseIdEqualTo(inventory.getWarehouseId())
 		.andCompanyIdEqualTo(inventory.getCompanyId())
+		.andQuantityOnhandGreaterThan(BigDecimal.ZERO)
 		.andLocationIdIn(Lists.newArrayList(locations));
 		return inventoryDao.selectByExample(example);
 	}
@@ -364,6 +365,7 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 		.andDelFlagEqualTo(YesNoEnum.No.getCode())
 		.andWarehouseIdEqualTo(inventory.getWarehouseId())
 		.andCompanyIdEqualTo(inventory.getCompanyId())
+		.andQuantityOnhandGreaterThan(BigDecimal.ZERO)
 		.andLpnIdIn(Lists.newArrayList(lpns));
 		return inventoryDao.selectByExample(example);
 	}

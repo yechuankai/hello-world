@@ -171,3 +171,9 @@ insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JO
 values ('1164072373274148864', 'en_US', 'ZONETYPE_0', 'Normal', 'ZONETYPE', '0', null, null, null, 'CODELKUP', 'Y', 'N', 'YECHUANKAI', to_date('21-08-2019 15:10:55', 'dd-mm-yyyy hh24:mi:ss'), 'YECHUANKAI', to_date('21-08-2019 15:11:57', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
 
 
+--分配明细表增加来源库位，来源LPN
+alter table WMS.ALLOCATE_T ADD (FROM_LOCATION_CODE varchar2(50));
+alter table WMS.ALLOCATE_T ADD (FROM_LPN_NUMBER varchar2(50));
+comment on column WMS.ALLOCATE_T.FROM_LOCATION_CODE   is '来源库位';
+comment on column WMS.ALLOCATE_T.FROM_LPN_NUMBER   is '来源LPN';
+

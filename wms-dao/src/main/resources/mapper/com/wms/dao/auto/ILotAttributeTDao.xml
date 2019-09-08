@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.wms.entity.auto.LotAttributeTEntity">
     <id column="LOT_ATTRIBUTE_ID" jdbcType="DECIMAL" property="lotAttributeId" />
     <result column="LOT_NUMBER" jdbcType="VARCHAR" property="lotNumber" />
+    <result column="LINE_NUMBER" jdbcType="DECIMAL" property="lineNumber" />
     <result column="OWNER_ID" jdbcType="DECIMAL" property="ownerId" />
     <result column="OWNER_CODE" jdbcType="VARCHAR" property="ownerCode" />
     <result column="SKU_ID" jdbcType="DECIMAL" property="skuId" />
@@ -128,11 +129,11 @@
     </where >
   </sql>
   <sql id="Base_Column_List">
-    LOT_ATTRIBUTE_ID, LOT_NUMBER, OWNER_ID, OWNER_CODE, SKU_ID, SKU_CODE, SKU_ALIAS, 
-    LOT_ATTRIBUTE1, LOT_ATTRIBUTE2, LOT_ATTRIBUTE3, LOT_ATTRIBUTE4, LOT_ATTRIBUTE5, LOT_ATTRIBUTE6, 
-    LOT_ATTRIBUTE7, LOT_ATTRIBUTE8, LOT_ATTRIBUTE9, LOT_ATTRIBUTE10, LOT_ATTRIBUTE11, 
-    LOT_ATTRIBUTE12, MD5, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, 
-    UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
+    LOT_ATTRIBUTE_ID, LOT_NUMBER, LINE_NUMBER, OWNER_ID, OWNER_CODE, SKU_ID, SKU_CODE, 
+    SKU_ALIAS, LOT_ATTRIBUTE1, LOT_ATTRIBUTE2, LOT_ATTRIBUTE3, LOT_ATTRIBUTE4, LOT_ATTRIBUTE5, 
+    LOT_ATTRIBUTE6, LOT_ATTRIBUTE7, LOT_ATTRIBUTE8, LOT_ATTRIBUTE9, LOT_ATTRIBUTE10, 
+    LOT_ATTRIBUTE11, LOT_ATTRIBUTE12, MD5, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
+    CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.LotAttributeTExample" resultMap="BaseResultMap">
     select
@@ -155,26 +156,28 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wms.entity.auto.LotAttributeTEntity">
-    insert into LOT_ATTRIBUTE_T (LOT_ATTRIBUTE_ID, LOT_NUMBER, OWNER_ID, 
-      OWNER_CODE, SKU_ID, SKU_CODE, 
-      SKU_ALIAS, LOT_ATTRIBUTE1, LOT_ATTRIBUTE2, 
-      LOT_ATTRIBUTE3, LOT_ATTRIBUTE4, LOT_ATTRIBUTE5, 
-      LOT_ATTRIBUTE6, LOT_ATTRIBUTE7, LOT_ATTRIBUTE8, 
-      LOT_ATTRIBUTE9, LOT_ATTRIBUTE10, LOT_ATTRIBUTE11, 
-      LOT_ATTRIBUTE12, MD5, COMPANY_ID, 
-      WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
-      CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
-      UPDATE_VERSION, DESCRIPTION)
-    values (#{lotAttributeId,jdbcType=DECIMAL}, #{lotNumber,jdbcType=VARCHAR}, #{ownerId,jdbcType=DECIMAL}, 
-      #{ownerCode,jdbcType=VARCHAR}, #{skuId,jdbcType=DECIMAL}, #{skuCode,jdbcType=VARCHAR}, 
-      #{skuAlias,jdbcType=VARCHAR}, #{lotAttribute1,jdbcType=VARCHAR}, #{lotAttribute2,jdbcType=VARCHAR}, 
-      #{lotAttribute3,jdbcType=VARCHAR}, #{lotAttribute4,jdbcType=TIMESTAMP}, #{lotAttribute5,jdbcType=TIMESTAMP}, 
-      #{lotAttribute6,jdbcType=VARCHAR}, #{lotAttribute7,jdbcType=VARCHAR}, #{lotAttribute8,jdbcType=VARCHAR}, 
-      #{lotAttribute9,jdbcType=VARCHAR}, #{lotAttribute10,jdbcType=VARCHAR}, #{lotAttribute11,jdbcType=TIMESTAMP}, 
-      #{lotAttribute12,jdbcType=TIMESTAMP}, #{md5,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, 
-      #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR})
+    insert into LOT_ATTRIBUTE_T (LOT_ATTRIBUTE_ID, LOT_NUMBER, LINE_NUMBER, 
+      OWNER_ID, OWNER_CODE, SKU_ID, 
+      SKU_CODE, SKU_ALIAS, LOT_ATTRIBUTE1, 
+      LOT_ATTRIBUTE2, LOT_ATTRIBUTE3, LOT_ATTRIBUTE4, 
+      LOT_ATTRIBUTE5, LOT_ATTRIBUTE6, LOT_ATTRIBUTE7, 
+      LOT_ATTRIBUTE8, LOT_ATTRIBUTE9, LOT_ATTRIBUTE10, 
+      LOT_ATTRIBUTE11, LOT_ATTRIBUTE12, MD5, 
+      COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, 
+      CREATE_BY, CREATE_TIME, UPDATE_BY, 
+      UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
+      )
+    values (#{lotAttributeId,jdbcType=DECIMAL}, #{lotNumber,jdbcType=VARCHAR}, #{lineNumber,jdbcType=DECIMAL}, 
+      #{ownerId,jdbcType=DECIMAL}, #{ownerCode,jdbcType=VARCHAR}, #{skuId,jdbcType=DECIMAL}, 
+      #{skuCode,jdbcType=VARCHAR}, #{skuAlias,jdbcType=VARCHAR}, #{lotAttribute1,jdbcType=VARCHAR}, 
+      #{lotAttribute2,jdbcType=VARCHAR}, #{lotAttribute3,jdbcType=VARCHAR}, #{lotAttribute4,jdbcType=TIMESTAMP}, 
+      #{lotAttribute5,jdbcType=TIMESTAMP}, #{lotAttribute6,jdbcType=VARCHAR}, #{lotAttribute7,jdbcType=VARCHAR}, 
+      #{lotAttribute8,jdbcType=VARCHAR}, #{lotAttribute9,jdbcType=VARCHAR}, #{lotAttribute10,jdbcType=VARCHAR}, 
+      #{lotAttribute11,jdbcType=TIMESTAMP}, #{lotAttribute12,jdbcType=TIMESTAMP}, #{md5,jdbcType=VARCHAR}, 
+      #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.LotAttributeTEntity">
     insert into LOT_ATTRIBUTE_T
@@ -184,6 +187,9 @@
       </if>
       <if test="lotNumber != null">
         LOT_NUMBER,
+      </if>
+      <if test="lineNumber != null">
+        LINE_NUMBER,
       </if>
       <if test="ownerId != null">
         OWNER_ID,
@@ -273,6 +279,9 @@
       </if>
       <if test="lotNumber != null">
         #{lotNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="lineNumber != null">
+        #{lineNumber,jdbcType=DECIMAL},
       </if>
       <if test="ownerId != null">
         #{ownerId,jdbcType=DECIMAL},
@@ -372,6 +381,9 @@
       <if test="record.lotNumber != null">
         LOT_NUMBER = #{record.lotNumber,jdbcType=VARCHAR},
       </if>
+      <if test="record.lineNumber != null">
+        LINE_NUMBER = #{record.lineNumber,jdbcType=DECIMAL},
+      </if>
       <if test="record.ownerId != null">
         OWNER_ID = #{record.ownerId,jdbcType=DECIMAL},
       </if>
@@ -462,6 +474,7 @@
     update LOT_ATTRIBUTE_T
     set LOT_ATTRIBUTE_ID = #{record.lotAttributeId,jdbcType=DECIMAL},
       LOT_NUMBER = #{record.lotNumber,jdbcType=VARCHAR},
+      LINE_NUMBER = #{record.lineNumber,jdbcType=DECIMAL},
       OWNER_ID = #{record.ownerId,jdbcType=DECIMAL},
       OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR},
       SKU_ID = #{record.skuId,jdbcType=DECIMAL},
@@ -593,6 +606,7 @@
     set UPDATE_VERSION = UPDATE_VERSION + 1,
     LOT_ATTRIBUTE_ID = #{record.lotAttributeId,jdbcType=DECIMAL}, 
     LOT_NUMBER = #{record.lotNumber,jdbcType=VARCHAR}, 
+    LINE_NUMBER = #{record.lineNumber,jdbcType=DECIMAL}, 
     OWNER_ID = #{record.ownerId,jdbcType=DECIMAL}, 
     OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR}, 
     SKU_ID = #{record.skuId,jdbcType=DECIMAL}, 
@@ -638,6 +652,9 @@
         </if>
         <if test="record.lotNumber != null">
           LOT_NUMBER = #{record.lotNumber,jdbcType=VARCHAR},
+        </if>
+        <if test="record.lineNumber != null">
+          LINE_NUMBER = #{record.lineNumber,jdbcType=DECIMAL},
         </if>
         <if test="record.ownerId != null">
           OWNER_ID = #{record.ownerId,jdbcType=DECIMAL},

@@ -13,6 +13,9 @@
     <result column="ADDRESS2" jdbcType="VARCHAR" property="address2" />
     <result column="FAX" jdbcType="VARCHAR" property="fax" />
     <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="BARCODE_PREFIX" jdbcType="VARCHAR" property="barcodePrefix" />
+    <result column="BARCODE_LENGTH" jdbcType="DECIMAL" property="barcodeLength" />
+    <result column="BARCODE_START" jdbcType="DECIMAL" property="barcodeStart" />
     <result column="ACTIVE" jdbcType="CHAR" property="active" />
     <result column="REMARK" jdbcType="VARCHAR" property="remark" />
     <result column="COMPANY_ID" jdbcType="DECIMAL" property="companyId" />
@@ -24,9 +27,6 @@
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="UPDATE_VERSION" jdbcType="DECIMAL" property="updateVersion" />
     <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
-    <result column="BARCODE_PREFIX" jdbcType="VARCHAR" property="barcodePrefix" />
-    <result column="BARCODE_LENGTH" jdbcType="DECIMAL" property="barcodeLength" />
-    <result column="BARCODE_START" jdbcType="DECIMAL" property="barcodeStart" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -125,9 +125,9 @@
   </sql>
   <sql id="Base_Column_List">
     OWNER_ID, OWNER_CODE, OWNER_DESCR, CONTACT1, CONTACT2, PHONE1, PHONE2, ADDRESS1, 
-    ADDRESS2, FAX, EMAIL, ACTIVE, REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
-    CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, BARCODE_PREFIX, 
-    BARCODE_LENGTH, BARCODE_START
+    ADDRESS2, FAX, EMAIL, BARCODE_PREFIX, BARCODE_LENGTH, BARCODE_START, ACTIVE, REMARK, 
+    COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
+    UPDATE_VERSION, DESCRIPTION
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.OwnerTExample" resultMap="BaseResultMap">
     select
@@ -153,21 +153,21 @@
     insert into OWNER_T (OWNER_ID, OWNER_CODE, OWNER_DESCR, 
       CONTACT1, CONTACT2, PHONE1, 
       PHONE2, ADDRESS1, ADDRESS2, 
-      FAX, EMAIL, ACTIVE, REMARK, 
-      COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, 
-      CREATE_BY, CREATE_TIME, UPDATE_BY, 
-      UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, 
-      BARCODE_PREFIX, BARCODE_LENGTH, BARCODE_START
-      )
+      FAX, EMAIL, BARCODE_PREFIX, 
+      BARCODE_LENGTH, BARCODE_START, ACTIVE, 
+      REMARK, COMPANY_ID, WAREHOUSE_ID, 
+      DEL_FLAG, CREATE_BY, CREATE_TIME, 
+      UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, 
+      DESCRIPTION)
     values (#{ownerId,jdbcType=DECIMAL}, #{ownerCode,jdbcType=VARCHAR}, #{ownerDescr,jdbcType=VARCHAR}, 
       #{contact1,jdbcType=VARCHAR}, #{contact2,jdbcType=VARCHAR}, #{phone1,jdbcType=VARCHAR}, 
       #{phone2,jdbcType=VARCHAR}, #{address1,jdbcType=VARCHAR}, #{address2,jdbcType=VARCHAR}, 
-      #{fax,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{active,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, 
-      #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, 
-      #{barcodePrefix,jdbcType=VARCHAR}, #{barcodeLength,jdbcType=DECIMAL}, #{barcodeStart,jdbcType=DECIMAL}
-      )
+      #{fax,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{barcodePrefix,jdbcType=VARCHAR}, 
+      #{barcodeLength,jdbcType=DECIMAL}, #{barcodeStart,jdbcType=DECIMAL}, #{active,jdbcType=CHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, 
+      #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, 
+      #{description,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.OwnerTEntity">
     insert into OWNER_T
@@ -205,6 +205,15 @@
       <if test="email != null">
         EMAIL,
       </if>
+      <if test="barcodePrefix != null">
+        BARCODE_PREFIX,
+      </if>
+      <if test="barcodeLength != null">
+        BARCODE_LENGTH,
+      </if>
+      <if test="barcodeStart != null">
+        BARCODE_START,
+      </if>
       <if test="active != null">
         ACTIVE,
       </if>
@@ -237,15 +246,6 @@
       </if>
       <if test="description != null">
         DESCRIPTION,
-      </if>
-      <if test="barcodePrefix != null">
-        BARCODE_PREFIX,
-      </if>
-      <if test="barcodeLength != null">
-        BARCODE_LENGTH,
-      </if>
-      <if test="barcodeStart != null">
-        BARCODE_START,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -282,6 +282,15 @@
       <if test="email != null">
         #{email,jdbcType=VARCHAR},
       </if>
+      <if test="barcodePrefix != null">
+        #{barcodePrefix,jdbcType=VARCHAR},
+      </if>
+      <if test="barcodeLength != null">
+        #{barcodeLength,jdbcType=DECIMAL},
+      </if>
+      <if test="barcodeStart != null">
+        #{barcodeStart,jdbcType=DECIMAL},
+      </if>
       <if test="active != null">
         #{active,jdbcType=CHAR},
       </if>
@@ -314,15 +323,6 @@
       </if>
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="barcodePrefix != null">
-        #{barcodePrefix,jdbcType=VARCHAR},
-      </if>
-      <if test="barcodeLength != null">
-        #{barcodeLength,jdbcType=DECIMAL},
-      </if>
-      <if test="barcodeStart != null">
-        #{barcodeStart,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -368,6 +368,15 @@
       <if test="record.email != null">
         EMAIL = #{record.email,jdbcType=VARCHAR},
       </if>
+      <if test="record.barcodePrefix != null">
+        BARCODE_PREFIX = #{record.barcodePrefix,jdbcType=VARCHAR},
+      </if>
+      <if test="record.barcodeLength != null">
+        BARCODE_LENGTH = #{record.barcodeLength,jdbcType=DECIMAL},
+      </if>
+      <if test="record.barcodeStart != null">
+        BARCODE_START = #{record.barcodeStart,jdbcType=DECIMAL},
+      </if>
       <if test="record.active != null">
         ACTIVE = #{record.active,jdbcType=CHAR},
       </if>
@@ -401,15 +410,6 @@
       <if test="record.description != null">
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       </if>
-      <if test="record.barcodePrefix != null">
-        BARCODE_PREFIX = #{record.barcodePrefix,jdbcType=VARCHAR},
-      </if>
-      <if test="record.barcodeLength != null">
-        BARCODE_LENGTH = #{record.barcodeLength,jdbcType=DECIMAL},
-      </if>
-      <if test="record.barcodeStart != null">
-        BARCODE_START = #{record.barcodeStart,jdbcType=DECIMAL},
-      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -428,6 +428,9 @@
       ADDRESS2 = #{record.address2,jdbcType=VARCHAR},
       FAX = #{record.fax,jdbcType=VARCHAR},
       EMAIL = #{record.email,jdbcType=VARCHAR},
+      BARCODE_PREFIX = #{record.barcodePrefix,jdbcType=VARCHAR},
+      BARCODE_LENGTH = #{record.barcodeLength,jdbcType=DECIMAL},
+      BARCODE_START = #{record.barcodeStart,jdbcType=DECIMAL},
       ACTIVE = #{record.active,jdbcType=CHAR},
       REMARK = #{record.remark,jdbcType=VARCHAR},
       COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
@@ -438,10 +441,7 @@
       UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
       UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
       UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
-      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-      BARCODE_PREFIX = #{record.barcodePrefix,jdbcType=VARCHAR},
-      BARCODE_LENGTH = #{record.barcodeLength,jdbcType=DECIMAL},
-      BARCODE_START = #{record.barcodeStart,jdbcType=DECIMAL}
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -555,6 +555,9 @@
     ADDRESS2 = #{record.address2,jdbcType=VARCHAR}, 
     FAX = #{record.fax,jdbcType=VARCHAR}, 
     EMAIL = #{record.email,jdbcType=VARCHAR}, 
+    BARCODE_PREFIX = #{record.barcodePrefix,jdbcType=VARCHAR}, 
+    BARCODE_LENGTH = #{record.barcodeLength,jdbcType=DECIMAL}, 
+    BARCODE_START = #{record.barcodeStart,jdbcType=DECIMAL}, 
     ACTIVE = #{record.active,jdbcType=CHAR}, 
     REMARK = #{record.remark,jdbcType=VARCHAR}, 
     COMPANY_ID = #{record.companyId,jdbcType=DECIMAL}, 
@@ -564,10 +567,7 @@
     CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP}, 
     UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR}, 
     UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
-    DESCRIPTION = #{record.description,jdbcType=VARCHAR}, 
-    BARCODE_PREFIX = #{record.barcodePrefix,jdbcType=VARCHAR}, 
-    BARCODE_LENGTH = #{record.barcodeLength,jdbcType=DECIMAL}, 
-    BARCODE_START = #{record.barcodeStart,jdbcType=DECIMAL}
+    DESCRIPTION = #{record.description,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
     </if>
@@ -615,6 +615,15 @@
         <if test="record.email != null">
           EMAIL = #{record.email,jdbcType=VARCHAR},
         </if>
+        <if test="record.barcodePrefix != null">
+          BARCODE_PREFIX = #{record.barcodePrefix,jdbcType=VARCHAR},
+        </if>
+        <if test="record.barcodeLength != null">
+          BARCODE_LENGTH = #{record.barcodeLength,jdbcType=DECIMAL},
+        </if>
+        <if test="record.barcodeStart != null">
+          BARCODE_START = #{record.barcodeStart,jdbcType=DECIMAL},
+        </if>
         <if test="record.active != null">
           ACTIVE = #{record.active,jdbcType=CHAR},
         </if>
@@ -644,15 +653,6 @@
         </if>
         <if test="record.description != null">
           DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-        </if>
-        <if test="record.barcodePrefix != null">
-          BARCODE_PREFIX = #{record.barcodePrefix,jdbcType=VARCHAR},
-        </if>
-        <if test="record.barcodeLength != null">
-          BARCODE_LENGTH = #{record.barcodeLength,jdbcType=DECIMAL},
-        </if>
-        <if test="record.barcodeStart != null">
-          BARCODE_START = #{record.barcodeStart,jdbcType=DECIMAL},
         </if>
       </trim>
     </set>

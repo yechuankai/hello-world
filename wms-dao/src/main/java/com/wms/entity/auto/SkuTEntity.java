@@ -17,6 +17,8 @@ public class SkuTEntity extends BaseEntity {
 
     private String skuAlias;
 
+    private String barcode;
+
     private String skuDescr;
 
     private String skuType;
@@ -24,6 +26,8 @@ public class SkuTEntity extends BaseEntity {
     private Long packId;
 
     private String packCode;
+
+    private String uom;
 
     private BigDecimal volume;
 
@@ -39,9 +43,15 @@ public class SkuTEntity extends BaseEntity {
 
     private BigDecimal weightTare;
 
+    private Long lotValidateId;
+
+    private String lotValidateCode;
+
     private Long putawayStrategyId;
 
     private String putawayStrategyCode;
+
+    private String putawayZoneCode;
 
     private String putawayLocationCode;
 
@@ -95,16 +105,6 @@ public class SkuTEntity extends BaseEntity {
 
     private String description;
 
-    private String putawayZoneCode;
-
-    private String barcode;
-
-    private String uom;
-
-    private Long lotValidateId;
-
-    private String lotValidateCode;
-
     public Long getSkuId() {
         return skuId;
     }
@@ -145,6 +145,14 @@ public class SkuTEntity extends BaseEntity {
         this.skuAlias = skuAlias == null ? null : skuAlias.trim();
     }
 
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode == null ? null : barcode.trim();
+    }
+
     public String getSkuDescr() {
         return skuDescr;
     }
@@ -175,6 +183,14 @@ public class SkuTEntity extends BaseEntity {
 
     public void setPackCode(String packCode) {
         this.packCode = packCode == null ? null : packCode.trim();
+    }
+
+    public String getUom() {
+        return uom;
+    }
+
+    public void setUom(String uom) {
+        this.uom = uom == null ? null : uom.trim();
     }
 
     public BigDecimal getVolume() {
@@ -233,6 +249,22 @@ public class SkuTEntity extends BaseEntity {
         this.weightTare = weightTare;
     }
 
+    public Long getLotValidateId() {
+        return lotValidateId;
+    }
+
+    public void setLotValidateId(Long lotValidateId) {
+        this.lotValidateId = lotValidateId;
+    }
+
+    public String getLotValidateCode() {
+        return lotValidateCode;
+    }
+
+    public void setLotValidateCode(String lotValidateCode) {
+        this.lotValidateCode = lotValidateCode == null ? null : lotValidateCode.trim();
+    }
+
     public Long getPutawayStrategyId() {
         return putawayStrategyId;
     }
@@ -247,6 +279,14 @@ public class SkuTEntity extends BaseEntity {
 
     public void setPutawayStrategyCode(String putawayStrategyCode) {
         this.putawayStrategyCode = putawayStrategyCode == null ? null : putawayStrategyCode.trim();
+    }
+
+    public String getPutawayZoneCode() {
+        return putawayZoneCode;
+    }
+
+    public void setPutawayZoneCode(String putawayZoneCode) {
+        this.putawayZoneCode = putawayZoneCode == null ? null : putawayZoneCode.trim();
     }
 
     public String getPutawayLocationCode() {
@@ -468,46 +508,6 @@ public class SkuTEntity extends BaseEntity {
         this.description = description == null ? null : description.trim();
     }
 
-    public String getPutawayZoneCode() {
-        return putawayZoneCode;
-    }
-
-    public void setPutawayZoneCode(String putawayZoneCode) {
-        this.putawayZoneCode = putawayZoneCode == null ? null : putawayZoneCode.trim();
-    }
-
-    public String getBarcode() {
-        return barcode;
-    }
-
-    public void setBarcode(String barcode) {
-        this.barcode = barcode == null ? null : barcode.trim();
-    }
-
-    public String getUom() {
-        return uom;
-    }
-
-    public void setUom(String uom) {
-        this.uom = uom == null ? null : uom.trim();
-    }
-
-    public Long getLotValidateId() {
-        return lotValidateId;
-    }
-
-    public void setLotValidateId(Long lotValidateId) {
-        this.lotValidateId = lotValidateId;
-    }
-
-    public String getLotValidateCode() {
-        return lotValidateCode;
-    }
-
-    public void setLotValidateCode(String lotValidateCode) {
-        this.lotValidateCode = lotValidateCode == null ? null : lotValidateCode.trim();
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -519,10 +519,12 @@ public class SkuTEntity extends BaseEntity {
         sb.append(", ownerCode=").append(ownerCode);
         sb.append(", skuCode=").append(skuCode);
         sb.append(", skuAlias=").append(skuAlias);
+        sb.append(", barcode=").append(barcode);
         sb.append(", skuDescr=").append(skuDescr);
         sb.append(", skuType=").append(skuType);
         sb.append(", packId=").append(packId);
         sb.append(", packCode=").append(packCode);
+        sb.append(", uom=").append(uom);
         sb.append(", volume=").append(volume);
         sb.append(", length=").append(length);
         sb.append(", width=").append(width);
@@ -530,8 +532,11 @@ public class SkuTEntity extends BaseEntity {
         sb.append(", weightGross=").append(weightGross);
         sb.append(", weightNet=").append(weightNet);
         sb.append(", weightTare=").append(weightTare);
+        sb.append(", lotValidateId=").append(lotValidateId);
+        sb.append(", lotValidateCode=").append(lotValidateCode);
         sb.append(", putawayStrategyId=").append(putawayStrategyId);
         sb.append(", putawayStrategyCode=").append(putawayStrategyCode);
+        sb.append(", putawayZoneCode=").append(putawayZoneCode);
         sb.append(", putawayLocationCode=").append(putawayLocationCode);
         sb.append(", allocateStrategyId=").append(allocateStrategyId);
         sb.append(", allocateStrategyCode=").append(allocateStrategyCode);
@@ -558,11 +563,6 @@ public class SkuTEntity extends BaseEntity {
         sb.append(", updateTime=").append(updateTime);
         sb.append(", updateVersion=").append(updateVersion);
         sb.append(", description=").append(description);
-        sb.append(", putawayZoneCode=").append(putawayZoneCode);
-        sb.append(", barcode=").append(barcode);
-        sb.append(", uom=").append(uom);
-        sb.append(", lotValidateId=").append(lotValidateId);
-        sb.append(", lotValidateCode=").append(lotValidateCode);
         sb.append("]");
         return sb.toString();
     }
@@ -584,10 +584,12 @@ public class SkuTEntity extends BaseEntity {
             && (this.getOwnerCode() == null ? other.getOwnerCode() == null : this.getOwnerCode().equals(other.getOwnerCode()))
             && (this.getSkuCode() == null ? other.getSkuCode() == null : this.getSkuCode().equals(other.getSkuCode()))
             && (this.getSkuAlias() == null ? other.getSkuAlias() == null : this.getSkuAlias().equals(other.getSkuAlias()))
+            && (this.getBarcode() == null ? other.getBarcode() == null : this.getBarcode().equals(other.getBarcode()))
             && (this.getSkuDescr() == null ? other.getSkuDescr() == null : this.getSkuDescr().equals(other.getSkuDescr()))
             && (this.getSkuType() == null ? other.getSkuType() == null : this.getSkuType().equals(other.getSkuType()))
             && (this.getPackId() == null ? other.getPackId() == null : this.getPackId().equals(other.getPackId()))
             && (this.getPackCode() == null ? other.getPackCode() == null : this.getPackCode().equals(other.getPackCode()))
+            && (this.getUom() == null ? other.getUom() == null : this.getUom().equals(other.getUom()))
             && (this.getVolume() == null ? other.getVolume() == null : this.getVolume().equals(other.getVolume()))
             && (this.getLength() == null ? other.getLength() == null : this.getLength().equals(other.getLength()))
             && (this.getWidth() == null ? other.getWidth() == null : this.getWidth().equals(other.getWidth()))
@@ -595,8 +597,11 @@ public class SkuTEntity extends BaseEntity {
             && (this.getWeightGross() == null ? other.getWeightGross() == null : this.getWeightGross().equals(other.getWeightGross()))
             && (this.getWeightNet() == null ? other.getWeightNet() == null : this.getWeightNet().equals(other.getWeightNet()))
             && (this.getWeightTare() == null ? other.getWeightTare() == null : this.getWeightTare().equals(other.getWeightTare()))
+            && (this.getLotValidateId() == null ? other.getLotValidateId() == null : this.getLotValidateId().equals(other.getLotValidateId()))
+            && (this.getLotValidateCode() == null ? other.getLotValidateCode() == null : this.getLotValidateCode().equals(other.getLotValidateCode()))
             && (this.getPutawayStrategyId() == null ? other.getPutawayStrategyId() == null : this.getPutawayStrategyId().equals(other.getPutawayStrategyId()))
             && (this.getPutawayStrategyCode() == null ? other.getPutawayStrategyCode() == null : this.getPutawayStrategyCode().equals(other.getPutawayStrategyCode()))
+            && (this.getPutawayZoneCode() == null ? other.getPutawayZoneCode() == null : this.getPutawayZoneCode().equals(other.getPutawayZoneCode()))
             && (this.getPutawayLocationCode() == null ? other.getPutawayLocationCode() == null : this.getPutawayLocationCode().equals(other.getPutawayLocationCode()))
             && (this.getAllocateStrategyId() == null ? other.getAllocateStrategyId() == null : this.getAllocateStrategyId().equals(other.getAllocateStrategyId()))
             && (this.getAllocateStrategyCode() == null ? other.getAllocateStrategyCode() == null : this.getAllocateStrategyCode().equals(other.getAllocateStrategyCode()))
@@ -622,12 +627,7 @@ public class SkuTEntity extends BaseEntity {
             && (this.getUpdateBy() == null ? other.getUpdateBy() == null : this.getUpdateBy().equals(other.getUpdateBy()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
             && (this.getUpdateVersion() == null ? other.getUpdateVersion() == null : this.getUpdateVersion().equals(other.getUpdateVersion()))
-            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
-            && (this.getPutawayZoneCode() == null ? other.getPutawayZoneCode() == null : this.getPutawayZoneCode().equals(other.getPutawayZoneCode()))
-            && (this.getBarcode() == null ? other.getBarcode() == null : this.getBarcode().equals(other.getBarcode()))
-            && (this.getUom() == null ? other.getUom() == null : this.getUom().equals(other.getUom()))
-            && (this.getLotValidateId() == null ? other.getLotValidateId() == null : this.getLotValidateId().equals(other.getLotValidateId()))
-            && (this.getLotValidateCode() == null ? other.getLotValidateCode() == null : this.getLotValidateCode().equals(other.getLotValidateCode()));
+            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()));
     }
 
     @Override
@@ -639,10 +639,12 @@ public class SkuTEntity extends BaseEntity {
         result = prime * result + ((getOwnerCode() == null) ? 0 : getOwnerCode().hashCode());
         result = prime * result + ((getSkuCode() == null) ? 0 : getSkuCode().hashCode());
         result = prime * result + ((getSkuAlias() == null) ? 0 : getSkuAlias().hashCode());
+        result = prime * result + ((getBarcode() == null) ? 0 : getBarcode().hashCode());
         result = prime * result + ((getSkuDescr() == null) ? 0 : getSkuDescr().hashCode());
         result = prime * result + ((getSkuType() == null) ? 0 : getSkuType().hashCode());
         result = prime * result + ((getPackId() == null) ? 0 : getPackId().hashCode());
         result = prime * result + ((getPackCode() == null) ? 0 : getPackCode().hashCode());
+        result = prime * result + ((getUom() == null) ? 0 : getUom().hashCode());
         result = prime * result + ((getVolume() == null) ? 0 : getVolume().hashCode());
         result = prime * result + ((getLength() == null) ? 0 : getLength().hashCode());
         result = prime * result + ((getWidth() == null) ? 0 : getWidth().hashCode());
@@ -650,8 +652,11 @@ public class SkuTEntity extends BaseEntity {
         result = prime * result + ((getWeightGross() == null) ? 0 : getWeightGross().hashCode());
         result = prime * result + ((getWeightNet() == null) ? 0 : getWeightNet().hashCode());
         result = prime * result + ((getWeightTare() == null) ? 0 : getWeightTare().hashCode());
+        result = prime * result + ((getLotValidateId() == null) ? 0 : getLotValidateId().hashCode());
+        result = prime * result + ((getLotValidateCode() == null) ? 0 : getLotValidateCode().hashCode());
         result = prime * result + ((getPutawayStrategyId() == null) ? 0 : getPutawayStrategyId().hashCode());
         result = prime * result + ((getPutawayStrategyCode() == null) ? 0 : getPutawayStrategyCode().hashCode());
+        result = prime * result + ((getPutawayZoneCode() == null) ? 0 : getPutawayZoneCode().hashCode());
         result = prime * result + ((getPutawayLocationCode() == null) ? 0 : getPutawayLocationCode().hashCode());
         result = prime * result + ((getAllocateStrategyId() == null) ? 0 : getAllocateStrategyId().hashCode());
         result = prime * result + ((getAllocateStrategyCode() == null) ? 0 : getAllocateStrategyCode().hashCode());
@@ -678,11 +683,6 @@ public class SkuTEntity extends BaseEntity {
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getUpdateVersion() == null) ? 0 : getUpdateVersion().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
-        result = prime * result + ((getPutawayZoneCode() == null) ? 0 : getPutawayZoneCode().hashCode());
-        result = prime * result + ((getBarcode() == null) ? 0 : getBarcode().hashCode());
-        result = prime * result + ((getUom() == null) ? 0 : getUom().hashCode());
-        result = prime * result + ((getLotValidateId() == null) ? 0 : getLotValidateId().hashCode());
-        result = prime * result + ((getLotValidateCode() == null) ? 0 : getLotValidateCode().hashCode());
         return result;
     }
 
@@ -797,6 +797,20 @@ public class SkuTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column SKU_T.BARCODE
+         *
+         * @param barcode the value for SKU_T.BARCODE
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder barcode(String barcode) {
+            obj.setBarcode(barcode);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
          * This method sets the value of the database column SKU_T.SKU_DESCR
          *
          * @param skuDescr the value for SKU_T.SKU_DESCR
@@ -848,6 +862,20 @@ public class SkuTEntity extends BaseEntity {
          */
         public Builder packCode(String packCode) {
             obj.setPackCode(packCode);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column SKU_T.UOM
+         *
+         * @param uom the value for SKU_T.UOM
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder uom(String uom) {
+            obj.setUom(uom);
             return this;
         }
 
@@ -951,6 +979,34 @@ public class SkuTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column SKU_T.LOT_VALIDATE_ID
+         *
+         * @param lotValidateId the value for SKU_T.LOT_VALIDATE_ID
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder lotValidateId(Long lotValidateId) {
+            obj.setLotValidateId(lotValidateId);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column SKU_T.LOT_VALIDATE_CODE
+         *
+         * @param lotValidateCode the value for SKU_T.LOT_VALIDATE_CODE
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder lotValidateCode(String lotValidateCode) {
+            obj.setLotValidateCode(lotValidateCode);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
          * This method sets the value of the database column SKU_T.PUTAWAY_STRATEGY_ID
          *
          * @param putawayStrategyId the value for SKU_T.PUTAWAY_STRATEGY_ID
@@ -974,6 +1030,20 @@ public class SkuTEntity extends BaseEntity {
          */
         public Builder putawayStrategyCode(String putawayStrategyCode) {
             obj.setPutawayStrategyCode(putawayStrategyCode);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column SKU_T.PUTAWAY_ZONE_CODE
+         *
+         * @param putawayZoneCode the value for SKU_T.PUTAWAY_ZONE_CODE
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder putawayZoneCode(String putawayZoneCode) {
+            obj.setPutawayZoneCode(putawayZoneCode);
             return this;
         }
 
@@ -1343,76 +1413,6 @@ public class SkuTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column SKU_T.PUTAWAY_ZONE_CODE
-         *
-         * @param putawayZoneCode the value for SKU_T.PUTAWAY_ZONE_CODE
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        public Builder putawayZoneCode(String putawayZoneCode) {
-            obj.setPutawayZoneCode(putawayZoneCode);
-            return this;
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column SKU_T.BARCODE
-         *
-         * @param barcode the value for SKU_T.BARCODE
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        public Builder barcode(String barcode) {
-            obj.setBarcode(barcode);
-            return this;
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column SKU_T.UOM
-         *
-         * @param uom the value for SKU_T.UOM
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        public Builder uom(String uom) {
-            obj.setUom(uom);
-            return this;
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column SKU_T.LOT_VALIDATE_ID
-         *
-         * @param lotValidateId the value for SKU_T.LOT_VALIDATE_ID
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        public Builder lotValidateId(Long lotValidateId) {
-            obj.setLotValidateId(lotValidateId);
-            return this;
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column SKU_T.LOT_VALIDATE_CODE
-         *
-         * @param lotValidateCode the value for SKU_T.LOT_VALIDATE_CODE
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        public Builder lotValidateCode(String lotValidateCode) {
-            obj.setLotValidateCode(lotValidateCode);
-            return this;
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
          * This method corresponds to the database table SKU_T
          *
          * @mbg.generated
@@ -1511,10 +1511,12 @@ public class SkuTEntity extends BaseEntity {
         ownerCode("OWNER_CODE", "ownerCode", "VARCHAR", false),
         skuCode("SKU_CODE", "skuCode", "VARCHAR", false),
         skuAlias("SKU_ALIAS", "skuAlias", "VARCHAR", false),
+        barcode("BARCODE", "barcode", "VARCHAR", false),
         skuDescr("SKU_DESCR", "skuDescr", "VARCHAR", false),
         skuType("SKU_TYPE", "skuType", "VARCHAR", false),
         packId("PACK_ID", "packId", "DECIMAL", false),
         packCode("PACK_CODE", "packCode", "VARCHAR", false),
+        uom("UOM", "uom", "VARCHAR", false),
         volume("VOLUME", "volume", "DECIMAL", false),
         length("LENGTH", "length", "DECIMAL", true),
         width("WIDTH", "width", "DECIMAL", false),
@@ -1522,8 +1524,11 @@ public class SkuTEntity extends BaseEntity {
         weightGross("WEIGHT_GROSS", "weightGross", "DECIMAL", false),
         weightNet("WEIGHT_NET", "weightNet", "DECIMAL", false),
         weightTare("WEIGHT_TARE", "weightTare", "DECIMAL", false),
+        lotValidateId("LOT_VALIDATE_ID", "lotValidateId", "DECIMAL", false),
+        lotValidateCode("LOT_VALIDATE_CODE", "lotValidateCode", "VARCHAR", false),
         putawayStrategyId("PUTAWAY_STRATEGY_ID", "putawayStrategyId", "DECIMAL", false),
         putawayStrategyCode("PUTAWAY_STRATEGY_CODE", "putawayStrategyCode", "VARCHAR", false),
+        putawayZoneCode("PUTAWAY_ZONE_CODE", "putawayZoneCode", "VARCHAR", false),
         putawayLocationCode("PUTAWAY_LOCATION_CODE", "putawayLocationCode", "VARCHAR", false),
         allocateStrategyId("ALLOCATE_STRATEGY_ID", "allocateStrategyId", "DECIMAL", false),
         allocateStrategyCode("ALLOCATE_STRATEGY_CODE", "allocateStrategyCode", "VARCHAR", false),
@@ -1549,12 +1554,7 @@ public class SkuTEntity extends BaseEntity {
         updateBy("UPDATE_BY", "updateBy", "VARCHAR", false),
         updateTime("UPDATE_TIME", "updateTime", "TIMESTAMP", false),
         updateVersion("UPDATE_VERSION", "updateVersion", "DECIMAL", false),
-        description("DESCRIPTION", "description", "VARCHAR", false),
-        putawayZoneCode("PUTAWAY_ZONE_CODE", "putawayZoneCode", "VARCHAR", false),
-        barcode("BARCODE", "barcode", "VARCHAR", false),
-        uom("UOM", "uom", "VARCHAR", false),
-        lotValidateId("LOT_VALIDATE_ID", "lotValidateId", "DECIMAL", false),
-        lotValidateCode("LOT_VALIDATE_CODE", "lotValidateCode", "VARCHAR", false);
+        description("DESCRIPTION", "description", "VARCHAR", false);
 
         /**
          * This field was generated by MyBatis Generator.

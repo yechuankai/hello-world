@@ -128,7 +128,7 @@ $(function(){
 	
 	
 	//公共行删除-------------------------START
-	$('.common-rowdel').click(function(){
+	$('.common-rowdel,.common-other').click(function(){
 
 		var datagrid = $(this).attr('data-table');
 		var url = $(this).attr('data-url');

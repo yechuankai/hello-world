@@ -287,6 +287,8 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 		updateAllocate.setAllocateStrategyType(AllocateStrategyTypeEnum.Hard.getCode());
 		updateAllocate.setQuantityAllocated(detail.getTranQuantity());
 		updateAllocate.setLoadLpnNumber(detail.getLpnNumber());
+		updateAllocate.setFromLocationCode(allocate.getFromLocationCode());
+		updateAllocate.setFromLpnNumber(allocate.getFromLpnNumber());
 		allocateService.add(Lists.newArrayList(updateAllocate));
 		
 		return Boolean.TRUE;

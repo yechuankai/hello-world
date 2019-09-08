@@ -15,6 +15,7 @@
     <result column="PACK_CODE" jdbcType="VARCHAR" property="packCode" />
     <result column="LOT_NUMBER" jdbcType="VARCHAR" property="lotNumber" />
     <result column="FROM_LPN_NUMBER" jdbcType="VARCHAR" property="fromLpnNumber" />
+    <result column="FROM_LPN_TYPE" jdbcType="VARCHAR" property="fromLpnType" />
     <result column="FROM_LOCATION_CODE" jdbcType="VARCHAR" property="fromLocationCode" />
     <result column="FROM_ZONE_CODE" jdbcType="VARCHAR" property="fromZoneCode" />
     <result column="TO_LPN_NUMBER" jdbcType="VARCHAR" property="toLpnNumber" />
@@ -43,7 +44,6 @@
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="UPDATE_VERSION" jdbcType="DECIMAL" property="updateVersion" />
     <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
-    <result column="FROM_LPN_TYPE" jdbcType="VARCHAR" property="fromLpnType" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -142,12 +142,12 @@
   </sql>
   <sql id="Base_Column_List">
     TASK_DETAIL_ID, TASK_DETAIL_NUMBER, TASK_TYPE, SOURCE_TYPE, OWNER_ID, OWNER_CODE, 
-    SKU_ID, SKU_CODE, UOM, PACK_ID, PACK_CODE, LOT_NUMBER, FROM_LPN_NUMBER, FROM_LOCATION_CODE, 
-    FROM_ZONE_CODE, TO_LPN_NUMBER, TO_LOCATION_CODE, TO_ZONE_CODE, FROM_LOCATION_LOGICAL, 
-    TO_LOCATION_LOGICAL, USER_NAME, RELEASE_TIME, COMPLETE_TIME, START_TIME, END_TIME, 
-    QUANTITY, REASON, SOURCE_NUMBER, SOURCE_LINE_NUMBER, SOURCE_BILL_NUMBER, STATUS, 
-    REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
-    UPDATE_VERSION, DESCRIPTION, FROM_LPN_TYPE
+    SKU_ID, SKU_CODE, UOM, PACK_ID, PACK_CODE, LOT_NUMBER, FROM_LPN_NUMBER, FROM_LPN_TYPE, 
+    FROM_LOCATION_CODE, FROM_ZONE_CODE, TO_LPN_NUMBER, TO_LOCATION_CODE, TO_ZONE_CODE, 
+    FROM_LOCATION_LOGICAL, TO_LOCATION_LOGICAL, USER_NAME, RELEASE_TIME, COMPLETE_TIME, 
+    START_TIME, END_TIME, QUANTITY, REASON, SOURCE_NUMBER, SOURCE_LINE_NUMBER, SOURCE_BILL_NUMBER, 
+    STATUS, REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, 
+    UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.TaskDetailTExample" resultMap="BaseResultMap">
     select
@@ -174,32 +174,32 @@
       SOURCE_TYPE, OWNER_ID, OWNER_CODE, 
       SKU_ID, SKU_CODE, UOM, 
       PACK_ID, PACK_CODE, LOT_NUMBER, 
-      FROM_LPN_NUMBER, FROM_LOCATION_CODE, FROM_ZONE_CODE, 
-      TO_LPN_NUMBER, TO_LOCATION_CODE, TO_ZONE_CODE, 
-      FROM_LOCATION_LOGICAL, TO_LOCATION_LOGICAL, 
+      FROM_LPN_NUMBER, FROM_LPN_TYPE, FROM_LOCATION_CODE, 
+      FROM_ZONE_CODE, TO_LPN_NUMBER, TO_LOCATION_CODE, 
+      TO_ZONE_CODE, FROM_LOCATION_LOGICAL, TO_LOCATION_LOGICAL, 
       USER_NAME, RELEASE_TIME, COMPLETE_TIME, 
       START_TIME, END_TIME, QUANTITY, 
       REASON, SOURCE_NUMBER, SOURCE_LINE_NUMBER, 
       SOURCE_BILL_NUMBER, STATUS, REMARK, 
       COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, 
       CREATE_BY, CREATE_TIME, UPDATE_BY, 
-      UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, 
-      FROM_LPN_TYPE)
+      UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
+      )
     values (#{taskDetailId,jdbcType=DECIMAL}, #{taskDetailNumber,jdbcType=VARCHAR}, #{taskType,jdbcType=VARCHAR}, 
       #{sourceType,jdbcType=VARCHAR}, #{ownerId,jdbcType=DECIMAL}, #{ownerCode,jdbcType=VARCHAR}, 
       #{skuId,jdbcType=DECIMAL}, #{skuCode,jdbcType=VARCHAR}, #{uom,jdbcType=VARCHAR}, 
       #{packId,jdbcType=DECIMAL}, #{packCode,jdbcType=VARCHAR}, #{lotNumber,jdbcType=VARCHAR}, 
-      #{fromLpnNumber,jdbcType=VARCHAR}, #{fromLocationCode,jdbcType=VARCHAR}, #{fromZoneCode,jdbcType=VARCHAR}, 
-      #{toLpnNumber,jdbcType=VARCHAR}, #{toLocationCode,jdbcType=VARCHAR}, #{toZoneCode,jdbcType=VARCHAR}, 
-      #{fromLocationLogical,jdbcType=VARCHAR}, #{toLocationLogical,jdbcType=VARCHAR}, 
+      #{fromLpnNumber,jdbcType=VARCHAR}, #{fromLpnType,jdbcType=VARCHAR}, #{fromLocationCode,jdbcType=VARCHAR}, 
+      #{fromZoneCode,jdbcType=VARCHAR}, #{toLpnNumber,jdbcType=VARCHAR}, #{toLocationCode,jdbcType=VARCHAR}, 
+      #{toZoneCode,jdbcType=VARCHAR}, #{fromLocationLogical,jdbcType=VARCHAR}, #{toLocationLogical,jdbcType=VARCHAR}, 
       #{userName,jdbcType=VARCHAR}, #{releaseTime,jdbcType=TIMESTAMP}, #{completeTime,jdbcType=TIMESTAMP}, 
       #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{quantity,jdbcType=DECIMAL}, 
       #{reason,jdbcType=VARCHAR}, #{sourceNumber,jdbcType=DECIMAL}, #{sourceLineNumber,jdbcType=DECIMAL}, 
       #{sourceBillNumber,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, 
       #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, 
-      #{fromLpnType,jdbcType=VARCHAR})
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.TaskDetailTEntity">
     insert into TASK_DETAIL_T
@@ -242,6 +242,9 @@
       </if>
       <if test="fromLpnNumber != null">
         FROM_LPN_NUMBER,
+      </if>
+      <if test="fromLpnType != null">
+        FROM_LPN_TYPE,
       </if>
       <if test="fromLocationCode != null">
         FROM_LOCATION_CODE,
@@ -327,9 +330,6 @@
       <if test="description != null">
         DESCRIPTION,
       </if>
-      <if test="fromLpnType != null">
-        FROM_LPN_TYPE,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="taskDetailId != null">
@@ -370,6 +370,9 @@
       </if>
       <if test="fromLpnNumber != null">
         #{fromLpnNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="fromLpnType != null">
+        #{fromLpnType,jdbcType=VARCHAR},
       </if>
       <if test="fromLocationCode != null">
         #{fromLocationCode,jdbcType=VARCHAR},
@@ -455,9 +458,6 @@
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
       </if>
-      <if test="fromLpnType != null">
-        #{fromLpnType,jdbcType=VARCHAR},
-      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.wms.dao.example.TaskDetailTExample" resultType="java.lang.Long">
@@ -507,6 +507,9 @@
       </if>
       <if test="record.fromLpnNumber != null">
         FROM_LPN_NUMBER = #{record.fromLpnNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fromLpnType != null">
+        FROM_LPN_TYPE = #{record.fromLpnType,jdbcType=VARCHAR},
       </if>
       <if test="record.fromLocationCode != null">
         FROM_LOCATION_CODE = #{record.fromLocationCode,jdbcType=VARCHAR},
@@ -592,9 +595,6 @@
       <if test="record.description != null">
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       </if>
-      <if test="record.fromLpnType != null">
-        FROM_LPN_TYPE = #{record.fromLpnType,jdbcType=VARCHAR},
-      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -615,6 +615,7 @@
       PACK_CODE = #{record.packCode,jdbcType=VARCHAR},
       LOT_NUMBER = #{record.lotNumber,jdbcType=VARCHAR},
       FROM_LPN_NUMBER = #{record.fromLpnNumber,jdbcType=VARCHAR},
+      FROM_LPN_TYPE = #{record.fromLpnType,jdbcType=VARCHAR},
       FROM_LOCATION_CODE = #{record.fromLocationCode,jdbcType=VARCHAR},
       FROM_ZONE_CODE = #{record.fromZoneCode,jdbcType=VARCHAR},
       TO_LPN_NUMBER = #{record.toLpnNumber,jdbcType=VARCHAR},
@@ -642,8 +643,7 @@
       UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
       UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
       UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
-      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-      FROM_LPN_TYPE = #{record.fromLpnType,jdbcType=VARCHAR}
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -759,6 +759,7 @@
     PACK_CODE = #{record.packCode,jdbcType=VARCHAR}, 
     LOT_NUMBER = #{record.lotNumber,jdbcType=VARCHAR}, 
     FROM_LPN_NUMBER = #{record.fromLpnNumber,jdbcType=VARCHAR}, 
+    FROM_LPN_TYPE = #{record.fromLpnType,jdbcType=VARCHAR}, 
     FROM_LOCATION_CODE = #{record.fromLocationCode,jdbcType=VARCHAR}, 
     FROM_ZONE_CODE = #{record.fromZoneCode,jdbcType=VARCHAR}, 
     TO_LPN_NUMBER = #{record.toLpnNumber,jdbcType=VARCHAR}, 
@@ -785,8 +786,7 @@
     CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP}, 
     UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR}, 
     UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
-    DESCRIPTION = #{record.description,jdbcType=VARCHAR}, 
-    FROM_LPN_TYPE = #{record.fromLpnType,jdbcType=VARCHAR}
+    DESCRIPTION = #{record.description,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
     </if>
@@ -839,6 +839,9 @@
         </if>
         <if test="record.fromLpnNumber != null">
           FROM_LPN_NUMBER = #{record.fromLpnNumber,jdbcType=VARCHAR},
+        </if>
+        <if test="record.fromLpnType != null">
+          FROM_LPN_TYPE = #{record.fromLpnType,jdbcType=VARCHAR},
         </if>
         <if test="record.fromLocationCode != null">
           FROM_LOCATION_CODE = #{record.fromLocationCode,jdbcType=VARCHAR},
@@ -920,9 +923,6 @@
         </if>
         <if test="record.description != null">
           DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-        </if>
-        <if test="record.fromLpnType != null">
-          FROM_LPN_TYPE = #{record.fromLpnType,jdbcType=VARCHAR},
         </if>
       </trim>
     </set>

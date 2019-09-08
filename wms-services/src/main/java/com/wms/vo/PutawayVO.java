@@ -6,8 +6,10 @@ public class PutawayVO extends PutawayStrategyDetailTEntity{
 
 	private PutawayStrategyDetailTEntity strategy;
 	private String containerNumber;
+	private String lpnNumber;
 	private InventoryOnhandVO inventoryOnhand;
 	private String locationCode;
+	private String lpnType;
 	
 	public void setLocationCode(String locationCode) {
 		this.locationCode = locationCode;
@@ -40,5 +42,22 @@ public class PutawayVO extends PutawayStrategyDetailTEntity{
 	public String getContainerNumber() {
 		return containerNumber;
 	}
+
+	public String getLpnType() {
+		return lpnType;
+	}
+
+	public void setLpnType(String lpnType) {
+		this.lpnType = lpnType;
+	}
+
+	public String getLpnNumber() {
+		return lpnNumber;
+	}
+
+	public void setLpnNumber(String lpnNumber) {
+		this.lpnNumber = lpnNumber;
+	}
+	
 	
 }

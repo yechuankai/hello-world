@@ -18,9 +18,13 @@
 	<table id="inboundDetailData" wms:title="${web.label.inbounddetaillist.title}"
 		   			wms:data-options="toolbar: '#detailToolbar'"
 					th:data-delayUrl="@{/services/inner/inboundDetail/findByHeader}">
-		<thead>
+		<thead data-options="frozen:true">
 			<tr>
 				<th field="inboundDetailId" data-options="checkbox:true"></th>
+		 	</tr>
+		 </thead>
+		<thead>
+			<tr>
 				<th field="edit" data-options="
 										formatter:function(value,row){
 											var data = JSON.stringify(row);
