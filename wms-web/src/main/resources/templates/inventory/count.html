@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${wms.count.title}">盘点单</title>
+    <head th:replace="common/head"/>
+</head>
+<body class="easyui-layout">
+<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+
+    <div id="searchDiv">
+        <div style="margin-left: 10px;">
+            <form id="searchForm" data-table="#dataTable">
+                <div style="margin-bottom:10px">
+                    <input name="countNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.countnumber}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combobox" name="type" wms:data-options="
+						data: codelkups['COUNTTYPE'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.type}',
+						labelPosition: 'top'
+						">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="aaa" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.countnumber}',labelPosition:'top'">
+                </div>
+            </form>
+        </div>
+        <div style="text-align: center;">
+            <a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-search'">
+                <span wms:text="${web.label.search}">Search</span>
+            </a>
+            <a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-clear'">
+                <span wms:text="${web.label.clear}">Clear</span>
+            </a>
+        </div>
+    </div>
+</div>
+<div data-options="region:'center'">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'north',collapsible:false" style="height:35px;">
+            <div id="dataTableToolbar" style="padding-left: 20px;">
+                <a href="#" class="easyui-menubutton" data-options="menu:'#optionsMenuButton',plain:false"
+                   wms:text="${web.label.options}">Actions</a>
+                <div id="optionsMenuButton">
+                    <div wms:text="${web.label.receive.all}" onclick="action('receiveAll')">All Receive</div>
+                    <div wms:text="${web.label.cancelreceive}" onclick="action('unReceive')">unReceive</div>
+                    <div wms:text="${web.label.createputaway}" onclick="action('createPutaway')">Create Putaway</div>
+                    <div wms:text="${web.label.viewputaway}" onclick="action()">View Putaway</div>
+                </div>
+                <a href="#" class="easyui-linkbutton common-rowsave" data-table="#dataTable"
+                   th:data-url="@{/services/inner/base/area/save}">
+                    <span wms:text="${web.label.save}">Report</span>
+                </a>
+                <a href="#" class="easyui-linkbutton areaHeader-rowdel" data-table="#dataTable"
+                   th:data-url="@{/services/inner/inventory/inventoryCount/headerDelete}">
+                    <span wms:text="${web.label.delete}">Delete</span>
+                </a>
+            </div>
+        </div>
+        <div data-options="region:'center',collapsible:false,border:false">
+            <div class="easyui-layout" id="detailLayout" style="width: 100%;height: 100%;"
+                 data-options="fix:true">
+                <div data-options="region:'center',collapsible:false,border:false">
+                    <table id="dataTable" wms:title="${web.label.countlist.title}" class="easyui-datagrid"
+                           th:data-delayUrl="@{/services/inner/inventory/inventoryCount/findHeader}">
+                        <thead data-options="frozen:true">
+                        <th field="inventoryCountHeaderId" data-options="checkbox:true"></th>
+                        <th field="detail" data-options="
+										formatter:function(value,row){
+											var data = JSON.stringify(row);
+											var detail = '<span onclick=\'viewDetail('+data+')\' class=\'icon-detail\'>&nbsp;</span>';
+											return detail;
+										}
+									"></th>
+                        <th field="countNumber" width="80" wms:text="${web.label.countnumber}"
+                            data-options="sortable:true">countNumber
+                        </th>
+                        </thead>
+                        <thead>
+                        <th field="type" width="100" wms:text="${web.label.type}" data-options="
+							sortable:true,
+							formatter:function(value,row){
+								return getCodelkupValue('COUNTTYPE',value);
+							}
+						">type
+                        </th>
+                        <th field="replayFlag" width="100" wms:text="${web.label.replayflag}" data-options="
+							sortable:true,
+							formatter:function(value,row){
+								return getCodelkupValue('YESNO',value);
+							}
+						">type
+                        </th>
+                        <th field="parentCountNumber" width="100" wms:text="${web.label.parentcountnumber}"
+                            data-options="sortable:true">parentCountNumber
+                        </th>
+                        <th field="status" width="100" wms:text="${web.label.status}" data-options="
+							sortable:true,
+							formatter:function(value,row){
+								return getCodelkupValue('COUNTSTATUS',value);
+							}
+						">status
+                        </th>
+                        <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+                        <th field="createTime" width="150" wms:text="${web.label.createtime}"
+                            data-options="sortable:true">createTime
+                        </th>
+                        <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+                        <th field="updateTime" width="150" wms:text="${web.label.updatetime}"
+                            data-options="sortable:true">updateTime
+                        </th>
+                        </thead>
+                    </table>
+                </div>
+                <div id="detailPanel" data-options="region:'south',border:false,split:true,minimized:true"
+                     title=" " style="height: 300px;">
+                    <div th:replace="inventory/countDetail"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script th:replace="common/js"/>
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=COUNTTYPE,YESNO,COUNTSTATUS}"></script>
+<script type="text/javascript" th:inline="text">
+    var headerData;
+    $(function () {
+        $('.common-search').click(function () {
+            $('#detailLayout').layout('collapse', 'south');
+        });
+    });
+
+    function viewDetail(data) {
+        if (typeof (data) == 'object') {
+            headerData = data;
+        } else {
+            var checkedRows = $('#dataTable').datagrid('getChecked');
+            if (checkedRows.length != 1) {
+                showError($.locale.selectOneRow);
+                return;
+            }
+            headerData = checkedRows[0];
+        }
+
+        var detailPanelOptions = $('#detailPanel').panel('options');
+        var collapsed = detailPanelOptions.collapsed;
+        if (collapsed) {
+            $('#detailPanel').panel({
+                height: 300,
+                minimized: false
+            });
+            $('#detailLayout').layout('expand', 'south');
+        }
+        refreshCountDetail(headerData);
+    }
+</script>
+</html>
