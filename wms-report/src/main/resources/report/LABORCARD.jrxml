@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="155" pageHeight="240" columnWidth="155" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5a1d5ead-fe31-4d19-838e-b53e77c1c471">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="labor_card" pageWidth="155" pageHeight="240" columnWidth="155" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5a1d5ead-fe31-4d19-838e-b53e77c1c471">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DIFTZER_100"/>
 	<property name="com.jaspersoft.studio.unit." value="cm"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
@@ -12,8 +12,34 @@
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="host" class="java.lang.String"/>
+	<parameter name="applicationNo" class="java.lang.String">
+		<parameterDescription><![CDATA[applicationNo]]></parameterDescription>
+	</parameter>
+	<parameter name="logicCardNo" class="java.lang.String">
+		<parameterDescription><![CDATA[logicCardNo]]></parameterDescription>
+	</parameter>
 	<queryString>
-		<![CDATA[SELECT LABOR_NAME Labor_Name,LOGIC_CARD_NO Card_NO, LABOR_ID_NO Photo_Name, ' ' Remark  FROM DPSP.CARD_INFO_LABOR_LIST]]>
+		<![CDATA[SELECT 
+       LABOR.Application_No,
+       LABOR.Seq_No,
+       LABOR.LABOR_NAME Labor_Name,
+       $P{logicCardNo} Card_NO,
+       LABOR.LABOR_ID_NO Photo_Name,
+       ' ' Remark,
+       (select MAX(SYS_URL) from uums.Web_Sys_Tfp WHERE SYS_CODE = 'DIFTZ_PS') 
+       || '/common/attachedFile/previewFile.action?objectId=' 
+       || F.OBJECT_ID
+       || '&fileName='
+       || F.FILE_NAME IMG
+  FROM 
+       DPSP.CARD_INFO_LABOR_LIST LABOR
+  LEFT JOIN 
+       DPSP.COMMON_ATTACHED_FILE F ON LABOR.SEQ_NO = F.APPLICATION_NO AND F.REMARK = '1'
+  WHERE 
+       LABOR.SEQ_NO = $P{applicationNo}
+  ORDER BY 
+        LABOR.SEQ_NO]]>
 	</queryString>
 	<field name="LABOR_NAME" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="LABOR_NAME"/>
@@ -26,6 +52,9 @@
 	</field>
 	<field name="REMARK" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="REMARK"/>
+	</field>
+	<field name="IMG" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="IMG"/>
 	</field>
 	<group name="labor_group">
 		<groupExpression><![CDATA[$F{CARD_NO}]]></groupExpression>
@@ -61,7 +90,7 @@
 					<reportElement x="103" y="0" width="52" height="19" uuid="4586cb03-340e-4eac-b819-6695bbfcdde9">
 						<property name="com.jaspersoft.studio.unit.height" value="cm"/>
 					</reportElement>
-					<imageExpression><![CDATA["E:/工作/SWP/打印模板/Jasper/diftz.png"]]></imageExpression>
+					<imageExpression><![CDATA[$P{host} + "/static/images/laborCard/diftz.png"]]></imageExpression>
 				</image>
 			</band>
 		</groupFooter>
@@ -70,7 +99,7 @@
 		<band height="240" splitType="Stretch">
 			<image scaleImage="FillFrame">
 				<reportElement x="0" y="0" width="155" height="240" uuid="798151ae-d918-4e04-a099-952b546d14ac"/>
-				<imageExpression><![CDATA["E:/工作/SWP/打印模板/Jasper/1.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{host} + "/static/images/laborCard/1.png"]]></imageExpression>
 			</image>
 		</band>
 	</background>
@@ -87,14 +116,14 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{LABOR_NAME}]]></textFieldExpression>
 			</textField>
-			<image scaleImage="FillFrame">
+			<image scaleImage="FillFrame" onErrorType="Blank">
 				<reportElement x="3" y="120" width="56" height="70" uuid="ef0459d7-25e1-4a06-b1b1-8afca91490b5">
 					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
 				</reportElement>
 				<box leftPadding="0">
 					<pen lineWidth="2.0" lineColor="#FFFFFF"/>
 				</box>
-				<imageExpression><![CDATA["C:/Users/yechuankai.chnet/Pictures/test.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[$F{IMG}]]></imageExpression>
 			</image>
 		</band>
 	</detail>

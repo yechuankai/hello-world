@@ -252,7 +252,9 @@ function exportExcel(template, obj){
 					showError(data.msg);
 					return;
 				}
-				showMsg($.locale.exportTip);
+				showMsg($.locale.exportTip,function (){
+					window.top.myfiles();
+				});
 			},
 			error: function (data) {
 				closeLoading();

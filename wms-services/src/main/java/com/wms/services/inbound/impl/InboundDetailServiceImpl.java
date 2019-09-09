@@ -29,6 +29,7 @@ import com.wms.services.inventory.*;
 import com.wms.services.sys.IStatusHistoryService;
 import com.wms.vo.InventoryTranDetailVO;
 import com.wms.vo.InventoryTranVO;
+import com.wms.vo.PackVO;
 import com.wms.vo.PutawayVO;
 import com.wms.vo.adjustment.AdjustmentDetailVO;
 import com.wms.vo.adjustment.AdjustmentVO;
@@ -128,6 +129,20 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 
 		Map<Long, SkuTEntity> skuMaps = skuList.stream().collect(
 			      Collectors.toMap(SkuTEntity::getSkuId, (s) -> s));
+		
+		
+		Set<Long> headerIds = inboundDetailList.stream().map(InboundDetailTEntity::getInboundHeaderId).collect(Collectors.toSet());
+		List<InboundHeaderTEntity> headerList = Lists.newArrayList();
+		if(CollectionUtils.isNotEmpty(headerIds)){
+			InboundHeaderTEntity header = InboundHeaderTEntity.builder()
+					.warehouseId(request.getWarehouseId())
+					.companyId(request.getCompanyId())
+					.build();
+			headerList = inboundHeaderService.find(header, headerIds);
+		}
+
+		Map<Long, InboundHeaderTEntity> headerIdMap = headerList.stream().collect(
+			      Collectors.toMap(InboundHeaderTEntity::getInboundHeaderId, (s) -> s));
 
 		List<InboundDetailVO> returnList = Lists.newArrayList();
 		inboundDetailList.forEach(d -> {
@@ -137,6 +152,10 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 			SkuTEntity sku = skuMaps.get(d.getSkuId());
 			if (sku != null)
 				inboundDetailVO.setSkuDescr(sku.getSkuDescr());
+			
+			InboundHeaderTEntity header = headerIdMap.get(d.getInboundHeaderId());
+			if (header != null)
+				inboundDetailVO.setInboundNumber(header.getInboundNumber());
 
 			returnList.add(inboundDetailVO);
 
@@ -356,7 +375,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 		if (inbound.getOperatorType() == OperatorTypeEnum.Modify) {
 			return Boolean.TRUE;
 		}
-
+		
 		OwnerTEntity owner = ownerService.find(OwnerTEntity.builder()
 				.warehouseId(inbound.getWarehouseId())
 				.companyId(inbound.getCompanyId())
@@ -377,6 +396,23 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 		detail.setSkuAlias(sku.getSkuAlias());
 		detail.setSkuCode(sku.getSkuCode());
 		
+		if (BigDecimal.ZERO.compareTo(detail.getQuantityExpected()) < 0) {
+			PackVO packVo = packService.getPack(pack, sku, detail.getUom());
+			BigDecimal uomQty = detail.getQuantityExpected().divide(detail.getUomQuantity(), 5, ROUND_FLOOR);
+			//计算体积
+			if (BigDecimal.ZERO.compareTo(detail.getVolume()) == 0) {
+				detail.setVolume(packVo.getVolume().multiply(uomQty));
+			}
+			//计算重量
+			if (BigDecimal.ZERO.compareTo(detail.getWeightGross()) == 0
+					&& BigDecimal.ZERO.compareTo(detail.getWeightNet()) == 0
+					 && BigDecimal.ZERO.compareTo(detail.getWeightTare()) == 0) {
+				detail.setWeightGross(packVo.getWeightGross().multiply(uomQty));
+				detail.setWeightNet(packVo.getWeightNet().multiply(uomQty));
+				detail.setWeightTare(packVo.getWeightTare().multiply(uomQty));
+			}
+		}
+
 		if (StringUtils.isNotEmpty(detail.getLpnNumber()))
 			detail.setLpnNumber(detail.getLpnNumber().toUpperCase());
 		

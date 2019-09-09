@@ -21,9 +21,13 @@
 	<div class="icon-loading" style="position: absolute; z-index: 999999;width: 100%; height: 100%;opacity: 1;background-color: white;" >&nbsp;</div>
 	<div data-options="region:'north',collapsible:false" style="height:35px;">
 		<div class="tableToolbar">
+			<a href="#" class="easyui-linkbutton inbound-new" onclick="window.location.reload();" >
+				<span wms:text="${web.label.add}">New</span>
+			</a>
 			<a href="#" class="easyui-linkbutton inbound-save" data-form="#inboundHeaderForm" >
 				<span wms:text="${web.label.save}">Save</span>
 			</a>
+			<a href="#" class="easyui-linkbutton" onclick="importExcel('INBOUND')" wms:text="${web.label.import}">Import</a>
 		</div>
 	</div>
 	<div class="easyui-layout" data-options="region:'center',collapsible:false">

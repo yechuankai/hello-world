@@ -123,6 +123,26 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 		}
 		return selectoutbound;
 	}
+	
+	@Override
+	public List<OutboundHeaderTEntity> find(OutboundHeaderTEntity outbound, Set<Long> ids) throws BusinessServiceException {
+		if(CollectionUtils.isEmpty(ids))
+			return Lists.newArrayList();
+		
+		OutboundHeaderTExample TExample = new OutboundHeaderTExample();
+		OutboundHeaderTExample.Criteria criteria = TExample.createCriteria();
+		
+		criteria.andDelFlagEqualTo(YesNoEnum.No.getCode())
+		.andWarehouseIdEqualTo(outbound.getWarehouseId())
+		.andCompanyIdEqualTo(outbound.getCompanyId())
+		.andOutboundHeaderIdIn(Lists.newArrayList(ids));
+		
+		List<OutboundHeaderTEntity> outbounds = outboundHeaderDao.selectByExample(TExample);
+		if (outbounds == null) {
+			return Lists.newArrayList();
+		}
+		return outbounds;
+	}
 
 	@Override
 	public OutboundVO save(AjaxRequest<OutboundVO> request) throws BusinessServiceException {

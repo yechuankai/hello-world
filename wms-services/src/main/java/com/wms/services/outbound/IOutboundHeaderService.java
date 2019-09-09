@@ -9,6 +9,7 @@ import com.wms.entity.auto.OutboundHeaderTEntity;
 import com.wms.vo.outbound.OutboundVO;
 
 import java.util.List;
+import java.util.Set;
 
 public interface IOutboundHeaderService {
 	
@@ -17,6 +18,8 @@ public interface IOutboundHeaderService {
 	OutboundVO find(OutboundVO outbound) throws BusinessServiceException;
 	
 	OutboundHeaderTEntity find(OutboundHeaderTEntity outbound) throws BusinessServiceException;
+	
+	List<OutboundHeaderTEntity> find(OutboundHeaderTEntity outbound, Set<Long> ids) throws BusinessServiceException;
 	
 	OutboundVO save(AjaxRequest<OutboundVO> request) throws BusinessServiceException;
 	

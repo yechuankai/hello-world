@@ -4,6 +4,8 @@ import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.entity.auto.PackTEntity;
+import com.wms.entity.auto.SkuTEntity;
+import com.wms.vo.PackVO;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,4 +30,14 @@ public interface IPackService {
 	Boolean add(List<PackTEntity> packs) throws BusinessServiceException;
 	
 	Boolean delete(AjaxRequest<List<PackTEntity>> request) throws BusinessServiceException; 
+	
+	/**
+	 * 根据单位获取规格
+	 * @param pack
+	 * @param sku
+	 * @param uom
+	 * @return
+	 */
+	PackVO getPack(PackTEntity pack, SkuTEntity sku, String uom);
+	
 }

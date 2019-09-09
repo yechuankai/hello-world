@@ -97,6 +97,18 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 		List<SkuTEntity> skuList = skuService.findByIds(selectSku, skuids);
 		Map<Long, SkuTEntity> skuMaps = skuList.stream().collect(
 				Collectors.toMap(SkuTEntity::getSkuId, (s) -> s));
+		
+		Set<Long> headerIds = outboundDetailList.stream().map(OutboundDetailTEntity::getOutboundHeaderId).collect(Collectors.toSet());
+		List<OutboundHeaderTEntity> headerList = Lists.newArrayList();
+		if(CollectionUtils.isNotEmpty(headerIds)){
+			OutboundHeaderTEntity header = OutboundHeaderTEntity.builder()
+					.warehouseId(request.getWarehouseId())
+					.companyId(request.getCompanyId())
+					.build();
+			headerList = outboundHeaderService.find(header, headerIds);
+		}
+		Map<Long, OutboundHeaderTEntity> headerIdMap = headerList.stream().collect(
+			      Collectors.toMap(OutboundHeaderTEntity::getOutboundHeaderId, (s) -> s));
 
 		List<OutboundDetailVO> returnList = Lists.newArrayList();
 		outboundDetailList.forEach(d -> {
@@ -107,6 +119,11 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 			if (sku != null) {
 				outboundDetailVO.setSkuDescr(sku.getSkuDescr());
 			}
+			
+			OutboundHeaderTEntity header = headerIdMap.get(d.getOutboundHeaderId());
+			if (header != null)
+				outboundDetailVO.setOutboundNumber(header.getOutboundNumber());
+			
 			returnList.add(outboundDetailVO);
 
 		});

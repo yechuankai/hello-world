@@ -261,12 +261,7 @@
 		});
 		$('#submitChangePasswordForm').click(submitChangePassword);
 		$('#files').click(function(){
-			$('#filesContent').dialog({
-			    closed: true,
-			    modal: true,
-			    fix: true,
-			    content: '<iframe scrolling="no" frameborder="0"  src="system/myfiles" style="width:100%;height:98%;" />'
-			}).dialog('open');
+			myfiles();
 		});
 		$('#mobile').click(function(){
 			
@@ -293,6 +288,15 @@
 		setTimeout(() => {
 			warehouseData = $('#warehouseData').datagrid('getData');
 		}, 1000);
+	}
+	
+	function myfiles(){
+		$('#filesContent').dialog({
+		    closed: true,
+		    modal: true,
+		    fix: true,
+		    content: '<iframe scrolling="no" frameborder="0"  src="system/myfiles" style="width:100%;height:98%;" />'
+		}).dialog('open');
 	}
 
 </script>

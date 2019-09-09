@@ -184,6 +184,26 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 		return selectInbound;
 	}
 	
+	@Override
+	public List<InboundHeaderTEntity> find(InboundHeaderTEntity inbound, Set<Long> ids) throws BusinessServiceException {
+		if(CollectionUtils.isEmpty(ids))
+			return Lists.newArrayList();
+		
+		InboundHeaderTExample TExample = new InboundHeaderTExample();
+		InboundHeaderTExample.Criteria criteria = TExample.createCriteria();
+		
+		criteria.andDelFlagEqualTo(YesNoEnum.No.getCode())
+		.andCompanyIdEqualTo(inbound.getCompanyId())
+		.andWarehouseIdEqualTo(inbound.getWarehouseId())
+		.andInboundHeaderIdIn(Lists.newArrayList(ids));
+		
+		List<InboundHeaderTEntity> inbounds = inboundHeaderDao.selectByExample(TExample);
+		if (inbounds == null) {
+			return Lists.newArrayList();
+		}
+		return inbounds;
+	}
+	
 	private Boolean validate(InboundVO inbound) {
 		
 		if (inbound.getOwnerId() == null && StringUtils.isEmpty(inbound.getOwnerCode()))

@@ -1742,13 +1742,13 @@ sku_type varchar2(200),
 pack_id number,
 pack_code varchar2(50),
 uom varchar2(50),
-volume number(10,2),
-length number(10,2),
-width number(10,2),
-height number(10,2),
-weight_gross number(10,2),
-weight_net number(10,2),
-weight_tare number(10,2),
+volume number(15,5) default 0,
+length number(15,5) default 0,
+width number(15,5) default 0,
+height number(15,5) default 0,
+weight_gross number(15,5) default 0,
+weight_net number(15,5) default 0,
+weight_tare number(15,5) default 0,
 lot_validate_id number,
 lot_validate_code varchar2(50),
 putaway_strategy_id number,
@@ -2362,13 +2362,13 @@ lpn_id number,
 lpn_number varchar2(50),
 lpn_type varchar2(50),
 lpn_size varchar2(50),
-volume number(10,2),
-length number(10,2),
-width number(10,2),
-height number(10,2),
-weight_gross number(10,2),
-weight_net number(10,2),
-weight_tare number(10,2),
+volume number(15,5),
+length number(15,5),
+width number(15,5),
+height number(15,5),
+weight_gross number(15,5),
+weight_net number(15,5),
+weight_tare number(15,5),
 parent_lpn_id number,
 parent_lpn_code varchar2(50),
 container_number varchar2(50),
@@ -3581,20 +3581,20 @@ alter table TASK_DETAIL_T modify QUANTITY default 0;
 
 
 --增加 毛重 净重 皮重 体积
-alter table INBOUND_DETAIL_T ADD WEIGHT_GROSS number(10,2) default 0;
-alter table INBOUND_DETAIL_T ADD WEIGHT_NET number(10,2) default 0;
-alter table INBOUND_DETAIL_T ADD WEIGHT_TARE number(10,2) default 0;
-alter table INBOUND_DETAIL_T ADD volume number(10,2) default 0;
+alter table INBOUND_DETAIL_T ADD WEIGHT_GROSS number(15,5) default 0;
+alter table INBOUND_DETAIL_T ADD WEIGHT_NET number(15,5) default 0;
+alter table INBOUND_DETAIL_T ADD WEIGHT_TARE number(15,5) default 0;
+alter table INBOUND_DETAIL_T ADD volume number(15,5) default 0;
 
 comment on column INBOUND_DETAIL_T.WEIGHT_GROSS   is '毛重';
 comment on column INBOUND_DETAIL_T.WEIGHT_NET   is '净重';
 comment on column INBOUND_DETAIL_T.WEIGHT_TARE   is '皮重';
 comment on column INBOUND_DETAIL_T.volume   is '体积';
 
-alter table OUTBOUND_DETAIL_T ADD WEIGHT_GROSS number(10,2) default 0;
-alter table OUTBOUND_DETAIL_T ADD WEIGHT_NET number(10,2) default 0;
-alter table OUTBOUND_DETAIL_T ADD WEIGHT_TARE number(10,2) default 0;
-alter table OUTBOUND_DETAIL_T ADD volume number(10,2) default 0;
+alter table OUTBOUND_DETAIL_T ADD WEIGHT_GROSS number(15,5) default 0;
+alter table OUTBOUND_DETAIL_T ADD WEIGHT_NET number(15,5) default 0;
+alter table OUTBOUND_DETAIL_T ADD WEIGHT_TARE number(15,5) default 0;
+alter table OUTBOUND_DETAIL_T ADD volume number(15,5) default 0;
 
 comment on column OUTBOUND_DETAIL_T.WEIGHT_GROSS   is '毛重';
 comment on column OUTBOUND_DETAIL_T.WEIGHT_NET   is '净重';
@@ -3622,5 +3622,47 @@ alter table ALLOCATE_T ADD (FROM_LOCATION_CODE varchar2(50));
 alter table ALLOCATE_T ADD (FROM_LPN_NUMBER varchar2(50));
 comment on column ALLOCATE_T.FROM_LOCATION_CODE   is '来源库位';
 comment on column ALLOCATE_T.FROM_LOCATION_CODE   is '来源LPN';
+
+
+
+
+--增加内包装规格
+alter table PACK_T ADD (
+volume_inner number(15,5) default 0,
+length_inner number(15,5) default 0,
+width_inner number(15,5) default 0,
+height_inner number(15,5) default 0,
+weight_gross_inner number(15,5) default 0,
+weight_net_inner number(15,5) default 0,
+weight_tare_inner number(15,5) default 0
+);
+comment on column PACK_T.volume_inner is '内包装体积';
+comment on column PACK_T.length_inner is '内包装长';
+comment on column PACK_T.width_inner is '内包装宽';
+comment on column PACK_T.height_inner is '内包装高';
+comment on column PACK_T.weight_gross_inner is '内包装毛重';
+comment on column PACK_T.weight_net_inner is '内包装净重';
+comment on column PACK_T.weight_tare_inner is '内包装皮重';
+
+--增加箱包装规格
+alter table PACK_T ADD (
+volume_case number(15,5) default 0,
+length_case number(15,5) default 0,
+width_case number(15,5) default 0,
+height_case number(15,5) default 0,
+weight_gross_case number(15,5) default 0,
+weight_net_case number(15,5) default 0,
+weight_tare_case number(15,5) default 0
+);
+comment on column PACK_T.volume_case is '箱包装体积';
+comment on column PACK_T.length_case is '箱包装长';
+comment on column PACK_T.width_case is '箱包装宽';
+comment on column PACK_T.height_case is '箱包装高';
+comment on column PACK_T.weight_gross_case is '箱包装毛重';
+comment on column PACK_T.weight_net_case is '箱包装净重';
+comment on column PACK_T.weight_tare_case is '箱包装皮重';
+
+
+
 
 

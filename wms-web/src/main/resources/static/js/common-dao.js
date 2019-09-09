@@ -200,7 +200,10 @@ $(function(){
 					$(from).form('reset');
 					if (!r) {
 						$(from).parents('.window-body').dialog('close');
-						$(datagrid).datagrid('reload').datagrid('clearChecked');
+						if ($('.common-search').length > 0){
+							$('.common-search').trigger('click');
+						}
+						//$(datagrid).datagrid('reload').datagrid('clearChecked');
 					}
 				});
 			}

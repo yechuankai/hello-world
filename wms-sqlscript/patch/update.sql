@@ -177,3 +177,7 @@ alter table WMS.ALLOCATE_T ADD (FROM_LPN_NUMBER varchar2(50));
 comment on column WMS.ALLOCATE_T.FROM_LOCATION_CODE   is '来源库位';
 comment on column WMS.ALLOCATE_T.FROM_LPN_NUMBER   is '来源LPN';
 
+
+grant select on DPSP.CARD_INFO_LABOR_LIST to wms;
+grant select on DPSP.COMMON_ATTACHED_FILE to wms;
+grant select on uums.Web_Sys_Tfp to wms;

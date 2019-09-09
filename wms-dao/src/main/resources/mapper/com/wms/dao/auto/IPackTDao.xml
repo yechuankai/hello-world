@@ -22,6 +22,20 @@
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="UPDATE_VERSION" jdbcType="DECIMAL" property="updateVersion" />
     <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="VOLUME_INNER" jdbcType="DECIMAL" property="volumeInner" />
+    <result column="LENGTH_INNER" jdbcType="DECIMAL" property="lengthInner" />
+    <result column="WIDTH_INNER" jdbcType="DECIMAL" property="widthInner" />
+    <result column="HEIGHT_INNER" jdbcType="DECIMAL" property="heightInner" />
+    <result column="WEIGHT_GROSS_INNER" jdbcType="DECIMAL" property="weightGrossInner" />
+    <result column="WEIGHT_NET_INNER" jdbcType="DECIMAL" property="weightNetInner" />
+    <result column="WEIGHT_TARE_INNER" jdbcType="DECIMAL" property="weightTareInner" />
+    <result column="VOLUME_CASE" jdbcType="DECIMAL" property="volumeCase" />
+    <result column="LENGTH_CASE" jdbcType="DECIMAL" property="lengthCase" />
+    <result column="WIDTH_CASE" jdbcType="DECIMAL" property="widthCase" />
+    <result column="HEIGHT_CASE" jdbcType="DECIMAL" property="heightCase" />
+    <result column="WEIGHT_GROSS_CASE" jdbcType="DECIMAL" property="weightGrossCase" />
+    <result column="WEIGHT_NET_CASE" jdbcType="DECIMAL" property="weightNetCase" />
+    <result column="WEIGHT_TARE_CASE" jdbcType="DECIMAL" property="weightTareCase" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -121,7 +135,9 @@
   <sql id="Base_Column_List">
     PACK_ID, PACK_CODE, PACK_DESCR, UOM, QTY, UOM_INNER, QTY_INNER, UOM_CASE, QTY_CASE, 
     ACTIVE, REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, 
-    UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
+    UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, VOLUME_INNER, LENGTH_INNER, WIDTH_INNER, 
+    HEIGHT_INNER, WEIGHT_GROSS_INNER, WEIGHT_NET_INNER, WEIGHT_TARE_INNER, VOLUME_CASE, 
+    LENGTH_CASE, WIDTH_CASE, HEIGHT_CASE, WEIGHT_GROSS_CASE, WEIGHT_NET_CASE, WEIGHT_TARE_CASE
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.PackTExample" resultMap="BaseResultMap">
     select
@@ -150,14 +166,24 @@
       ACTIVE, REMARK, COMPANY_ID, 
       WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
       CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
-      UPDATE_VERSION, DESCRIPTION)
+      UPDATE_VERSION, DESCRIPTION, VOLUME_INNER, 
+      LENGTH_INNER, WIDTH_INNER, HEIGHT_INNER, 
+      WEIGHT_GROSS_INNER, WEIGHT_NET_INNER, WEIGHT_TARE_INNER, 
+      VOLUME_CASE, LENGTH_CASE, WIDTH_CASE, 
+      HEIGHT_CASE, WEIGHT_GROSS_CASE, WEIGHT_NET_CASE, 
+      WEIGHT_TARE_CASE)
     values (#{packId,jdbcType=DECIMAL}, #{packCode,jdbcType=VARCHAR}, #{packDescr,jdbcType=VARCHAR}, 
       #{uom,jdbcType=VARCHAR}, #{qty,jdbcType=DECIMAL}, #{uomInner,jdbcType=VARCHAR}, 
       #{qtyInner,jdbcType=DECIMAL}, #{uomCase,jdbcType=VARCHAR}, #{qtyCase,jdbcType=DECIMAL}, 
       #{active,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, 
       #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR})
+      #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, #{volumeInner,jdbcType=DECIMAL}, 
+      #{lengthInner,jdbcType=DECIMAL}, #{widthInner,jdbcType=DECIMAL}, #{heightInner,jdbcType=DECIMAL}, 
+      #{weightGrossInner,jdbcType=DECIMAL}, #{weightNetInner,jdbcType=DECIMAL}, #{weightTareInner,jdbcType=DECIMAL}, 
+      #{volumeCase,jdbcType=DECIMAL}, #{lengthCase,jdbcType=DECIMAL}, #{widthCase,jdbcType=DECIMAL}, 
+      #{heightCase,jdbcType=DECIMAL}, #{weightGrossCase,jdbcType=DECIMAL}, #{weightNetCase,jdbcType=DECIMAL}, 
+      #{weightTareCase,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.PackTEntity">
     insert into PACK_T
@@ -222,6 +248,48 @@
       <if test="description != null">
         DESCRIPTION,
       </if>
+      <if test="volumeInner != null">
+        VOLUME_INNER,
+      </if>
+      <if test="lengthInner != null">
+        LENGTH_INNER,
+      </if>
+      <if test="widthInner != null">
+        WIDTH_INNER,
+      </if>
+      <if test="heightInner != null">
+        HEIGHT_INNER,
+      </if>
+      <if test="weightGrossInner != null">
+        WEIGHT_GROSS_INNER,
+      </if>
+      <if test="weightNetInner != null">
+        WEIGHT_NET_INNER,
+      </if>
+      <if test="weightTareInner != null">
+        WEIGHT_TARE_INNER,
+      </if>
+      <if test="volumeCase != null">
+        VOLUME_CASE,
+      </if>
+      <if test="lengthCase != null">
+        LENGTH_CASE,
+      </if>
+      <if test="widthCase != null">
+        WIDTH_CASE,
+      </if>
+      <if test="heightCase != null">
+        HEIGHT_CASE,
+      </if>
+      <if test="weightGrossCase != null">
+        WEIGHT_GROSS_CASE,
+      </if>
+      <if test="weightNetCase != null">
+        WEIGHT_NET_CASE,
+      </if>
+      <if test="weightTareCase != null">
+        WEIGHT_TARE_CASE,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="packId != null">
@@ -283,6 +351,48 @@
       </if>
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="volumeInner != null">
+        #{volumeInner,jdbcType=DECIMAL},
+      </if>
+      <if test="lengthInner != null">
+        #{lengthInner,jdbcType=DECIMAL},
+      </if>
+      <if test="widthInner != null">
+        #{widthInner,jdbcType=DECIMAL},
+      </if>
+      <if test="heightInner != null">
+        #{heightInner,jdbcType=DECIMAL},
+      </if>
+      <if test="weightGrossInner != null">
+        #{weightGrossInner,jdbcType=DECIMAL},
+      </if>
+      <if test="weightNetInner != null">
+        #{weightNetInner,jdbcType=DECIMAL},
+      </if>
+      <if test="weightTareInner != null">
+        #{weightTareInner,jdbcType=DECIMAL},
+      </if>
+      <if test="volumeCase != null">
+        #{volumeCase,jdbcType=DECIMAL},
+      </if>
+      <if test="lengthCase != null">
+        #{lengthCase,jdbcType=DECIMAL},
+      </if>
+      <if test="widthCase != null">
+        #{widthCase,jdbcType=DECIMAL},
+      </if>
+      <if test="heightCase != null">
+        #{heightCase,jdbcType=DECIMAL},
+      </if>
+      <if test="weightGrossCase != null">
+        #{weightGrossCase,jdbcType=DECIMAL},
+      </if>
+      <if test="weightNetCase != null">
+        #{weightNetCase,jdbcType=DECIMAL},
+      </if>
+      <if test="weightTareCase != null">
+        #{weightTareCase,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -355,6 +465,48 @@
       <if test="record.description != null">
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       </if>
+      <if test="record.volumeInner != null">
+        VOLUME_INNER = #{record.volumeInner,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lengthInner != null">
+        LENGTH_INNER = #{record.lengthInner,jdbcType=DECIMAL},
+      </if>
+      <if test="record.widthInner != null">
+        WIDTH_INNER = #{record.widthInner,jdbcType=DECIMAL},
+      </if>
+      <if test="record.heightInner != null">
+        HEIGHT_INNER = #{record.heightInner,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightGrossInner != null">
+        WEIGHT_GROSS_INNER = #{record.weightGrossInner,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightNetInner != null">
+        WEIGHT_NET_INNER = #{record.weightNetInner,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightTareInner != null">
+        WEIGHT_TARE_INNER = #{record.weightTareInner,jdbcType=DECIMAL},
+      </if>
+      <if test="record.volumeCase != null">
+        VOLUME_CASE = #{record.volumeCase,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lengthCase != null">
+        LENGTH_CASE = #{record.lengthCase,jdbcType=DECIMAL},
+      </if>
+      <if test="record.widthCase != null">
+        WIDTH_CASE = #{record.widthCase,jdbcType=DECIMAL},
+      </if>
+      <if test="record.heightCase != null">
+        HEIGHT_CASE = #{record.heightCase,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightGrossCase != null">
+        WEIGHT_GROSS_CASE = #{record.weightGrossCase,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightNetCase != null">
+        WEIGHT_NET_CASE = #{record.weightNetCase,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightTareCase != null">
+        WEIGHT_TARE_CASE = #{record.weightTareCase,jdbcType=DECIMAL},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -381,7 +533,21 @@
       UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
       UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
       UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
-      DESCRIPTION = #{record.description,jdbcType=VARCHAR}
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      VOLUME_INNER = #{record.volumeInner,jdbcType=DECIMAL},
+      LENGTH_INNER = #{record.lengthInner,jdbcType=DECIMAL},
+      WIDTH_INNER = #{record.widthInner,jdbcType=DECIMAL},
+      HEIGHT_INNER = #{record.heightInner,jdbcType=DECIMAL},
+      WEIGHT_GROSS_INNER = #{record.weightGrossInner,jdbcType=DECIMAL},
+      WEIGHT_NET_INNER = #{record.weightNetInner,jdbcType=DECIMAL},
+      WEIGHT_TARE_INNER = #{record.weightTareInner,jdbcType=DECIMAL},
+      VOLUME_CASE = #{record.volumeCase,jdbcType=DECIMAL},
+      LENGTH_CASE = #{record.lengthCase,jdbcType=DECIMAL},
+      WIDTH_CASE = #{record.widthCase,jdbcType=DECIMAL},
+      HEIGHT_CASE = #{record.heightCase,jdbcType=DECIMAL},
+      WEIGHT_GROSS_CASE = #{record.weightGrossCase,jdbcType=DECIMAL},
+      WEIGHT_NET_CASE = #{record.weightNetCase,jdbcType=DECIMAL},
+      WEIGHT_TARE_CASE = #{record.weightTareCase,jdbcType=DECIMAL}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -502,7 +668,21 @@
     CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP}, 
     UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR}, 
     UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
-    DESCRIPTION = #{record.description,jdbcType=VARCHAR}
+    DESCRIPTION = #{record.description,jdbcType=VARCHAR}, 
+    VOLUME_INNER = #{record.volumeInner,jdbcType=DECIMAL}, 
+    LENGTH_INNER = #{record.lengthInner,jdbcType=DECIMAL}, 
+    WIDTH_INNER = #{record.widthInner,jdbcType=DECIMAL}, 
+    HEIGHT_INNER = #{record.heightInner,jdbcType=DECIMAL}, 
+    WEIGHT_GROSS_INNER = #{record.weightGrossInner,jdbcType=DECIMAL}, 
+    WEIGHT_NET_INNER = #{record.weightNetInner,jdbcType=DECIMAL}, 
+    WEIGHT_TARE_INNER = #{record.weightTareInner,jdbcType=DECIMAL}, 
+    VOLUME_CASE = #{record.volumeCase,jdbcType=DECIMAL}, 
+    LENGTH_CASE = #{record.lengthCase,jdbcType=DECIMAL}, 
+    WIDTH_CASE = #{record.widthCase,jdbcType=DECIMAL}, 
+    HEIGHT_CASE = #{record.heightCase,jdbcType=DECIMAL}, 
+    WEIGHT_GROSS_CASE = #{record.weightGrossCase,jdbcType=DECIMAL}, 
+    WEIGHT_NET_CASE = #{record.weightNetCase,jdbcType=DECIMAL}, 
+    WEIGHT_TARE_CASE = #{record.weightTareCase,jdbcType=DECIMAL}
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
     </if>
@@ -573,6 +753,48 @@
         </if>
         <if test="record.description != null">
           DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+        </if>
+        <if test="record.volumeInner != null">
+          VOLUME_INNER = #{record.volumeInner,jdbcType=DECIMAL},
+        </if>
+        <if test="record.lengthInner != null">
+          LENGTH_INNER = #{record.lengthInner,jdbcType=DECIMAL},
+        </if>
+        <if test="record.widthInner != null">
+          WIDTH_INNER = #{record.widthInner,jdbcType=DECIMAL},
+        </if>
+        <if test="record.heightInner != null">
+          HEIGHT_INNER = #{record.heightInner,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightGrossInner != null">
+          WEIGHT_GROSS_INNER = #{record.weightGrossInner,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightNetInner != null">
+          WEIGHT_NET_INNER = #{record.weightNetInner,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightTareInner != null">
+          WEIGHT_TARE_INNER = #{record.weightTareInner,jdbcType=DECIMAL},
+        </if>
+        <if test="record.volumeCase != null">
+          VOLUME_CASE = #{record.volumeCase,jdbcType=DECIMAL},
+        </if>
+        <if test="record.lengthCase != null">
+          LENGTH_CASE = #{record.lengthCase,jdbcType=DECIMAL},
+        </if>
+        <if test="record.widthCase != null">
+          WIDTH_CASE = #{record.widthCase,jdbcType=DECIMAL},
+        </if>
+        <if test="record.heightCase != null">
+          HEIGHT_CASE = #{record.heightCase,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightGrossCase != null">
+          WEIGHT_GROSS_CASE = #{record.weightGrossCase,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightNetCase != null">
+          WEIGHT_NET_CASE = #{record.weightNetCase,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightTareCase != null">
+          WEIGHT_TARE_CASE = #{record.weightTareCase,jdbcType=DECIMAL},
         </if>
       </trim>
     </set>
