@@ -14,6 +14,8 @@ public class SysFileTEntity extends BaseEntity {
 
     private String fileName;
 
+    private String template;
+
     private Long fileSize;
 
     private String contentType;
@@ -46,8 +48,6 @@ public class SysFileTEntity extends BaseEntity {
 
     private String description;
 
-    private String template;
-
     public Long getFileId() {
         return fileId;
     }
@@ -78,6 +78,14 @@ public class SysFileTEntity extends BaseEntity {
 
     public void setFileName(String fileName) {
         this.fileName = fileName == null ? null : fileName.trim();
+    }
+
+    public String getTemplate() {
+        return template;
+    }
+
+    public void setTemplate(String template) {
+        this.template = template == null ? null : template.trim();
     }
 
     public Long getFileSize() {
@@ -219,14 +227,6 @@ public class SysFileTEntity extends BaseEntity {
         this.description = description == null ? null : description.trim();
     }
 
-    public String getTemplate() {
-        return template;
-    }
-
-    public void setTemplate(String template) {
-        this.template = template == null ? null : template.trim();
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -237,6 +237,7 @@ public class SysFileTEntity extends BaseEntity {
         sb.append(", objectId=").append(objectId);
         sb.append(", fileType=").append(fileType);
         sb.append(", fileName=").append(fileName);
+        sb.append(", template=").append(template);
         sb.append(", fileSize=").append(fileSize);
         sb.append(", contentType=").append(contentType);
         sb.append(", status=").append(status);
@@ -253,7 +254,6 @@ public class SysFileTEntity extends BaseEntity {
         sb.append(", updateTime=").append(updateTime);
         sb.append(", updateVersion=").append(updateVersion);
         sb.append(", description=").append(description);
-        sb.append(", template=").append(template);
         sb.append("]");
         return sb.toString();
     }
@@ -274,6 +274,7 @@ public class SysFileTEntity extends BaseEntity {
             && (this.getObjectId() == null ? other.getObjectId() == null : this.getObjectId().equals(other.getObjectId()))
             && (this.getFileType() == null ? other.getFileType() == null : this.getFileType().equals(other.getFileType()))
             && (this.getFileName() == null ? other.getFileName() == null : this.getFileName().equals(other.getFileName()))
+            && (this.getTemplate() == null ? other.getTemplate() == null : this.getTemplate().equals(other.getTemplate()))
             && (this.getFileSize() == null ? other.getFileSize() == null : this.getFileSize().equals(other.getFileSize()))
             && (this.getContentType() == null ? other.getContentType() == null : this.getContentType().equals(other.getContentType()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
@@ -289,8 +290,7 @@ public class SysFileTEntity extends BaseEntity {
             && (this.getUpdateBy() == null ? other.getUpdateBy() == null : this.getUpdateBy().equals(other.getUpdateBy()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
             && (this.getUpdateVersion() == null ? other.getUpdateVersion() == null : this.getUpdateVersion().equals(other.getUpdateVersion()))
-            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
-            && (this.getTemplate() == null ? other.getTemplate() == null : this.getTemplate().equals(other.getTemplate()));
+            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()));
     }
 
     @Override
@@ -301,6 +301,7 @@ public class SysFileTEntity extends BaseEntity {
         result = prime * result + ((getObjectId() == null) ? 0 : getObjectId().hashCode());
         result = prime * result + ((getFileType() == null) ? 0 : getFileType().hashCode());
         result = prime * result + ((getFileName() == null) ? 0 : getFileName().hashCode());
+        result = prime * result + ((getTemplate() == null) ? 0 : getTemplate().hashCode());
         result = prime * result + ((getFileSize() == null) ? 0 : getFileSize().hashCode());
         result = prime * result + ((getContentType() == null) ? 0 : getContentType().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
@@ -317,7 +318,6 @@ public class SysFileTEntity extends BaseEntity {
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getUpdateVersion() == null) ? 0 : getUpdateVersion().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
-        result = prime * result + ((getTemplate() == null) ? 0 : getTemplate().hashCode());
         return result;
     }
 
@@ -413,6 +413,20 @@ public class SysFileTEntity extends BaseEntity {
          */
         public Builder fileName(String fileName) {
             obj.setFileName(fileName);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column SYS_FILE_T.TEMPLATE
+         *
+         * @param template the value for SYS_FILE_T.TEMPLATE
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder template(String template) {
+            obj.setTemplate(template);
             return this;
         }
 
@@ -642,20 +656,6 @@ public class SysFileTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column SYS_FILE_T.TEMPLATE
-         *
-         * @param template the value for SYS_FILE_T.TEMPLATE
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        public Builder template(String template) {
-            obj.setTemplate(template);
-            return this;
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
          * This method corresponds to the database table SYS_FILE_T
          *
          * @mbg.generated
@@ -753,6 +753,7 @@ public class SysFileTEntity extends BaseEntity {
         objectId("OBJECT_ID", "objectId", "VARCHAR", false),
         fileType("FILE_TYPE", "fileType", "VARCHAR", false),
         fileName("FILE_NAME", "fileName", "VARCHAR", false),
+        template("TEMPLATE", "template", "VARCHAR", true),
         fileSize("FILE_SIZE", "fileSize", "DECIMAL", false),
         contentType("CONTENT_TYPE", "contentType", "VARCHAR", false),
         status("STATUS", "status", "VARCHAR", true),
@@ -768,8 +769,7 @@ public class SysFileTEntity extends BaseEntity {
         updateBy("UPDATE_BY", "updateBy", "VARCHAR", false),
         updateTime("UPDATE_TIME", "updateTime", "TIMESTAMP", false),
         updateVersion("UPDATE_VERSION", "updateVersion", "DECIMAL", false),
-        description("DESCRIPTION", "description", "VARCHAR", false),
-        template("TEMPLATE", "template", "VARCHAR", true);
+        description("DESCRIPTION", "description", "VARCHAR", false);
 
         /**
          * This field was generated by MyBatis Generator.

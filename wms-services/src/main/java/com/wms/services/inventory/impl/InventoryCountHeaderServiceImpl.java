@@ -89,6 +89,13 @@ public class InventoryCountHeaderServiceImpl implements IInventoryCountHeaderSer
 		
 		detailService.add(new AjaxRequest<List<InventoryCountDetailTEntity>>(detailList, request));
 		
+		//更新最后请求日期
+		InventoryCountRequestTEntity requestUpdate = InventoryCountRequestTEntity.builder()
+														.requestDate(new Date())
+														.inventoryCountRequestId(countRequest.getInventoryCountRequestId())
+														.build();
+		requestService.modify(new AjaxRequest<List<InventoryCountRequestTEntity>>(Lists.newArrayList(requestUpdate), request));
+		
 		long detailSize = detailList.size();
 		
 		return detailSize;

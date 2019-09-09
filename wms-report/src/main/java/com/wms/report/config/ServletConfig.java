@@ -9,7 +9,6 @@ import com.wms.report.config.servlet.Barcode4jServlet;
 
 @Configuration
 public class ServletConfig {
-
 	
 	@Bean
     public ServletRegistrationBean barbecue() {
@@ -22,5 +21,5 @@ public class ServletConfig {
 		//http://127.0.0.1:8083/wms-report/barcode?type=code128&msg=123
         return new ServletRegistrationBean(new Barcode4jServlet(), "/barcode/*");
     }
-
+	
 }

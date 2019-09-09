@@ -14,9 +14,13 @@
 		<table id="putawayDetailData"
 			   			wms:data-options="toolbar: '#putawayToolbar'"
 			   th:data-delayUrl="@{/services/inner/inventory/task/find}">
-			<thead>
+			 <thead data-options="frozen:true">
 				<tr>
 					<th field="taskDetailId" data-options="checkbox:true"></th>
+			 	</tr>
+			 </thead>
+			<thead>
+				<tr>
 					<th field="taskDetailNumber" width="130" wms:text="${web.label.taskdetailnumber}" data-options="sortable:true">taskDetailNumber</th>
 		            <th field="sourceType" width="100" wms:text="${web.label.sourcetype}" data-options="
 									sortable:true,

@@ -1,5 +1,13 @@
 package com.wms.pub.inner.inventory;
 
+import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.alibaba.fastjson.TypeReference;
 import com.github.pagehelper.PageHelper;
 import com.wms.common.core.controller.BaseController;
@@ -10,13 +18,6 @@ import com.wms.common.core.domain.response.PageResult;
 import com.wms.common.utils.StringUtils;
 import com.wms.entity.auto.TaskDetailTEntity;
 import com.wms.services.inventory.ITaskService;
-import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * @description: 上架/拣货任务Rest
@@ -70,6 +71,23 @@ public class TaskRest extends BaseController {
         }
         return fail();
     }
+    
+    @RequestMapping(value = "/delete")
+	public AjaxResult delete(@RequestBody String req) {
+    	try {
+            AjaxRequest<List<TaskDetailTEntity>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<TaskDetailTEntity>>>() {});
+            if (CollectionUtils.isEmpty(request.getData())) {
+                return fail("no record delete.");
+            }
+            boolean flag = taskService.delete(request);
+            if (flag) {
+                return success();
+            }
+        } catch (Exception e) {
+            return fail(e.getMessage());
+        }
+        return fail();
+	}
 
     @RequestMapping(value = "/cancel")
     public AjaxResult cancel(@RequestBody String req) {

@@ -10,10 +10,12 @@ import com.wms.common.utils.spring.SpringUtils;
 import com.wms.dao.auto.IInventoryOnhandTDao;
 import com.wms.dao.example.InventoryOnhandTExample;
 import com.wms.entity.auto.*;
+import com.wms.services.base.ILocationService;
 import com.wms.services.base.IPutawayStrategyDetailService;
 import com.wms.services.base.ISkuService;
 import com.wms.services.core.IPutawayCoreService;
 import com.wms.services.inventory.ILpnService;
+import com.wms.services.inventory.IPutawayLocationLockService;
 import com.wms.services.strategy.putaway.IPutawayService;
 import com.wms.vo.InventoryOnhandVO;
 import com.wms.vo.PutawayVO;
@@ -30,7 +32,7 @@ import java.util.stream.Collectors;
 public class PutawayCoreServiceImpl implements IPutawayCoreService, InitializingBean{
 
 	//默认UNKNOWN库位
-	private static final String UNKNOWN = "UNKNOWN";
+	public static final String UNKNOWN = "UNKNOWN";
 	
 	private Map<String, IPutawayService> strategyServiceMap = Maps.newHashMap();
 	
@@ -42,6 +44,8 @@ public class PutawayCoreServiceImpl implements IPutawayCoreService, Initializing
 	private IInventoryOnhandTDao inventoryDao;
 	@Autowired
 	private ILpnService lpnService;
+	@Autowired
+	private IPutawayLocationLockService lockService;
 	
 	/**
 	 * 加载策略逻辑类
@@ -66,6 +70,26 @@ public class PutawayCoreServiceImpl implements IPutawayCoreService, Initializing
 
 	@Override
 	public PutawayVO lpnPutaway(LpnTEntity lpn, PutawayStrategyTEntity strategy) throws BusinessServiceException {
+		//查询是否存在锁定库存
+		List<PutawayLocationLockTEntity> locks = lockService.find(lpn);
+		if (CollectionUtils.isNotEmpty(locks)) {
+			PutawayLocationLockTEntity lock = locks.get(0);
+			
+			PutawayVO putaway = new PutawayVO();
+			putaway.setWarehouseId(lpn.getWarehouseId());
+			putaway.setCompanyId(lpn.getCompanyId());
+			putaway.setLpnNumber(lpn.getLpnNumber());
+			putaway.setContainerNumber(lpn.getContainerNumber());
+			putaway.setToLocationCode(lock.getLocationCode());
+			
+			//目前未存储库存行ID，无法获取更多信息
+			InventoryOnhandVO onhand = new InventoryOnhandVO();
+			onhand.setSkuCode(lock.getSkuCode());
+			putaway.setInventoryOnhand(onhand);
+			
+			return putaway;
+		}
+		
 		//查询库存
 		InventoryOnhandVO inventory = new InventoryOnhandVO();
 		BeanUtils.copyBeanProp(inventory, lpn);
@@ -79,6 +103,7 @@ public class PutawayCoreServiceImpl implements IPutawayCoreService, Initializing
 		putaway.setWarehouseId(inventory.getWarehouseId());
 		putaway.setCompanyId(inventory.getCompanyId());
 		putaway.setInventoryOnhand(onhandVo);
+		putaway.setLpnNumber(lpn.getLpnNumber());
 		putaway.setContainerNumber(lpn.getContainerNumber());
 		putaway.setCreateBy(lpn.getCreateBy());
 		if (strategy == null) {
@@ -223,8 +248,6 @@ public class PutawayCoreServiceImpl implements IPutawayCoreService, Initializing
 		criteria.andQuantityOnhandGreaterThan(BigDecimal.ZERO);
 		
 		List<InventoryOnhandTEntity> selectInventory = inventoryDao.selectByExample(example);
-		
-		//转换库区
 		
 		return selectInventory;
 	}

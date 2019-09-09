@@ -3,6 +3,7 @@ package com.wms.services.inventory.impl;
 import com.google.common.collect.Lists;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
+import com.wms.common.enums.CountStatusEnum;
 import com.wms.common.enums.CountTypeEnum;
 import com.wms.common.enums.OrderNumberTypeEnum;
 import com.wms.common.enums.YesNoEnum;
@@ -17,9 +18,9 @@ import com.wms.dao.auto.ILocationTDao;
 import com.wms.dao.example.InventoryCountRequestTExample;
 import com.wms.dao.example.InventoryOnhandTExample;
 import com.wms.dao.example.LocationTExample;
-import com.wms.entity.auto.InventoryCountRequestTEntity;
-import com.wms.entity.auto.InventoryOnhandTEntity;
-import com.wms.entity.auto.LocationTEntity;
+import com.wms.entity.auto.*;
+import com.wms.services.inventory.IInventoryCountDetailService;
+import com.wms.services.inventory.IInventoryCountHeaderService;
 import com.wms.services.inventory.IInventoryCountRequestService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,12 @@ public class InventoryCountRequestImpl implements IInventoryCountRequestService 
 	
 	@Autowired
 	private IInventoryOnhandTDao onhandDao;
+
+	@Autowired
+	private IInventoryCountHeaderService countHeaderService;
+
+	@Autowired
+	private IInventoryCountDetailService countDetailService;
 
 	@Override
 	public List<InventoryCountRequestTEntity> find(PageRequest request) throws BusinessServiceException {
@@ -245,4 +252,53 @@ public class InventoryCountRequestImpl implements IInventoryCountRequestService 
 		return onhandList;
 	}
 
+	@Override
+	public Boolean createCount(AjaxRequest<List<InventoryCountRequestTEntity>> request) throws BusinessServiceException {
+
+		List<InventoryCountRequestTEntity> list = request.getData();
+		InventoryCountRequestTEntity countRequest= list.get(0);
+		if(null == countRequest){
+			throw new BusinessServiceException("no record add.");
+		}
+		//query inventory
+		List<InventoryOnhandTEntity> onhandList = findInventory(countRequest);
+		if (CollectionUtils.isEmpty(onhandList)) {
+			throw new BusinessServiceException("InventoryCountRequestImpl", "inventory.not.exists" , new Object[] {countRequest.getInventoryCountRequestId() + "/" + countRequest.getRequestNumber()});
+		}
+		InventoryCountHeaderTEntity countHeader = InventoryCountHeaderTEntity.builder()
+				.companyId(request.getCompanyId())
+				.warehouseId(request.getWarehouseId())
+				.inventoryCountRequestId(countRequest.getInventoryCountRequestId())
+				.type(CountTypeEnum.Normal.getCode())
+				.replayFlag(YesNoEnum.No.getCode())
+				.status(CountStatusEnum.New.getCode())
+				.build();
+		//add header
+		countHeaderService.add(new AjaxRequest<InventoryCountHeaderTEntity>(countHeader, request));
+
+		//create countDetail
+		InventoryCountHeaderTEntity select=countHeaderService.find(countHeader);
+		List<InventoryCountDetailTEntity> detailList = Lists.newArrayList();
+
+		onhandList.forEach(d ->{
+			InventoryCountDetailTEntity detail =new InventoryCountDetailTEntity();
+			BeanUtils.copyBeanProp(detail , d ,Boolean.FALSE);
+			detail.setInventoryCountHeaderId(select.getInventoryCountHeaderId());
+			//明盘时库存现有量填充到系统数量，否则默认为0
+			if(StringUtils.equals(YesNoEnum.Yes.getCode(),countRequest.getQuantityShowFlag())){
+				detail.setQuantitySystem(d.getQuantityOnhand());
+			}else {
+				detail.setQuantitySystem(BigDecimal.ZERO);
+			}
+			detailList.add(detail);
+		});
+
+		countDetailService.add(new AjaxRequest<List<InventoryCountDetailTEntity>>(detailList, request));
+
+		countRequest.setRequestDate(new Date());
+		modify(new AjaxRequest<List<InventoryCountRequestTEntity>>(Lists.newArrayList(countRequest), request));
+		//todo 提示新增了多少行盘点明细
+		System.out.println("查到了多少库存++"+onhandList.size());
+		return Boolean.TRUE;
+	}
 }

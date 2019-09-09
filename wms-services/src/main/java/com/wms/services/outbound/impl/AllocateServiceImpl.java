@@ -523,7 +523,7 @@ public class AllocateServiceImpl implements IAllocateService , IExcelService<All
 						|| BigDecimal.ZERO.compareTo(d.getQuantityPick()) == 0)
 					return;
 
-				//必须为硬分配
+				//软分配需要查询对应的库存
 				if (AllocateStrategyTypeEnum.Soft.getCode().equals(d.getAllocateStrategyType())) {
 					InventoryOnhandTEntity onhand = null;
 					try {
@@ -586,6 +586,8 @@ public class AllocateServiceImpl implements IAllocateService , IExcelService<All
 													.allocateStrategyType(d.getAllocateStrategyType())
 													.status(AllocateStatusEnum.Picked.getCode())
 													.quantityAllocated(d.getQuantityAllocated())
+													.fromLpnNumber(d.getLpnNumber())
+													.fromLocationCode(d.getLocationCode())
 													.build();
 				AllocateVO updateVo = new AllocateVO(updateAllocate);
 				updateVo.setShortFlag(d.getShortFlag());

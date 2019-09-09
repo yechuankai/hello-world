@@ -5,6 +5,7 @@
     <id column="INBOUND_DETAIL_ID" jdbcType="DECIMAL" property="inboundDetailId" />
     <result column="INBOUND_HEADER_ID" jdbcType="DECIMAL" property="inboundHeaderId" />
     <result column="LINE_NUMBER" jdbcType="DECIMAL" property="lineNumber" />
+    <result column="PARENT_LINE_NUMBER" jdbcType="DECIMAL" property="parentLineNumber" />
     <result column="SOURCE_LINE_NUMBER" jdbcType="DECIMAL" property="sourceLineNumber" />
     <result column="PO_NUMBER" jdbcType="VARCHAR" property="poNumber" />
     <result column="PO_LINE_NUMBER" jdbcType="VARCHAR" property="poLineNumber" />
@@ -16,6 +17,7 @@
     <result column="PUTAWAY_STRATEGY_ID" jdbcType="DECIMAL" property="putawayStrategyId" />
     <result column="PUTAWAY_STRATEGY_CODE" jdbcType="VARCHAR" property="putawayStrategyCode" />
     <result column="UOM" jdbcType="VARCHAR" property="uom" />
+    <result column="UOM_QUANTITY" jdbcType="DECIMAL" property="uomQuantity" />
     <result column="PACK_ID" jdbcType="DECIMAL" property="packId" />
     <result column="PACK_CODE" jdbcType="VARCHAR" property="packCode" />
     <result column="QUANTITY_EXPECTED" jdbcType="DECIMAL" property="quantityExpected" />
@@ -51,8 +53,6 @@
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="UPDATE_VERSION" jdbcType="DECIMAL" property="updateVersion" />
     <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
-    <result column="UOM_QUANTITY" jdbcType="DECIMAL" property="uomQuantity" />
-    <result column="PARENT_LINE_NUMBER" jdbcType="DECIMAL" property="parentLineNumber" />
     <result column="WEIGHT_GROSS" jdbcType="DECIMAL" property="weightGross" />
     <result column="WEIGHT_NET" jdbcType="DECIMAL" property="weightNet" />
     <result column="WEIGHT_TARE" jdbcType="DECIMAL" property="weightTare" />
@@ -155,16 +155,15 @@
     </where >
   </sql>
   <sql id="Base_Column_List">
-    INBOUND_DETAIL_ID, INBOUND_HEADER_ID, LINE_NUMBER, SOURCE_LINE_NUMBER, PO_NUMBER, 
-    PO_LINE_NUMBER, OWNER_ID, OWNER_CODE, SKU_ID, SKU_CODE, SKU_ALIAS, PUTAWAY_STRATEGY_ID, 
-    PUTAWAY_STRATEGY_CODE, UOM, PACK_ID, PACK_CODE, QUANTITY_EXPECTED, QUANTITY_RECEIVE, 
-    QUANTITY_CANCEL, INBOUND_DATE, CANCEL_DATE, LOCATION_CODE, CONTAINER_NUMBER, LPN_NUMBER, 
-    INVENTORY_ONHAND_ID, LOT_NUMBER, STATUS, LOT_ATTRIBUTE1, LOT_ATTRIBUTE2, LOT_ATTRIBUTE3, 
-    LOT_ATTRIBUTE4, LOT_ATTRIBUTE5, LOT_ATTRIBUTE6, LOT_ATTRIBUTE7, LOT_ATTRIBUTE8, LOT_ATTRIBUTE9, 
-    LOT_ATTRIBUTE10, LOT_ATTRIBUTE11, LOT_ATTRIBUTE12, REMARK, COMPANY_ID, WAREHOUSE_ID, 
-    DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, 
-    UOM_QUANTITY, PARENT_LINE_NUMBER, WEIGHT_GROSS, WEIGHT_NET, WEIGHT_TARE, VOLUME, 
-    SKU_DESCR
+    INBOUND_DETAIL_ID, INBOUND_HEADER_ID, LINE_NUMBER, PARENT_LINE_NUMBER, SOURCE_LINE_NUMBER, 
+    PO_NUMBER, PO_LINE_NUMBER, OWNER_ID, OWNER_CODE, SKU_ID, SKU_CODE, SKU_ALIAS, PUTAWAY_STRATEGY_ID, 
+    PUTAWAY_STRATEGY_CODE, UOM, UOM_QUANTITY, PACK_ID, PACK_CODE, QUANTITY_EXPECTED, 
+    QUANTITY_RECEIVE, QUANTITY_CANCEL, INBOUND_DATE, CANCEL_DATE, LOCATION_CODE, CONTAINER_NUMBER, 
+    LPN_NUMBER, INVENTORY_ONHAND_ID, LOT_NUMBER, STATUS, LOT_ATTRIBUTE1, LOT_ATTRIBUTE2, 
+    LOT_ATTRIBUTE3, LOT_ATTRIBUTE4, LOT_ATTRIBUTE5, LOT_ATTRIBUTE6, LOT_ATTRIBUTE7, LOT_ATTRIBUTE8, 
+    LOT_ATTRIBUTE9, LOT_ATTRIBUTE10, LOT_ATTRIBUTE11, LOT_ATTRIBUTE12, REMARK, COMPANY_ID, 
+    WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, 
+    DESCRIPTION, WEIGHT_GROSS, WEIGHT_NET, WEIGHT_TARE, VOLUME, SKU_DESCR
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.InboundDetailTExample" resultMap="BaseResultMap">
     select
@@ -188,45 +187,45 @@
   </delete>
   <insert id="insert" parameterType="com.wms.entity.auto.InboundDetailTEntity">
     insert into INBOUND_DETAIL_T (INBOUND_DETAIL_ID, INBOUND_HEADER_ID, 
-      LINE_NUMBER, SOURCE_LINE_NUMBER, PO_NUMBER, 
-      PO_LINE_NUMBER, OWNER_ID, OWNER_CODE, 
-      SKU_ID, SKU_CODE, SKU_ALIAS, 
-      PUTAWAY_STRATEGY_ID, PUTAWAY_STRATEGY_CODE, 
-      UOM, PACK_ID, PACK_CODE, 
-      QUANTITY_EXPECTED, QUANTITY_RECEIVE, QUANTITY_CANCEL, 
-      INBOUND_DATE, CANCEL_DATE, LOCATION_CODE, 
-      CONTAINER_NUMBER, LPN_NUMBER, INVENTORY_ONHAND_ID, 
-      LOT_NUMBER, STATUS, LOT_ATTRIBUTE1, 
-      LOT_ATTRIBUTE2, LOT_ATTRIBUTE3, LOT_ATTRIBUTE4, 
-      LOT_ATTRIBUTE5, LOT_ATTRIBUTE6, LOT_ATTRIBUTE7, 
-      LOT_ATTRIBUTE8, LOT_ATTRIBUTE9, LOT_ATTRIBUTE10, 
-      LOT_ATTRIBUTE11, LOT_ATTRIBUTE12, REMARK, 
-      COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, 
-      CREATE_BY, CREATE_TIME, UPDATE_BY, 
-      UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, 
-      UOM_QUANTITY, PARENT_LINE_NUMBER, WEIGHT_GROSS, 
-      WEIGHT_NET, WEIGHT_TARE, VOLUME, 
-      SKU_DESCR)
+      LINE_NUMBER, PARENT_LINE_NUMBER, SOURCE_LINE_NUMBER, 
+      PO_NUMBER, PO_LINE_NUMBER, OWNER_ID, 
+      OWNER_CODE, SKU_ID, SKU_CODE, 
+      SKU_ALIAS, PUTAWAY_STRATEGY_ID, PUTAWAY_STRATEGY_CODE, 
+      UOM, UOM_QUANTITY, PACK_ID, 
+      PACK_CODE, QUANTITY_EXPECTED, QUANTITY_RECEIVE, 
+      QUANTITY_CANCEL, INBOUND_DATE, CANCEL_DATE, 
+      LOCATION_CODE, CONTAINER_NUMBER, LPN_NUMBER, 
+      INVENTORY_ONHAND_ID, LOT_NUMBER, STATUS, 
+      LOT_ATTRIBUTE1, LOT_ATTRIBUTE2, LOT_ATTRIBUTE3, 
+      LOT_ATTRIBUTE4, LOT_ATTRIBUTE5, LOT_ATTRIBUTE6, 
+      LOT_ATTRIBUTE7, LOT_ATTRIBUTE8, LOT_ATTRIBUTE9, 
+      LOT_ATTRIBUTE10, LOT_ATTRIBUTE11, LOT_ATTRIBUTE12, 
+      REMARK, COMPANY_ID, WAREHOUSE_ID, 
+      DEL_FLAG, CREATE_BY, CREATE_TIME, 
+      UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, 
+      DESCRIPTION, WEIGHT_GROSS, WEIGHT_NET, 
+      WEIGHT_TARE, VOLUME, SKU_DESCR
+      )
     values (#{inboundDetailId,jdbcType=DECIMAL}, #{inboundHeaderId,jdbcType=DECIMAL}, 
-      #{lineNumber,jdbcType=DECIMAL}, #{sourceLineNumber,jdbcType=DECIMAL}, #{poNumber,jdbcType=VARCHAR}, 
-      #{poLineNumber,jdbcType=VARCHAR}, #{ownerId,jdbcType=DECIMAL}, #{ownerCode,jdbcType=VARCHAR}, 
-      #{skuId,jdbcType=DECIMAL}, #{skuCode,jdbcType=VARCHAR}, #{skuAlias,jdbcType=VARCHAR}, 
-      #{putawayStrategyId,jdbcType=DECIMAL}, #{putawayStrategyCode,jdbcType=VARCHAR}, 
-      #{uom,jdbcType=VARCHAR}, #{packId,jdbcType=DECIMAL}, #{packCode,jdbcType=VARCHAR}, 
-      #{quantityExpected,jdbcType=DECIMAL}, #{quantityReceive,jdbcType=DECIMAL}, #{quantityCancel,jdbcType=DECIMAL}, 
-      #{inboundDate,jdbcType=TIMESTAMP}, #{cancelDate,jdbcType=TIMESTAMP}, #{locationCode,jdbcType=VARCHAR}, 
-      #{containerNumber,jdbcType=VARCHAR}, #{lpnNumber,jdbcType=VARCHAR}, #{inventoryOnhandId,jdbcType=DECIMAL}, 
-      #{lotNumber,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{lotAttribute1,jdbcType=VARCHAR}, 
-      #{lotAttribute2,jdbcType=VARCHAR}, #{lotAttribute3,jdbcType=VARCHAR}, #{lotAttribute4,jdbcType=TIMESTAMP}, 
-      #{lotAttribute5,jdbcType=TIMESTAMP}, #{lotAttribute6,jdbcType=VARCHAR}, #{lotAttribute7,jdbcType=VARCHAR}, 
-      #{lotAttribute8,jdbcType=VARCHAR}, #{lotAttribute9,jdbcType=VARCHAR}, #{lotAttribute10,jdbcType=VARCHAR}, 
-      #{lotAttribute11,jdbcType=TIMESTAMP}, #{lotAttribute12,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, 
-      #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, 
-      #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, 
-      #{uomQuantity,jdbcType=DECIMAL}, #{parentLineNumber,jdbcType=DECIMAL}, #{weightGross,jdbcType=DECIMAL}, 
-      #{weightNet,jdbcType=DECIMAL}, #{weightTare,jdbcType=DECIMAL}, #{volume,jdbcType=DECIMAL}, 
-      #{skuDescr,jdbcType=VARCHAR})
+      #{lineNumber,jdbcType=DECIMAL}, #{parentLineNumber,jdbcType=DECIMAL}, #{sourceLineNumber,jdbcType=DECIMAL}, 
+      #{poNumber,jdbcType=VARCHAR}, #{poLineNumber,jdbcType=VARCHAR}, #{ownerId,jdbcType=DECIMAL}, 
+      #{ownerCode,jdbcType=VARCHAR}, #{skuId,jdbcType=DECIMAL}, #{skuCode,jdbcType=VARCHAR}, 
+      #{skuAlias,jdbcType=VARCHAR}, #{putawayStrategyId,jdbcType=DECIMAL}, #{putawayStrategyCode,jdbcType=VARCHAR}, 
+      #{uom,jdbcType=VARCHAR}, #{uomQuantity,jdbcType=DECIMAL}, #{packId,jdbcType=DECIMAL}, 
+      #{packCode,jdbcType=VARCHAR}, #{quantityExpected,jdbcType=DECIMAL}, #{quantityReceive,jdbcType=DECIMAL}, 
+      #{quantityCancel,jdbcType=DECIMAL}, #{inboundDate,jdbcType=TIMESTAMP}, #{cancelDate,jdbcType=TIMESTAMP}, 
+      #{locationCode,jdbcType=VARCHAR}, #{containerNumber,jdbcType=VARCHAR}, #{lpnNumber,jdbcType=VARCHAR}, 
+      #{inventoryOnhandId,jdbcType=DECIMAL}, #{lotNumber,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{lotAttribute1,jdbcType=VARCHAR}, #{lotAttribute2,jdbcType=VARCHAR}, #{lotAttribute3,jdbcType=VARCHAR}, 
+      #{lotAttribute4,jdbcType=TIMESTAMP}, #{lotAttribute5,jdbcType=TIMESTAMP}, #{lotAttribute6,jdbcType=VARCHAR}, 
+      #{lotAttribute7,jdbcType=VARCHAR}, #{lotAttribute8,jdbcType=VARCHAR}, #{lotAttribute9,jdbcType=VARCHAR}, 
+      #{lotAttribute10,jdbcType=VARCHAR}, #{lotAttribute11,jdbcType=TIMESTAMP}, #{lotAttribute12,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, 
+      #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, 
+      #{description,jdbcType=VARCHAR}, #{weightGross,jdbcType=DECIMAL}, #{weightNet,jdbcType=DECIMAL}, 
+      #{weightTare,jdbcType=DECIMAL}, #{volume,jdbcType=DECIMAL}, #{skuDescr,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.InboundDetailTEntity">
     insert into INBOUND_DETAIL_T
@@ -239,6 +238,9 @@
       </if>
       <if test="lineNumber != null">
         LINE_NUMBER,
+      </if>
+      <if test="parentLineNumber != null">
+        PARENT_LINE_NUMBER,
       </if>
       <if test="sourceLineNumber != null">
         SOURCE_LINE_NUMBER,
@@ -272,6 +274,9 @@
       </if>
       <if test="uom != null">
         UOM,
+      </if>
+      <if test="uomQuantity != null">
+        UOM_QUANTITY,
       </if>
       <if test="packId != null">
         PACK_ID,
@@ -378,12 +383,6 @@
       <if test="description != null">
         DESCRIPTION,
       </if>
-      <if test="uomQuantity != null">
-        UOM_QUANTITY,
-      </if>
-      <if test="parentLineNumber != null">
-        PARENT_LINE_NUMBER,
-      </if>
       <if test="weightGross != null">
         WEIGHT_GROSS,
       </if>
@@ -409,6 +408,9 @@
       </if>
       <if test="lineNumber != null">
         #{lineNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="parentLineNumber != null">
+        #{parentLineNumber,jdbcType=DECIMAL},
       </if>
       <if test="sourceLineNumber != null">
         #{sourceLineNumber,jdbcType=DECIMAL},
@@ -442,6 +444,9 @@
       </if>
       <if test="uom != null">
         #{uom,jdbcType=VARCHAR},
+      </if>
+      <if test="uomQuantity != null">
+        #{uomQuantity,jdbcType=DECIMAL},
       </if>
       <if test="packId != null">
         #{packId,jdbcType=DECIMAL},
@@ -548,12 +553,6 @@
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
       </if>
-      <if test="uomQuantity != null">
-        #{uomQuantity,jdbcType=DECIMAL},
-      </if>
-      <if test="parentLineNumber != null">
-        #{parentLineNumber,jdbcType=DECIMAL},
-      </if>
       <if test="weightGross != null">
         #{weightGross,jdbcType=DECIMAL},
       </if>
@@ -589,6 +588,9 @@
       <if test="record.lineNumber != null">
         LINE_NUMBER = #{record.lineNumber,jdbcType=DECIMAL},
       </if>
+      <if test="record.parentLineNumber != null">
+        PARENT_LINE_NUMBER = #{record.parentLineNumber,jdbcType=DECIMAL},
+      </if>
       <if test="record.sourceLineNumber != null">
         SOURCE_LINE_NUMBER = #{record.sourceLineNumber,jdbcType=DECIMAL},
       </if>
@@ -621,6 +623,9 @@
       </if>
       <if test="record.uom != null">
         UOM = #{record.uom,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uomQuantity != null">
+        UOM_QUANTITY = #{record.uomQuantity,jdbcType=DECIMAL},
       </if>
       <if test="record.packId != null">
         PACK_ID = #{record.packId,jdbcType=DECIMAL},
@@ -727,12 +732,6 @@
       <if test="record.description != null">
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       </if>
-      <if test="record.uomQuantity != null">
-        UOM_QUANTITY = #{record.uomQuantity,jdbcType=DECIMAL},
-      </if>
-      <if test="record.parentLineNumber != null">
-        PARENT_LINE_NUMBER = #{record.parentLineNumber,jdbcType=DECIMAL},
-      </if>
       <if test="record.weightGross != null">
         WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL},
       </if>
@@ -758,6 +757,7 @@
     set INBOUND_DETAIL_ID = #{record.inboundDetailId,jdbcType=DECIMAL},
       INBOUND_HEADER_ID = #{record.inboundHeaderId,jdbcType=DECIMAL},
       LINE_NUMBER = #{record.lineNumber,jdbcType=DECIMAL},
+      PARENT_LINE_NUMBER = #{record.parentLineNumber,jdbcType=DECIMAL},
       SOURCE_LINE_NUMBER = #{record.sourceLineNumber,jdbcType=DECIMAL},
       PO_NUMBER = #{record.poNumber,jdbcType=VARCHAR},
       PO_LINE_NUMBER = #{record.poLineNumber,jdbcType=VARCHAR},
@@ -769,6 +769,7 @@
       PUTAWAY_STRATEGY_ID = #{record.putawayStrategyId,jdbcType=DECIMAL},
       PUTAWAY_STRATEGY_CODE = #{record.putawayStrategyCode,jdbcType=VARCHAR},
       UOM = #{record.uom,jdbcType=VARCHAR},
+      UOM_QUANTITY = #{record.uomQuantity,jdbcType=DECIMAL},
       PACK_ID = #{record.packId,jdbcType=DECIMAL},
       PACK_CODE = #{record.packCode,jdbcType=VARCHAR},
       QUANTITY_EXPECTED = #{record.quantityExpected,jdbcType=DECIMAL},
@@ -804,8 +805,6 @@
       UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
       UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
       DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-      UOM_QUANTITY = #{record.uomQuantity,jdbcType=DECIMAL},
-      PARENT_LINE_NUMBER = #{record.parentLineNumber,jdbcType=DECIMAL},
       WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL},
       WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL},
       WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL},
@@ -916,6 +915,7 @@
     INBOUND_DETAIL_ID = #{record.inboundDetailId,jdbcType=DECIMAL}, 
     INBOUND_HEADER_ID = #{record.inboundHeaderId,jdbcType=DECIMAL}, 
     LINE_NUMBER = #{record.lineNumber,jdbcType=DECIMAL}, 
+    PARENT_LINE_NUMBER = #{record.parentLineNumber,jdbcType=DECIMAL}, 
     SOURCE_LINE_NUMBER = #{record.sourceLineNumber,jdbcType=DECIMAL}, 
     PO_NUMBER = #{record.poNumber,jdbcType=VARCHAR}, 
     PO_LINE_NUMBER = #{record.poLineNumber,jdbcType=VARCHAR}, 
@@ -927,6 +927,7 @@
     PUTAWAY_STRATEGY_ID = #{record.putawayStrategyId,jdbcType=DECIMAL}, 
     PUTAWAY_STRATEGY_CODE = #{record.putawayStrategyCode,jdbcType=VARCHAR}, 
     UOM = #{record.uom,jdbcType=VARCHAR}, 
+    UOM_QUANTITY = #{record.uomQuantity,jdbcType=DECIMAL}, 
     PACK_ID = #{record.packId,jdbcType=DECIMAL}, 
     PACK_CODE = #{record.packCode,jdbcType=VARCHAR}, 
     QUANTITY_EXPECTED = #{record.quantityExpected,jdbcType=DECIMAL}, 
@@ -961,8 +962,6 @@
     UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR}, 
     UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
     DESCRIPTION = #{record.description,jdbcType=VARCHAR}, 
-    UOM_QUANTITY = #{record.uomQuantity,jdbcType=DECIMAL}, 
-    PARENT_LINE_NUMBER = #{record.parentLineNumber,jdbcType=DECIMAL}, 
     WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL}, 
     WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL}, 
     WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL}, 
@@ -990,6 +989,9 @@
         </if>
         <if test="record.lineNumber != null">
           LINE_NUMBER = #{record.lineNumber,jdbcType=DECIMAL},
+        </if>
+        <if test="record.parentLineNumber != null">
+          PARENT_LINE_NUMBER = #{record.parentLineNumber,jdbcType=DECIMAL},
         </if>
         <if test="record.sourceLineNumber != null">
           SOURCE_LINE_NUMBER = #{record.sourceLineNumber,jdbcType=DECIMAL},
@@ -1023,6 +1025,9 @@
         </if>
         <if test="record.uom != null">
           UOM = #{record.uom,jdbcType=VARCHAR},
+        </if>
+        <if test="record.uomQuantity != null">
+          UOM_QUANTITY = #{record.uomQuantity,jdbcType=DECIMAL},
         </if>
         <if test="record.packId != null">
           PACK_ID = #{record.packId,jdbcType=DECIMAL},
@@ -1125,12 +1130,6 @@
         </if>
         <if test="record.description != null">
           DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-        </if>
-        <if test="record.uomQuantity != null">
-          UOM_QUANTITY = #{record.uomQuantity,jdbcType=DECIMAL},
-        </if>
-        <if test="record.parentLineNumber != null">
-          PARENT_LINE_NUMBER = #{record.parentLineNumber,jdbcType=DECIMAL},
         </if>
         <if test="record.weightGross != null">
           WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL},

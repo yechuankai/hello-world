@@ -183,10 +183,11 @@ public abstract class CommonPutawayServiceImpl implements IPutawayService{
 											.updateTime(new Date())
 											.build();
 		lock.setContainerNumber(putaway.getContainerNumber());
+		lock.setLpnNumber(putaway.getLpnNumber());
 		
 		InventoryOnhandVO onhand = putaway.getInventoryOnhand();
 		if (onhand != null) {
-			lock.setLpnNumber(onhand.getLpnNumber());
+			
 			lock.setSkuCode(onhand.getSkuCode());
 		}
 		boolean addFlag = putawayLocationLockService.add(lock);

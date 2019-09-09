@@ -309,8 +309,6 @@ public class SkuServiceImpl implements ISkuService, IExcelService<SkuVO> {
 		List<SkuTEntity> list = request.getData();
 		
 		for (SkuTEntity sku : list) {
-            SkuTEntity selectSku = new SkuTEntity();
-
             String code = sku.getSkuCode().toUpperCase();
 			sku.setWarehouseId(request.getWarehouseId());
 			sku.setCompanyId(request.getCompanyId());

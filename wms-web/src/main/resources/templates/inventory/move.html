@@ -40,7 +40,7 @@
 		</div>
 	</div>
 	<div data-options="region:'center',border:false" >
-	<!-- 仅查询，这里去掉界面按钮增删改按钮-->
+		<!-- 仅查询，这里去掉界面按钮增删改按钮-->
 	    <div class="tableToolbar">
 			<a href="#" class="easyui-linkbutton common-rowmove" data-table="#onhandData" th:data-url="@{/services/inner/inventory/onhand/move}" >
 				<span wms:text="${web.label.move}">Move</span>
@@ -52,9 +52,13 @@
 		<div>
 			<table id="onhandData" wms:title="${web.label.inventorybalancelist.title}" class="easyui-datagrid"
 							th:data-delayUrl="@{/services/inner/inventory/onhand/find}">
+				<thead data-options="frozen:true">
+					<tr>
+						<th field="inventoryOnhandId" data-options="checkbox:true"></th>
+				 	</tr>
+				 </thead>
 				<thead>
 					<tr>
-					    <th field="inventory_onhand_id" data-options="checkbox:true"></th>
 						<th field="ownerCode" width="80" wms:text="${web.inventory.ownerCode}" data-options="sortable:true" >ownerCode</th>
 						<th field="skuCode" width="100" wms:text="${web.inventory.skuCode}" data-options="sortable:true" >skuCode</th>
 						<th field="skuAlias" width="100" wms:text="${web.inventory.skuAlias}" data-options="sortable:true" >skuAlias</th>

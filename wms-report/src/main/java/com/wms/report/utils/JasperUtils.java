@@ -5,11 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.ibatis.session.SqlSession;
@@ -19,20 +17,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.wms.common.config.Global;
 import com.wms.common.core.domain.CodelkupVO;
 import com.wms.common.core.domain.request.AjaxRequest;
-import com.wms.common.core.domain.response.AjaxResult;
 import com.wms.common.exception.BusinessServiceException;
+import com.wms.common.utils.ServletUtils;
 import com.wms.common.utils.StringUtils;
 import com.wms.common.utils.cache.CodelkUpUtils;
 import com.wms.common.utils.cache.LocaleUtils;
 import com.wms.common.utils.mongodb.MongoUtils;
 import com.wms.common.utils.spring.SpringUtils;
 import com.wms.entity.auto.SysFileTEntity;
+import com.wms.report.config.ServletConfig;
 import com.wms.report.vo.ReportParameter;
 import com.wms.services.report.IReportService;
 
@@ -43,19 +41,27 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.export.HtmlExporter;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
+import net.sf.jasperreports.engine.export.JRHtmlExporterParameter;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.export.ExporterOutput;
+import net.sf.jasperreports.export.SimpleCommonExportConfiguration;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleHtmlExporterOutput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
+import net.sf.jasperreports.export.SimpleWriterExporterOutput;
+import net.sf.jasperreports.j2ee.servlets.ImageServlet;
+import net.sf.jasperreports.web.util.WebHtmlResourceHandler;
 
 public class JasperUtils {
 
 	private static Logger log = LoggerFactory.getLogger(JasperUtils.class);
 
 	private final static String LOCALE = "locale";
+	public final static String HOST = "host";
 	private final static String PREFIX = "report/";
 	private final static String SUFFIX = ".jasper";
 	private final static String CODELKUP = "__codelkup"; //数据字典标识
@@ -104,7 +110,6 @@ public class JasperUtils {
 		Connection conn = null;
 		InputStream is = null;
 		try {
-			
 			//优先查询最新文件
 			IReportService reportService = SpringUtils.getBean(IReportService.class);
 			Map<String, SysFileTEntity> fileMap = reportService.getReportFile(rptParam.getReportName());
@@ -122,20 +127,26 @@ public class JasperUtils {
 
 			JasperReport jasperReport = (JasperReport) JRLoader.loadObject(is);
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,
-					setParameters(jasperReport, rptParam.getParameter()), conn);
+					setParameters(jasperReport, rptParam), conn);
 
 			Class clz = types.get(rptParam.getFormat());
 			if (clz == null)
 				throw new BusinessServiceException("JasperUtils", "format {0} error",
 						new Object[] { rptParam.getFormat() });
+			
+			ServletUtils.getSession().setAttribute(ImageServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, jasperPrint); 
 
 			JRAbstractExporter exporter = (JRAbstractExporter) clz.newInstance();
 			exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-			if (HTML.equals(rptParam.getFormat()))
-				exporter.setExporterOutput(new SimpleHtmlExporterOutput(baos));
-			else
-				exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(baos));
+			ExporterOutput out = null;
+			if (HTML.equals(rptParam.getFormat())) {
+				out = new SimpleHtmlExporterOutput(baos);
+			}else {
+				out = new SimpleOutputStreamExporterOutput(baos);
+			}
 
+			exporter.setExporterOutput(out);
+			
 			exporter.exportReport();
 
 		} catch (Exception e) {
@@ -159,7 +170,8 @@ public class JasperUtils {
 		return baos;
 	}
 
-	private static HashMap<String, Object> setParameters(JasperReport report, Map<String, String> m) throws Exception {
+	private static HashMap<String, Object> setParameters(JasperReport report, ReportParameter rpParams) throws Exception {
+		Map<String, String> m = rpParams.getParameter();
 		HashMap<String, Object> parms = Maps.newHashMap();
 		JRParameter[] jrp = report.getParameters();
 		for (JRParameter p : jrp) {
@@ -167,6 +179,7 @@ public class JasperUtils {
 				parms.put(p.getName(), m.get(p.getName()));
 			}
 		}
+		
 		//加载国际化
 		String locale = Global.locale;
 		if (m.containsKey(LOCALE)) {
@@ -176,7 +189,6 @@ public class JasperUtils {
 		}
 		Map<String, String> localeLabels = LocaleUtils.getLocaleLabels(locale);
 		parms.putAll(localeLabels);
-		
 		
 		if (!m.containsKey(CODELKUP)) {
 			return parms;

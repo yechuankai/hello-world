@@ -3617,3 +3617,10 @@ alter table OUTBOUND_HEADER_T ADD CARRIER_CODE varchar2(50);
 comment on column OUTBOUND_HEADER_T.CARRIER_ID   is '承运人ID';
 comment on column OUTBOUND_HEADER_T.CARRIER_CODE   is '承运人代码';
 
+--分配明细表增加来源库位，来源LPN
+alter table ALLOCATE_T ADD (FROM_LOCATION_CODE varchar2(50));
+alter table ALLOCATE_T ADD (FROM_LPN_NUMBER varchar2(50));
+comment on column ALLOCATE_T.FROM_LOCATION_CODE   is '来源库位';
+comment on column ALLOCATE_T.FROM_LOCATION_CODE   is '来源LPN';
+
+

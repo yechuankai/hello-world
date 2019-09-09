@@ -276,25 +276,25 @@ public class TaskServiceImpl implements ITaskService {
 			if(StringUtils.equals(LpnTypeEnum.Container.getCode(),d.getFromLpnType())){
 				//容器号
 				lpnTEntity.setContainerNumber(d.getFromLpnNumber());
-				lpns=lpnService.findByContainerNumber(lpnTEntity);
-			}else if(StringUtils.equals(LpnTypeEnum.Pallet.getCode(),d.getFromLpnType())){
+				lpns = lpnService.findByContainerNumber(lpnTEntity);
+			}else if(StringUtils.equals(LpnTypeEnum.Pallet.getCode(), d.getFromLpnType())){
 				//lpn
 				Set<String> lpnNumbers = Sets.newHashSet();
-				lpnNumbers.add(d.getToLpnNumber());
-				lpns=lpnService.findByLpnNumbers(lpnTEntity,lpnNumbers);
+				lpnNumbers.add(d.getFromLpnNumber());
+				lpns = lpnService.findByLpnNumbers(lpnTEntity, lpnNumbers);
 			}
 			Set<Long> lpnIds = lpns.stream().map(LpnTEntity::getLpnId).collect(Collectors.toSet());
 			List<InventoryOnhandTEntity> inventoryOnhands=inventoryService.findByLpnId(inventory,lpnIds);
 
-			List<InventoryOnhandVO> inventoryOnhandVOs =Lists.newArrayList();
-			inventoryOnhands.forEach(v ->{
-				InventoryOnhandVO vo =new InventoryOnhandVO(v);
+			List<InventoryOnhandVO> inventoryOnhandVOs = Lists.newArrayList();
+			inventoryOnhands.forEach(v -> {
+				InventoryOnhandVO vo = new InventoryOnhandVO(v);
 				vo.setToQuantity(v.getQuantityOnhand());
 				vo.setToLocationCode(d.getToLocationCode());
 				inventoryOnhandVOs.add(vo);
 			});
 
-			boolean falg=inventoryService.move(new AjaxRequest<List<InventoryOnhandVO>>(inventoryOnhandVOs, request));
+			boolean falg = inventoryService.move(new AjaxRequest<List<InventoryOnhandVO>>(inventoryOnhandVOs, request));
 			if(falg){
 				//成功修改状态
 				TaskDetailTEntity update = TaskDetailTEntity.builder()
@@ -308,6 +308,64 @@ public class TaskServiceImpl implements ITaskService {
 				modify(update);
 			}
 		});
+		return Boolean.TRUE;
+	}
+
+	@Override
+	public List<TaskDetailTEntity> findByFromLpn(TaskDetailTEntity task, TaskStatusEnum... taskStatusEnums)
+			throws BusinessServiceException {
+		TaskDetailTExample example = new TaskDetailTExample();
+	    TaskDetailTExample.Criteria exampleCriteria = example.createCriteria();
+	    
+	    exampleCriteria
+        .andDelFlagEqualTo(YesNoEnum.No.getCode())
+        .andWarehouseIdEqualTo(task.getWarehouseId())
+        .andCompanyIdEqualTo(task.getCompanyId())
+        .andFromLpnNumberEqualTo(task.getFromLpnNumber());
+	    
+	    if (StringUtils.isNotEmpty(task.getTaskType())) {
+	    	exampleCriteria.andTaskTypeEqualTo(task.getTaskType());
+	    }
+	    
+	    if (taskStatusEnums != null) {
+	    	List<String> statusList = Lists.newArrayList();
+	    	for (TaskStatusEnum taskStatusEnum : taskStatusEnums) {
+	    		statusList.add(taskStatusEnum.getCode());
+			}
+	    	exampleCriteria.andStatusIn(statusList);
+	    }
+	    List<TaskDetailTEntity> selectTask = taskdetailTDao.selectByExample(example);
+		
+		return selectTask;
+	}
+
+	@Override
+	public Boolean delete(AjaxRequest<List<TaskDetailTEntity>> request) throws BusinessServiceException {
+		if (CollectionUtils.isEmpty(request.getData())) {
+			throw new BusinessServiceException("no record update.");
+		}
+
+		List<TaskDetailTEntity> list = request.getData();
+
+		for (TaskDetailTEntity task : list) {
+			notProcess(task);
+			TaskDetailTEntity update = TaskDetailTEntity.builder()
+					.updateBy(request.getUserName())
+					.updateTime(new Date())
+					.delFlag(YesNoEnum.Yes.getCode())
+					.build();
+
+			TaskDetailTExample example = new TaskDetailTExample();
+			example.createCriteria()
+					.andWarehouseIdEqualTo(task.getWarehouseId())
+					.andCompanyIdEqualTo(task.getCompanyId())
+					.andTaskDetailIdEqualTo(task.getTaskDetailId());
+
+			int row = taskdetailTDao.updateWithVersionByExampleSelective(task.getUpdateVersion(), update, example);
+			if (row == 0) {
+				throw new BusinessServiceException("cancel update error.");
+			}
+		}
 		return Boolean.TRUE;
 	}
 }

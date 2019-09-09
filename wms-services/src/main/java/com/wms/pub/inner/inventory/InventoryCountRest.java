@@ -137,4 +137,38 @@ public class InventoryCountRest extends BaseController {
         return fail();
     }
 
+    @RequestMapping(value = "/createCount")
+    public AjaxResult createCount(@RequestBody String req) {
+        try {
+            AjaxRequest<List<InventoryCountRequestTEntity> > request = ajaxRequest(req, new TypeReference<AjaxRequest<List<InventoryCountRequestTEntity> >>() {});
+            if (CollectionUtils.isEmpty(request.getData())) {
+                return fail("no record update.");
+            }
+            boolean flag = requestService.createCount(request);
+            if (flag) {
+                return success();
+            }
+        } catch (Exception e) {
+            return fail(e.getMessage());
+        }
+        return fail();
+    }
+
+    @RequestMapping(value = "/headerDelete")
+    public AjaxResult headerDelete(@RequestBody String req) {
+        try {
+            AjaxRequest<List<InventoryCountHeaderTEntity> > request = ajaxRequest(req, new TypeReference<AjaxRequest<List<InventoryCountHeaderTEntity> >>() {});
+            if (CollectionUtils.isEmpty(request.getData())) {
+                return fail("no record update.");
+            }
+            boolean flag = headerService.delete(request);
+            if (flag) {
+                return success();
+            }
+        } catch (Exception e) {
+            return fail(e.getMessage());
+        }
+        return fail();
+    }
+
 }
