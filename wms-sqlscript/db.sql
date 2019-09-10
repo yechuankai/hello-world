@@ -2285,7 +2285,6 @@ drop table lot_attribute_t cascade constraints;
 create table lot_attribute_t (
 lot_attribute_id number,
 lot_number varchar2(50),
-line_number number,
 owner_id number,
 owner_code varchar2(50),
 sku_id number,
@@ -2320,7 +2319,6 @@ alter table lot_attribute_t add constraint pk_lot_attribute_t primary key (lot_a
 comment on table  lot_attribute_t               is '批属性';
 comment on column lot_attribute_t.lot_attribute_id is '批属性ID';
 comment on column lot_attribute_t.lot_number is '批次号';
-comment on column lot_attribute_t.line_number is '行号';
 comment on column lot_attribute_t.owner_id is '货主ID';
 comment on column lot_attribute_t.owner_code is '货主代码';
 comment on column lot_attribute_t.sku_id is '货品ID';

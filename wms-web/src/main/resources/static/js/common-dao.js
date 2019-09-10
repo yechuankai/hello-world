@@ -164,13 +164,13 @@ $(function(){
 	//公共显示新增框-------------------------START
 	$('.common-add').click(function(){
 		var panel = $(this).attr('data-addpanel');
-		lazyLoadView(panel);
 		$(panel).dialog({
-		    closed: true,
-		    modal: true,
-		    fix: true
+			closed: true,
+			modal: true,
+			fix: true
 		}).dialog('open');
 		$(panel).find('form').form('reset');
+		lazyLoadView(panel);
 	});
 	//公共显示新增框-------------------------END
 	

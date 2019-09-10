@@ -6,6 +6,7 @@
     <script th:replace="common/js" />
     <script type="text/javascript" th:src="@{/js/codelkupList?listName=INBOUNDTYPE,INBOUNDSTATUS,LOCATIONTYPE,UOM}"></script>
 	<script type="text/javascript" th:src="@{/static/ui/plugins/datagrid-filter.js}"></script>
+	<script type="text/javascript" th:src="@{/static/js/inbound/inbound.js}"></script>
     <style>
     	td{
 	    	border:0px;
@@ -27,6 +28,16 @@
 			<a href="#" class="easyui-linkbutton inbound-save" data-form="#inboundHeaderForm" >
 				<span wms:text="${web.label.save}">Save</span>
 			</a>
+			<a href="#" class="easyui-menubutton" data-options="menu:'#optionsMenuButton',plain:false" wms:text="${web.label.options}">Actions</a>
+			<div id="optionsMenuButton">
+				<div  wms:text="${web.label.receive.all}" onclick="action('receiveAll')">All Receive</div>
+				<div  wms:text="${web.label.cancelreceive}" onclick="action('unReceive')">unReceive</div>
+			</div>
+			<a href="#" class="easyui-menubutton" data-options="menu:'#reportMenuButton',plain:false" wms:text="${web.label.report}">Report</a>
+			<div id="reportMenuButton">
+				<div  wms:text="${wms.label.receivereport}" onclick="exportPDFReport('INBOUND')">Receive Peport</div>
+				<div  wms:text="${wms.label.receivedsummaryreport}" onclick="exportPDFReport('INBOUNDCONFIRM')">Receive Summary Report</div>
+			</div>
 			<a href="#" class="easyui-linkbutton" onclick="importExcel('INBOUND')" wms:text="${web.label.import}">Import</a>
 		</div>
 	</div>
@@ -66,8 +77,8 @@
 						showError(data.msg);
 						return;
 					}
+					refreshInboundHeader(data.data);
 					refreshInboundDetail(data.data);
-					$(panel).dialog('close');
 				}
 			});
 		});
@@ -76,6 +87,18 @@
 			lazyLoadView('#inboundHeaderForm');
 		}, 1);
 	});
+	
+	function action(type){
+		headerData = getInboundHeaderData();
+		var checkedRows = [headerData];
+		baseAction(type, checkedRows);
+	}
+	
+	/* 导出文件  */
+	function exportPDFReport(type) {
+		headerData = getInboundHeaderData();
+		exportInboundReport(type, headerData);
+	}
 	
 </script>
 </html>

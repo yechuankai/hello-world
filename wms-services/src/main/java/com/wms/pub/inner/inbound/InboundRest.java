@@ -2,6 +2,7 @@ package com.wms.pub.inner.inbound;
 
 import com.alibaba.fastjson.TypeReference;
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
 import com.wms.common.core.controller.BaseController;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
@@ -68,22 +69,38 @@ public class InboundRest extends BaseController{
 
 
 	@RequestMapping(value = "/receiveAll")
-	public AjaxResult<InboundVO> receiveAll(@RequestBody String req) {
+	public AjaxResult receiveAll(@RequestBody String req) {
 		try {
 			AjaxRequest<List<InboundVO>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<InboundVO>>>() {});
 			inboundHeaderService.receiveAll(request);
-			return success();
+			//查询最新表头
+			List<InboundHeaderTEntity> returnList = Lists.newArrayList();
+			request.getData().forEach(d -> {
+				d.setWarehouseId(request.getWarehouseId());
+				d.setCompanyId(request.getCompanyId());
+				InboundHeaderTEntity header = inboundHeaderService.find(d);
+				returnList.add(header);
+			});
+			return success(returnList);
 		} catch (Exception e) {
 			return fail(e.getMessage());
 		}
 	}
 
     @RequestMapping(value = "/unReceive")
-    public AjaxResult<InboundVO> unReceive(@RequestBody String req) {
+    public AjaxResult unReceive(@RequestBody String req) {
         try {
             AjaxRequest<List<InboundVO>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<InboundVO>>>() {});
             inboundHeaderService.unReceive(request);
-            return success();
+            //查询最新表头
+			List<InboundHeaderTEntity> returnList = Lists.newArrayList();
+			request.getData().forEach(d -> {
+				d.setWarehouseId(request.getWarehouseId());
+				d.setCompanyId(request.getCompanyId());
+				InboundHeaderTEntity header = inboundHeaderService.find(d);
+				returnList.add(header);
+			});
+			return success(returnList);
         } catch (Exception e) {
             return fail(e.getMessage());
         }
@@ -148,7 +165,7 @@ public class InboundRest extends BaseController{
     * @Date: 2019/9/4 
     */ 
 	@RequestMapping(value = "/createPutaway")
-	public AjaxResult<InboundVO> createPutaway(@RequestBody String req) {
+	public AjaxResult createPutaway(@RequestBody String req) {
 		try {
 			AjaxRequest<List<InboundVO>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<InboundVO>>>() {});
 			long taskcount = inboundHeaderService.createPutaway(request);

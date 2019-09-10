@@ -509,6 +509,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 	@Override
 	public Long createPutaway(List<InboundDetailVO> detail) throws BusinessServiceException {
 		long taskCount = 0;
+		//分组合并
 		List<InboundDetailVO> newList = getListGroupByLpn(detail);
 		for (InboundDetailVO d : newList) {
 			try {
@@ -581,6 +582,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 						.packId(d.getPackId())
 						.packCode(d.getPackCode())
 						.lotNumber(d.getLotNumber())
+						.quantity(d.getQuantityReceive())
 						.fromLpnNumber(lpnNumber)
 						.fromLocationCode(fromLocation.getLocationCode())
 						.fromLocationLogical(fromLocation.getLocationLogical())
@@ -1427,7 +1429,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 				return;
 			}
 
-			String temp=null;
+			String temp = null;
 			if(StringUtils.isNotBlank((d.getContainerNumber()))){
 				 temp = d.getContainerNumber();
 			}else {
@@ -1435,6 +1437,10 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 			}
 			if(!tempMap.containsKey(temp)){
 				tempMap.put(temp,d);
+			}else {
+				InboundDetailVO vo = tempMap.get(temp);
+				BigDecimal receiveQuantity = d.getQuantityReceive();
+				vo.setQuantityReceive(vo.getQuantityReceive().add(receiveQuantity));
 			}
 		});
 		tempMap.forEach((k,v)->{

@@ -2,12 +2,14 @@ package com.wms.pub.inner.outbound;
 
 import com.alibaba.fastjson.TypeReference;
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
 import com.wms.common.core.controller.BaseController;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.core.domain.response.AjaxResult;
 import com.wms.common.core.domain.response.PageResult;
 import com.wms.common.enums.OperatorTypeEnum;
+import com.wms.common.enums.OutboundStatusEnum;
 import com.wms.common.utils.MessageUtils;
 import com.wms.entity.auto.OutboundHeaderTEntity;
 import com.wms.services.outbound.IOutboundHeaderService;
@@ -27,22 +29,42 @@ public class OutboundRest extends BaseController{
     IOutboundHeaderService outboundService;
 
     @RequestMapping(value = "/allocate")
-    public AjaxResult<OutboundVO> allocate(@RequestBody String req) {
+    public AjaxResult allocate(@RequestBody String req) {
     	try {
 			AjaxRequest<List<OutboundVO>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<OutboundVO>>>() {});
 			outboundService.allocate(request);
-			return success();
+			List<OutboundHeaderTEntity> returnList = Lists.newArrayList();
+			request.getData().forEach(d -> {
+				d.setWarehouseId(request.getWarehouseId());
+				d.setCompanyId(request.getCompanyId());
+				OutboundHeaderTEntity header = outboundService.find(d);
+				returnList.add(header);
+			});
+			//只有一个单据的情况下，提示库存不足
+			if (returnList.size() == 1) {
+				if (!OutboundStatusEnum.Allocated.getCode().equals(returnList.get(0).getStatus())) {
+					return success(returnList, "allocate.not.enough.inventory");
+				}
+			}
+			return success(returnList);
 		} catch (Exception e) {
 			return fail(e.getMessage());
 		}
     }
     
     @RequestMapping(value = "/unallocate")
-    public AjaxResult<OutboundVO> unallocate(@RequestBody String req) {
+    public AjaxResult unallocate(@RequestBody String req) {
     	try {
 			AjaxRequest<List<OutboundVO>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<OutboundVO>>>() {});
 			outboundService.unAllocate(request);
-			return success();
+			List<OutboundHeaderTEntity> returnList = Lists.newArrayList();
+			request.getData().forEach(d -> {
+				d.setWarehouseId(request.getWarehouseId());
+				d.setCompanyId(request.getCompanyId());
+				OutboundHeaderTEntity header = outboundService.find(d);
+				returnList.add(header);
+			});
+			return success(returnList);
 		} catch (Exception e) {
 			return fail(e.getMessage());
 		}
@@ -87,33 +109,54 @@ public class OutboundRest extends BaseController{
     }
 
     @RequestMapping(value = "/pick")
-    public AjaxResult<OutboundVO> pick(@RequestBody String req) {
+    public AjaxResult pick(@RequestBody String req) {
     	try {
 			AjaxRequest<List<OutboundVO>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<OutboundVO>>>() {});
 			outboundService.pick(request);
-			return success();
+			List<OutboundHeaderTEntity> returnList = Lists.newArrayList();
+			request.getData().forEach(d -> {
+				d.setWarehouseId(request.getWarehouseId());
+				d.setCompanyId(request.getCompanyId());
+				OutboundHeaderTEntity header = outboundService.find(d);
+				returnList.add(header);
+			});
+			return success(returnList);
 		} catch (Exception e) {
 			return fail(e.getMessage());
 		}
     }
     
     @RequestMapping(value = "/unpick")
-    public AjaxResult<OutboundVO> unpick(@RequestBody String req) {
+    public AjaxResult unpick(@RequestBody String req) {
     	try {
 			AjaxRequest<List<OutboundVO>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<OutboundVO>>>() {});
 			outboundService.unPick(request);
-			return success();
+			List<OutboundHeaderTEntity> returnList = Lists.newArrayList();
+			request.getData().forEach(d -> {
+				d.setWarehouseId(request.getWarehouseId());
+				d.setCompanyId(request.getCompanyId());
+				OutboundHeaderTEntity header = outboundService.find(d);
+				returnList.add(header);
+			});
+			return success(returnList);
 		} catch (Exception e) {
 			return fail(e.getMessage());
 		}
     }
     
     @RequestMapping(value = "/ship")
-    public AjaxResult<OutboundVO> ship(@RequestBody String req) {
+    public AjaxResult ship(@RequestBody String req) {
     	try {
 			AjaxRequest<List<OutboundVO>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<OutboundVO>>>() {});
 			outboundService.ship(request);
-			return success();
+			List<OutboundHeaderTEntity> returnList = Lists.newArrayList();
+			request.getData().forEach(d -> {
+				d.setWarehouseId(request.getWarehouseId());
+				d.setCompanyId(request.getCompanyId());
+				OutboundHeaderTEntity header = outboundService.find(d);
+				returnList.add(header);
+			});
+			return success(returnList);
 		} catch (Exception e) {
 			return fail(e.getMessage());
 		}
@@ -137,11 +180,18 @@ public class OutboundRest extends BaseController{
     }
 
     @RequestMapping(value = "/release")
-    public AjaxResult<OutboundVO> release(@RequestBody String req) {
+    public AjaxResult release(@RequestBody String req) {
         try {
             AjaxRequest<List<OutboundVO>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<OutboundVO>>>() {});
             outboundService.release(request);
-            return success();
+            List<OutboundHeaderTEntity> returnList = Lists.newArrayList();
+			request.getData().forEach(d -> {
+				d.setWarehouseId(request.getWarehouseId());
+				d.setCompanyId(request.getCompanyId());
+				OutboundHeaderTEntity header = outboundService.find(d);
+				returnList.add(header);
+			});
+			return success(returnList);
         } catch (Exception e) {
             return fail(e.getMessage());
         }

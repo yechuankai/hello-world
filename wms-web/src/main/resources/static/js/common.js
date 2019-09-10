@@ -94,6 +94,11 @@ function showMsg(message, fun){
 	$.messager.alert("info", message, 'info', fun);
 }
 
+function showWarn(message, fun){
+	$.messager.alert("warning", message, 'warning', fun);
+}
+
+
 function confirmMsg(message,options ,fun){
 	if (typeof(options) == 'function') {
 		$.messager.confirm("Confirm", message,options);

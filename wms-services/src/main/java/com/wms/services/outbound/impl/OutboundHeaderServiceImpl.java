@@ -205,7 +205,9 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 				.andCompanyIdEqualTo(outbound.getCompanyId())
 				.andOutboundHeaderIdEqualTo(outbound.getOutboundHeaderId());
 
-		int rowcount = outboundHeaderDao.updateWithVersionByExampleSelective(selectHeader.getUpdateVersion(), updateHeader, example);
+		//采用多线程并发时，不可按最后更新版本来更新数据
+		//int rowcount = outboundHeaderDao.updateWithVersionByExampleSelective(selectHeader.getUpdateVersion(), updateHeader, example);
+		int rowcount = outboundHeaderDao.updateByExampleSelective( updateHeader, example);
 		if (rowcount == 0) {
 			throw new BusinessServiceException("record update error.");
 		}
@@ -352,7 +354,9 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 		.andWarehouseIdEqualTo(header.getWarehouseId())
 		.andCompanyIdEqualTo(header.getCompanyId())
 		.andOutboundHeaderIdEqualTo(header.getOutboundHeaderId());
-		int rowcount = outboundHeaderDao.updateWithVersionByExampleSelective(selectHeader.getUpdateVersion(), updateHeader, example);
+		//多线程并发问题，不按版本进行更新
+		//int rowcount = outboundHeaderDao.updateWithVersionByExampleSelective(selectHeader.getUpdateVersion(), updateHeader, example);
+		int rowcount = outboundHeaderDao.updateByExampleSelective(updateHeader, example);
 		if (rowcount == 0)
 			throw new BusinessServiceException("record update error.");
 

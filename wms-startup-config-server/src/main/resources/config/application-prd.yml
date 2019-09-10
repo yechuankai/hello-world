@@ -35,14 +35,14 @@ wms:
  locale: en_US
  #WMS相关服务地址
  url:
-  service: http://www.diftz.dj:8088/WMS-JBT
-  report: http://www.diftz.dj:8088/wms-report
-  file: http://www.diftz.dj:8088/wms-file
+  service: http://www.diftz.dj/WMS-JBT
+  report: http://www.diftz.dj/wms-report
+  file: http://www.diftz.dj/wms-file
   
 
 cas: 
   #cas server地址，外网访问需用外网IP,可以写域名
-  server: http://www.diftz.dj:8088/CAS-JBT
+  server: http://www.diftz.dj/CAS-JBT
   #拿取票据地址
   tickets: ${cas.server}/v1/tickets
   #当前项目被casFilter拦截的请求路径
