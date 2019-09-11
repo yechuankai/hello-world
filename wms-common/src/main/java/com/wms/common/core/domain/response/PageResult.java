@@ -14,6 +14,7 @@ public class PageResult<T> extends AjaxResult<T> {
 	private List<T> rows;
 	private Long page = 1L;
 	private Long pageSize = 0L;
+	private List footer;
 	
 	public PageResult(PageInfo<T> page) {
 		this.rows = page.getList();
@@ -116,7 +117,13 @@ public class PageResult<T> extends AjaxResult<T> {
 	public void setTotal(Long total) {
 		this.total = total;
 	}
-	
-	
+
+	public List getFooter() {
+		return footer;
+	}
+
+	public void setFooter(List footer) {
+		this.footer = footer;
+	}
 	
 }

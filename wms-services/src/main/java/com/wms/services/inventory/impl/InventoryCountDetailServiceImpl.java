@@ -121,7 +121,7 @@ public class InventoryCountDetailServiceImpl implements IInventoryCountDetailSer
 
 	@Override
 	@Transactional
-	public Boolean moidfy(AjaxRequest<List<InventoryCountDetailTEntity>> request) throws BusinessServiceException {
+	public Boolean modify(AjaxRequest<List<InventoryCountDetailTEntity>> request) throws BusinessServiceException {
 		//PC端保存则调用提交逻辑
 		submit(request);
 		
@@ -500,7 +500,7 @@ public class InventoryCountDetailServiceImpl implements IInventoryCountDetailSer
 
 	@Override
 	@Transactional
-	public Boolean moidfyStatus(AjaxRequest<List<InventoryCountDetailTEntity>> request, CountStatusEnum status)
+	public Boolean modifyStatus(AjaxRequest<List<InventoryCountDetailTEntity>> request, CountStatusEnum status)
 			throws BusinessServiceException {
 		if (CollectionUtils.isEmpty(request.getData()))
 			throw new BusinessServiceException("no data modify.");

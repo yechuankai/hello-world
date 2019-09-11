@@ -38,7 +38,7 @@ public interface IInventoryCountDetailService {
 	 * @return
 	 * @throws BusinessServiceException
 	 */
-	Boolean moidfy(AjaxRequest<List<InventoryCountDetailTEntity>> request) throws BusinessServiceException;
+	Boolean modify(AjaxRequest<List<InventoryCountDetailTEntity>> request) throws BusinessServiceException;
 	
 	/**
 	 * 更新复盘标识（当前明细行状态）
@@ -46,7 +46,7 @@ public interface IInventoryCountDetailService {
 	 * @return
 	 * @throws BusinessServiceException
 	 */
-	Boolean moidfyStatus(AjaxRequest<List<InventoryCountDetailTEntity>> request, CountStatusEnum status) throws BusinessServiceException;
+	Boolean modifyStatus(AjaxRequest<List<InventoryCountDetailTEntity>> request, CountStatusEnum status) throws BusinessServiceException;
 	
 	Boolean cancel(AjaxRequest<List<InventoryCountDetailTEntity>> request) throws BusinessServiceException;
 	

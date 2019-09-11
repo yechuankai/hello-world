@@ -1,4 +1,4 @@
---菜单
+﻿--菜单
 insert into UUMS.WEB_FUNC (func_id, func_name, menu_id, func_desc, func_url, func_id_seq, sys_code, is_valid, sys_url, real_sys_code, invalid_time, invalid_user, create_time, version, func_unique_id)
 values ('wms:system:report', '报表管理', 'wms:system', '报表管理', 'report/report', 10, 'WMS', 'Y', null, null, null, null, to_date('16-08-2019 13:53:20', 'dd-mm-yyyy hh24:mi:ss'), '0', 1136869832319441001);
 
@@ -399,5 +399,130 @@ alter table wms.SKU_T modify ( WEIGHT_NET NUMBER(20,5) DEFAULT 0);
 alter table wms.SKU_T modify ( WEIGHT_TARE NUMBER(20,5) DEFAULT 0);
 alter table wms.SKU_T modify ( VOLUME NUMBER(20,5) DEFAULT 0);
 alter table wms.TASK_DETAIL_T modify ( QUANTITY NUMBER(20,5) DEFAULT 0);
+
+
+delete wms.sys_locale_t where LOCALE_ID in (1171521452147945472, 1171521599758086144, 1171521831476604928);
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1171521452147945472', 'zh_CN', 'allocate.not.enough.inventory', '没有足够的库存可分配', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('10-09-2019 23:30:54', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('10-09-2019 23:31:43', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1171521599758086144', 'en_US', 'allocate.not.enough.inventory', 'Not enough Inventory for Allocate', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('10-09-2019 23:31:29', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('10-09-2019 23:31:29', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1171521831476604928', 'fr_FR', 'allocate.not.enough.inventory', 'Pas assez d''inventaire pour allouer', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('10-09-2019 23:32:25', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('10-09-2019 23:32:25', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+
+ALTER TABLE sys_codelist_t MODIFY (IS_ALL VARCHAR2(100));
+UPDATE sys_codelist_t SET IS_ALL = TRIM(IS_ALL);
+ALTER TABLE sys_codelist_t MODIFY (IS_ALL CHAR(1));
+
+
+delete wms.sys_locale_t where locale_id in (
+1170952846332923904,1170953149065203712,1146249769705787392,1146654813626265600,1147075270846025728,1147075410193387520,1147075481458806784,1147075211165274112,1147075534734856192,1148870671123607552,1150696045859962880,1146249267874091008,1146326087637749760,1146327032023044096,1146619785827057664,1147076330733051905,1147076398559141889,1160859255531114496,1166956378836721664,1166956634550853632,1166956905976848384,1166957180116557824,1167323537974796288,1170949171380228096,1170954359885271040,1170954475266379776,1171595837837996032,1171599210779832320,1171613463356174336,1171850663966482432,1171850758380265472,1171850929780498432,1171521452147945472,1171521599758086144,1171521831476604928
+);
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1146249769705787392', 'en_US', 'web.label.fromLotNumber', 'From Lot', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('03-07-2019 10:50:16', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 18:48:35', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1146654813626265600', 'en_US', 'web.inventory.containernumber', 'Container', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('04-07-2019 13:39:46', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 18:48:35', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1147075270846025728', 'fr_FR', 'web.inventory.endtimebegin', 'End Time  commence', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('05-07-2019 17:30:30', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 13:27:52', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1147075410193387520', 'zh_CN', 'web.inventory.endtimeend', '结束时间-结束', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('05-07-2019 17:31:04', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 13:27:52', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1147075481458806784', 'en_US', 'web.inventory.endtimeend', 'End Time End', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('05-07-2019 17:31:21', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 13:27:52', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1147075211165274112', 'en_US', 'web.inventory.endtimebegin', 'End Time Begin', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('05-07-2019 17:30:16', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 13:27:52', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1147075534734856192', 'fr_FR', 'web.inventory.endtimeend', 'End Time  fin', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('05-07-2019 17:31:33', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 13:27:52', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1148870671123607552', 'en_US', 'web.label.tolotnumber', 'To Lot', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('10-07-2019 16:24:47', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 18:48:35', 'dd-mm-yyyy hh24:mi:ss'), '3', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1150696045859962880', 'en_US', 'web.label.quantityavailablemorethanzero', 'Available Quantity Greater Than Zero', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('15-07-2019 17:18:10', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 20:02:39', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1146249267874091008', 'en_US', 'web.label.fromLpnNumber', 'From LPN', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('03-07-2019 10:48:16', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 18:48:35', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1146326087637749760', 'en_US', 'web.label.fromlocationcode', 'From Location', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('03-07-2019 15:53:31', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 21:14:33', 'dd-mm-yyyy hh24:mi:ss'), '3', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1146327032023044096', 'en_US', 'web.label.tolocationcode', 'To Location', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('03-07-2019 15:57:16', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 21:14:33', 'dd-mm-yyyy hh24:mi:ss'), '3', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1146619785827057664', 'en_US', 'web.label.loadlpnnumber', 'Load LPN', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('04-07-2019 11:20:34', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 18:48:35', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1147076330733051905', 'en_US', 'web.label.endtime', 'End Time', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('05-07-2019 17:34:43', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 13:26:04', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1147076398559141889', 'fr_FR', 'web.label.endtime', 'Heure de fin', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('05-07-2019 17:34:59', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 13:26:22', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1160859255531114496', 'en_US', 'web.label.quantity.toquantitylocked', 'Expected lock Quantity', null, null, null, null, null, null, 'Y', 'N', '彭臻', to_date('12-08-2019 18:23:08', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 20:02:39', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1166956378836721664', 'en_US', 'web.label.inventory.search.containernumber', 'By Container', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('29-08-2019 14:10:56', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 20:00:27', 'dd-mm-yyyy hh24:mi:ss'), '3', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1166956634550853632', 'en_US', 'web.label.inventory.search.lpn', 'By LPN', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('29-08-2019 14:11:57', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 20:00:26', 'dd-mm-yyyy hh24:mi:ss'), '3', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1166956905976848384', 'en_US', 'web.label.inventory.search.location', 'By Location', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('29-08-2019 14:13:02', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 20:00:26', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1166957180116557824', 'en_US', 'web.label.inventory.search.sku', 'By SKU', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('29-08-2019 14:14:07', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 20:00:26', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1167323537974796288', 'en_US', 'web.label.quantity.softallocated', 'Soft Allocated Quantity', null, null, null, null, null, null, 'Y', 'N', '刘', to_date('30-08-2019 14:29:53', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 20:37:20', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1170949171380228096', 'en_US', 'web.label.quantityshowflag', 'Show Quantity', null, null, null, null, null, null, 'Y', 'N', '彭臻', to_date('09-09-2019 14:36:52', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 21:03:39', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1170954359885271040', 'en_US', 'web.label.lpnnumberin', 'Contains LPN (separator , )', null, null, null, null, null, null, 'Y', 'N', '彭臻', to_date('09-09-2019 14:57:29', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 21:17:06', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1170954475266379776', 'fr_FR', 'web.label.lpnnumberin', 'Contient LPN (separator ,)', null, null, null, null, null, null, 'Y', 'N', '彭臻', to_date('09-09-2019 14:57:56', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 21:20:46', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1171595837837996032', 'en_US', 'web.label.countnumber', 'CountNumber', null, null, null, null, null, null, 'Y', 'N', '彭臻', to_date('11-09-2019 09:26:29', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 21:13:53', 'dd-mm-yyyy hh24:mi:ss'), '4', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1171599210779832320', 'en_US', 'web.label.parentcountnumber', 'Parent Count Number', null, null, null, null, null, null, 'Y', 'N', '彭臻', to_date('11-09-2019 09:39:53', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 21:13:48', 'dd-mm-yyyy hh24:mi:ss'), '3', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1171613463356174336', 'en_US', 'countdetail.created', '{0} rows created', null, null, null, null, null, null, 'Y', 'N', '彭臻', to_date('11-09-2019 10:36:31', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 21:09:24', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1171850663966482432', 'en_US', 'web.label.skucodein', 'Contains SKU (separator , )', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('11-09-2019 21:19:04', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 21:19:04', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1171850758380265472', 'zh_CN', 'web.label.skucodein', '货品包含 （逗号 , 分隔）', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('11-09-2019 21:19:27', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 21:19:27', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1171850929780498432', 'fr_FR', 'web.label.skucodein', 'Contient SKU (separator,)', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('11-09-2019 21:20:08', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 21:20:08', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1171521452147945472', 'zh_CN', 'allocate.not.enough.inventory', '没有足够的库存可分配', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('10-09-2019 23:30:54', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('10-09-2019 23:31:43', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1171521599758086144', 'en_US', 'allocate.not.enough.inventory', 'Not enough Inventory for Allocate', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('10-09-2019 23:31:29', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('10-09-2019 23:31:29', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1171521831476604928', 'fr_FR', 'allocate.not.enough.inventory', 'Pas assez d''inventaire pour allouer', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('10-09-2019 23:32:25', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('10-09-2019 23:32:25', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1170952846332923904', 'en_US', 'web.label.fromskucode', 'From SKU', null, null, null, null, null, null, 'Y', 'N', '彭臻', to_date('09-09-2019 14:51:28', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 21:30:46', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1170953149065203712', 'en_US', 'web.label.toskucode', 'To SKU', null, null, null, null, null, null, 'Y', 'N', '彭臻', to_date('09-09-2019 14:52:40', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 21:30:46', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
 
 

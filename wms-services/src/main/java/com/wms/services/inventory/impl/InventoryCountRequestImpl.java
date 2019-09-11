@@ -31,6 +31,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 @Service
@@ -192,7 +193,6 @@ public class InventoryCountRequestImpl implements IInventoryCountRequestService 
 	@Override
 	public List<InventoryOnhandTEntity> findInventory(InventoryCountRequestTEntity request) throws BusinessServiceException {
 		//InventoryCountRequestTEntity request = find(countRequest);
-		
 		Set<Long> locSets = null;
 		//库区指定了部分条件
 		if (!FROM_ALL.equals(request.getFromZoneCode()) 

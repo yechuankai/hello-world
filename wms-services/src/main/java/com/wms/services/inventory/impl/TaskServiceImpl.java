@@ -7,6 +7,7 @@ import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.enums.LpnTypeEnum;
 import com.wms.common.enums.OrderNumberTypeEnum;
 import com.wms.common.enums.TaskStatusEnum;
+import com.wms.common.enums.TransactionCategoryEnum;
 import com.wms.common.enums.YesNoEnum;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.common.utils.ExampleUtils;
@@ -205,6 +206,9 @@ public class TaskServiceImpl implements ITaskService {
 					.updateTime(new Date())
 					.toLocationCode(locationCode)
 					.toZoneCode(location.getZoneCode())
+					.startTime(task.getStartTime())
+					.endTime(task.getEndTime())
+					.completeTime(task.getCompleteTime())
 					.status(task.getStatus())
 					.taskDetailId(task.getTaskDetailId())
 					.warehouseId(task.getWarehouseId())
@@ -291,6 +295,7 @@ public class TaskServiceImpl implements ITaskService {
 				InventoryOnhandVO vo = new InventoryOnhandVO(v);
 				vo.setToQuantity(v.getQuantityOnhand());
 				vo.setToLocationCode(d.getToLocationCode());
+				vo.setTransactionCategory(TransactionCategoryEnum.PCPutaway.getCode());
 				inventoryOnhandVOs.add(vo);
 			});
 

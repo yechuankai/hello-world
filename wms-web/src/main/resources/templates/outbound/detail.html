@@ -46,7 +46,13 @@
 									}
 						">uom</th>
 		        <th field="uomQuantityExpected" width="80" wms:text="${web.label.quantityexpected}" data-options="
-							editor: 'numberbox'
+							editor:{
+								type: 'numberbox',
+								options: {
+									precision:4,
+									required: true
+								}
+							}
 							">Expected Quantity
 		        </th>
 		        <th field="uomQuantityOrder" width="80" wms:text="${web.label.uomquantityorder}" data-options="
@@ -144,7 +150,7 @@
                         <td>
                             <input id="uomQuantityExpected" name="uomQuantityExpected" class="lazy-load"
                                    lazy-load="easyui-numberbox" value="0"
-                                   wms:data-options="label:'${web.label.quantityexpected}',labelPosition:'top',required:true"/>
+                                   wms:data-options="label:'${web.label.quantityexpected}',labelPosition:'top',required:true,precision:4"/>
                         </td>
                         <td>
                             &nbsp;
@@ -338,7 +344,7 @@
                         return;
                     }
                     refreshOutboundDetail(data.data);
-                    refreshOutbound(data.data);
+                    refreshOutboundHeader(data.data);
                     $('#addDetailDiv').dialog('close');
                 }
             });

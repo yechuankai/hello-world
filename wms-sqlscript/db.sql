@@ -293,15 +293,15 @@ comment on column sys_oper_log_t.description        is '备注';
 -- ----------------------------
 -- 字典类型表
 -- ----------------------------
-drop table sys_codelist_t cascade constraints;
-create table sys_codelist_t
+drop table sys_codelist_t_back cascade constraints;
+create table sys_codelist_t_back
 (
   codelist_id      number          not null,
   code             varchar2(100)   default '',
   descr            varchar2(500)   default '',
   type             varchar2(100)   default '',
   active            char(1)          default 'Y',
-  is_all           	char(100)   default 'N',
+  is_all           	char(1)   default 'N',
   company_id         number        default '0',
   warehouse_id       number        default '0',
   del_flag         char(1)         default 'N',
@@ -313,25 +313,25 @@ create table sys_codelist_t
   description            varchar2(500)    default null
 );
 
-alter table sys_codelist_t add constraint pk_sys_codelist_t primary key (codelist_id);
-create index sys_codelist_t_index1 on sys_codelist_t (code);
+alter table sys_codelist_t_back add constraint pk_sys_codelist_t_back primary key (codelist_id);
+create index sys_codelist_t_back_index1 on sys_codelist_t_back (code);
 
-comment on table  sys_codelist_t               is '字典类型表';
-comment on column sys_codelist_t.codelist_id   is '字典主键';
-comment on column sys_codelist_t.code          is '字典代码';
-comment on column sys_codelist_t.descr          is '字典描述';
-comment on column sys_codelist_t.type          is '字典类型';
-comment on column sys_codelist_t.active        is '状态（Y正常 N停用）';
-comment on column sys_codelist_t.is_all        is '应用所有维度,不匹配仓库（Y所有 N按仓库）';
-comment on column sys_codelist_t.company_id      is '公司ID';
-comment on column sys_codelist_t.warehouse_id    is '仓库ID';
-comment on column sys_codelist_t.del_flag      is '删除标志（N代表存在 Y代表删除）';
-comment on column sys_codelist_t.create_by     is '创建者';
-comment on column sys_codelist_t.create_time   is '创建时间';
-comment on column sys_codelist_t.update_by     is '更新者';
-comment on column sys_codelist_t.update_time   is '更新时间';
-comment on column sys_codelist_t.update_version   is '更新时间';
-comment on column sys_codelist_t.description        is '备注';
+comment on table  sys_codelist_t_back               is '字典类型表';
+comment on column sys_codelist_t_back.codelist_id   is '字典主键';
+comment on column sys_codelist_t_back.code          is '字典代码';
+comment on column sys_codelist_t_back.descr          is '字典描述';
+comment on column sys_codelist_t_back.type          is '字典类型';
+comment on column sys_codelist_t_back.active        is '状态（Y正常 N停用）';
+comment on column sys_codelist_t_back.is_all        is '应用所有维度,不匹配仓库（Y所有 N按仓库）';
+comment on column sys_codelist_t_back.company_id      is '公司ID';
+comment on column sys_codelist_t_back.warehouse_id    is '仓库ID';
+comment on column sys_codelist_t_back.del_flag      is '删除标志（N代表存在 Y代表删除）';
+comment on column sys_codelist_t_back.create_by     is '创建者';
+comment on column sys_codelist_t_back.create_time   is '创建时间';
+comment on column sys_codelist_t_back.update_by     is '更新者';
+comment on column sys_codelist_t_back.update_time   is '更新时间';
+comment on column sys_codelist_t_back.update_version   is '更新时间';
+comment on column sys_codelist_t_back.description        is '备注';
 
 
 -- ----------------------------

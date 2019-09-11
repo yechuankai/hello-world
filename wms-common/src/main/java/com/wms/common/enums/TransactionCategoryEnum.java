@@ -6,6 +6,7 @@ public enum TransactionCategoryEnum {
 	PCAllReceive("PCALLRECEIVE", "PC全部收货"), 
 	RFReceive("RFRECEIVE", "移动端收货"), 
 	PCMove("PCMOVE", "PC移动"), 
+	PCPutaway("PCPUTAWAY", "PC上架"), 
 	PCPick("PCPICK", "PC拣货"), 
 	PCShip("PCSHIP", "PC发货"), 
 	RFInbound("RFINBOUND", "移动收货"), 

@@ -8,11 +8,11 @@
      <result column="LPN_NUMBER" jdbcType="VARCHAR" property="lpnNumber" />
      <result column="CONTAINER_NUMBER" jdbcType="VARCHAR" property="containerNumber" />
      <result column="LOCATION_CODE" jdbcType="VARCHAR" property="locationCode" />
-     <result column="availableAmount" jdbcType="DECIMAL" property="availableAmount" />
-     <result column="onHandAmount" jdbcType="DECIMAL" property="onHandAmount" />
-     <result column="lockAmount" jdbcType="DECIMAL" property="lockAmount" />
-     <result column="allocateAmount" jdbcType="DECIMAL" property="allocateAmount" />
-     <result column="softAllocateAmount" jdbcType="DECIMAL" property="softAllocateAmount" />
+     <result column="quantityAvailable" jdbcType="DECIMAL" property="quantityAvailable" />
+     <result column="quantityOnhand" jdbcType="DECIMAL" property="quantityOnhand" />
+     <result column="quantityLocked" jdbcType="DECIMAL" property="quantityLocked" />
+     <result column="quantityAllocated" jdbcType="DECIMAL" property="quantityAllocated" />
+     <result column="softQuantityAllocated" jdbcType="DECIMAL" property="softQuantityAllocated" />
      <result column="SKU_ID" jdbcType="DECIMAL" property="skuId"/>
      <result column="LOCATION_ID" jdbcType="DECIMAL" property="locationId"/>
   </resultMap>
@@ -23,9 +23,9 @@
 	  		i.SKU_CODE SKU_CODE,
 	  		i.SKU_ALIAS SKU_ALIAS,
 	  		l.CONTAINER_NUMBER CONTAINER_NUMBER,
-	  		sum(i.QUANTITY_ONHAND) onHandAmount,
-	  		sum(i.QUANTITY_ALLOCATED) allocateAmount,
-	  		sum(i.QUANTITY_LOCKED) lockAmount from INVENTORY_ONHAND_T i
+	  		sum(i.QUANTITY_ONHAND) quantityOnhand,
+	  		sum(i.QUANTITY_ALLOCATED) quantityAllocated,
+	  		sum(i.QUANTITY_LOCKED) quantityLocked from INVENTORY_ONHAND_T i
 	  		left join LPN_T l on i.LPN_ID = l.LPN_ID
   		where i.DEL_FLAG = 'N'
   		and l.DEL_FLAG = 'N'
@@ -55,9 +55,9 @@
 	  		SKU_CODE,
 	  		SKU_ALIAS,
 	  		LPN_NUMBER,
-	  		sum(QUANTITY_ONHAND) onHandAmount,
-	  		sum(QUANTITY_ALLOCATED) allocateAmount,
-	  		sum(QUANTITY_LOCKED) lockAmount from INVENTORY_ONHAND_T
+	  		sum(QUANTITY_ONHAND) quantityOnhand,
+	  		sum(QUANTITY_ALLOCATED) quantityAllocated,
+	  		sum(QUANTITY_LOCKED) quantityLocked from INVENTORY_ONHAND_T
   		where DEL_FLAG = 'N'
   		and COMPANY_ID = #{companyId}
   		and WAREHOUSE_ID = #{warehouseId}
@@ -87,9 +87,9 @@
   		LOCATION_CODE,
   		SKU_ID,
   		LOCATION_ID,
-  		sum(QUANTITY_ONHAND) onHandAmount,
-  		sum(QUANTITY_ALLOCATED) allocateAmount,
-  		sum(QUANTITY_LOCKED) lockAmount from inventory_onhand_t
+  		sum(QUANTITY_ONHAND) quantityOnhand,
+  		sum(QUANTITY_ALLOCATED) quantityAllocated,
+  		sum(QUANTITY_LOCKED) quantityLocked from inventory_onhand_t
  		where DEL_FLAG = 'N'
  		and COMPANY_ID = #{companyId}
  		and WAREHOUSE_ID = #{warehouseId}
@@ -117,9 +117,9 @@
   		SKU_CODE,
   		SKU_ALIAS,
   		SKU_ID,
-  		sum(QUANTITY_ONHAND) onHandAmount,
-  		sum(QUANTITY_ALLOCATED) allocateAmount,
-  		sum(QUANTITY_LOCKED) lockAmount from inventory_onhand_t
+  		sum(QUANTITY_ONHAND) quantityOnhand,
+  		sum(QUANTITY_ALLOCATED) quantityAllocated,
+  		sum(QUANTITY_LOCKED) quantityLocked from inventory_onhand_t
  		where DEL_FLAG = 'N'
  		and COMPANY_ID = #{companyId}
  		and WAREHOUSE_ID = #{warehouseId}

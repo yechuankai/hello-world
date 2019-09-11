@@ -182,8 +182,12 @@
 	            <th field="quantityLocked" width="115" wms:text="${web.label.quantity.locked}" data-options="sortable:true">quantityLocked
 	            </th>
 	            <th field="toQuantityLocked" width="136" wms:text="${web.label.quantity.toquantitylocked}" data-options="
-	                                    sortable:true,
-	                                    editor:{type:'numberbox'}
+	                            editor:{
+									type: 'numberbox',
+									options: {
+										precision:4
+									}
+								}
 	            ">quantityLocked
 	            </th>
 	            <th field="quantityAvailable" width="125" wms:text="${web.label.quantity.available}"

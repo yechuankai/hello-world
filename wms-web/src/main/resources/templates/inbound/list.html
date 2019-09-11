@@ -191,6 +191,7 @@
 </body>
 <script type="text/javascript" th:src="@{/static/ui/plugins/datagrid-filter.js}"></script>
 <script type="text/javascript" th:src="@{/static/js/inbound/inbound.js}"></script>
+<script type="text/javascript" th:src="@{/static/js/inventory/putaway.js}"></script>
 <script type="text/javascript" th:inline="text">
 	$(function(){
 		$('.inbound-addheaderdetail').click(function(){
@@ -251,66 +252,6 @@
 		setTimeout(function(){
 			lazyLoadView('body');
 		}, 0);
-		$('.common-putaway-ok').click(function(){
-			var datagrid = $(this).attr('data-table');
-			var url = $(this).attr('data-url');
-
-			var checkedRows = $(datagrid).datagrid('getChecked');
-			if (checkedRows.length == 0) {
-				showError($.locale.selectOneRow);
-				return;
-			}
-			confirmMsg($.locale.putawayRows,{row:checkedRows.length}, function(r){
-				if (!r){
-					return;
-				}
-				var data = getBaseData(checkedRows);
-				loading();
-				$.post({
-					url: url,
-					data:data,
-					success: function(data){
-						data = returnData(data);
-						closeLoading();
-						if (data.code == '0') {
-							showError(data.msg);
-							return;
-						}
-						$(datagrid).datagrid('reload').datagrid('clearChecked');
-					}
-				});
-			});
-		});
-        $('.putaway-cancel').click(function(){
-            var datagrid = $(this).attr('data-table');
-            var url = $(this).attr('data-url');
-
-            var checkedRows = $(datagrid).datagrid('getChecked');
-            if (checkedRows.length == 0) {
-                showError($.locale.selectOneRow);
-                return;
-            }
-            confirmMsg($.locale.cancelRows,{row:checkedRows.length}, function(r){
-                if (!r){
-                    return;
-                }
-                var data = getBaseData(checkedRows);
-                loading();
-                $.post({
-                    url: url,
-                    data:data,
-                    success: function(data){
-                        data = returnData(data);
-                        closeLoading();
-                        if (data.code == '0') {
-                            showError(data.msg);
-                            return;
-                        }
-                        $(datagrid).datagrid('reload').datagrid('clearChecked');
-                    }
-                });
-            });
-        });
 
 	});
 	

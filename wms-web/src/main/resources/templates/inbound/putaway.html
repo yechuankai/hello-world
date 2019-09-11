@@ -6,7 +6,7 @@
 		<a href="#" class="lazy-load common-rowsave" lazy-load="easyui-linkbutton" data-table="#putawayDetailData" th:data-url="@{/services/inner/inventory/task/save}" >
 			<span wms:text="${web.label.save}">Save</span>
 		</a>
-		<a href="#" class="lazy-load putaway-cancel" lazy-load="easyui-linkbutton" data-table="#putawayDetailData" th:data-url="@{/services/inner/inventory/task/cancel}">
+		<a href="#" class="lazy-load putaway-cancel common-other" lazy-load="easyui-linkbutton" data-table="#putawayDetailData" th:data-url="@{/services/inner/inventory/task/cancel}">
 			<span wms:text="${web.label.cancel}">Cancel</span>
 		</a>
 	</div>
@@ -86,9 +86,9 @@
 								">status</th>
 		            <th field="userName" width="100" wms:text="${web.label.username}" data-options="sortable:true">userName</th>
 		            <th field="releaseTime" width="150" wms:text="${web.label.releasetime}" data-options="sortable:true" >releaseTime</th>
-		            <th field="startTime" width="150" wms:text="${web.label.starttime}" data-options="sortable:true" >startTime</th>
-		            <th field="endTime" width="150" wms:text="${web.label.endtime}" data-options="sortable:true" >endTime</th>
-		            <th field="completeTime" width="150" wms:text="${web.label.completetime}" data-options="sortable:true" >completeTime</th>
+		            <th field="startTime" width="150" wms:text="${web.label.starttime}" data-options="sortable:true,editor:'datetimebox'" >startTime</th>
+		            <th field="endTime" width="150" wms:text="${web.label.endtime}" data-options="sortable:true,editor:'datetimebox'" >endTime</th>
+		            <th field="completeTime" width="150" wms:text="${web.label.completetime}" data-options="sortable:true,editor:'datetimebox'" >completeTime</th>
 		            <th field="createBy" width="80" wms:text="${web.label.createby}" >createBy</th>
 		            <th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true" >createTime</th>
 		            <th field="updateBy" width="80" wms:text="${web.label.updateby}" >updateBy</th>
@@ -152,13 +152,11 @@
 		}
 	}];
 
-
-
 	function viewputaway(){
 		lazyLoadView('#viewputwayDiv');
 		//加载列表
 		var checkedRows = $('#inboundData').datagrid('getChecked');
-		if (checkedRows.length == 0) {
+		if (checkedRows.length != 1) {
 			showError($.locale.selectOneRow);
 			return;
 		}

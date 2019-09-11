@@ -47,8 +47,34 @@ $.extend($.fn.datagrid.defaults.view, {
 		$(target).datagrid('enableCellEditing');
     }
 });
+$.extend($.fn.datagrid.defaults.editors, {
+	datetimebox : {// datetimebox就是你要自定义editor的名称
+		init : function(container, options) {
+			var editor = $('<input />').appendTo(container);
+			$(editor).datetimebox();
+			editor.enableEdit = false;
+			editor.datetimebox(options);
+			return editor;
+		},
+		getValue : function(target) {
+			var new_str = $(target).datetimebox('getValue');
+			return new_str;
+		},
+		setValue : function(target, value) {
+			$(target).datetimebox('setValue', value);
+		},
+		resize : function(target, width) {
+			$(target).datetimebox('resize', width);
+		},
+		destroy : function(target) {
+			$(target).datetimebox('destroy');
+		}
+	}
+});
+
+
 $(function(){
-	//公共搜索-------------------------START
+	// 公共搜索-------------------------START
 	$('.common-search').click(function(){
 		var searchFormId = $(this).attr('data-form');
 		var searchForm = $(searchFormId);
@@ -138,7 +164,12 @@ $(function(){
 			showError($.locale.selectOneRow);
 			return;
 		}
-		confirmMsg($.locale.deleteOneRow,{row:checkedRows.length}, function(r){
+		var localeMsg = $.locale.deleteOneRow;
+		if($(this).hasClass('common-other')){
+			localeMsg = $.locale.optOneRow;
+		}
+		debugger;
+		confirmMsg(localeMsg,{opt:$(this).text(),row:checkedRows.length}, function(r){
 			if (!r){
 				return;
 			}
@@ -171,6 +202,7 @@ $(function(){
 		}).dialog('open');
 		$(panel).find('form').form('reset');
 		lazyLoadView(panel);
+		$('.tooltip').remove();
 	});
 	//公共显示新增框-------------------------END
 	

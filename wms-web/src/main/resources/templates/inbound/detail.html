@@ -48,12 +48,23 @@
 				<th field="lotNumber" width="80" wms:text="${web.label.lotnumber}">lotNumber</th>
 				<th field="uomQuantityExpected" width="100" wms:text="${web.label.quantityexpected}" data-options="
 					sortable:true,
-					editor: 'numberbox'
-
+					editor:{
+						type: 'numberbox',
+						options: {
+							precision:4,
+							required: true
+						}
+					}
 					">Expected Quantity</th>
 				<th field="uomQuantityReceive" width="100" wms:text="${web.label.quantityreceive}" data-options="
 					sortable:true,
-					editor: 'numberbox'
+					editor:{
+						type: 'numberbox',
+						options: {
+							precision:4,
+							required: true
+						}
+					}
 					">Receive Quantity</th>
 				<th field="status" width="60" wms:text="${web.label.status}" data-options="
 					sortable:true,
@@ -130,6 +141,7 @@
 							label:'${web.label.quantityexpected}',
 							labelPosition:'top',
 							required:true,
+							precision:4,
 							onChange(newValue, oldValue){
 								calculate(newValue);
 							}
@@ -147,7 +159,7 @@
 							<input name="uom" id="uom" class="lazy-load" lazy-load="easyui-combobox" wms:data-options="label:'${web.label.uom}',labelPosition:'top',required:true,panelHeight:100" />
 						</td>
 						<td>
-							<input id="uomQuantityReceive" name="uomQuantityReceive" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.label.quantityreceive}',labelPosition:'top',required:true" />
+							<input id="uomQuantityReceive" name="uomQuantityReceive" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.label.quantityreceive}',labelPosition:'top',required:true,precision:4" />
 						</td>
 						<td>
 							<input id="lpnNumber" name="lpnNumber" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="label:'${web.label.lpnnumber}',labelPosition:'top'" />
@@ -158,16 +170,16 @@
 					</tr>
 					<tr>
 						<td>
-							<input id="weightGross" name="weightGross" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.inventory.weightgross}',labelPosition:'top',required:true" />
+							<input id="weightGross" name="weightGross" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.inventory.weightgross}',labelPosition:'top',required:true,precision:4" />
 						</td>
 						<td>
-							<input id="weightNet" name="weightNet" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.inventory.weightnet}',labelPosition:'top',required:true" />
+							<input id="weightNet" name="weightNet" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.inventory.weightnet}',labelPosition:'top',required:true,precision:4" />
 						</td>
 						<td>
-							<input id="weightTare" name="weightTare" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.inventory.weighttare}',labelPosition:'top',required:true" />
+							<input id="weightTare" name="weightTare" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.inventory.weighttare}',labelPosition:'top',required:true,precision:4" />
 						</td>
 						<td>
-							<input id="volume" name="volume" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.inventory.volume}',labelPosition:'top',required:true" />
+							<input id="volume" name="volume" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.inventory.volume}',labelPosition:'top',required:true,precision:4" />
 						</td>
 					</tr>
 				</table>
@@ -375,7 +387,8 @@
 						return;
 					}
 					refreshInboundDetail(data.data);
-					refreshInbound(data.data);
+					refreshInboundHeader(data.data);
+					//refreshInbound(data.data);
 					$('#addDetailDiv').dialog('close');
 				}
 			});
@@ -510,9 +523,9 @@
 			}
 			detailEditData = checkedRows[0];
 		}
-		lazyLoadView('#inboundDetailForm');
 		$('#detailAddButton').hide();
 		$('#detailEditButton').show();
+		debugger;
 		var panel = '#addDetailDiv';
 		$(panel).dialog({
 			closed: true,
@@ -520,12 +533,14 @@
 			fix: true,
 			buttons: '#detailEditButton'
 		}).dialog('open');
+		lazyLoadView('#inboundDetailForm');
 		$(panel).find('form').form('reset');
 		var from = '#inboundDetailForm';
 		//设定可编辑框
 		detailEditable(detailEditData.status);
 		loadPutawayStrategyLov();
 		$(from).form('load', detailEditData);
+		$('.tooltip').remove();
 	}
 	/**
 	 * 根据预期量计算毛重、净重、皮重、体积

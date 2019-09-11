@@ -425,7 +425,11 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 			toDetail.setTranQuantity(d.getToQuantity());
 			toDetail.setSourceNumber(String.valueOf(d.getInventoryOnhandId()));
 			toDetail.setSourceInventoryOnhand(fromDetail);
-			toDetail.setTransactionCategory(TransactionCategoryEnum.PCMove.getCode());
+			if (StringUtils.isEmpty(d.getTransactionCategory())) {
+				toDetail.setTransactionCategory(TransactionCategoryEnum.PCMove.getCode());
+			}else {
+				toDetail.setTransactionCategory(d.getTransactionCategory());
+			}
 			tranDetail.add(toDetail);
 		});
 		tran.setDetail(tranDetail);

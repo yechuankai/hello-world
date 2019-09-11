@@ -48,6 +48,8 @@ public class InventoryOnhandVO extends InventoryOnhandTEntity{
     private Date lotAttribute12;
     
     private Set<Long> locations;
+    
+    private String transactionCategory;
 	
 	public void setQuantityAvailable(BigDecimal quantityAvailable) {
 		this.quantityAvailable = quantityAvailable;
@@ -220,5 +222,15 @@ public class InventoryOnhandVO extends InventoryOnhandTEntity{
 	public void setToContainerNumber(String toContainerNumber) {
 		this.toContainerNumber = toContainerNumber;
 	}
+
+	public String getTransactionCategory() {
+		return transactionCategory;
+	}
+
+	public void setTransactionCategory(String transactionCategory) {
+		this.transactionCategory = transactionCategory;
+	}
+	
+	
 	
 }

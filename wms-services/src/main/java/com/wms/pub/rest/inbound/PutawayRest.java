@@ -141,7 +141,6 @@ public class PutawayRest extends BaseController{
 										.build(), Sets.newHashSet(putaway.getInventoryOnhand().getLocationCode(), putaway.getToLocationCode()));
 				Map<String, LocationTEntity> locMap = locs.stream().collect(Collectors.toMap(LocationTEntity::getLocationCode, v -> v));
 				
-				
 				//生成上架任务
 				TaskDetailTEntity taskdetail = TaskDetailTEntity.builder()
 						.createBy(request.getUserName())
@@ -152,6 +151,7 @@ public class PutawayRest extends BaseController{
 						.companyId(request.getCompanyId())
 						.taskType(TaskTypeEnum.Putaway.getCode())
 						.sourceType(TaskTypeEnum.Putaway.getCode())
+						.status(TaskStatusEnum.Processing.getCode())
 						.fromLpnType(lpnType.getCode())
 						.ownerCode(putaway.getInventoryOnhand().getOwnerCode())
 						.ownerId(putaway.getInventoryOnhand().getOwnerId())
@@ -235,6 +235,24 @@ public class PutawayRest extends BaseController{
 			List<PutawayLocationLockTEntity> locks = lockService.find(lpn);
 			lockService.delete(locks);
 			
+			//查询任务
+			List<TaskDetailTEntity> taskList = taskService.findByFromLpn(TaskDetailTEntity.builder()
+					.warehouseId(request.getWarehouseId())
+					.companyId(request.getCompanyId())
+					.build(), TaskStatusEnum.New, TaskStatusEnum.Processing);
+			List<TaskDetailTEntity> updateTask = Lists.newArrayList();
+			taskList.forEach(t -> {
+				TaskDetailTEntity update = TaskDetailTEntity.builder()
+											.warehouseId(request.getWarehouseId())
+											.companyId(request.getCompanyId())
+											.status(TaskStatusEnum.Completed.getCode())
+											.endTime(new Date())
+											.completeTime(new Date())
+											.userName(request.getUserName())
+											.build();
+				updateTask.add(update);
+			});
+			taskService.modify(new AjaxRequest<List<TaskDetailTEntity>>(updateTask, request));
 			return success();
 		} catch (Exception e) {
 			return fail(e.getMessage());
