@@ -1166,4 +1166,14 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 		});
 		return returnList;
 	}
+
+	@Override
+	public List<OutboundDetailTEntity> findByHeaderId(Long headId) {
+		OutboundDetailTExample TExample = new OutboundDetailTExample();
+		TExample.createCriteria()
+		.andDelFlagEqualTo(YesNoEnum.No.getCode())
+		.andOutboundHeaderIdEqualTo(headId);
+		List<OutboundDetailTEntity> outboundDetailList = outboundDetailDao.selectByExample(TExample);
+		return outboundDetailList;
+	}
 }

@@ -117,8 +117,8 @@ public class InventoryCountRequestImpl implements IInventoryCountRequestService 
 
 			InventoryCountRequestTExample example = new InventoryCountRequestTExample();
 			example.createCriteria()
-					.andWarehouseIdEqualTo(w.getWarehouseId())
-					.andCompanyIdEqualTo(w.getCompanyId())
+					.andWarehouseIdEqualTo(request.getWarehouseId())
+					.andCompanyIdEqualTo(request.getCompanyId())
 					.andInventoryCountRequestIdEqualTo(w.getInventoryCountRequestId());
 
 			int row = inventoryCountRequestDao.updateWithVersionByExampleSelective(w.getUpdateVersion(), update, example);
