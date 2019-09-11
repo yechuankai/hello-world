@@ -19,10 +19,6 @@
         <thead data-options="frozen:true">
 			<tr>
 		        <th field="outboundDetailId" data-options="checkbox:true"></th>
-		 	</tr>
-		 </thead>
-        <thead>
-	        <tr>
 		        <th field="edit" data-options="
 												formatter:function(value,row){
 													var data = JSON.stringify(row);
@@ -30,11 +26,17 @@
 													return detail;
 												}
 											"></th>
-		        <th field="lineNumber" width="50" wms:text="${web.label.linenumber}" data-options="sortable:true">lineNumber
-		        </th>
+		 	</tr>
+		 </thead>
+        <thead>
+	        <tr>
+		        <th field="outboundNumber" width="100" wms:text="${web.label.outboundnumber}" data-options="sortable:true">outboundNumber</th>
+		        <th field="lineNumber" width="50" wms:text="${web.label.linenumber}" data-options="sortable:true">lineNumber</th>
+		        <!-- 
 		        <th field="sourceLineNumber" width="100" wms:text="${web.label.sourcelinenumber}" data-options="sortable:true">
 		            sourceLineNumber
 		        </th>
+		         -->
 		        <th field="skuCode" width="100" wms:text="${web.label.sku}" data-options="sortable:true">skuCode</th>
 		        <th field="skuDescr" width="150" wms:text="${web.label.skudescr}">skuDescr</th>
 		        <th field="packCode" width="80" wms:text="${web.label.pack}">pack</th>

@@ -164,13 +164,13 @@ $(function(){
 	//公共显示新增框-------------------------START
 	$('.common-add').click(function(){
 		var panel = $(this).attr('data-addpanel');
-		lazyLoadView(panel);
 		$(panel).dialog({
-		    closed: true,
-		    modal: true,
-		    fix: true
+			closed: true,
+			modal: true,
+			fix: true
 		}).dialog('open');
 		$(panel).find('form').form('reset');
+		lazyLoadView(panel);
 	});
 	//公共显示新增框-------------------------END
 	
@@ -200,7 +200,10 @@ $(function(){
 					$(from).form('reset');
 					if (!r) {
 						$(from).parents('.window-body').dialog('close');
-						$(datagrid).datagrid('reload').datagrid('clearChecked');
+						if ($('.common-search').length > 0){
+							$('.common-search').trigger('click');
+						}
+						//$(datagrid).datagrid('reload').datagrid('clearChecked');
 					}
 				});
 			}

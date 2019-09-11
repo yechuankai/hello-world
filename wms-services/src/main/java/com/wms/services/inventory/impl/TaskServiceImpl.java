@@ -305,6 +305,16 @@ public class TaskServiceImpl implements ITaskService {
 						.warehouseId(d.getWarehouseId())
 						.companyId(d.getCompanyId())
 						.build();
+				if (d.getEndTime() != null)
+					update.setEndTime(d.getEndTime());
+				else
+					update.setEndTime(new Date());
+				
+				if (d.getCompleteTime() != null)
+					update.setCompleteTime(d.getCompleteTime());
+				else
+					update.setCompleteTime(new Date());
+				
 				modify(update);
 			}
 		});

@@ -12,7 +12,6 @@ import com.wms.common.core.domain.response.PageResult;
 import com.wms.common.enums.OperatorTypeEnum;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.entity.auto.OutboundDetailTEntity;
-import com.wms.entity.auto.OutboundHeaderTEntity;
 import com.wms.services.base.IEnterpriseService;
 import com.wms.services.outbound.IOutboundDetailService;
 import com.wms.services.outbound.IOutboundHeaderService;
@@ -45,12 +44,12 @@ public class OutboundRest extends BaseController {
     IEnterpriseService enterpriseService;
 
     @RequestMapping(value = "/find")
-    public PageResult<OutboundHeaderTEntity> find(@RequestBody String req) {
-        List<OutboundHeaderTEntity> list = null;
+    public PageResult<OutboundVO> find(@RequestBody String req) {
+        List<OutboundVO> list = null;
         try {
             PageRequest pageRequest = pageRequest(req);
             PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
-            list = outboundHeaderService.find(pageRequest);
+            list = outboundHeaderService.findFromOms(pageRequest);
             if(CollectionUtils.isEmpty(list)){
                 return page(Lists.newArrayList());
             }

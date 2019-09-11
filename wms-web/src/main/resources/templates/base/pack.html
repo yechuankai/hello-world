@@ -51,9 +51,20 @@
 		<div>
 			<table id="packData" wms:title="${web.label.packlist.title}" class="easyui-datagrid"
 							th:data-delayUrl="@{/services/inner/base/pack/find}">
-				<thead>
+				<thead data-options="frozen:true">
 					<tr>
 						<th field="packId" data-options="checkbox:true"></th>
+						<th field="edit" data-options="
+										formatter:function(value,row){
+											var data = JSON.stringify(row);
+											var detail = '<span title = \'编辑\' onclick=\'toEdit('+data+')\' class=\'icon-edit\'>&nbsp;</span>';
+											return detail;
+										}
+									"></th>
+					</tr>
+				</thead>
+				<thead>
+					<tr>
 						<th field="packCode" width="80" wms:text="${web.label.packcode}" data-options="sortable:true">packCode</th>
 						<th field="packDescr" width="150" wms:text="${web.label.descr}" data-options="sortable:false,editor:{
 																													type: 'validatebox',
@@ -147,86 +158,167 @@
 			</table>
 		</div>
 	</div>
-	<div id="addDiv" wms:title="${web.label.add}" style="width:460px;height:500px; display: none;">
-		<div style="width: 100%;padding-left: 50px;">
+	<div id="addDiv" wms:title="${web.label.add}" style="width:560px;height:460px; display: none;">
+		<div style="width: 100%;">
 			<form method="post" id="addForm" th:data-url="@{/services/inner/base/pack/add}">
-				<table style="width: 100%;">
-					<tr>
-						<td>
-							<input name="packCode" class="easyui-textbox" wms:data-options="required:true,label:'${web.label.packcode}',labelPosition:'top'">
-						</td>
-						<td>
-							<input name="packDescr" class="easyui-textbox"  wms:data-options="required:true,label:'${web.label.descr}',labelPosition:'top'">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input name="uom" class="easyui-combobox"  wms:data-options="
-							required:true,
-							data: codelkups['UOM'],
-							valueField: 'code',
-							textField: 'descr',
-							label: '${web.labe.uom.least}',
-							labelPosition: 'top'
-							" />
-						</td>
-						<td>
-							<input name="qty" class="easyui-numberbox" value="1"  wms:data-options="required:true,label:'${web.label.qty.least}',labelPosition:'top'">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input name="uomInner" class="easyui-combobox"  wms:data-options="
-							required:true,
-							data: codelkups['UOM'],
-							valueField: 'code',
-							textField: 'descr',
-							label: '${web.label.uomInner}',
-							labelPosition: 'top'
-							" />
-						</td>
-						<td>
-							<input name="qtyInner" class="easyui-numberbox"  value="1"  wms:data-options="required:true,label:'${web.label.qtyInner}',labelPosition:'top'">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input name="uomCase" class="easyui-combobox"  wms:data-options="
-							required:true,
-							data: codelkups['UOM'],
-							valueField: 'code',
-							textField: 'descr',
-							label: '${web.label.uomCase}',
-							labelPosition: 'top'
-							" />
-						</td>
-						<td>
-							<input name="qtyCase" class="easyui-numberbox"  value="1"  wms:data-options="required:true,label:'${web.label.qtyCase}',labelPosition:'top'">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input class="easyui-combobox" name="active"  wms:data-options="
-							required:true,
-							value: 'Y',
-							data: codelkups['YESNO'],
-							valueField: 'code',
-							textField: 'descr',
-							label: '${web.label.active}',
-							labelPosition: 'top'
-							" />
-						</td>
-						<td>
-							<input name="remark" class="easyui-textbox"  wms:data-options="label:'${web.label.remark}',labelPosition:'top'">
-						</td>
-					</tr>
-				</table>
+				<input name="packId" type="hidden">
+				<input name="updateVersion" type="hidden">
+				<div class="lazy-load" lazy-load="easyui-tabs" style="width: 100%;height: 360px;">
+				  <div wms:title="${web.label.normal}">
+					<table style="width: 100%;padding-left: 60px;">
+						<tr>
+							<td>
+								<input name="packCode" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="required:true,label:'${web.label.packcode}',labelPosition:'top'">
+							</td>
+							<td>
+								<input name="packDescr" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="required:true,label:'${web.label.descr}',labelPosition:'top'">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input name="uom" class="lazy-load" lazy-load="easyui-combobox"  wms:data-options="
+								required:true,
+								data: codelkups['UOM'],
+								valueField: 'code',
+								textField: 'descr',
+								label: '${web.labe.uom.least}',
+								labelPosition: 'top'
+								" />
+							</td>
+							<td>
+								<input name="qty" class="lazy-load" lazy-load="easyui-numberbox" value="1"  wms:data-options="required:true,label:'${web.label.qty.least}',labelPosition:'top'">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input name="uomInner" class="lazy-load" lazy-load="easyui-combobox"  wms:data-options="
+								required:true,
+								data: codelkups['UOM'],
+								valueField: 'code',
+								textField: 'descr',
+								label: '${web.label.uomInner}',
+								labelPosition: 'top'
+								" />
+							</td>
+							<td>
+								<input name="qtyInner" class="lazy-load" lazy-load="easyui-numberbox"  value="0"  wms:data-options="required:true,label:'${web.label.qtyInner}',labelPosition:'top'">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input name="uomCase" class="lazy-load" lazy-load="easyui-combobox"  wms:data-options="
+								required:true,
+								data: codelkups['UOM'],
+								valueField: 'code',
+								textField: 'descr',
+								label: '${web.label.uomCase}',
+								labelPosition: 'top'
+								" />
+							</td>
+							<td>
+								<input name="qtyCase" class="lazy-load" lazy-load="easyui-numberbox"  value="0"  wms:data-options="required:true,label:'${web.label.qtyCase}',labelPosition:'top'">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input class="lazy-load" lazy-load="easyui-combobox" name="active"  wms:data-options="
+								required:true,
+								value: 'Y',
+								data: codelkups['YESNO'],
+								valueField: 'code',
+								textField: 'descr',
+								label: '${web.label.active}',
+								labelPosition: 'top'
+								" />
+							</td>
+							<td>
+								<input name="remark" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.remark}',labelPosition:'top'">
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div wms:title="${web.label.pack.inner}">
+					<table style="width: 100%;padding-left: 10px;">
+						 <tr>
+							<td >
+								<input name="weightGrossInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:2,label:'${web.inventory.weightgross}',labelPosition:'top'">
+							</td>
+							<td >
+								<input name="weightNetInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:2,label:'${web.inventory.weightnet}',labelPosition:'top'">
+							</td>
+							<td >
+								<input name="weightTareInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:2,label:'${web.inventory.weighttare}',labelPosition:'top'">
+							</td>
+						 </tr>
+						  <tr>
+							<td >
+								<input name="lengthInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:2,label:'${web.inventory.length}',labelPosition:'top'">
+							</td>
+							<td >
+								<input name="widthInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:2,label:'${web.inventory.width}',labelPosition:'top'">
+							</td>
+							<td >
+								<input name="heightInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:2,label:'${web.inventory.height}',labelPosition:'top'">
+							</td>
+						 </tr>
+						 <tr>
+						 	<td >
+								<input name="volumeInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:2,label:'${web.inventory.volume}',labelPosition:'top'">
+							</td>
+							<td >
+								&nbsp;
+							</td>
+							<td >
+								&nbsp;
+							</td>
+						 </tr>
+					</table>
+				</div>
+				<div wms:title="${web.label.pack.case}" >
+					<table style="width: 100%;padding-left: 10px;">
+						 <tr>
+							<td >
+								<input name="weightGrossCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:2,label:'${web.inventory.weightgross}',labelPosition:'top'">
+							</td>
+							<td >
+								<input name="weightNetCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:2,label:'${web.inventory.weightnet}',labelPosition:'top'">
+							</td>
+							<td >
+								<input name="weightTareCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:2,label:'${web.inventory.weighttare}',labelPosition:'top'">
+							</td>
+						 </tr>
+						  <tr>
+							<td >
+								<input name="lengthCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:2,label:'${web.inventory.length}',labelPosition:'top'">
+							</td>
+							<td >
+								<input name="widthCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:2,label:'${web.inventory.width}',labelPosition:'top'">
+							</td>
+							<td >
+								<input name="heightCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:2,label:'${web.inventory.height}',labelPosition:'top'">
+							</td>
+						 </tr>
+						 <tr>
+						 	<td >
+								<input name="volumeCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:2,label:'${web.inventory.volume}',labelPosition:'top'">
+							</td>
+							<td >
+								&nbsp;
+							</td>
+							<td >
+								&nbsp;
+							</td>
+						 </tr>
+					</table>
+				</div>
+			   </div>
 			</form>
 		</div>
 		<div style="text-align: center;margin-top: 15px;">
-				<a href="#" class="easyui-linkbutton common-confirmadd" data-form="#addForm" data-table="#packData" id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
+				<a href="#" class="easyui-linkbutton pack-save" data-form="#addForm" data-table="#packData" id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
 					<span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
 				</a>
+				<a href="#" style="display: none;" class="common-confirmadd" data-form="#addForm" data-table="#packData" id="submitaddForm" >Add</a>
 				<a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');" data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
 					<span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
 				</a>
@@ -237,6 +329,69 @@
 <script th:replace="common/js" />
 <script type="text/javascript" th:src="@{/js/codelkupList?listName=YESNO,UOM}"></script>
 <script type="text/javascript" th:inline="text">
+var editData;
+var addFlag = true;
+$(function(){
+	$('.common-add').click(function(){
+		addFlag = true;
+	});
+	$('.pack-save').click(function(){
+		if (addFlag){
+			$('.common-confirmadd').trigger('click');
+		}else{
+			save();
+		}
+	});
+});
+
+function toEdit(data) {
+	addFlag = false;
+    if (typeof(data) == 'object') {
+        editData = data;
+    }else{
+    	showError($.locale.selectOneRow);
+    }
+    var panel = '#addDiv';
+    lazyLoadView(panel);
+    $(panel).dialog({
+        closed: true,
+        modal: true,
+        fix: true,
+        buttons: '#editButton',
+    }).dialog('open');
+    $(panel).find('form').form('reset');
+    var from = $(panel).find('form');
+    $(from).form('load', editData);
+    $('#lotValidateCode').textbox({readonly:true});
+}
+
+function save(){
+	var valid = $('#addForm').form('validate');
+	if (!valid) {
+		return;
+	}
+	var data = $('#addForm').serializeObject();
+	var dataArr = [data];
+	data = getBaseData(dataArr);
+	loading();
+	$.post({
+		url: '../../services/inner/base/pack/save',
+		data:data,
+		success: function(data){
+			data = returnData(data);
+			closeLoading();
+			if (data.code == '0') {
+				showError(data.msg);
+				return;
+			}
+			$('#addForm').form('reset');
+			$('#addForm').parents('.window-body').dialog('close');
+			if ($('.common-search').length > 0){
+				$('.common-search').trigger('click');
+			}
+		}
+	});
+}
 
 </script>
 </html>

@@ -113,4 +113,22 @@ public class InboundRest extends BaseController {
             return fail(e.getMessage());
         }
     }
+
+    @RequestMapping(value = "/delete")
+    public AjaxResult delete(@RequestBody String req) {
+        try {
+            AjaxRequest<List<InboundHeaderTEntity>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<InboundHeaderTEntity>>>() {});
+            if (CollectionUtils.isEmpty(request.getData())) {
+                return fail("no record delete.");
+            }
+            boolean flag = inboundHeaderService.delete(request);
+            if (flag) {
+                return success();
+            }
+        } catch (Exception e) {
+            return fail(e.getMessage());
+        }
+        return fail();
+    }
+
 }

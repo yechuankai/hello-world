@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>  
+<project name="deploy" default="deploy" basedir="." >  
+    <description>deploy to tomcat</description>  
+	<path id="tomcat-deploy-ant.classpath" path="${basedir}/lib/catalina-ant.jar" />  
+	<typedef resource="org/apache/catalina/ant/antlib.xml"  
+			   classpathref="tomcat-deploy-ant.classpath" />  
+    <echo>init tomcat deoploy finished..</echo>  
+  
+    <!--定义外部属性文件和目录-->  
+    <property file="swp.properties" />  
+	
+	<target name="swp-cas" description="deploy web application swp-cas">
+		<stop url="${server.swp-cas.host}" username="${server.swp-cas.username}" password="${server.swp-cas.password}" path="${server.swp-cas.path}"/>
+		<undeploy url="${server.swp-cas.host}" username="${server.swp-cas.username}" password="${server.swp-cas.password}" path="${server.swp-cas.path}"/>
+		<deploy url="${server.swp-cas.host}" username="${server.swp-cas.username}" password="${server.swp-cas.password}" path="${server.swp-cas.path}" war="${server.swp-cas.from}"/>
+	</target>
+	
+	<target name="swp-ss" description="deploy web application swp-ss">
+		<stop url="${server.swp-ss.host}" username="${server.swp-ss.username}" password="${server.swp-ss.password}" path="${server.swp-ss.path}"/>
+		<undeploy url="${server.swp-ss.host}" username="${server.swp-ss.username}" password="${server.swp-ss.password}" path="${server.swp-ss.path}"/>
+		<deploy url="${server.swp-ss.host}" username="${server.swp-ss.username}" password="${server.swp-ss.password}" path="${server.swp-ss.path}" war="${server.swp-ss.from}"/>
+	</target>
+	
+	<target name="swp-ps" description="deploy web application swp-ps">
+		<stop url="${server.swp-ps.host}" username="${server.swp-ps.username}" password="${server.swp-ps.password}" path="${server.swp-ps.path}"/>
+		<undeploy url="${server.swp-ps.host}" username="${server.swp-ps.username}" password="${server.swp-ps.password}" path="${server.swp-ps.path}"/>
+		<deploy url="${server.swp-ps.host}" username="${server.swp-ps.username}" password="${server.swp-ps.password}" path="${server.swp-ps.path}" war="${server.swp-ps.from}"/>
+	</target>
+	
+	<target name="swp-cc" description="deploy web application swp-cc">
+		<stop url="${server.swp-cc.host}" username="${server.swp-cc.username}" password="${server.swp-cc.password}" path="${server.swp-cc.path}"/>
+		<undeploy url="${server.swp-cc.host}" username="${server.swp-cc.username}" password="${server.swp-cc.password}" path="${server.swp-cc.path}"/>
+		<deploy url="${server.swp-cc.host}" username="${server.swp-cc.username}" password="${server.swp-cc.password}" path="${server.swp-cc.path}" war="${server.swp-cc.from}"/>
+	</target>
+	
+	
+
+	
+	<target name="deploy" description="deploy all web application" depends="swp-cas,swp-ss,swp-ps,swp-cc">
+		<echo>deploy success.</echo>
+	</target>
+
+    
+</project> 

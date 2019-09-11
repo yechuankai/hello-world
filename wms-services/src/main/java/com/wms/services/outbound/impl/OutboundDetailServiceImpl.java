@@ -48,6 +48,7 @@ import java.util.stream.Collectors;
 public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcelService<OutboundDetailImportVO> {
 
 	private static Logger log = LoggerFactory.getLogger(OutboundDetailServiceImpl.class);
+	private final String WAREHOUSECODE ="warehouseCode";
 
 	@Autowired
 	private IOutboundDetailTDao outboundDetailDao;
@@ -97,6 +98,18 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 		List<SkuTEntity> skuList = skuService.findByIds(selectSku, skuids);
 		Map<Long, SkuTEntity> skuMaps = skuList.stream().collect(
 				Collectors.toMap(SkuTEntity::getSkuId, (s) -> s));
+		
+		Set<Long> headerIds = outboundDetailList.stream().map(OutboundDetailTEntity::getOutboundHeaderId).collect(Collectors.toSet());
+		List<OutboundHeaderTEntity> headerList = Lists.newArrayList();
+		if(CollectionUtils.isNotEmpty(headerIds)){
+			OutboundHeaderTEntity header = OutboundHeaderTEntity.builder()
+					.warehouseId(request.getWarehouseId())
+					.companyId(request.getCompanyId())
+					.build();
+			headerList = outboundHeaderService.find(header, headerIds);
+		}
+		Map<Long, OutboundHeaderTEntity> headerIdMap = headerList.stream().collect(
+			      Collectors.toMap(OutboundHeaderTEntity::getOutboundHeaderId, (s) -> s));
 
 		List<OutboundDetailVO> returnList = Lists.newArrayList();
 		outboundDetailList.forEach(d -> {
@@ -107,6 +120,15 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 			if (sku != null) {
 				outboundDetailVO.setSkuDescr(sku.getSkuDescr());
 			}
+			
+			OutboundHeaderTEntity header = headerIdMap.get(d.getOutboundHeaderId());
+			if (header != null)
+				outboundDetailVO.setOutboundNumber(header.getOutboundNumber());
+			//根据传过来的主数据的warehouseCode补全明细
+			if(StringUtils.isNotBlank(request.getString(WAREHOUSECODE))){
+				outboundDetailVO.setWarehouseCode(request.getString(WAREHOUSECODE));
+			}
+
 			returnList.add(outboundDetailVO);
 
 		});
@@ -863,6 +885,9 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 		if(detail.getQuantityExpected().compareTo(BigDecimal.ZERO) <= 0){
 			throw new BusinessServiceException("OutboundDetailServiceImpl", "outbound.expectedquantity.equaltozero", new Object[]{outboundVO.getOutboundNumber(), detail.getLineNumber()});
 		}
+
+		//新增订单数量要默认预期数量
+		detail.setQuantityOrder(detail.getQuantityExpected());
 
 		OwnerTEntity owner = ownerService.find(OwnerTEntity.builder()
 				.warehouseId(outboundVO.getWarehouseId())

@@ -95,7 +95,9 @@ function upload(){
 				showError(data.msg);
 				return;
 			}
-			showMsg($.locale.importTip);
+			showMsg($.locale.importTip, function(){
+				window.top.myfiles();
+			});
 			clean();
 		}
 	});

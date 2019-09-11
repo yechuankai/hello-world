@@ -108,7 +108,7 @@ var locale = {
 	closeAll:'关闭所有页面?',
 	goOn:"继续?",
 	deleteOneRow:'确定删除{row}行数据 ?',
-	lineConfirm:'确定{type}{row}行 ?',
+	lineConfirm:'确定{type}{row} ?',
 	putawayRows:'确定发货{row}行?',
 	cancelRows:'确定取消{row}行 ?',
 	unLockRows:'确定解锁 {row}行?',

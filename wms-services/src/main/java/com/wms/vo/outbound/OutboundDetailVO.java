@@ -9,12 +9,22 @@ import static java.math.BigDecimal.ROUND_FLOOR;
 
 public class OutboundDetailVO extends OutboundDetailTEntity {
 
+	private String outboundNumber;
 	private String skuDescr;
 	private BigDecimal uomQuantityExpected = BigDecimal.ZERO;
 	private BigDecimal uomQuantityOrder = BigDecimal.ZERO;
 	private BigDecimal uomQuantityAllocated = BigDecimal.ZERO;
 	private BigDecimal uomQuantityPicked = BigDecimal.ZERO;
 	private BigDecimal uomQuantityShiped = BigDecimal.ZERO;
+	private String warehouseCode;
+
+	public String getWarehouseCode() {
+		return warehouseCode;
+	}
+
+	public void setWarehouseCode(String warehouseCode) {
+		this.warehouseCode = warehouseCode;
+	}
 	
 	public String getSkuDescr() {
 		return skuDescr;
@@ -75,6 +85,14 @@ public class OutboundDetailVO extends OutboundDetailTEntity {
 
 	public void setUomQuantityShiped(BigDecimal uomQuantityShiped) {
 		this.uomQuantityShiped = uomQuantityShiped;
+	}
+
+	public String getOutboundNumber() {
+		return outboundNumber;
+	}
+
+	public void setOutboundNumber(String outboundNumber) {
+		this.outboundNumber = outboundNumber;
 	}
 
 }

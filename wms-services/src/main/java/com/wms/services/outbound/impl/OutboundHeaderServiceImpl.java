@@ -17,6 +17,7 @@ import com.wms.services.base.*;
 import com.wms.services.outbound.IOutboundDetailService;
 import com.wms.services.outbound.IOutboundHeaderService;
 import com.wms.services.sys.IStatusHistoryService;
+import com.wms.services.sys.ISysWarehouseService;
 import com.wms.vo.inventory.EntInventoryOnhandVO;
 import com.wms.vo.outbound.OutboundDetailVO;
 import com.wms.vo.outbound.OutboundVO;
@@ -47,6 +48,8 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 	private ICarrierService carrierService;
 	@Autowired
 	IEnterpriseService enterpriseService;
+	@Autowired
+	ISysWarehouseService warehouseService;
 
 	@Override
 	public List<OutboundHeaderTEntity> find(PageRequest request) throws BusinessServiceException {
@@ -77,6 +80,46 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 		List<OutboundHeaderTEntity> inboundList = outboundHeaderDao.selectByExample(example);
 
 		return inboundList;
+	}
+
+	@Override
+	public List<OutboundVO> findFromOms(PageRequest request) throws BusinessServiceException {
+		OutboundHeaderTExample example = new OutboundHeaderTExample();
+		OutboundHeaderTExample.Criteria exampleCriteria = example.createCriteria();
+
+		//转换查询方法
+		ExampleUtils.create(OutboundHeaderTEntity.Column.class, OutboundHeaderTExample.Criterion.class)
+				.criteria(exampleCriteria)
+				.data(request)
+				.betweenDate(OutboundHeaderTEntity.Column.createTime.getJavaProperty(),
+						OutboundHeaderTEntity.Column.expectedOutboundDate.getJavaProperty(),
+						OutboundHeaderTEntity.Column.outboundDate.getJavaProperty()
+				)
+				.build(request)
+				.orderby(example);
+		exampleCriteria.andDelFlagEqualTo(YesNoEnum.No.getCode());
+
+		List<OutboundHeaderTEntity> outboundList = outboundHeaderDao.selectByExample(example);
+
+		if(CollectionUtils.isEmpty(outboundList)){
+			return Lists.newArrayList();
+		}
+		//根据id补足warehouseCode
+		List<OutboundVO> returnList = Lists.newArrayList();
+
+		Set<Long> ids = Sets.newHashSet(outboundList.stream().map(OutboundHeaderTEntity::getWarehouseId).collect(Collectors.toSet()));
+		List<SysWarehousesTEntity> selectList =warehouseService.findByIds(ids);
+
+		outboundList.forEach(d ->{
+			OutboundVO outboundVO =new OutboundVO(d);
+			selectList.forEach(v ->{
+				if(d.getWarehouseId().longValue()==v.getWarehouseId().longValue()){
+					outboundVO.setWarehouseCode(v.getCode());
+					returnList.add(outboundVO);
+				}
+			});
+		});
+		return returnList;
 	}
 
 	@Override
@@ -122,6 +165,26 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 			throw new BusinessServiceException("OutboundHeaderServiceImpl", "outbound.record.exists" , new Object[] {outbound.getOutboundNumber()}); 
 		}
 		return selectoutbound;
+	}
+	
+	@Override
+	public List<OutboundHeaderTEntity> find(OutboundHeaderTEntity outbound, Set<Long> ids) throws BusinessServiceException {
+		if(CollectionUtils.isEmpty(ids))
+			return Lists.newArrayList();
+		
+		OutboundHeaderTExample TExample = new OutboundHeaderTExample();
+		OutboundHeaderTExample.Criteria criteria = TExample.createCriteria();
+		
+		criteria.andDelFlagEqualTo(YesNoEnum.No.getCode())
+		.andWarehouseIdEqualTo(outbound.getWarehouseId())
+		.andCompanyIdEqualTo(outbound.getCompanyId())
+		.andOutboundHeaderIdIn(Lists.newArrayList(ids));
+		
+		List<OutboundHeaderTEntity> outbounds = outboundHeaderDao.selectByExample(TExample);
+		if (outbounds == null) {
+			return Lists.newArrayList();
+		}
+		return outbounds;
 	}
 
 	@Override
@@ -185,7 +248,9 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 				.andCompanyIdEqualTo(outbound.getCompanyId())
 				.andOutboundHeaderIdEqualTo(outbound.getOutboundHeaderId());
 
-		int rowcount = outboundHeaderDao.updateWithVersionByExampleSelective(selectHeader.getUpdateVersion(), updateHeader, example);
+		//采用多线程并发时，不可按最后更新版本来更新数据
+		//int rowcount = outboundHeaderDao.updateWithVersionByExampleSelective(selectHeader.getUpdateVersion(), updateHeader, example);
+		int rowcount = outboundHeaderDao.updateByExampleSelective( updateHeader, example);
 		if (rowcount == 0) {
 			throw new BusinessServiceException("record update error.");
 		}
@@ -332,7 +397,9 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 		.andWarehouseIdEqualTo(header.getWarehouseId())
 		.andCompanyIdEqualTo(header.getCompanyId())
 		.andOutboundHeaderIdEqualTo(header.getOutboundHeaderId());
-		int rowcount = outboundHeaderDao.updateWithVersionByExampleSelective(selectHeader.getUpdateVersion(), updateHeader, example);
+		//多线程并发问题，不按版本进行更新
+		//int rowcount = outboundHeaderDao.updateWithVersionByExampleSelective(selectHeader.getUpdateVersion(), updateHeader, example);
+		int rowcount = outboundHeaderDao.updateByExampleSelective(updateHeader, example);
 		if (rowcount == 0)
 			throw new BusinessServiceException("record update error.");
 

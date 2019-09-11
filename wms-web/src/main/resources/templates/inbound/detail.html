@@ -21,10 +21,6 @@
 		<thead data-options="frozen:true">
 			<tr>
 				<th field="inboundDetailId" data-options="checkbox:true"></th>
-		 	</tr>
-		 </thead>
-		<thead>
-			<tr>
 				<th field="edit" data-options="
 										formatter:function(value,row){
 											var data = JSON.stringify(row);
@@ -32,8 +28,12 @@
 											return detail;
 										}
 									"></th>
+		 	</tr>
+		 </thead>
+		<thead>
+			<tr>
+				<th field="inboundNumber" width="100" wms:text="${web.label.inboundnumber}" data-options="sortable:true">inboundNumber</th>
 				<th field="lineNumber" width="50" wms:text="${web.label.linenumber}" data-options="sortable:true">lineNumber</th>
-				<th field="parentLineNumber" width="65" wms:text="${web.label.parentlinenumber}" data-options="sortable:true">lineNumber</th>
 				<th field="skuCode" width="100" wms:text="${web.label.sku}" data-options="sortable:true">skuCode</th>
 				<th field="skuDescr" width="150" wms:text="${web.label.skudescr}" >skuDescr</th>
 				<th field="packCode" width="80" wms:text="${web.label.pack}">pack</th>
@@ -46,12 +46,12 @@
 				<th field="containerNumber" width="80" wms:text="${web.label.containernumber}" data-options="sortable:true">containerNumber</th>
 				<th field="lpnNumber" width="80" wms:text="${web.label.lpnnumber}" data-options="sortable:true">lpnNumber</th>
 				<th field="lotNumber" width="80" wms:text="${web.label.lotnumber}">lotNumber</th>
-				<th field="uomQuantityExpected" width="60" wms:text="${web.label.quantityexpected}" data-options="
+				<th field="uomQuantityExpected" width="100" wms:text="${web.label.quantityexpected}" data-options="
 					sortable:true,
 					editor: 'numberbox'
 
 					">Expected Quantity</th>
-				<th field="uomQuantityReceive" width="60" wms:text="${web.label.quantityreceive}" data-options="
+				<th field="uomQuantityReceive" width="100" wms:text="${web.label.quantityreceive}" data-options="
 					sortable:true,
 					editor: 'numberbox'
 					">Receive Quantity</th>
@@ -66,6 +66,7 @@
 				<th field="weightNet" width="60" wms:text="${web.inventory.weightnet}">weightGross</th>
 				<th field="weightTare" width="60" wms:text="${web.inventory.weighttare}">weightGross</th>
 				<th field="volume" width="60" wms:text="${web.inventory.volume}">weightGross</th>
+				<th field="parentLineNumber" width="65" wms:text="${web.label.parentlinenumber}" data-options="sortable:true">parentLineNumber</th>
 				<th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
 				<th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true">
 					createTime
@@ -91,7 +92,7 @@
 		<input name="inboundDetailId" type="hidden"/>
 		<div class="lazy-load" lazy-load="easyui-tabs">
 			<div wms:title="${web.label.normal}" >
-				<table border="0" cellpadding="0" cellspacing="0" >
+				<table border="0" cellpadding="0" cellspacing="0" style="padding-left: 10px;" >
 					<tr>
 						<td width="200px">
 							<input name="lineNumber" id="lineNumber" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.linenumber}',labelPosition:'top',required:true" />
@@ -172,7 +173,7 @@
 				</table>
 			</div>
 			<div wms:title="${web.lable.lotattribute}" >
-				<table border="0" >
+				<table border="0"  style="padding-left: 10px;">
 					<tr>
 						<td width="200px">
 							<input id="lotAttribute1" name="lotAttribute1" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute1}',labelPosition:'top'" />

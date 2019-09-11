@@ -45,16 +45,20 @@
         <table id="lotValidateData" wms:title="${web.label.lotvalidatelist}" class="easyui-datagrid"
                data-options=" toolbar: '#tableToolbar'"
                th:data-delayUrl="@{/services/inner/base/lotValidate/find}">
-            <thead>
-            <tr>
-                <th rowspan="2" field="lotValidateId" data-options="checkbox:true"></th>
-                <th rowspan="2" field="edit" data-options="
+            <thead  data-options="frozen:true">
+            	<tr>
+            		<th field="lotValidateId" data-options="checkbox:true"></th>
+            		<th field="edit" data-options="
 										formatter:function(value,row){
 											var data = JSON.stringify(row);
 											var detail = '<span title = \'编辑\' onclick=\'toEdit('+data+')\' class=\'icon-edit\'>&nbsp;</span>';
 											return detail;
 										}
 									"></th>
+            	</tr>
+            </thead>
+            <thead>
+            <tr>
                 <th rowspan="2" field="lotValidateCode" width="80" wms:text="${web.label.lotvalidatecode}" data-options="sortable:true">
                     lotValidateCode
                 </th>

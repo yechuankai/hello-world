@@ -177,3 +177,201 @@ alter table WMS.ALLOCATE_T ADD (FROM_LPN_NUMBER varchar2(50));
 comment on column WMS.ALLOCATE_T.FROM_LOCATION_CODE   is '来源库位';
 comment on column WMS.ALLOCATE_T.FROM_LPN_NUMBER   is '来源LPN';
 
+
+grant select on DPSP.CARD_INFO_LABOR_LIST to wms;
+grant select on DPSP.COMMON_ATTACHED_FILE to wms;
+grant select on uums.Web_Sys_Tfp to wms;
+
+--增加内包装规格
+alter table PACK_T ADD (
+volume_inner number(15,5) default 0,
+length_inner number(15,5) default 0,
+width_inner number(15,5) default 0,
+height_inner number(15,5) default 0,
+weight_gross_inner number(15,5) default 0,
+weight_net_inner number(15,5) default 0,
+weight_tare_inner number(15,5) default 0
+);
+comment on column PACK_T.volume_inner is '内包装体积';
+comment on column PACK_T.length_inner is '内包装长';
+comment on column PACK_T.width_inner is '内包装宽';
+comment on column PACK_T.height_inner is '内包装高';
+comment on column PACK_T.weight_gross_inner is '内包装毛重';
+comment on column PACK_T.weight_net_inner is '内包装净重';
+comment on column PACK_T.weight_tare_inner is '内包装皮重';
+
+--增加箱包装规格
+alter table PACK_T ADD (
+volume_case number(15,5) default 0,
+length_case number(15,5) default 0,
+width_case number(15,5) default 0,
+height_case number(15,5) default 0,
+weight_gross_case number(15,5) default 0,
+weight_net_case number(15,5) default 0,
+weight_tare_case number(15,5) default 0
+);
+comment on column PACK_T.volume_case is '箱包装体积';
+comment on column PACK_T.length_case is '箱包装长';
+comment on column PACK_T.width_case is '箱包装宽';
+comment on column PACK_T.height_case is '箱包装高';
+comment on column PACK_T.weight_gross_case is '箱包装毛重';
+comment on column PACK_T.weight_net_case is '箱包装净重';
+comment on column PACK_T.weight_tare_case is '箱包装皮重';
+
+
+
+
+delete wms.sys_locale_t where locale_id in (
+1150976044494921729,  1150977471871098881,  1146975366014820352,  1146975651558842368,  1146945875232829440,  1146975163522211840,  1146975721595330560,  1146976673798807552,  1146976759484243968,  1141880038042988544,  1141881211709911040,  1141881317846773760,  1151006203512029184,  1157198689428172800,  1157199014562230272,  1157199220892626944,  1151004622909538305,  1151005330371182593,  1151006688478429185,  1171027310500511745,  1171027432739307521,  1171027460862115841,  1171027567141584897,  1171027134012588032,  1171027169274101761
+);
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1150976044494921729', 'en_US', 'web.labe.uom.least', 'UOM', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('16-07-2019 11:50:47', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 10:53:51', 'dd-mm-yyyy hh24:mi:ss'), '3', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1150977471871098881', 'en_US', 'web.label.qty.least', 'Quantity', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('16-07-2019 11:56:28', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 10:54:08', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1146975366014820352', 'en_US', 'web.label.contact2', 'Contact2', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('05-07-2019 10:53:31', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 20:51:52', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1146975651558842368', 'fr_FR', 'web.label.contact1', 'Contact1', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('05-07-2019 10:54:39', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 20:50:59', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1146945875232829440', 'en_US', 'web.label.packcode', 'Pack', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('05-07-2019 08:56:20', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 10:53:25', 'dd-mm-yyyy hh24:mi:ss'), '3', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1146975163522211840', 'en_US', 'web.label.contact1', 'Contact1', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('05-07-2019 10:52:43', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 20:50:59', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1146975721595330560', 'fr_FR', 'web.label.contact2', 'Contact2', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('05-07-2019 10:54:56', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 20:51:52', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1146976673798807552', 'en_US', 'web.label.phone1', 'Phone1', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('05-07-2019 10:58:43', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 20:50:59', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1146976759484243968', 'en_US', 'web.label.phone2', 'Phone2', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('05-07-2019 10:59:03', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 20:51:51', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1141880038042988544', 'en_US', 'web.label.pickToLocation', 'Pick to location', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('21-06-2019 09:26:30', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 10:55:16', 'dd-mm-yyyy hh24:mi:ss'), '3', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1141881211709911040', 'en_US', 'web.label.location.skuMix', 'Sku mix', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('21-06-2019 09:31:10', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 10:55:56', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1141881317846773760', 'en_US', 'web.label.location.lotMix', 'Lot Mix', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('21-06-2019 09:31:35', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 10:56:04', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1151006203512029184', 'en_US', 'web.label.uomCase', 'Case UOM', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('16-07-2019 13:50:38', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 10:56:12', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1157198689428172800', 'en_US', 'web.label.barcodestart', 'Barcode Start', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('02-08-2019 15:57:21', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 20:50:36', 'dd-mm-yyyy hh24:mi:ss'), '3', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1157199014562230272', 'en_US', 'web.label.barcodeprefix', 'Barcode Prefix', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('02-08-2019 15:58:39', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 20:50:12', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1157199220892626944', 'en_US', 'web.label.barcodelength', 'Barcode Length', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('02-08-2019 15:59:28', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 20:49:55', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1151004622909538305', 'en_US', 'web.label.uomInner', 'Inner UOM', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('16-07-2019 13:44:21', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 10:54:27', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1151005330371182593', 'en_US', 'web.label.qtyInner', 'Inner Quantity', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('16-07-2019 13:47:10', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 10:54:41', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1151006688478429185', 'en_US', 'web.label.qtyCase', 'Case Quantity', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('16-07-2019 13:52:33', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 10:56:30', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1171027310500511745', 'fr_FR', 'web.label.pack.inner', 'paquet intérieur', null, null, null, null, null, null, 'Y', 'N', 'yechuankai', to_date('09-09-2019 14:47:22', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 14:47:22', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1171027432739307521', 'en_US', 'web.label.pack.case', 'Case Pack', null, null, null, null, null, null, 'Y', 'N', 'yechuankai', to_date('09-09-2019 14:47:51', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 14:47:51', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1171027460862115841', 'zh_CN', 'web.label.pack.case', '箱包装', null, null, null, null, null, null, 'Y', 'N', 'yechuankai', to_date('09-09-2019 14:47:57', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 14:47:57', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1171027567141584897', 'fr_FR', 'web.label.pack.case', 'Pack de cas', null, null, null, null, null, null, 'Y', 'N', 'yechuankai', to_date('09-09-2019 14:48:23', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 14:48:23', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1171027134012588032', 'zh_CN', 'web.label.pack.inner', '内包装', null, null, null, null, null, null, 'Y', 'N', 'yechuankai', to_date('09-09-2019 14:46:40', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 14:46:40', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1171027169274101761', 'en_US', 'web.label.pack.inner', 'Inner Pack', null, null, null, null, null, null, 'Y', 'N', 'yechuankai', to_date('09-09-2019 14:46:48', 'dd-mm-yyyy hh24:mi:ss'), 'yechuankai', to_date('09-09-2019 14:46:48', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+
+alter table wms.ALLOCATE_SHORT_T modify ( QUANTITY_ORIGINAL NUMBER(20,5) DEFAULT 0);
+alter table wms.ALLOCATE_SHORT_T modify ( QUANTITY_ACTUAL NUMBER(20,5) DEFAULT 0);
+alter table wms.ALLOCATE_T modify ( QUANTITY_ALLOCATED NUMBER(20,5) DEFAULT 0);
+alter table wms.INBOUND_CANCEL_DETAIL_T modify ( QUANTITY_CANCEL NUMBER(20,5) DEFAULT 0);
+alter table wms.INBOUND_DETAIL_T modify ( WEIGHT_GROSS NUMBER(20,5) DEFAULT 0);
+alter table wms.INBOUND_DETAIL_T modify ( WEIGHT_NET NUMBER(20,5) DEFAULT 0);
+alter table wms.INBOUND_DETAIL_T modify ( WEIGHT_TARE NUMBER(20,5) DEFAULT 0);
+alter table wms.INBOUND_DETAIL_T modify ( VOLUME NUMBER(20,5) DEFAULT 0);
+alter table wms.INBOUND_DETAIL_T modify ( QUANTITY_EXPECTED NUMBER(20,5) DEFAULT 0);
+alter table wms.INBOUND_DETAIL_T modify ( QUANTITY_RECEIVE NUMBER(20,5) DEFAULT 0);
+alter table wms.INBOUND_DETAIL_T modify ( QUANTITY_CANCEL NUMBER(20,5) DEFAULT 0);
+alter table wms.INBOUND_DETAIL_T modify ( UOM_QUANTITY NUMBER(20,5) DEFAULT 0);
+alter table wms.INVENTORY_ADJUSTMENT_DETAIL_T modify ( UOM_QUANTITY NUMBER(20,5) DEFAULT 0);
+alter table wms.INVENTORY_ADJUSTMENT_DETAIL_T modify ( QUANTITY_ONHAND NUMBER(20,5) DEFAULT 0);
+alter table wms.INVENTORY_ADJUSTMENT_DETAIL_T modify ( QUANTITY_ADJUSTMENT NUMBER(20,5) DEFAULT 0);
+alter table wms.INVENTORY_COUNT_DETAIL_T modify ( QUANTITY_SYSTEM NUMBER(20,5) DEFAULT 0);
+alter table wms.INVENTORY_COUNT_DETAIL_T modify ( QUANTITY_COUNT NUMBER(20,5) DEFAULT 0);
+alter table wms.INVENTORY_COUNT_DETAIL_T modify ( QUANTITY_REPLAY NUMBER(20,5) DEFAULT 0);
+alter table wms.INVENTORY_COUNT_DETAIL_T modify ( QUANTITY_DIFFERENCE NUMBER(20,5) DEFAULT 0);
+alter table wms.INVENTORY_COUNT_DETAIL_T modify ( QUANTITY_CONFIRM NUMBER(20,5) DEFAULT 0);
+alter table wms.INVENTORY_LOCKED_T modify ( QUANTITY_LOCKED NUMBER(20,5) DEFAULT 0);
+alter table wms.INVENTORY_ONHAND_T modify ( QUANTITY_ONHAND NUMBER(20,5) DEFAULT 0);
+alter table wms.INVENTORY_ONHAND_T modify ( QUANTITY_ALLOCATED NUMBER(20,5) DEFAULT 0);
+alter table wms.INVENTORY_ONHAND_T modify ( QUANTITY_LOCKED NUMBER(20,5) DEFAULT 0);
+alter table wms.INVENTORY_TRANSACTION_T modify ( UOM_QUANTITY NUMBER(20,5) DEFAULT 0);
+alter table wms.INVENTORY_TRANSACTION_T modify ( QUANTITY NUMBER(20,5) DEFAULT 0);
+alter table wms.LPN_T modify ( VOLUME NUMBER(20,5) DEFAULT 0);
+alter table wms.LPN_T modify ( LENGTH NUMBER(20,5) DEFAULT 0);
+alter table wms.LPN_T modify ( WIDTH NUMBER(20,5) DEFAULT 0);
+alter table wms.LPN_T modify ( HEIGHT NUMBER(20,5) DEFAULT 0);
+alter table wms.LPN_T modify ( WEIGHT_GROSS NUMBER(20,5) DEFAULT 0);
+alter table wms.LPN_T modify ( WEIGHT_NET NUMBER(20,5) DEFAULT 0);
+alter table wms.LPN_T modify ( WEIGHT_TARE NUMBER(20,5) DEFAULT 0);
+alter table wms.OUTBOUND_DETAIL_T modify ( WEIGHT_GROSS NUMBER(20,5) DEFAULT 0);
+alter table wms.OUTBOUND_DETAIL_T modify ( WEIGHT_NET NUMBER(20,5) DEFAULT 0);
+alter table wms.OUTBOUND_DETAIL_T modify ( WEIGHT_TARE NUMBER(20,5) DEFAULT 0);
+alter table wms.OUTBOUND_DETAIL_T modify ( VOLUME NUMBER(20,5) DEFAULT 0);
+alter table wms.OUTBOUND_DETAIL_T modify ( UOM_QUANTITY NUMBER(20,5) DEFAULT 0);
+alter table wms.OUTBOUND_DETAIL_T modify ( QUANTITY_ORDER NUMBER(20,5) DEFAULT 0);
+alter table wms.OUTBOUND_DETAIL_T modify ( QUANTITY_EXPECTED NUMBER(20,5) DEFAULT 0);
+alter table wms.OUTBOUND_DETAIL_T modify ( QUANTITY_ALLOCATED NUMBER(20,5) DEFAULT 0);
+alter table wms.OUTBOUND_DETAIL_T modify ( QUANTITY_PICKED NUMBER(20,5) DEFAULT 0);
+alter table wms.OUTBOUND_DETAIL_T modify ( QUANTITY_SHIPED NUMBER(20,5) DEFAULT 0);
+alter table wms.PACK_T modify ( LENGTH_INNER NUMBER(20,5) DEFAULT 0);
+alter table wms.PACK_T modify ( WIDTH_INNER NUMBER(20,5) DEFAULT 0);
+alter table wms.PACK_T modify ( HEIGHT_INNER NUMBER(20,5) DEFAULT 0);
+alter table wms.PACK_T modify ( WEIGHT_GROSS_INNER NUMBER(20,5) DEFAULT 0);
+alter table wms.PACK_T modify ( WEIGHT_NET_INNER NUMBER(20,5) DEFAULT 0);
+alter table wms.PACK_T modify ( WEIGHT_TARE_INNER NUMBER(20,5) DEFAULT 0);
+alter table wms.PACK_T modify ( VOLUME_CASE NUMBER(20,5) DEFAULT 0);
+alter table wms.PACK_T modify ( VOLUME_INNER NUMBER(20,5) DEFAULT 0);
+alter table wms.PACK_T modify ( LENGTH_CASE NUMBER(20,5) DEFAULT 0);
+alter table wms.PACK_T modify ( WIDTH_CASE NUMBER(20,5) DEFAULT 0);
+alter table wms.PACK_T modify ( HEIGHT_CASE NUMBER(20,5) DEFAULT 0);
+alter table wms.PACK_T modify ( WEIGHT_GROSS_CASE NUMBER(20,5) DEFAULT 0);
+alter table wms.PACK_T modify ( WEIGHT_NET_CASE NUMBER(20,5) DEFAULT 0);
+alter table wms.PACK_T modify ( WEIGHT_TARE_CASE NUMBER(20,5) DEFAULT 0);
+alter table wms.PACK_T modify ( QTY NUMBER(20,5) DEFAULT 0);
+alter table wms.PACK_T modify ( QTY_INNER NUMBER(20,5) DEFAULT 0);
+alter table wms.PACK_T modify ( QTY_CASE NUMBER(20,5) DEFAULT 0);
+alter table wms.SKU_T modify ( LENGTH NUMBER(20,5) DEFAULT 0);
+alter table wms.SKU_T modify ( WIDTH NUMBER(20,5) DEFAULT 0);
+alter table wms.SKU_T modify ( HEIGHT NUMBER(20,5) DEFAULT 0);
+alter table wms.SKU_T modify ( WEIGHT_GROSS NUMBER(20,5) DEFAULT 0);
+alter table wms.SKU_T modify ( WEIGHT_NET NUMBER(20,5) DEFAULT 0);
+alter table wms.SKU_T modify ( WEIGHT_TARE NUMBER(20,5) DEFAULT 0);
+alter table wms.SKU_T modify ( VOLUME NUMBER(20,5) DEFAULT 0);
+alter table wms.TASK_DETAIL_T modify ( QUANTITY NUMBER(20,5) DEFAULT 0);
+alter table wms.ENT_PACK_V modify ( QTY NUMBER(20,5) DEFAULT 0);
+alter table wms.ENT_PACK_V modify ( QTY_INNER NUMBER(20,5) DEFAULT 0);
+alter table wms.ENT_PACK_V modify ( QTY_CASE NUMBER(20,5) DEFAULT 0);
+
+
+
+

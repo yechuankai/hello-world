@@ -112,7 +112,7 @@
 										sortName: 'inboundHeaderId',
 										"
 										th:data-delayUrl="@{/services/inner/inbound/find}">
-							<thead>
+							<thead data-options="frozen:true">
 								<tr>
 									<th field="inboundHeaderId" data-options="checkbox:true"></th>
 									<th field="detail" data-options="
@@ -129,6 +129,10 @@
 											return detail;
 										}
 									"></th>
+								</tr>
+							</thead>
+							<thead>
+								<tr>
 									<th field="inboundNumber" width="100" wms:text="${web.label.inboundnumber}" data-options="sortable:true">inboundNumber</th>
 									<th field="sourceNumber" width="100" wms:text="${web.label.sourcenumber}" >sourceNumber</th>
 									<th field="type" width="80" wms:text="${web.label.type}" data-options="
@@ -186,8 +190,8 @@
 	<div th:replace="inbound/putaway" />
 </body>
 <script type="text/javascript" th:src="@{/static/ui/plugins/datagrid-filter.js}"></script>
+<script type="text/javascript" th:src="@{/static/js/inbound/inbound.js}"></script>
 <script type="text/javascript" th:inline="text">
-	var headerData;
 	$(function(){
 		$('.inbound-addheaderdetail').click(function(){
 			window.parent.addPanel($(this).attr('title'), 'inbound/edit');
@@ -310,7 +314,6 @@
 
 	});
 	
-	
 	function viewDetail(data){	
 		if (typeof(data) == 'object') {
 			headerData = data;
@@ -366,14 +369,16 @@
 		refreshEditHeader(headerData);
 	}
 	
-	function getInboundHeaderData(){
-		return headerData;
+	function action(type){
+		var checkedRows = $('#inboundData').datagrid('getChecked');
+		if (checkedRows.length == 0) {
+			showError($.locale.selectOneRow);
+			return;
+		}
+		baseAction(type, checkedRows);
 	}
 	
-	function getOwnerId(){
-		return headerData.ownerId;
-	}
-	
+	//default list
 	function refreshInbound(data){
 		var inboundData = '#inboundData';
 		var checkedRows = $(inboundData).datagrid('getEditingRowIndexs');
@@ -384,47 +389,8 @@
 			});
 		}
 	}
-	
-	
-	function action(type){
-		var checkedRows = $('#inboundData').datagrid('getChecked');
-		if (checkedRows.length == 0) {
-			showError($.locale.selectOneRow);
-			return;
-		}
-		confirmMsg($.locale.lineConfirm,{type:type,row:checkedRows.length}, function(r){
-			if (!r){
-				return;
-			}
-			var data = getBaseData(checkedRows);
-			loading();
-			$.post({
-				url: '../../services/inner/inbound/'+type,
-				data:data,
-				success: function(data){
-					data = returnData(data);
-					closeLoading();
-					if (data.code == '0') {
-						showError(data.msg);
-						return;
-					}
-					$('#inboundData').datagrid('reload').datagrid('clearChecked');
-					var collapse = $('#detailLayout').layout('panel','south').panel("options").collapsed;
-					headerData = checkedRows[0];
-					if(!collapse){
-						//展开状态并且只选择了一行刷新明细
-						refreshInboundDetail(headerData);
-					}else {
-						$('#detailLayout').layout('collapse', 'south');
-					}
-					if (type == 'createPutaway' ){
-						showMsg(data.msg);
-					}
-				}
-			});
-		});
-	}
-	
+
+	//default list
 	/* 导出文件  */
 	function exportPDFReport(type) {
 		var checkedRows = $('#inboundData').datagrid('getChecked');
@@ -433,12 +399,7 @@
 			return;
 		}
 		rowData = checkedRows[0];
-		exportReport({
-			__codelkup: "INBOUNDTYPE",
-			fileType: "pdf",
-			reportType: type,
-			id: rowData.inboundHeaderId
-		});
+		exportInboundReport(type, rowData);
 	}
 	
 </script>

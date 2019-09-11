@@ -7,11 +7,15 @@ import com.wms.common.enums.YesNoEnum;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.common.utils.ExampleUtils;
 import com.wms.common.utils.StringUtils;
+import com.wms.common.utils.bean.BeanUtils;
 import com.wms.common.utils.key.KeyUtils;
 import com.wms.dao.auto.IPackTDao;
 import com.wms.dao.example.PackTExample;
 import com.wms.entity.auto.PackTEntity;
+import com.wms.entity.auto.SkuTEntity;
 import com.wms.services.base.IPackService;
+import com.wms.vo.PackVO;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -122,29 +126,43 @@ public class PackServiceImpl implements IPackService {
 		
 		List<PackTEntity> list = request.getData();
 		
-		for (PackTEntity w : list) {
+		for (PackTEntity p : list) {
 			
 			PackTEntity update = PackTEntity.builder()
-					.packDescr(w.getPackDescr())
-					.uom(w.getUom())
-					.qty(w.getQty())
-					.uomInner(w.getUomInner())
-					.qtyInner(w.getQtyInner())
-					.uomCase(w.getUomCase())
-					.qtyCase(w.getQtyCase())
-					.active(w.getActive())
-					.remark(w.getRemark())
+					.packDescr(p.getPackDescr())
+					.uom(p.getUom())
+					.qty(p.getQty())
+					.uomInner(p.getUomInner())
+					.qtyInner(p.getQtyInner())
+					.uomCase(p.getUomCase())
+					.qtyCase(p.getQtyCase())
+					.volumeInner(p.getVolumeInner())
+					.widthInner(p.getWidthInner())
+					.heightInner(p.getHeightInner())
+					.lengthInner(p.getLengthInner())
+					.weightGrossInner(p.getWeightGrossInner())
+					.weightNetInner(p.getWeightNetInner())
+					.weightTareInner(p.getWeightTareInner())
+					.volumeCase(p.getVolumeCase())
+					.widthCase(p.getWidthCase())
+					.heightCase(p.getHeightCase())
+					.lengthCase(p.getLengthCase())
+					.weightGrossCase(p.getWeightGrossCase())
+					.weightNetCase(p.getWeightNetCase())
+					.weightTareCase(p.getWeightTareCase())
+					.active(p.getActive())
+					.remark(p.getRemark())
 					.updateBy(request.getUserName())
 					.updateTime(new Date())
 					.build();
 			
 			PackTExample example = new PackTExample();
 			example.createCriteria()
-			.andWarehouseIdEqualTo(w.getWarehouseId())
-            .andCompanyIdEqualTo(w.getCompanyId())
-            .andPackIdEqualTo(w.getPackId());
+			.andWarehouseIdEqualTo(request.getWarehouseId())
+            .andCompanyIdEqualTo(request.getCompanyId())
+            .andPackIdEqualTo(p.getPackId());
 			
-			int row = packDao.updateWithVersionByExampleSelective(w.getUpdateVersion(), update, example);
+			int row = packDao.updateWithVersionByExampleSelective(p.getUpdateVersion(), update, example);
 			if (row == 0) {
 				throw new BusinessServiceException("record update error.");
 			}
@@ -160,9 +178,9 @@ public class PackServiceImpl implements IPackService {
 		
 		List<PackTEntity> list = request.getData();
 		
-		for (PackTEntity w : list) {
+		for (PackTEntity p : list) {
 			
-			String code = w.getPackCode().toUpperCase();
+			String code = p.getPackCode().toUpperCase();
 			
 			PackTExample TExample = new PackTExample();
 			TExample.createCriteria()
@@ -177,16 +195,30 @@ public class PackServiceImpl implements IPackService {
 
 			PackTEntity update = PackTEntity.builder()
 					.packId(KeyUtils.getUID())
-					.packCode(w.getPackCode())
-					.packDescr(w.getPackDescr())
-					.uom(w.getUom())
-					.qty(w.getQty())
-					.uomInner(w.getUomInner())
-					.qtyInner(w.getQtyInner())
-					.uomCase(w.getUomCase())
-					.qtyCase(w.getQtyCase())
-					.active(w.getActive())
-					.remark(w.getRemark())
+					.packCode(p.getPackCode())
+					.packDescr(p.getPackDescr())
+					.uom(p.getUom())
+					.qty(p.getQty())
+					.uomInner(p.getUomInner())
+					.qtyInner(p.getQtyInner())
+					.uomCase(p.getUomCase())
+					.qtyCase(p.getQtyCase())
+					.volumeInner(p.getVolumeInner())
+					.widthInner(p.getWidthInner())
+					.heightInner(p.getHeightInner())
+					.lengthInner(p.getLengthInner())
+					.weightGrossInner(p.getWeightGrossInner())
+					.weightNetInner(p.getWeightNetInner())
+					.weightTareInner(p.getWeightTareInner())
+					.volumeCase(p.getVolumeCase())
+					.widthCase(p.getWidthCase())
+					.heightCase(p.getHeightCase())
+					.lengthCase(p.getLengthCase())
+					.weightGrossCase(p.getWeightGrossCase())
+					.weightNetCase(p.getWeightNetCase())
+					.weightTareCase(p.getWeightTareCase())
+					.active(p.getActive())
+					.remark(p.getRemark())
 					.createBy(request.getUserName())
 					.createTime(new Date())
 					.updateBy(request.getUserName())
@@ -286,5 +318,37 @@ public class PackServiceImpl implements IPackService {
 			return Lists.newArrayList();
 		
 		return packs;
+	}
+
+	@Override
+	public PackVO getPack(PackTEntity pack, SkuTEntity sku, String uom) {
+		PackVO packVo = new PackVO();
+		BeanUtils.copyBeanProp(packVo, sku);
+		
+		if (StringUtils.isEmpty(uom))
+			return packVo;
+		
+		if (uom.equals(pack.getUomInner())) {
+			packVo.setVolume(pack.getVolumeInner());
+			packVo.setWidth(pack.getWidthInner());
+			packVo.setHeight(pack.getHeightInner());
+			packVo.setLength(pack.getLengthInner());
+			packVo.setWeightGross(pack.getWeightGrossInner());
+			packVo.setWeightNet(pack.getWeightNetInner());
+			packVo.setWeightTare(pack.getWeightTareInner());
+			
+		}
+		
+		if (uom.equals(pack.getUomCase())) {
+			packVo.setVolume(pack.getVolumeCase());
+			packVo.setWidth(pack.getWidthCase());
+			packVo.setHeight(pack.getHeightCase());
+			packVo.setLength(pack.getLengthCase());
+			packVo.setWeightGross(pack.getWeightGrossCase());
+			packVo.setWeightNet(pack.getWeightNetCase());
+			packVo.setWeightTare(pack.getWeightTareCase());
+		}
+		
+		return packVo;
 	}
 }

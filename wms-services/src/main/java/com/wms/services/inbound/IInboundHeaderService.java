@@ -8,6 +8,7 @@ import com.wms.entity.auto.InboundHeaderTEntity;
 import com.wms.vo.inbound.InboundVO;
 
 import java.util.List;
+import java.util.Set;
 
 public interface IInboundHeaderService {
 
@@ -16,6 +17,8 @@ public interface IInboundHeaderService {
 	InboundVO find(InboundVO inbound) throws BusinessServiceException;
 	
 	InboundHeaderTEntity find(InboundHeaderTEntity inbound) throws BusinessServiceException;
+	
+	List<InboundHeaderTEntity> find(InboundHeaderTEntity inbound, Set<Long> ids) throws BusinessServiceException;
 	
 	InboundVO save(AjaxRequest<InboundVO> request) throws BusinessServiceException;
 	
