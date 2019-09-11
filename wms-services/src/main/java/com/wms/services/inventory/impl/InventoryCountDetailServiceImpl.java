@@ -281,7 +281,7 @@ public class InventoryCountDetailServiceImpl implements IInventoryCountDetailSer
 		.andCompanyIdEqualTo(detail.getCompanyId())
 		.andInventoryCountHeaderIdEqualTo(detail.getInventoryCountHeaderId());
 		
-		if (countStatusEnums != null) {
+		if (countStatusEnums.length > 0) {
 			List<String> status = Lists.newArrayList();
 			for (CountStatusEnum c : countStatusEnums) {
 				status.add(c.getCode());
@@ -372,7 +372,7 @@ public class InventoryCountDetailServiceImpl implements IInventoryCountDetailSer
 			}
 			
 			//计算差异数量
-			quantityDifference = quantitySystem.subtract(d.getQuantityConfirm());
+			quantityDifference = d.getQuantityCount().subtract(quantitySystem);
 			update.setQuantitySystem(quantitySystem);
 			update.setQuantityDifference(quantityDifference);
 			

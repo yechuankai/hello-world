@@ -69,4 +69,11 @@ public interface IOutboundDetailService {
 	* @Date: 2019/8/29
 	*/
 	Boolean saveFromOms(OutboundVO outboundVO) throws BusinessServiceException;
+	
+	/**
+	 * 通过出库单头id查询
+	 * @param headId
+	 * @return
+	 */
+	List<OutboundDetailTEntity> findByHeaderId(Long headId);
 }

@@ -325,6 +325,98 @@ function exportReport(options){
 	
 	window.open(url);
 }
+/**
+ * 承运人多选下拉列表
+ * @param element 选择器
+ * @returns
+ */
+function carrierComboGrid(element){
+	commonCombogrid({
+		selector:element,
+		id:'carrierCode',
+		text:'carrierCode',
+		url: getServiceUrl() + '/services/inner/base/carrier/find',
+		param:{}
+	})
+}
+
+/**
+ * 货主多选下拉列表
+ * @param element 选择器
+ * @returns
+ */
+function ownerComboGrid(element){
+	commonCombogrid({
+		selector:element,
+		id:'ownerCode',
+		text:'ownerCode',
+		url: getServiceUrl() + '/services/inner/base/owner/find',
+		param:{}
+	})
+}
+
+/**
+ * 客户多选下拉列表
+ * @param element 选择器
+ * @returns
+ */
+function customerComboGrid(element){
+	commonCombogrid({
+		selector:element,
+		id:'customerCode',
+		text:'customerCode',
+		url: getServiceUrl() + '/services/inner/base/customer/find',
+		param:{}
+	})
+}
+
+/**
+ * lpn选下拉列表
+ * @param element 选择器
+ * @returns
+ */
+function lpnComboGrid(element){
+	commonCombogrid({
+		selector:element,
+		id:'lpnNumber',
+		text:'lpnNumber',
+		url: getServiceUrl() + '/services/inner/inventory/lpn/find',
+		param:{}
+	})
+}
+
+/**
+ * 货品多选下拉列表
+ * @param element 选择器
+ * @returns
+ */
+function skuComboGrid(element){
+	commonCombogrid({
+		selector:element,
+		id:'skuCode',
+		text:'skuCode',
+		url: getServiceUrl() + '/services/inner/base/sku/find',
+		param:{}
+	})
+}
+/**
+ * 多选下拉列表
+ * @param opts 选项
+ * @returns
+ */
+function commonCombogrid(opts){
+	$(opts.selector).combogrid({
+		panelWidth: opts.width?opts.width:300,
+		multiple: true,
+		idField:opts.id,
+		textField:opts.text,
+		url: opts.url,
+		method: 'post',
+		queryParam:$.extend(opts.param,getBaseData()),
+		pagenation:true,
+		fitColumns: true
+	});
+}
 
 $(function(){
 	$('body').css({'opacity':'1'});

@@ -1,33 +1,64 @@
 package com.wms.services.outbound.impl;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
-import com.wms.common.enums.*;
+import com.wms.common.enums.InboundStatusEnum;
+import com.wms.common.enums.OperatorTypeEnum;
+import com.wms.common.enums.OrderNumberTypeEnum;
+import com.wms.common.enums.OutboundProcessStatusEnum;
+import com.wms.common.enums.OutboundStatusEnum;
+import com.wms.common.enums.YesNoEnum;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.common.utils.ExampleUtils;
 import com.wms.common.utils.StringUtils;
 import com.wms.common.utils.bean.BeanUtils;
 import com.wms.common.utils.key.KeyUtils;
 import com.wms.dao.auto.IOutboundHeaderTDao;
+import com.wms.dao.example.OutboundDetailTExample;
 import com.wms.dao.example.OutboundHeaderTExample;
-import com.wms.entity.auto.*;
-import com.wms.services.base.*;
+import com.wms.dao.example.OutboundHeaderTExample.Criteria;
+import com.wms.entity.auto.CarrierTEntity;
+import com.wms.entity.auto.CustomerTEntity;
+import com.wms.entity.auto.EntCarrierTEntity;
+import com.wms.entity.auto.EntCustomerTEntity;
+import com.wms.entity.auto.EntInventoryOnhandTEntity;
+import com.wms.entity.auto.OutboundDetailTEntity;
+import com.wms.entity.auto.OutboundHeaderTEntity;
+import com.wms.entity.auto.OwnerTEntity;
+import com.wms.entity.auto.PackTEntity;
+import com.wms.entity.auto.StatusHistoryTEntity;
+import com.wms.entity.auto.SysWarehousesTEntity;
+import com.wms.entity.auto.WaveBuildDetailTEntity;
+import com.wms.services.base.ICarrierService;
+import com.wms.services.base.ICustomerService;
+import com.wms.services.base.IEnterpriseService;
+import com.wms.services.base.IOwnerService;
+import com.wms.services.base.IPackService;
 import com.wms.services.outbound.IOutboundDetailService;
 import com.wms.services.outbound.IOutboundHeaderService;
 import com.wms.services.sys.IStatusHistoryService;
 import com.wms.services.sys.ISysWarehouseService;
+import com.wms.shiro.utils.WaveBuildUtils;
 import com.wms.vo.inventory.EntInventoryOnhandVO;
 import com.wms.vo.outbound.OutboundDetailVO;
 import com.wms.vo.outbound.OutboundVO;
-import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.*;
-import java.util.stream.Collectors;
+import com.wms.vo.outbound.WaveBuildVo;
 
 @Service
 public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
@@ -840,6 +871,31 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 		}
 
 		return Boolean.TRUE;
+	}
+
+	@Override
+	public List<OutboundHeaderTEntity> findByWaveTemplate(AjaxRequest request) {
+		WaveBuildVo vo = (WaveBuildVo)request.getData();
+		List<WaveBuildDetailTEntity> list = vo.getWaveBuildDetailTEntities();
+		OutboundHeaderTExample example = new OutboundHeaderTExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andCompanyIdEqualTo(request.getCompanyId())
+				.andWarehouseIdEqualTo(request.getWarehouseId())
+				.andDelFlagEqualTo(YesNoEnum.No.getCode());
+		WaveBuildUtils.addHeaderCondition(criteria, list);
+		
+		List<OutboundHeaderTEntity> outbounds = outboundHeaderDao.selectByExample(example);
+		List<OutboundHeaderTEntity> filter = outbounds.stream().filter(outbound -> {
+			
+			OutboundDetailTExample TExample = new OutboundDetailTExample();
+			TExample.createCriteria()
+			.andDelFlagEqualTo(YesNoEnum.No.getCode())
+			.andWarehouseIdEqualTo(outbound.getWarehouseId())
+			.andCompanyIdEqualTo(outbound.getCompanyId())
+			.andOutboundHeaderIdEqualTo(outbound.getOutboundHeaderId());
+			return false;
+		}).collect(Collectors.toList());
+		return filter;
 	}
 
 }

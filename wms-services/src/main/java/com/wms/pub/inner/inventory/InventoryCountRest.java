@@ -186,6 +186,37 @@ public class InventoryCountRest extends BaseController {
         return fail();
     }
 
+    @RequestMapping(value = "/replayCount")
+    public AjaxResult replayCount(@RequestBody String req) {
+        try {
+            AjaxRequest<InventoryCountHeaderTEntity> request = ajaxRequest(req, new TypeReference<AjaxRequest<InventoryCountHeaderTEntity>>() {});
+
+            long count = headerService.createReplayCount(request);
+
+            String message = "countdetail.created";
+            message = MessageUtils.message(message, count);
+            return success(message);
+        } catch (Exception e) {
+            return fail(e.getMessage());
+        }
+    }
+    @RequestMapping(value = "/replayCountDetail")
+    public AjaxResult replayCountDetail(@RequestBody String req) {
+        try {
+            AjaxRequest<List<InventoryCountDetailTEntity>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<InventoryCountDetailTEntity>>>() {});
+
+            long count = detailService.createReplayCount(request);
+
+            String message = "countdetail.created";
+            message = MessageUtils.message(message, count);
+            return success(message);
+        } catch (Exception e) {
+            return fail(e.getMessage());
+        }
+    }
+
+
+
     @RequestMapping(value = "/detailSave")
     public AjaxResult detailSave(@RequestBody String req) {
         try {
@@ -203,8 +234,8 @@ public class InventoryCountRest extends BaseController {
         return fail();
     }
 
-    @RequestMapping(value = "/cancel")
-    public AjaxResult cancel(@RequestBody String req) {
+    @RequestMapping(value = "/cancelDetail")
+    public AjaxResult cancelDetail(@RequestBody String req) {
         try {
             AjaxRequest<List<InventoryCountDetailTEntity> > request = ajaxRequest(req, new TypeReference<AjaxRequest<List<InventoryCountDetailTEntity> >>() {});
             if (CollectionUtils.isEmpty(request.getData())) {

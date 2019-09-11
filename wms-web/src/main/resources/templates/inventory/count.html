@@ -48,18 +48,14 @@
                 <a href="#" class="easyui-menubutton" data-options="menu:'#optionsMenuButton',plain:false"
                    wms:text="${web.label.options}">Actions</a>
                 <div id="optionsMenuButton">
-                    <div wms:text="${web.label.ship}" onclick="action('ship')">Ship</div>
                     <div wms:text="${web.label.replaycount}" onclick="action('replayCount')">replayCount</div>
-                    <div wms:text="${web.label.createputaway}" onclick="action('createPutaway')">Create Putaway</div>
+                    <div wms:text="${web.label.post}" onclick="action('post')">Post</div>
                     <div wms:text="${web.label.cancel}" onclick="action('cancel')">cancel</div>
                 </div>
-                <a href="#" class="easyui-menubutton" data-options="menu:'#reportMenuButton',plain:false"
-                   wms:text="${web.label.report}">Report</a>
+                <a href="#" class="easyui-menubutton" data-options="menu:'#reportMenuButton',plain:false" wms:text="${web.label.report}">Report</a>
                 <div id="reportMenuButton">
-                    <div wms:text="${web.label.ship}" onclick="action('ship')">Ship</div>
-                    <div wms:text="${web.label.replaycount}" onclick="action('replayCount')">replayCount</div>
-                    <div wms:text="${web.label.createputaway}" onclick="action('createPutaway')">Create Putaway</div>
-                    <div wms:text="${web.label.cancel}" onclick="action('cancel')">cancel</div>
+                    <div  wms:text="${wms.label.count}" onclick="exportPDFReport('COUNT')">COUNT</div>
+                    <div  wms:text="${wms.label.countconfirm}" onclick="exportPDFReport('COUNTCONFIRM')">COUNTCONFIRM</div>
                 </div>
                 <a href="#" class="easyui-linkbutton areaHeader-rowdel" data-table="#dataTable"
                    th:data-url="@{/services/inner/inventory/inventoryCount/headerDelete}">
@@ -139,6 +135,35 @@
         $('.common-search').click(function () {
             $('#detailLayout').layout('collapse', 'south');
         });
+        $('.detail-replaycount').click(function () {
+            var checkedRows = $('#countDetailTable').datagrid('getChecked');
+            if (checkedRows.length == 0) {
+                showError($.locale.selectOneRow);
+                return;
+            }
+            confirmMsg($.locale.lineConfirm,{type:'replayCount',row:checkedRows.length}, function(r){
+                if (!r){
+                    return;
+                }
+                var data = getBaseData(checkedRows);
+                loading();
+                $.post({
+                    url: '../../services/inner/inventory/inventoryCount/replayCountDetail',
+                    data:data,
+                    success: function(data){
+                        data = returnData(data);
+                        closeLoading();
+                        if (data.code == '0') {
+                            showError(data.msg);
+                            return;
+                        }
+                        $('#countDetailTable').datagrid('reload').datagrid('clearChecked');
+                        refreshCountDetail(headerData);
+                    }
+                });
+            });
+        });
+
     });
 
     function viewDetail(data) {
@@ -165,7 +190,7 @@
         refreshCountDetail(headerData);
     }
     function action(type){
-        var checkedRows = $('#inboundData').datagrid('getChecked');
+        var checkedRows = $('#dataTable').datagrid('getChecked');
         if (checkedRows.length == 0) {
             showError($.locale.selectOneRow);
             return;
@@ -186,17 +211,14 @@
                         showError(data.msg);
                         return;
                     }
-                    $('#inboundData').datagrid('reload').datagrid('clearChecked');
+                    $('#dataTable').datagrid('reload').datagrid('clearChecked');
                     var collapse = $('#detailLayout').layout('panel','south').panel("options").collapsed;
                     headerData = checkedRows[0];
                     if(!collapse){
                         //展开状态并且只选择了一行刷新明细
-                        refreshInboundDetail(headerData);
+                        refreshCountDetail(headerData);
                     }else {
                         $('#detailLayout').layout('collapse', 'south');
-                    }
-                    if (type == 'createPutaway' ){
-                        showMsg(data.msg);
                     }
                 }
             });

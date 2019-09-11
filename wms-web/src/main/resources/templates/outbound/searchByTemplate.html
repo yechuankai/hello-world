@@ -1,0 +1,93 @@
+<div class="easyui-layout" wms:title="${web.label.outboundlist.title}" id="outboundsLayout" style="width: 100%;height: 100%;display: none;" data-options="fix:true">
+     <table id="outbounds" wms:title="${web.label.outboundlist.title}" class="easyui-datagrid"
+            data-options="rownumbers:true,
+			  toollbar:'#waveTool',
+			  collapsible:true,
+			  fit:true">
+         <thead>
+         <th field="outboundHeaderId" data-options="checkbox:true"></th>
+         <th field="outboundNumber" width="100" wms:text="${web.label.outboundnumber}"
+             data-options="sortable:true">outboundNumber
+         </th>
+         <th field="sourceNumber" width="100" wms:text="${web.label.sourcenumber}">sourceNumber</th>
+         <th field="type" width="80" wms:text="${web.label.type}" data-options="
+				sortable:true,
+				formatter:function(value,row){
+					return getCodelkupValue('OUTBOUNDTYPE',value);
+				}
+			">type
+         </th>
+         <th field="status" width="80" wms:text="${web.label.status}" data-options="
+				sortable:true,
+				formatter:function(value,row){
+					return getCodelkupValue('OUTBOUNDSTATUS',value);
+				}
+			">status
+         </th>
+         <th field="ownerCode" width="80" wms:text="${web.label.owner}">ownerCode</th>
+         <th field="customerCode" width="80" wms:text="${web.label.customercode}">customerCode</th>
+         <th field="expectedoutbounddate" width="130" wms:text="${web.label.expectedoutbounddate}">
+             expectedoutbounddate
+         </th>
+         <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+         </thead>
+     </table>
+ </div>
+ <div id="waveTool">
+ 	skjafjksdkj
+ </div>
+<script type="text/javascript">
+	/*自定义前端分页插件*/
+	function pagerFilter(data){
+		if (typeof data.length == 'number' && typeof data.splice == 'function'){	// is array
+			data = {
+				total: data.length,
+				rows: data
+			}
+		}
+		var dg = $(this);
+		var opts = dg.datagrid('options');
+		var pager = dg.datagrid('getPager');
+		pager.pagination({
+			onSelectPage:function(pageNum, pageSize){
+				opts.pageNumber = pageNum;
+				opts.pageSize = pageSize;
+				pager.pagination('refresh',{
+					pageNumber:pageNum,
+					pageSize:pageSize
+				});
+				dg.datagrid('loadData',data);
+			}
+		});
+		if (!data.originalRows){
+			data.originalRows = (data.rows);
+		}
+		var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
+		var end = start + parseInt(opts.pageSize);
+		data.rows = (data.originalRows.slice(start, end));
+		return data;
+	}
+
+	/*通过模板id显示*/
+    function showById(templateId){
+    	$("#outboundsLayout").dialog({
+    		 closed: true,
+		    modal: true,
+		    fix: true,
+		    width:800,
+		    height:450
+    	}).dialog('open');
+    	var baseData = getBaseData();
+		baseData.waveBuildId = templateId;
+    	$.post({
+    		url:getServiceUrl() + "/services/inner/waveTemplate/findByTemplate",
+    		data:baseData,
+    		success:function(data){
+    			var gridData = returnData(data);
+    			$("#outbounds").datagrid({
+    				loadFilter:pagerFilter
+    			}).datagrid('loadData',gridData);
+    		}
+    	});
+    }
+</script>

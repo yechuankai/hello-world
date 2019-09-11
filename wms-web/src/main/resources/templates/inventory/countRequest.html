@@ -212,7 +212,11 @@
                 success: function (data) {
                     data = returnData(data);
                     closeLoading();
-                    showError(data.msg);
+                    if (data.code == '0') {
+                        showError(data.msg);
+                    }else {
+                        showMsg(data.msg);
+                    }
                     $(datagrid).datagrid('reload').datagrid('clearChecked');
                 }
             });

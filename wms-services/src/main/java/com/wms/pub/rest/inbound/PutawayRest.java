@@ -103,6 +103,7 @@ public class PutawayRest extends BaseController{
 				putaway.setInventoryOnhand(onhand);
 				putaway.setLocationCode(task.getFromLocationCode());
 				putaway.setToLocationCode(task.getToLocationCode());
+				putaway.setLpnType(task.getFromLpnType());
 				return success(putaway);
 			}
 			

@@ -71,4 +71,11 @@ public interface IOutboundHeaderService {
 	* @Date: 2019/8/27
 	*/
     OutboundVO saveFromOms(AjaxRequest<OutboundVO> request) throws BusinessServiceException;
+
+    /**
+     * 通过波次模板查询数据
+     * @param pageRequest
+     * @return
+     */
+	List<OutboundHeaderTEntity> findByWaveTemplate(AjaxRequest request);
 }

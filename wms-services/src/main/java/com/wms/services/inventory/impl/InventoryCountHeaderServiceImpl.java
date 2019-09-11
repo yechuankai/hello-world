@@ -103,6 +103,7 @@ public class InventoryCountHeaderServiceImpl implements IInventoryCountHeaderSer
 		InventoryCountRequestTEntity requestUpdate = InventoryCountRequestTEntity.builder()
 														.requestDate(new Date())
 														.inventoryCountRequestId(countRequest.getInventoryCountRequestId())
+														.updateVersion(countRequest.getUpdateVersion())
 														.build();
 		requestService.modify(new AjaxRequest<List<InventoryCountRequestTEntity>>(Lists.newArrayList(requestUpdate), request));
 		
@@ -114,7 +115,7 @@ public class InventoryCountHeaderServiceImpl implements IInventoryCountHeaderSer
 	@Override
 	@Transactional
 	public Boolean add(AjaxRequest<InventoryCountHeaderTEntity> request) throws BusinessServiceException {
-		String countNumber = KeyUtils.getOrderNumber(request.getCompanyId(), request.getCompanyId(), OrderNumberTypeEnum.CountNumber);
+		String countNumber = KeyUtils.getOrderNumber(request.getCompanyId(), request.getWarehouseId(), OrderNumberTypeEnum.CountNumber);
 		InventoryCountHeaderTEntity header = request.getData();
 		header.setInventoryCountHeaderId(KeyUtils.getUID());
 		header.setCountNumber(countNumber);

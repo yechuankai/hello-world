@@ -1,26 +1,27 @@
 <div id="detailToolbar" class="tableToolbar">
-    <a href="#" class="easyui-linkbutton areadetail-add" data-addpanel="#addDetailDiv">
-        <span wms:text="${web.label.add}">Add</span>
-    </a>
-    <a href="#" class="easyui-linkbutton common-rowsave" data-table="#areaDetailTable"
-       th:data-url="@{/services/inner/base/areaDetail/save}">
+    <a href="#" class="easyui-linkbutton common-rowsave" data-table="#countDetailTable"
+       th:data-url="@{/services/inner/inventory/inventoryCount/detailSave}">
         <span wms:text="${web.label.save}">Save</span>
     </a>
-    <a href="#" class="easyui-linkbutton common-rowdel" data-table="#areaDetailTable"
-       th:data-url="@{/services/inner/base/areaDetail/delete}">
-        <span wms:text="${web.label.delete}">Delete</span>
+    <a href="#" class="easyui-linkbutton common-rowsave" data-table="#countDetailTable"
+       th:data-url="@{/services/inner/inventory/inventoryCount/replayCountDetail}">
+        <span wms:text="${web.label.replaycount}">replayCountDetail</span>
+    </a>
+    <a href="#" class="easyui-linkbutton common-rowdel" data-table="#countDetailTable"
+       th:data-url="@{/services/inner/inventory/inventoryCount/cancelDetail}">
+        <span wms:text="${web.label.cancel}">cancelDetail</span>
     </a>
 </div>
-<div>
+<div style="width: 100%; height: 100%">
     <table id="countDetailTable" wms:title="${web.label.countdetaillist.title}" class="easyui-datagrid"
            data-options=" toolbar: '#detailToolbar'"
-           th:data-delayUrl="@{/services/inner/inventory/inventoryCount/findDetail}">
+           th:data-delayUrl="@{/services/inner/inventory/inventoryCount/findDetail}" style="width: 100%; height: 100%">
         <thead data-options="frozen:true">
         <th field="inventoryCountDetailId" data-options="checkbox:true"></th>
         <th field="lineNumber" width="100" wms:text="${web.label.linenumber}">lineNumber</th>
         </thead>
         <thead>
-        <th field="ownerCode" width="100" wms:text="${web.label.ownercode}" data-options="sortable:true">ownerCode</th>
+        <th field="ownerCode" width="100" wms:text="${web.inventory.ownerCode}" data-options="sortable:true">ownerCode</th>
         <th field="skuCode" width="100" wms:text="${web.label.sku}" data-options="sortable:true">skuCode</th>
         <th field="skuAlias" width="120" wms:text="${web.label.skualias}" >skuAlias</th>
         <th field="lotNumber" width="130" wms:text="${web.label.lotnumber}" data-options="sortable:true">lotNumber</th>
@@ -34,7 +35,6 @@
         <th field="quantityCount" width="60" wms:text="${web.label.quantitycount}" data-options="
 					sortable:true,
 					editor: 'numberbox'
-
 					">Count Quantity</th>
         <th field="quantityReplay" width="80" wms:text="${web.label.quantityreplay}" data-options="sortable:true" >quantityReplay</th>
         <th field="quantityDifference" width="80" wms:text="${web.label.quantitydifference}" data-options="sortable:true" >quantityDifference</th>
@@ -42,7 +42,7 @@
         <th field="status" width="60" wms:text="${web.label.status}" data-options="
 					sortable:true,
 					formatter:function(value,row){
-						return getCodelkupValue('INBOUNDSTATUS',value);
+						return getCodelkupValue('COUNTSTATUS',value);
 					}
 				" >status</th>
         <th field="reason" width="150" wms:text="${web.label.reason}" data-options="sortable:true" >reason</th>
@@ -61,6 +61,7 @@
     </table>
 </div>
 <script type="text/javascript" th:inline="text">
+
     function refreshCountDetail(data) {
         var countDetailTableId = '#countDetailTable';
         var url = $(countDetailTableId).attr('data-delayUrl');
