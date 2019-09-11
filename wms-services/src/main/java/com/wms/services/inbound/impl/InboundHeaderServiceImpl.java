@@ -79,8 +79,8 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 		
 		return inboundList;
 	}
-	
-	
+
+
 	@Override
 	@Transactional
 	public InboundVO save(AjaxRequest<InboundVO> request) throws BusinessServiceException {
@@ -353,15 +353,28 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 		List<InboundHeaderTEntity> list = request.getData();
 		
 		list.forEach(h -> {
-			InboundHeaderTEntity header = find(InboundHeaderTEntity.builder()
-												.warehouseId(request.getWarehouseId())
-												.companyId(request.getCompanyId())
-												.inboundHeaderId(h.getInboundHeaderId())
-												.build());
-			boolean statusFlag = notProcess(header);
-			if (statusFlag) {
-				InboundStatusEnum status = inboundStatus(header, Boolean.FALSE);
-				if (InboundStatusEnum.New != status) {
+			InboundHeaderTEntity header = new InboundHeaderTEntity();
+			header.setCompanyId(request.getCompanyId());
+			header.setInboundHeaderId(h.getInboundHeaderId());
+
+			InboundHeaderTExample  example= new InboundHeaderTExample();
+			example.createCriteria()
+					.andCompanyIdEqualTo(header.getCompanyId())
+					.andInboundHeaderIdEqualTo(header.getInboundHeaderId());
+			if(0L != request.getWarehouseId()){
+				header.setWarehouseId(request.getWarehouseId());
+				header =find(header);
+				boolean statusFlag = notProcess(header);
+				if (statusFlag) {
+					InboundStatusEnum status = inboundStatus(header, Boolean.FALSE);
+					if (InboundStatusEnum.New != status) {
+						throw new BusinessServiceException("InboundHeaderServiceImpl", "inbound.status.not.process" , new Object[] {header.getInboundNumber()});
+					}
+				}
+				example.createCriteria().andWarehouseIdEqualTo(header.getWarehouseId());
+			}else {//不存在仓库id，外部系统新建订单
+				header =find(header);
+				if(!StringUtils.equals(InboundStatusEnum.Draft.getCode(),header.getStatus())){
 					throw new BusinessServiceException("InboundHeaderServiceImpl", "inbound.status.not.process" , new Object[] {header.getInboundNumber()});
 				}
 			}
@@ -374,13 +387,9 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 					.delFlag(YesNoEnum.Yes.getCode())
 					.build();
 
-			InboundHeaderTExample  example= new InboundHeaderTExample();
-			example.createCriteria()
-					.andWarehouseIdEqualTo(header.getWarehouseId())
-					.andCompanyIdEqualTo(header.getCompanyId())
-					.andInboundHeaderIdEqualTo(header.getInboundHeaderId());
 
-			int rowcount = inboundHeaderDao.updateWithVersionByExampleSelective(h.getUpdateVersion(), update, example);
+
+			int rowcount = inboundHeaderDao.updateWithVersionByExampleSelective(header.getUpdateVersion(), update, example);
 			if (rowcount == 0) {
 				throw new BusinessServiceException("record delete error.");
 			}
@@ -565,6 +574,7 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 				break;
 			case Modify:
 				modify(inboundVO);
+				break;
 			case Submit:
 				inboundVO.setStatus(InboundStatusEnum.WaitingReview.getCode());
 				modify(inboundVO);

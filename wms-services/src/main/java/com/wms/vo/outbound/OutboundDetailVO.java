@@ -16,6 +16,15 @@ public class OutboundDetailVO extends OutboundDetailTEntity {
 	private BigDecimal uomQuantityAllocated = BigDecimal.ZERO;
 	private BigDecimal uomQuantityPicked = BigDecimal.ZERO;
 	private BigDecimal uomQuantityShiped = BigDecimal.ZERO;
+	private String warehouseCode;
+
+	public String getWarehouseCode() {
+		return warehouseCode;
+	}
+
+	public void setWarehouseCode(String warehouseCode) {
+		this.warehouseCode = warehouseCode;
+	}
 	
 	public String getSkuDescr() {
 		return skuDescr;

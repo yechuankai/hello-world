@@ -24,8 +24,8 @@
 						">
                 </div>
                 <div style="margin-bottom:10px">
-                    <input name="aaa" class="easyui-textbox"
-                           wms:data-options="label:'${web.label.countnumber}',labelPosition:'top'">
+                    <input name="parentCountNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.parentcountnumber}',labelPosition:'top'">
                 </div>
             </form>
         </div>
@@ -48,15 +48,19 @@
                 <a href="#" class="easyui-menubutton" data-options="menu:'#optionsMenuButton',plain:false"
                    wms:text="${web.label.options}">Actions</a>
                 <div id="optionsMenuButton">
-                    <div wms:text="${web.label.receive.all}" onclick="action('receiveAll')">All Receive</div>
-                    <div wms:text="${web.label.cancelreceive}" onclick="action('unReceive')">unReceive</div>
+                    <div wms:text="${web.label.ship}" onclick="action('ship')">Ship</div>
+                    <div wms:text="${web.label.replaycount}" onclick="action('replayCount')">replayCount</div>
                     <div wms:text="${web.label.createputaway}" onclick="action('createPutaway')">Create Putaway</div>
-                    <div wms:text="${web.label.viewputaway}" onclick="action()">View Putaway</div>
+                    <div wms:text="${web.label.cancel}" onclick="action('cancel')">cancel</div>
                 </div>
-                <a href="#" class="easyui-linkbutton common-rowsave" data-table="#dataTable"
-                   th:data-url="@{/services/inner/base/area/save}">
-                    <span wms:text="${web.label.save}">Report</span>
-                </a>
+                <a href="#" class="easyui-menubutton" data-options="menu:'#reportMenuButton',plain:false"
+                   wms:text="${web.label.report}">Report</a>
+                <div id="reportMenuButton">
+                    <div wms:text="${web.label.ship}" onclick="action('ship')">Ship</div>
+                    <div wms:text="${web.label.replaycount}" onclick="action('replayCount')">replayCount</div>
+                    <div wms:text="${web.label.createputaway}" onclick="action('createPutaway')">Create Putaway</div>
+                    <div wms:text="${web.label.cancel}" onclick="action('cancel')">cancel</div>
+                </div>
                 <a href="#" class="easyui-linkbutton areaHeader-rowdel" data-table="#dataTable"
                    th:data-url="@{/services/inner/inventory/inventoryCount/headerDelete}">
                     <span wms:text="${web.label.delete}">Delete</span>
@@ -159,6 +163,44 @@
             $('#detailLayout').layout('expand', 'south');
         }
         refreshCountDetail(headerData);
+    }
+    function action(type){
+        var checkedRows = $('#inboundData').datagrid('getChecked');
+        if (checkedRows.length == 0) {
+            showError($.locale.selectOneRow);
+            return;
+        }
+        confirmMsg($.locale.lineConfirm,{type:type,row:checkedRows.length}, function(r){
+            if (!r){
+                return;
+            }
+            var data = getBaseData(checkedRows);
+            loading();
+            $.post({
+                url: '../../services/inner/inventory/inventoryCount/'+type,
+                data:data,
+                success: function(data){
+                    data = returnData(data);
+                    closeLoading();
+                    if (data.code == '0') {
+                        showError(data.msg);
+                        return;
+                    }
+                    $('#inboundData').datagrid('reload').datagrid('clearChecked');
+                    var collapse = $('#detailLayout').layout('panel','south').panel("options").collapsed;
+                    headerData = checkedRows[0];
+                    if(!collapse){
+                        //展开状态并且只选择了一行刷新明细
+                        refreshInboundDetail(headerData);
+                    }else {
+                        $('#detailLayout').layout('collapse', 'south');
+                    }
+                    if (type == 'createPutaway' ){
+                        showMsg(data.msg);
+                    }
+                }
+            });
+        });
     }
 </script>
 </html>

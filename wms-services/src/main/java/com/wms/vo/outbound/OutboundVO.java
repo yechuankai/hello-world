@@ -14,6 +14,15 @@ public class OutboundVO extends OutboundHeaderTEntity{
 	private List<OutboundDetailVO> detail;
 	private List<AllocateTEntity> allocateList;
 	private List<EntInventoryOnhandVO> entInventoryOnhandList;
+	private String warehouseCode;
+
+	public String getWarehouseCode() {
+		return warehouseCode;
+	}
+
+	public void setWarehouseCode(String warehouseCode) {
+		this.warehouseCode = warehouseCode;
+	}
 
 	public List<EntInventoryOnhandVO> getEntInventoryOnhandList() {
 		return entInventoryOnhandList;

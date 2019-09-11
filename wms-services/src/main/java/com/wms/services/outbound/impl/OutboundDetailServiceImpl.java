@@ -48,6 +48,7 @@ import java.util.stream.Collectors;
 public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcelService<OutboundDetailImportVO> {
 
 	private static Logger log = LoggerFactory.getLogger(OutboundDetailServiceImpl.class);
+	private final String WAREHOUSECODE ="warehouseCode";
 
 	@Autowired
 	private IOutboundDetailTDao outboundDetailDao;
@@ -123,7 +124,11 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 			OutboundHeaderTEntity header = headerIdMap.get(d.getOutboundHeaderId());
 			if (header != null)
 				outboundDetailVO.setOutboundNumber(header.getOutboundNumber());
-			
+			//根据传过来的主数据的warehouseCode补全明细
+			if(StringUtils.isNotBlank(request.getString(WAREHOUSECODE))){
+				outboundDetailVO.setWarehouseCode(request.getString(WAREHOUSECODE));
+			}
+
 			returnList.add(outboundDetailVO);
 
 		});
@@ -880,6 +885,9 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 		if(detail.getQuantityExpected().compareTo(BigDecimal.ZERO) <= 0){
 			throw new BusinessServiceException("OutboundDetailServiceImpl", "outbound.expectedquantity.equaltozero", new Object[]{outboundVO.getOutboundNumber(), detail.getLineNumber()});
 		}
+
+		//新增订单数量要默认预期数量
+		detail.setQuantityOrder(detail.getQuantityExpected());
 
 		OwnerTEntity owner = ownerService.find(OwnerTEntity.builder()
 				.warehouseId(outboundVO.getWarehouseId())

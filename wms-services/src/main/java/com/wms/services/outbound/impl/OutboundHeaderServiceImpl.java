@@ -17,6 +17,7 @@ import com.wms.services.base.*;
 import com.wms.services.outbound.IOutboundDetailService;
 import com.wms.services.outbound.IOutboundHeaderService;
 import com.wms.services.sys.IStatusHistoryService;
+import com.wms.services.sys.ISysWarehouseService;
 import com.wms.vo.inventory.EntInventoryOnhandVO;
 import com.wms.vo.outbound.OutboundDetailVO;
 import com.wms.vo.outbound.OutboundVO;
@@ -47,6 +48,8 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 	private ICarrierService carrierService;
 	@Autowired
 	IEnterpriseService enterpriseService;
+	@Autowired
+	ISysWarehouseService warehouseService;
 
 	@Override
 	public List<OutboundHeaderTEntity> find(PageRequest request) throws BusinessServiceException {
@@ -77,6 +80,46 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 		List<OutboundHeaderTEntity> inboundList = outboundHeaderDao.selectByExample(example);
 
 		return inboundList;
+	}
+
+	@Override
+	public List<OutboundVO> findFromOms(PageRequest request) throws BusinessServiceException {
+		OutboundHeaderTExample example = new OutboundHeaderTExample();
+		OutboundHeaderTExample.Criteria exampleCriteria = example.createCriteria();
+
+		//转换查询方法
+		ExampleUtils.create(OutboundHeaderTEntity.Column.class, OutboundHeaderTExample.Criterion.class)
+				.criteria(exampleCriteria)
+				.data(request)
+				.betweenDate(OutboundHeaderTEntity.Column.createTime.getJavaProperty(),
+						OutboundHeaderTEntity.Column.expectedOutboundDate.getJavaProperty(),
+						OutboundHeaderTEntity.Column.outboundDate.getJavaProperty()
+				)
+				.build(request)
+				.orderby(example);
+		exampleCriteria.andDelFlagEqualTo(YesNoEnum.No.getCode());
+
+		List<OutboundHeaderTEntity> outboundList = outboundHeaderDao.selectByExample(example);
+
+		if(CollectionUtils.isEmpty(outboundList)){
+			return Lists.newArrayList();
+		}
+		//根据id补足warehouseCode
+		List<OutboundVO> returnList = Lists.newArrayList();
+
+		Set<Long> ids = Sets.newHashSet(outboundList.stream().map(OutboundHeaderTEntity::getWarehouseId).collect(Collectors.toSet()));
+		List<SysWarehousesTEntity> selectList =warehouseService.findByIds(ids);
+
+		outboundList.forEach(d ->{
+			OutboundVO outboundVO =new OutboundVO(d);
+			selectList.forEach(v ->{
+				if(d.getWarehouseId().longValue()==v.getWarehouseId().longValue()){
+					outboundVO.setWarehouseCode(v.getCode());
+					returnList.add(outboundVO);
+				}
+			});
+		});
+		return returnList;
 	}
 
 	@Override

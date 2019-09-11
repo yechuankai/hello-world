@@ -26,13 +26,4 @@ public interface IInventoryCountRequestService {
 	Boolean delete(AjaxRequest<List<InventoryCountRequestTEntity>> request) throws BusinessServiceException;
 	
 	List<InventoryOnhandTEntity> findInventory(InventoryCountRequestTEntity countRequest) throws BusinessServiceException;
-
-	/** 
-	* @Description: 生成盘点
-	* @Param: [request] 
-	* @return: java.lang.Boolean 
-	* @Author: pengzhen@cmhit.com 
-	* @Date: 2019/9/9 
-	*/ 
-	Boolean createCount(AjaxRequest<List<InventoryCountRequestTEntity>> request) throws BusinessServiceException;
 }

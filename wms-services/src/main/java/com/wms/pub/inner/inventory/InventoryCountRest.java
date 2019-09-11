@@ -9,6 +9,7 @@ import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.core.domain.response.AjaxResult;
 import com.wms.common.core.domain.response.PageResult;
+import com.wms.common.utils.MessageUtils;
 import com.wms.entity.auto.InventoryCountDetailTEntity;
 import com.wms.entity.auto.InventoryCountHeaderTEntity;
 import com.wms.entity.auto.InventoryCountRequestTEntity;
@@ -140,18 +141,16 @@ public class InventoryCountRest extends BaseController {
     @RequestMapping(value = "/createCount")
     public AjaxResult createCount(@RequestBody String req) {
         try {
-            AjaxRequest<List<InventoryCountRequestTEntity> > request = ajaxRequest(req, new TypeReference<AjaxRequest<List<InventoryCountRequestTEntity> >>() {});
-            if (CollectionUtils.isEmpty(request.getData())) {
-                return fail("no record update.");
-            }
-            boolean flag = requestService.createCount(request);
-            if (flag) {
-                return success();
-            }
+            AjaxRequest<InventoryCountRequestTEntity> request = ajaxRequest(req, new TypeReference<AjaxRequest<InventoryCountRequestTEntity>>() {});
+
+            long count = headerService.createInventoryCount(request);
+
+            String message = "countdetail.created";
+            message = MessageUtils.message(message, count);
+            return success(message);
         } catch (Exception e) {
             return fail(e.getMessage());
         }
-        return fail();
     }
 
     @RequestMapping(value = "/headerDelete")
@@ -171,4 +170,53 @@ public class InventoryCountRest extends BaseController {
         return fail();
     }
 
+    @RequestMapping(value = "/post")
+    public AjaxResult post(@RequestBody String req) {
+        try {
+            AjaxRequest<List<InventoryCountHeaderTEntity>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<InventoryCountHeaderTEntity> >>() {});
+
+           boolean flag = headerService.post(request);
+
+           if(flag){
+               return success();
+           }
+        } catch (Exception e) {
+            return fail(e.getMessage());
+        }
+        return fail();
+    }
+
+    @RequestMapping(value = "/detailSave")
+    public AjaxResult detailSave(@RequestBody String req) {
+        try {
+            AjaxRequest<List<InventoryCountDetailTEntity> > request = ajaxRequest(req, new TypeReference<AjaxRequest<List<InventoryCountDetailTEntity> >>() {});
+            if (CollectionUtils.isEmpty(request.getData())) {
+                return fail("no record update.");
+            }
+            boolean flag = detailService.modify(request);
+            if (flag) {
+                return success();
+            }
+        } catch (Exception e) {
+            return fail(e.getMessage());
+        }
+        return fail();
+    }
+
+    @RequestMapping(value = "/cancel")
+    public AjaxResult cancel(@RequestBody String req) {
+        try {
+            AjaxRequest<List<InventoryCountDetailTEntity> > request = ajaxRequest(req, new TypeReference<AjaxRequest<List<InventoryCountDetailTEntity> >>() {});
+            if (CollectionUtils.isEmpty(request.getData())) {
+                return fail("no record update.");
+            }
+            boolean flag = detailService.cancel(request);
+            if (flag) {
+                return success();
+            }
+        } catch (Exception e) {
+            return fail(e.getMessage());
+        }
+        return fail();
+    }
 }

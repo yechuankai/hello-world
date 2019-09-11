@@ -9,7 +9,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.google.common.collect.Lists;
 import com.wms.common.constants.DefaultConstants;
 import com.wms.common.core.domain.request.AjaxRequest;
@@ -32,6 +31,15 @@ import com.wms.entity.auto.InventoryOnhandTEntity;
 import com.wms.services.inventory.IInventoryCountDetailService;
 import com.wms.services.inventory.IInventoryCountHeaderService;
 import com.wms.services.inventory.IInventoryCountRequestService;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class InventoryCountHeaderServiceImpl implements IInventoryCountHeaderService {
@@ -436,7 +444,7 @@ public class InventoryCountHeaderServiceImpl implements IInventoryCountHeaderSer
 		detailService.add(new AjaxRequest<List<InventoryCountDetailTEntity>>(newDetailList, request));
 		
 		//更新当前行为复盘状态
-		detailService.moidfyStatus(new AjaxRequest<List<InventoryCountDetailTEntity>>(detailList, request), CountStatusEnum.Replay);
+		detailService.modifyStatus(new AjaxRequest<List<InventoryCountDetailTEntity>>(detailList, request), CountStatusEnum.Replay);
 		
 		long detailSize = newDetailList.size(); 
 		return detailSize;
@@ -553,7 +561,7 @@ public class InventoryCountHeaderServiceImpl implements IInventoryCountHeaderSer
 															.inventoryCountHeaderId(c.getInventoryCountHeaderId())
 															.build(), CountStatusEnum.New, CountStatusEnum.Counting, CountStatusEnum.Complated);
 			
-			detailService.moidfyStatus(new AjaxRequest<List<InventoryCountDetailTEntity>>(detailList, request), CountStatusEnum.Post);
+			detailService.modifyStatus(new AjaxRequest<List<InventoryCountDetailTEntity>>(detailList, request), CountStatusEnum.Post);
 		});
 		
 		boolean postFlag = postReplayCount(new AjaxRequest<List<InventoryCountHeaderTEntity>>(replayList, request));

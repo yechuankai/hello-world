@@ -14,6 +14,15 @@ import java.util.Set;
 public interface IOutboundHeaderService {
 	
 	List<OutboundHeaderTEntity> find(PageRequest request) throws BusinessServiceException;
+
+	/**
+	 * @Description: OMS系统查询出库单
+	 * @Param: [request]
+	 * @return: java.util.List<com.wms.vo.inbound.InboundVO>
+	 * @Author: pengzhen@cmhit.com
+	 * @Date: 2019/9/10
+	 */
+	List<OutboundVO> findFromOms(PageRequest request) throws BusinessServiceException;
 	
 	OutboundVO find(OutboundVO outbound) throws BusinessServiceException;
 	

@@ -204,7 +204,7 @@
                 showError($.locale.selectOneRow);
                 return;
             }
-            var data = getBaseData(checkedRows);
+            var data = getBaseData(checkedRows[0]);
             loading();
             $.post({
                 url: url,
@@ -212,10 +212,7 @@
                 success: function (data) {
                     data = returnData(data);
                     closeLoading();
-                    if (data.code == '0') {
-                        showError(data.msg);
-                        return;
-                    }
+                    showError(data.msg);
                     $(datagrid).datagrid('reload').datagrid('clearChecked');
                 }
             });

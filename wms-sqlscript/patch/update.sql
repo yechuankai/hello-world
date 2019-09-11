@@ -399,3 +399,5 @@ alter table wms.SKU_T modify ( WEIGHT_NET NUMBER(20,5) DEFAULT 0);
 alter table wms.SKU_T modify ( WEIGHT_TARE NUMBER(20,5) DEFAULT 0);
 alter table wms.SKU_T modify ( VOLUME NUMBER(20,5) DEFAULT 0);
 alter table wms.TASK_DETAIL_T modify ( QUANTITY NUMBER(20,5) DEFAULT 0);
+
+

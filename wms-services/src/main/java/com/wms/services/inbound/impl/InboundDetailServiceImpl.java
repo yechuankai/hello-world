@@ -609,23 +609,23 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 
 
 	private Boolean delete(InboundDetailTEntity detail) throws BusinessServiceException {
-		InboundStatusEnum status = inboundDetailStatus(detail, Boolean.FALSE);
-		if (InboundStatusEnum.New != status) {
-			throw new BusinessServiceException("InboundDetailServiceImpl", "inbound.line.status.not.process" , new Object[] {detail.getLineNumber()});
-		}
-		
 		InboundDetailTEntity updateDetail = InboundDetailTEntity.builder()
 				.updateBy(detail.getUpdateBy())
 				.updateTime(new Date())
 				.delFlag(YesNoEnum.Yes.getCode())
 				.build();
-		
 		InboundDetailTExample example = new InboundDetailTExample();
 		example.createCriteria()
-		.andWarehouseIdEqualTo(detail.getWarehouseId())
-		.andCompanyIdEqualTo(detail.getCompanyId())
-		.andInboundDetailIdEqualTo(detail.getInboundDetailId());
-		
+				.andCompanyIdEqualTo(detail.getCompanyId())
+				.andInboundDetailIdEqualTo(detail.getInboundDetailId());
+		if(0L != detail.getWarehouseId()){
+			InboundStatusEnum status = inboundDetailStatus(detail, Boolean.FALSE);
+			if (InboundStatusEnum.New != status) {
+				throw new BusinessServiceException("InboundDetailServiceImpl", "inbound.line.status.not.process" , new Object[] {detail.getLineNumber()});
+			}
+			example.createCriteria().andWarehouseIdEqualTo(detail.getWarehouseId());
+		}
+
 		int rowcount = inboundDetailDao.updateWithVersionByExampleSelective(detail.getUpdateVersion(), updateDetail, example);
 		if (rowcount == 0)
 			throw new BusinessServiceException("record delete error.");
