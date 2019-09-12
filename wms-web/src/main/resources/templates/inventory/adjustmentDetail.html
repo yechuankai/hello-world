@@ -145,7 +145,13 @@
 					<th field="quantityAvailable" width="100" wms:text="${web.label.quantity.available}" data-options="sortable:false">
 						quantityAvailable
 					</th>
-	                <th field="quantityAdjustment" width="80" wms:text="${web.label.quantityadjustment}" data-options="editor:{type:'numberbox'}">
+	                <th field="quantityAdjustment" width="80" wms:text="${web.label.quantityadjustment}" data-options="
+	                			editor:{
+									type: 'numberbox',
+									options: {
+										precision:4
+									}
+								}">
 	                    quantityAdjustment
 	                </th>
 	                <th field="targetQuantity" width="80" wms:text="${web.label.targetquantity}"></th>

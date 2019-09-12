@@ -33,7 +33,6 @@
 							data: codelkups['YESNO'],
 							valueField: 'code',
 							textField: 'descr',
-							value: 'Y',
 							label: '${web.label.quantityavailablemorethanzero}',
 							labelPosition: 'top'
 							">
@@ -67,12 +66,12 @@
 					            <th field="ownerCode" width="85" wms:text="${web.label.owner}">ownerCode</th>
 					            <th field="skuCode" width="85" wms:text="${web.label.sku}">skuCode</th>
 					            <th field="skuAlias" width="85" wms:text="${web.label.skualias}">skuAlias</th>
-					            <th field="locationCode" width="85" wms:text="${web.label.location}">containerNumber</th>
-					            <th field="onHandAmount" width="85" wms:text="${web.label.quantity.onhand}">onHandAmount</th>
-					            <th field="allocateAmount" width="85" wms:text="${web.label.quantity.allocated}">allocateAmount</th>
-					            <th field="softAllocateAmount" width="85" wms:text="${web.label.quantity.softallocated}">softAllocateAmount</th>
-					            <th field="availableAmount" width="85"wms:text="${web.label.quantity.available}">availableAmount</th>
-					            <th field="lockAmount" width="85" wms:text="${web.label.quantity.locked}">lockAmount</th>
+					            <th field="locationCode" width="120" wms:text="${web.label.location}">containerNumber</th>
+					            <th field="quantityOnhand" width="120" wms:text="${web.label.quantity.onhand}">quantityOnhand</th>
+					            <th field="quantityAllocated" width="120" wms:text="${web.label.quantity.allocated}">quantityAllocated</th>
+					            <th field="softQuantityAllocated" width="120" wms:text="${web.label.quantity.softallocated}">softQuantityAllocated</th>
+					            <th field="quantityLocked" width="120" wms:text="${web.label.quantity.locked}">quantityLocked</th>
+					            <th field="quantityAvailable" width="120"wms:text="${web.label.quantity.available}">quantityAvailable</th>
 				            </thead>
 						</table>
 					</div>

@@ -141,7 +141,6 @@ public class PutawayRest extends BaseController{
 										.build(), Sets.newHashSet(putaway.getInventoryOnhand().getLocationCode(), putaway.getToLocationCode()));
 				Map<String, LocationTEntity> locMap = locs.stream().collect(Collectors.toMap(LocationTEntity::getLocationCode, v -> v));
 				
-				
 				//生成上架任务
 				TaskDetailTEntity taskdetail = TaskDetailTEntity.builder()
 						.createBy(request.getUserName())
@@ -152,6 +151,7 @@ public class PutawayRest extends BaseController{
 						.companyId(request.getCompanyId())
 						.taskType(TaskTypeEnum.Putaway.getCode())
 						.sourceType(TaskTypeEnum.Putaway.getCode())
+						.status(TaskStatusEnum.Processing.getCode())
 						.fromLpnType(lpnType.getCode())
 						.ownerCode(putaway.getInventoryOnhand().getOwnerCode())
 						.ownerId(putaway.getInventoryOnhand().getOwnerId())
@@ -207,14 +207,17 @@ public class PutawayRest extends BaseController{
 					.warehouseId(request.getWarehouseId())
 					.companyId(request.getCompanyId())
 					.build();
+			String fromLpnNumber = null;
 			if(LpnTypeEnum.Container.getCode().equals(putaway.getLpnType())){
 				//容器号
 				lpn.setContainerNumber(putaway.getContainerNumber());
 				lpns = lpnService.findByContainerNumber(lpn);
+				fromLpnNumber = putaway.getContainerNumber();
 			}else if(LpnTypeEnum.Carton.getCode().equals(putaway.getLpnType())){
 				//lpn
 				Set<String> lpnNumbers = Sets.newHashSet(putaway.getLpnNumber());
 				lpns = lpnService.findByLpnNumbers(lpn, lpnNumbers);
+				fromLpnNumber = putaway.getLpnNumber();
 			}
 			Set<Long> lpnIds = lpns.stream().map(LpnTEntity::getLpnId).collect(Collectors.toSet());
 			List<InventoryOnhandTEntity> inventoryOnhands = inventoryService.findByLpnId(inventory, lpnIds);
@@ -235,6 +238,27 @@ public class PutawayRest extends BaseController{
 			List<PutawayLocationLockTEntity> locks = lockService.find(lpn);
 			lockService.delete(locks);
 			
+			//查询任务
+			List<TaskDetailTEntity> taskList = taskService.findByFromLpn(TaskDetailTEntity.builder()
+					.warehouseId(request.getWarehouseId())
+					.companyId(request.getCompanyId())
+					.fromLpnNumber(fromLpnNumber)
+					.build(), TaskStatusEnum.New, TaskStatusEnum.Processing);
+			List<TaskDetailTEntity> updateTask = Lists.newArrayList();
+			taskList.forEach(t -> {
+				TaskDetailTEntity update = TaskDetailTEntity.builder()
+											.warehouseId(request.getWarehouseId())
+											.companyId(request.getCompanyId())
+											.toLocationCode(putaway.getLocationCode())
+											.status(TaskStatusEnum.Completed.getCode())
+											.endTime(new Date())
+											.completeTime(new Date())
+											.userName(request.getUserName())
+											.taskDetailId(t.getTaskDetailId())
+											.build();
+				updateTask.add(update);
+			});
+			taskService.modify(new AjaxRequest<List<TaskDetailTEntity>>(updateTask, request));
 			return success();
 		} catch (Exception e) {
 			return fail(e.getMessage());

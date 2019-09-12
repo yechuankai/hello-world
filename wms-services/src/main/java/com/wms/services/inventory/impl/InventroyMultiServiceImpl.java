@@ -109,7 +109,7 @@ public class InventroyMultiServiceImpl implements IInventoryMultiService{
     			cache.put(vo, softQuantity);
 			}
 	    	
-	    	vo.setSoftAllocateAmount(softQuantity);
+	    	vo.setSoftQuantityAllocated(softQuantity);
     	}
     }
 	
@@ -151,7 +151,7 @@ public class InventroyMultiServiceImpl implements IInventoryMultiService{
     			cache.put(vo.getSkuId(), softQuantity);
 			}
 	    	
-	    	vo.setSoftAllocateAmount(softQuantity);
+	    	vo.setSoftQuantityAllocated(softQuantity);
     	}
     }
     

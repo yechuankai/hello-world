@@ -67,8 +67,9 @@
             </thead>
             <thead>
             <tr>
-                <th field="requestNumber" width="80" wms:text="${web.label.requestnumber}" data-options="sortable:true">requestNumber</th>
+                <th field="requestNumber" width="120" wms:text="${web.label.requestnumber}" data-options="sortable:true">requestNumber</th>
                 <th field="requestDescr" width="150" wms:text="${web.label.descr}" data-options="sortable:true,editor:'text'">requestDescr</th>
+                <!--  
                 <th field="requestType" width="100" wms:text="${web.label.type}" data-options="
 							sortable:true,
 							formatter:function(value,row){
@@ -84,7 +85,8 @@
 								}
 							}
 						" >requestType</th>
-                <th field="quantityShowFlag" width="70" wms:text="${web.label.quantityshowflag}" data-options="
+				-->
+                <th field="quantityShowFlag" width="100" wms:text="${web.label.quantityshowflag}" data-options="
 							sortable:true,
 							formatter:function(value,row){
 								return getCodelkupValue('YESNO',value);
@@ -109,7 +111,7 @@
         </table>
     </div>
 </div>
-<div id="addDiv" wms:title="${web.label.add}" style="width:550px;height:580px; display: none;">
+<div id="addDiv" wms:title="${web.label.add}" style="width:550px;height:620px; display: none;">
     <div style="width: 100%;padding-left: 50px;">
         <form method="post" id="addForm" th:data-url="@{/services/inner/inventory/inventoryCount/addRequest}">
             <table style="width: 100%;">
@@ -126,13 +128,15 @@
 						valueField: 'code',
 						textField: 'descr',
 						label: '${web.label.quantityshowflag}',
-						labelPosition: 'top'
+						labelPosition: 'top',
+						value:'N',
+						required: true
 						">
                     </td>
                 </tr>
                 <tr>
                     <td colspan="5">
-                        <input name="requestDescr" style="width: 450px;" class="easyui-textbox"  wms:data-options="label:'${web.label.descr}',labelPosition:'top'">
+                        <input name="requestDescr" style="width: 450px;" class="easyui-textbox"  wms:data-options="label:'${web.label.descr}',labelPosition:'top',required: true">
                     </td>
                 </tr>
                 <tr>
@@ -173,13 +177,18 @@
                 </tr>
                 <tr>
                     <td colspan="5">
+                        <input name="skuCodeIn" class="easyui-textbox" style="width: 450px;"  wms:data-options="label:'${web.label.skucodein}',labelPosition:'top'">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
                         <input name="lpnNumberIn" class="easyui-textbox" style="width: 450px;"  wms:data-options="label:'${web.label.lpnnumberin}',labelPosition:'top'">
                     </td>
                 </tr>
             </table>
         </form>
     </div>
-    <div style="text-align: center;margin-top: 30px;">
+    <div style="text-align: center;margin-top: 10px;">
         <a href="#" class="easyui-linkbutton common-confirmadd" data-form="#addForm" data-table="#requestData"
            id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
             <span style="font-size:14px;" wms:text="${web.label.save}">Save</span>

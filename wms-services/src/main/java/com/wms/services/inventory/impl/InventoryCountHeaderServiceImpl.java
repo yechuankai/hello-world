@@ -1,5 +1,14 @@
 package com.wms.services.inventory.impl;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.google.common.collect.Lists;
 import com.wms.common.constants.DefaultConstants;
 import com.wms.common.core.domain.request.AjaxRequest;
@@ -366,13 +375,12 @@ public class InventoryCountHeaderServiceImpl implements IInventoryCountHeaderSer
 	@Transactional
 	public Long createReplayCount(AjaxRequest<InventoryCountHeaderTEntity> request) throws BusinessServiceException {
 		InventoryCountHeaderTEntity count = request.getData();
-		
 		//查询盘点完成的明细行
 		List<InventoryCountDetailTEntity> detailList = detailService.findByHeaderId(InventoryCountDetailTEntity.builder()
-																							.warehouseId(request.getWarehouseId())
-																							.companyId(request.getCompanyId())
-																							.inventoryCountHeaderId(count.getInventoryCountHeaderId())
-																							.build(), CountStatusEnum.Complated);
+					.warehouseId(request.getWarehouseId())
+					.companyId(request.getCompanyId())
+					.inventoryCountHeaderId(count.getInventoryCountHeaderId())
+					.build(), CountStatusEnum.Complated);
 		long detailSize = createReplayCount(request, detailList);
 		return detailSize;
 	}
@@ -394,7 +402,6 @@ public class InventoryCountHeaderServiceImpl implements IInventoryCountHeaderSer
 		
 		if (CollectionUtils.isEmpty(detailList))
 			throw new BusinessServiceException("InventoryCountHeaderServiceImpl", "count.cannot.create.replay" , new Object[] {count.getCountNumber()});
-		
 		
 		InventoryCountRequestTEntity countRequest = InventoryCountRequestTEntity.builder()
 														.warehouseId(request.getWarehouseId())

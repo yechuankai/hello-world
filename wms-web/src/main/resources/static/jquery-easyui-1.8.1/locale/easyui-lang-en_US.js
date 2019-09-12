@@ -98,6 +98,7 @@ var locale = {
 	closeAll:'Close All Tabs?',
 	goOn:"Go on ?",
 	deleteOneRow:'Confirm Delete {row} Recored ?',
+	optOneRow:'Confirm {opt} {row} Recored ?',
 	lineConfirm:'Confirm {type} {row} ?',
 	putawayRows:'Confirm Putaway {row} Recored ?',
 	cancelRows:'Confirm Cancel {row} Recored ?',

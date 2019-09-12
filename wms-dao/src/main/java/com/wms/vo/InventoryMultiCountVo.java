@@ -25,20 +25,20 @@ public class InventoryMultiCountVo extends AbstractExcelModel{
 	@Excel(name = "locationCode")
 	private String locationCode;
 	
-	@Excel(name = "availableAmount")
-	private BigDecimal availableAmount;
+	@Excel(name = "quantityAvailable")
+	private BigDecimal quantityAvailable;
 	
-	@Excel(name = "onHandAmount")
-	private BigDecimal onHandAmount;
+	@Excel(name = "quantityOnhand")
+	private BigDecimal quantityOnhand;
 	
-	@Excel(name = "lockAmount")
-	private BigDecimal lockAmount;
+	@Excel(name = "quantityLocked")
+	private BigDecimal quantityLocked;
 	
-	@Excel(name = "allocateAmount")
-	private BigDecimal allocateAmount;
+	@Excel(name = "quantityAllocated")
+	private BigDecimal quantityAllocated;
 	
-	@Excel(name = "softAllocateAmount")
-	private BigDecimal softAllocateAmount;
+	@Excel(name = "softQuantityAllocated")
+	private BigDecimal softQuantityAllocated;
 	/**
 	 * 用于获取软分配量
 	 */
@@ -74,39 +74,6 @@ public class InventoryMultiCountVo extends AbstractExcelModel{
 	public void setLocationCode(String locationCode) {
 		this.locationCode = locationCode;
 	}
-	public BigDecimal getAvailableAmount() {
-		if (onHandAmount != null && allocateAmount != null && lockAmount != null) {
-			availableAmount = onHandAmount.subtract(allocateAmount).subtract(lockAmount);
-		}
-		return availableAmount;
-	}
-	public void setAvailableAmount(BigDecimal availableAmount) {
-		this.availableAmount = availableAmount;
-	}
-	public BigDecimal getOnHandAmount() {
-		return onHandAmount;
-	}
-	public void setOnHandAmount(BigDecimal onHandAmount) {
-		this.onHandAmount = onHandAmount;
-	}
-	public BigDecimal getLockAmount() {
-		return lockAmount;
-	}
-	public void setLockAmount(BigDecimal lockAmount) {
-		this.lockAmount = lockAmount;
-	}
-	public BigDecimal getAllocateAmount() {
-		return allocateAmount;
-	}
-	public void setAllocateAmount(BigDecimal allocateAmount) {
-		this.allocateAmount = allocateAmount;
-	}
-	public BigDecimal getSoftAllocateAmount() {
-		return softAllocateAmount;
-	}
-	public void setSoftAllocateAmount(BigDecimal softAllocateAmount) {
-		this.softAllocateAmount = softAllocateAmount;
-	}
 	public String getLpnNumber() {
 		return lpnNumber;
 	}
@@ -125,4 +92,49 @@ public class InventoryMultiCountVo extends AbstractExcelModel{
 	public void setLocationId(Long locationId) {
 		this.locationId = locationId;
 	}
+	public BigDecimal getQuantityAvailable() {
+		if (this.getQuantityOnhand() == null)
+			return BigDecimal.ZERO;
+		
+		this.quantityAvailable = this.getQuantityOnhand();
+		
+		if (this.getQuantityAllocated() != null)
+			this.setQuantityAvailable(quantityAvailable.subtract(this.getQuantityAllocated()));
+		
+		if (this.getQuantityLocked() != null)
+			this.setQuantityAvailable(quantityAvailable.subtract(this.getQuantityLocked()));
+		
+		if (this.getSoftQuantityAllocated() != null)
+			this.setQuantityAvailable(quantityAvailable.subtract(this.getSoftQuantityAllocated()));
+		
+		return quantityAvailable;
+	}
+	public void setQuantityAvailable(BigDecimal quantityAvailable) {
+		this.quantityAvailable = quantityAvailable;
+	}
+	public BigDecimal getQuantityOnhand() {
+		return quantityOnhand;
+	}
+	public void setQuantityOnhand(BigDecimal quantityOnhand) {
+		this.quantityOnhand = quantityOnhand;
+	}
+	public BigDecimal getQuantityLocked() {
+		return quantityLocked;
+	}
+	public void setQuantityLocked(BigDecimal quantityLocked) {
+		this.quantityLocked = quantityLocked;
+	}
+	public BigDecimal getQuantityAllocated() {
+		return quantityAllocated;
+	}
+	public void setQuantityAllocated(BigDecimal quantityAllocated) {
+		this.quantityAllocated = quantityAllocated;
+	}
+	public BigDecimal getSoftQuantityAllocated() {
+		return softQuantityAllocated;
+	}
+	public void setSoftQuantityAllocated(BigDecimal softQuantityAllocated) {
+		this.softQuantityAllocated = softQuantityAllocated;
+	}
+	
 }

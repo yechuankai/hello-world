@@ -87,7 +87,13 @@
 						   " >toLocationCode</th>
 						<th field="toContainerNumber" width="100" wms:text="${web.label.tocontainernumber}" data-options="editor:'text'">toContainerNumber</th>
 						<th field="toLpnNumber" width="100" wms:text="${web.label.tolpnnumber}" data-options="editor:'text'">toLpnNumber</th>
-						<th field="toQuantity" width="100" wms:text="${web.label.toquantity}" data-options="editor:'numberbox'">toQuantity</th>
+						<th field="toQuantity" width="100" wms:text="${web.label.toquantity}" data-options="
+								editor:{
+									type: 'numberbox',
+									options: {
+										precision:4
+									}
+								}">toQuantity</th>
 						<th field="createBy" width="80" wms:text="${web.label.createby}" >createBy</th>
 						<th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true" >createTime</th>
 						<th field="updateBy" width="80" wms:text="${web.label.updateby}" >updateBy</th>

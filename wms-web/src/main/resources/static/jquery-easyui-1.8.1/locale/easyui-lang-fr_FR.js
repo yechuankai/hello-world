@@ -99,6 +99,7 @@ var locale = {
 	closeAll:'Fermer toutes les pages?',
 	goOn:"Continuez?",
 	deleteOneRow:'Confirmation de la suppression de {row} lignes de données ?',
+	optOneRow:'Confirmation {opt} {row} lignes de données ?',
 	lineConfirm:'Confirmation{type}{row} ?',
 	putawayRows:'Détermination des données de {row} lignes d expédition?',
 	cancelRows:'Confirmation de l annulation de {row} lignes de données行 ?',
