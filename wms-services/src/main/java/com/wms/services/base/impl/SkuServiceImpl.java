@@ -350,6 +350,9 @@ public class SkuServiceImpl implements ISkuService, IExcelService<SkuVO> {
 		if (StringUtils.isEmpty(sku.getSkuCode()))
 			throw new BusinessServiceException("SkuServiceImpl", "sku.isnull" , null); 
 		
+		if (StringUtils.isEmpty(sku.getUom()))
+			throw new BusinessServiceException("SkuServiceImpl", "uom.isnull" , null); 
+		
 		//获取货主ID
 		OwnerTEntity owner = ownerService.find(OwnerTEntity.builder()
                 .warehouseId(sku.getWarehouseId())
@@ -367,6 +370,13 @@ public class SkuServiceImpl implements ISkuService, IExcelService<SkuVO> {
                 .build());
 		sku.setPackId(pack.getPackId());
 		sku.setPackCode(pack.getPackCode());
+		
+		if (!(sku.getUom().equals(pack.getUom()) 
+				|| sku.getUom().equals(pack.getUomInner())
+				|| sku.getUom().equals(pack.getUomCase()))) {
+			throw new BusinessServiceException("SkuServiceImpl", "pack.uom.error" , new Object[] {pack.getPackCode(), sku.getUom()}); 
+		}
+		
 		
 		//获取上架策略ID
 		PutawayStrategyTEntity putawayStrategy = putawayStrategyHeaderService.find(PutawayStrategyTEntity.builder()
@@ -395,6 +405,10 @@ public class SkuServiceImpl implements ISkuService, IExcelService<SkuVO> {
                 .build());
 		sku.setLotValidateId(lotv.getLotValidateId());
 		sku.setLotValidateCode(lotv.getLotValidateCode());
+		
+		//验证毛重/净重
+		if (sku.getWeightGross().compareTo(sku.getWeightNet()) < 0) 
+			throw new BusinessServiceException("SkuServiceImpl", "weight.gross.morethen.net" , new Object[] {sku.getSkuCode()}); 
 		
 		return Boolean.TRUE;
 	}

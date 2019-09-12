@@ -345,6 +345,11 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 			detail.setPutawayStrategyId(putawayStrategy.getPutawayStrategyId());
 			detail.setPutawayStrategyCode(putawayStrategy.getPutawayStrategyCode());
 		}
+		
+		//验证毛重/净重
+		if (detail.getWeightGross().compareTo(detail.getWeightNet()) < 0) 
+			throw new BusinessServiceException("InboundDetailServiceImpl", "weight.gross.morethen.net" , new Object[] {detail.getLineNumber()}); 
+		
 		PackTEntity pack = packService.find(PackTEntity.builder()
 				.warehouseId(detail.getWarehouseId())
 				.companyId(detail.getCompanyId())
@@ -372,6 +377,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 		if (detail.getUomQuantityReceive() != null && detail.getUomQuantityReceive().compareTo(BigDecimal.ZERO) > 0)
 			detail.setQuantityReceive(detail.getUomQuantityReceive().multiply(uomQuantity));
 
+		
 		if (inbound.getOperatorType() == OperatorTypeEnum.Modify) {
 			return Boolean.TRUE;
 		}

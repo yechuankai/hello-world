@@ -112,31 +112,35 @@ public class OwnerServiceImpl implements IOwnerService {
 
 		List<OwnerTEntity> list = request.getData();
 
-		for (OwnerTEntity w : list) {
-
+		for (OwnerTEntity o : list) {
 			OwnerTEntity update = OwnerTEntity.builder()
-					.ownerDescr(w.getOwnerDescr())
-					.contact1(w.getContact1())
-					.contact2(w.getContact2())
-					.phone1(w.getPhone1())
-					.phone2(w.getPhone2())
-					.address1(w.getAddress1())
-					.address2(w.getAddress2())
-					.fax(w.getFax())
-					.email(w.getEmail())
-					.active(w.getActive())
-					.remark(w.getRemark())
+					.ownerDescr(o.getOwnerDescr())
+					.contact1(o.getContact1())
+					.contact2(o.getContact2())
+					.phone1(o.getPhone1())
+					.phone2(o.getPhone2())
+					.address1(o.getAddress1())
+					.address2(o.getAddress2())
+					.fax(o.getFax())
+					.webSite(o.getWebSite())
+					.email1(o.getEmail1())
+					.email2(o.getEmail2())
+					.active(o.getActive())
+					.barcodeLength(o.getBarcodeLength())
+					.barcodePrefix(o.getBarcodePrefix())
+					.barcodeStart(o.getBarcodeStart())
+					.remark(o.getRemark())
 					.updateBy(request.getUserName())
 					.updateTime(new Date())
 					.build();
 
 			OwnerTExample example = new OwnerTExample();
 			example.createCriteria()
-			.andWarehouseIdEqualTo(w.getWarehouseId())
-            .andCompanyIdEqualTo(w.getCompanyId())
-            .andOwnerIdEqualTo(w.getOwnerId());
+			.andWarehouseIdEqualTo(o.getWarehouseId())
+            .andCompanyIdEqualTo(o.getCompanyId())
+            .andOwnerIdEqualTo(o.getOwnerId());
 
-			int row = ownerDao.updateWithVersionByExampleSelective(w.getUpdateVersion(), update, example);
+			int row = ownerDao.updateWithVersionByExampleSelective(o.getUpdateVersion(), update, example);
 			if (row == 0) {
 				throw new BusinessServiceException("record update error.");
 			}
@@ -152,9 +156,9 @@ public class OwnerServiceImpl implements IOwnerService {
 
 		List<OwnerTEntity> list = request.getData();
 
-		for (OwnerTEntity w : list) {
+		for (OwnerTEntity o : list) {
 
-			String code = w.getOwnerCode().toUpperCase();
+			String code = o.getOwnerCode().toUpperCase();
 
 			OwnerTExample TExample = new OwnerTExample();
 			TExample.createCriteria()
@@ -170,17 +174,22 @@ public class OwnerServiceImpl implements IOwnerService {
 			OwnerTEntity update = OwnerTEntity.builder()
 					.ownerId(KeyUtils.getUID())
 					.ownerCode(code)
-					.ownerDescr(w.getOwnerDescr())
-					.contact1(w.getContact1())
-					.contact2(w.getContact2())
-					.phone1(w.getPhone1())
-					.phone2(w.getPhone2())
-					.address1(w.getAddress1())
-					.address2(w.getAddress2())
-					.fax(w.getFax())
-					.email(w.getEmail())
-					.active(w.getActive())
-					.remark(w.getRemark())
+					.ownerDescr(o.getOwnerDescr())
+					.contact1(o.getContact1())
+					.contact2(o.getContact2())
+					.phone1(o.getPhone1())
+					.phone2(o.getPhone2())
+					.address1(o.getAddress1())
+					.address2(o.getAddress2())
+					.fax(o.getFax())
+					.webSite(o.getWebSite())
+					.email1(o.getEmail1())
+					.email2(o.getEmail2())
+					.barcodeLength(o.getBarcodeLength())
+					.barcodePrefix(o.getBarcodePrefix())
+					.barcodeStart(o.getBarcodeStart())
+					.active(o.getActive())
+					.remark(o.getRemark())
 					.createBy(request.getUserName())
 					.createTime(new Date())
 					.updateBy(request.getUserName())
@@ -203,15 +212,15 @@ public class OwnerServiceImpl implements IOwnerService {
 			throw new BusinessServiceException("no record add.");
 		}
 
-		for (OwnerTEntity w : owners) {
+		for (OwnerTEntity o : owners) {
 
-			String code = w.getOwnerCode().toUpperCase();
+			String code = o.getOwnerCode().toUpperCase();
 
 			OwnerTExample TExample = new OwnerTExample();
 			TExample.createCriteria()
 					.andDelFlagEqualTo(YesNoEnum.No.getCode())
-					.andWarehouseIdEqualTo(w.getWarehouseId())
-					.andCompanyIdEqualTo(w.getCompanyId())
+					.andWarehouseIdEqualTo(o.getWarehouseId())
+					.andCompanyIdEqualTo(o.getCompanyId())
 					.andOwnerCodeEqualTo(code);
 			Long count = ownerDao.countByExample(TExample);
 			if (count > 0) {
@@ -221,23 +230,28 @@ public class OwnerServiceImpl implements IOwnerService {
 			OwnerTEntity update = OwnerTEntity.builder()
 					.ownerId(KeyUtils.getUID())
 					.ownerCode(code)
-					.ownerDescr(w.getOwnerDescr())
-					.contact1(w.getContact1())
-					.contact2(w.getContact2())
-					.phone1(w.getPhone1())
-					.phone2(w.getPhone2())
-					.address1(w.getAddress1())
-					.address2(w.getAddress2())
-					.fax(w.getFax())
-					.email(w.getEmail())
-					.active(w.getActive())
-					.remark(w.getRemark())
-					.createBy(w.getUpdateBy())
+					.ownerDescr(o.getOwnerDescr())
+					.contact1(o.getContact1())
+					.contact2(o.getContact2())
+					.phone1(o.getPhone1())
+					.phone2(o.getPhone2())
+					.address1(o.getAddress1())
+					.address2(o.getAddress2())
+					.fax(o.getFax())
+					.webSite(o.getWebSite())
+					.email1(o.getEmail1())
+					.email2(o.getEmail2())
+					.barcodeLength(o.getBarcodeLength())
+					.barcodePrefix(o.getBarcodePrefix())
+					.barcodeStart(o.getBarcodeStart())
+					.active(o.getActive())
+					.remark(o.getRemark())
+					.createBy(o.getUpdateBy())
 					.createTime(new Date())
-					.updateBy(w.getUpdateBy())
+					.updateBy(o.getUpdateBy())
 					.updateTime(new Date())
-					.companyId(w.getCompanyId())
-					.warehouseId(w.getWarehouseId())
+					.companyId(o.getCompanyId())
+					.warehouseId(o.getWarehouseId())
 					.build();
 
 			int row = ownerDao.insertSelective(update);

@@ -26,7 +26,7 @@ public class CustomerTEntity extends BaseEntity {
 
     private String fax;
 
-    private String email;
+    private String email1;
 
     private String shipLabel;
 
@@ -51,6 +51,10 @@ public class CustomerTEntity extends BaseEntity {
     private Long updateVersion;
 
     private String description;
+
+    private String webSite;
+
+    private String email2;
 
     public Long getCustomerId() {
         return customerId;
@@ -132,12 +136,12 @@ public class CustomerTEntity extends BaseEntity {
         this.fax = fax == null ? null : fax.trim();
     }
 
-    public String getEmail() {
-        return email;
+    public String getEmail1() {
+        return email1;
     }
 
-    public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
+    public void setEmail1(String email1) {
+        this.email1 = email1 == null ? null : email1.trim();
     }
 
     public String getShipLabel() {
@@ -247,6 +251,22 @@ public class CustomerTEntity extends BaseEntity {
         this.description = description == null ? null : description.trim();
     }
 
+    public String getWebSite() {
+        return webSite;
+    }
+
+    public void setWebSite(String webSite) {
+        this.webSite = webSite == null ? null : webSite.trim();
+    }
+
+    public String getEmail2() {
+        return email2;
+    }
+
+    public void setEmail2(String email2) {
+        this.email2 = email2 == null ? null : email2.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -263,7 +283,7 @@ public class CustomerTEntity extends BaseEntity {
         sb.append(", address1=").append(address1);
         sb.append(", address2=").append(address2);
         sb.append(", fax=").append(fax);
-        sb.append(", email=").append(email);
+        sb.append(", email1=").append(email1);
         sb.append(", shipLabel=").append(shipLabel);
         sb.append(", active=").append(active);
         sb.append(", remark=").append(remark);
@@ -276,6 +296,8 @@ public class CustomerTEntity extends BaseEntity {
         sb.append(", updateTime=").append(updateTime);
         sb.append(", updateVersion=").append(updateVersion);
         sb.append(", description=").append(description);
+        sb.append(", webSite=").append(webSite);
+        sb.append(", email2=").append(email2);
         sb.append("]");
         return sb.toString();
     }
@@ -302,7 +324,7 @@ public class CustomerTEntity extends BaseEntity {
             && (this.getAddress1() == null ? other.getAddress1() == null : this.getAddress1().equals(other.getAddress1()))
             && (this.getAddress2() == null ? other.getAddress2() == null : this.getAddress2().equals(other.getAddress2()))
             && (this.getFax() == null ? other.getFax() == null : this.getFax().equals(other.getFax()))
-            && (this.getEmail() == null ? other.getEmail() == null : this.getEmail().equals(other.getEmail()))
+            && (this.getEmail1() == null ? other.getEmail1() == null : this.getEmail1().equals(other.getEmail1()))
             && (this.getShipLabel() == null ? other.getShipLabel() == null : this.getShipLabel().equals(other.getShipLabel()))
             && (this.getActive() == null ? other.getActive() == null : this.getActive().equals(other.getActive()))
             && (this.getRemark() == null ? other.getRemark() == null : this.getRemark().equals(other.getRemark()))
@@ -314,7 +336,9 @@ public class CustomerTEntity extends BaseEntity {
             && (this.getUpdateBy() == null ? other.getUpdateBy() == null : this.getUpdateBy().equals(other.getUpdateBy()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
             && (this.getUpdateVersion() == null ? other.getUpdateVersion() == null : this.getUpdateVersion().equals(other.getUpdateVersion()))
-            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()));
+            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
+            && (this.getWebSite() == null ? other.getWebSite() == null : this.getWebSite().equals(other.getWebSite()))
+            && (this.getEmail2() == null ? other.getEmail2() == null : this.getEmail2().equals(other.getEmail2()));
     }
 
     @Override
@@ -331,7 +355,7 @@ public class CustomerTEntity extends BaseEntity {
         result = prime * result + ((getAddress1() == null) ? 0 : getAddress1().hashCode());
         result = prime * result + ((getAddress2() == null) ? 0 : getAddress2().hashCode());
         result = prime * result + ((getFax() == null) ? 0 : getFax().hashCode());
-        result = prime * result + ((getEmail() == null) ? 0 : getEmail().hashCode());
+        result = prime * result + ((getEmail1() == null) ? 0 : getEmail1().hashCode());
         result = prime * result + ((getShipLabel() == null) ? 0 : getShipLabel().hashCode());
         result = prime * result + ((getActive() == null) ? 0 : getActive().hashCode());
         result = prime * result + ((getRemark() == null) ? 0 : getRemark().hashCode());
@@ -344,6 +368,8 @@ public class CustomerTEntity extends BaseEntity {
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getUpdateVersion() == null) ? 0 : getUpdateVersion().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
+        result = prime * result + ((getWebSite() == null) ? 0 : getWebSite().hashCode());
+        result = prime * result + ((getEmail2() == null) ? 0 : getEmail2().hashCode());
         return result;
     }
 
@@ -528,15 +554,15 @@ public class CustomerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column CUSTOMER_T.EMAIL
+         * This method sets the value of the database column CUSTOMER_T.EMAIL1
          *
-         * @param email the value for CUSTOMER_T.EMAIL
+         * @param email1 the value for CUSTOMER_T.EMAIL1
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder email(String email) {
-            obj.setEmail(email);
+        public Builder email1(String email1) {
+            obj.setEmail1(email1);
             return this;
         }
 
@@ -710,6 +736,34 @@ public class CustomerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column CUSTOMER_T.WEB_SITE
+         *
+         * @param webSite the value for CUSTOMER_T.WEB_SITE
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder webSite(String webSite) {
+            obj.setWebSite(webSite);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column CUSTOMER_T.EMAIL2
+         *
+         * @param email2 the value for CUSTOMER_T.EMAIL2
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder email2(String email2) {
+            obj.setEmail2(email2);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
          * This method corresponds to the database table CUSTOMER_T
          *
          * @mbg.generated
@@ -813,7 +867,7 @@ public class CustomerTEntity extends BaseEntity {
         address1("ADDRESS1", "address1", "VARCHAR", false),
         address2("ADDRESS2", "address2", "VARCHAR", false),
         fax("FAX", "fax", "VARCHAR", false),
-        email("EMAIL", "email", "VARCHAR", false),
+        email1("EMAIL1", "email1", "VARCHAR", false),
         shipLabel("SHIP_LABEL", "shipLabel", "VARCHAR", false),
         active("ACTIVE", "active", "CHAR", false),
         remark("REMARK", "remark", "VARCHAR", false),
@@ -825,7 +879,9 @@ public class CustomerTEntity extends BaseEntity {
         updateBy("UPDATE_BY", "updateBy", "VARCHAR", false),
         updateTime("UPDATE_TIME", "updateTime", "TIMESTAMP", false),
         updateVersion("UPDATE_VERSION", "updateVersion", "DECIMAL", false),
-        description("DESCRIPTION", "description", "VARCHAR", false);
+        description("DESCRIPTION", "description", "VARCHAR", false),
+        webSite("WEB_SITE", "webSite", "VARCHAR", false),
+        email2("EMAIL2", "email2", "VARCHAR", false);
 
         /**
          * This field was generated by MyBatis Generator.

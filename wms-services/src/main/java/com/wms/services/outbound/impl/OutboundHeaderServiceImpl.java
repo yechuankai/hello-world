@@ -810,7 +810,8 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 							insert.setPhone1(outboundVO.getPhone1());
 							insert.setPhone2(outboundVO.getPhone2());
 							insert.setFax(outboundVO.getFax());
-							insert.setEmail(outboundVO.getEmail());
+							insert.setEmail1(outboundVO.getEmail1());
+							insert.setEmail2(outboundVO.getEmail2());
 						}
 						customers.add(insert);
 						customerService.add(customers);

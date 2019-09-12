@@ -363,7 +363,7 @@
 									labelPosition: 'top'" />
 							</td>
 							<td >
-								<input name="volume" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:4,label:'${web.inventory.volume}',labelPosition:'top'">
+								<input id="volume" name="volume" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:4,label:'${web.inventory.volume}',labelPosition:'top'">
 							</td>
 						 </tr>
 						 <tr>
@@ -372,13 +372,37 @@
 								<input type="hidden" name="packId" id="packId" />
 							</td>
 							<td >
-								<input name="length" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:4,label:'${web.inventory.length}',labelPosition:'top'">
+								<input id="length" name="length" class="lazy-load" lazy-load="easyui-numberbox" value="0" wms:data-options="
+								required:true,
+								precision:4,
+								label:'${web.inventory.length}',
+								labelPosition:'top',
+								onChange(newValue, oldValue){
+									calculate(newValue);
+								}
+								">
 							</td>
 							<td >
-								<input name="width" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:4,label:'${web.inventory.width}',labelPosition:'top'">
+								<input id="width" name="width" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
+								required:true,
+								precision:4,
+								label:'${web.inventory.width}',
+								labelPosition:'top',
+								onChange(newValue, oldValue){
+									calculate(newValue);
+								}
+								">
 							</td>
 							<td >
-								<input name="height" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:4,label:'${web.inventory.height}',labelPosition:'top'">
+								<input id="height" name="height" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
+								required:true,
+								precision:4,
+								label:'${web.inventory.height}',
+								labelPosition:'top',
+								onChange(newValue, oldValue){
+									calculate(newValue);
+								}
+								">
 							</td>
 						 </tr>
 						 <tr>
@@ -537,5 +561,19 @@
     		}
     	});
     });
+    
+    /**
+	 * 根据长、宽、高自动计算体积
+	 **/
+	function calculate() {
+		//var volume = $('#volume').numberbox('getValue');
+		//if (Number(volume) != 0){
+		//	return;
+		//}
+		var length = $('#length').numberbox('getValue');
+		var width = $('#width').numberbox('getValue');
+		var height = $('#height').numberbox('getValue');
+		$('#volume').numberbox('setValue',Number(length) * Number(width) * Number(height));
+	}
 </script>
 </html>

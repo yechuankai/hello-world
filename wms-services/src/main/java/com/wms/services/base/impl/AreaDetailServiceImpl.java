@@ -104,7 +104,7 @@ public class AreaDetailServiceImpl implements IAreaDetailService {
                     .andLocationCodeEqualTo(locationCode);
             Long count = areaDetailDao.countByExample(example);
             if (count > 0) {
-                throw new BusinessServiceException("AreaDetailServiceImpl", "locationCode.record.exists" , new Object[] {locationCode});
+                throw new BusinessServiceException("AreaDetailServiceImpl", "location.record.exists" , new Object[] {locationCode});
             }
 
             AreaDetailTEntity insert = AreaDetailTEntity.builder()

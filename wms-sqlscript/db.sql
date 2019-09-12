@@ -3662,5 +3662,15 @@ comment on column PACK_T.weight_tare_case is '箱包装皮重';
 
 
 
+alter table owner_t add (web_site varchar2(200));
+comment on column owner_t.web_site is '公司网站';
 
+alter table customer_t add (web_site varchar2(200));
+comment on column customer_t.web_site is '公司网站';
+
+alter table supplier_t add (web_site varchar2(200));
+comment on column supplier_t.web_site is '公司网站';
+
+alter table carrier_t add (web_site varchar2(200));
+comment on column carrier_t.web_site is '公司网站';
 

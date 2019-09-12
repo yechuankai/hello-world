@@ -12,7 +12,7 @@
     <result column="ADDRESS1" jdbcType="VARCHAR" property="address1" />
     <result column="ADDRESS2" jdbcType="VARCHAR" property="address2" />
     <result column="FAX" jdbcType="VARCHAR" property="fax" />
-    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="EMAIL1" jdbcType="VARCHAR" property="email1" />
     <result column="ACTIVE" jdbcType="CHAR" property="active" />
     <result column="REMARK" jdbcType="VARCHAR" property="remark" />
     <result column="COMPANY_ID" jdbcType="DECIMAL" property="companyId" />
@@ -24,6 +24,8 @@
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="UPDATE_VERSION" jdbcType="DECIMAL" property="updateVersion" />
     <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="WEB_SITE" jdbcType="VARCHAR" property="webSite" />
+    <result column="EMAIL2" jdbcType="VARCHAR" property="email2" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -122,8 +124,8 @@
   </sql>
   <sql id="Base_Column_List">
     SUPPLIER_ID, SUPPLIER_CODE, SUPPLIER_DESCR, CONTACT1, CONTACT2, PHONE1, PHONE2, ADDRESS1, 
-    ADDRESS2, FAX, EMAIL, ACTIVE, REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
-    CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
+    ADDRESS2, FAX, EMAIL1, ACTIVE, REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
+    CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, WEB_SITE, EMAIL2
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.SupplierTExample" resultMap="BaseResultMap">
     select
@@ -149,19 +151,19 @@
     insert into SUPPLIER_T (SUPPLIER_ID, SUPPLIER_CODE, SUPPLIER_DESCR, 
       CONTACT1, CONTACT2, PHONE1, 
       PHONE2, ADDRESS1, ADDRESS2, 
-      FAX, EMAIL, ACTIVE, REMARK, 
+      FAX, EMAIL1, ACTIVE, REMARK, 
       COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, 
       CREATE_BY, CREATE_TIME, UPDATE_BY, 
-      UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
-      )
+      UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, 
+      WEB_SITE, EMAIL2)
     values (#{supplierId,jdbcType=DECIMAL}, #{supplierCode,jdbcType=VARCHAR}, #{supplierDescr,jdbcType=VARCHAR}, 
       #{contact1,jdbcType=VARCHAR}, #{contact2,jdbcType=VARCHAR}, #{phone1,jdbcType=VARCHAR}, 
       #{phone2,jdbcType=VARCHAR}, #{address1,jdbcType=VARCHAR}, #{address2,jdbcType=VARCHAR}, 
-      #{fax,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{active,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{fax,jdbcType=VARCHAR}, #{email1,jdbcType=VARCHAR}, #{active,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, 
       #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, 
       #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}
-      )
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, 
+      #{webSite,jdbcType=VARCHAR}, #{email2,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.SupplierTEntity">
     insert into SUPPLIER_T
@@ -196,8 +198,8 @@
       <if test="fax != null">
         FAX,
       </if>
-      <if test="email != null">
-        EMAIL,
+      <if test="email1 != null">
+        EMAIL1,
       </if>
       <if test="active != null">
         ACTIVE,
@@ -232,6 +234,12 @@
       <if test="description != null">
         DESCRIPTION,
       </if>
+      <if test="webSite != null">
+        WEB_SITE,
+      </if>
+      <if test="email2 != null">
+        EMAIL2,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="supplierId != null">
@@ -264,8 +272,8 @@
       <if test="fax != null">
         #{fax,jdbcType=VARCHAR},
       </if>
-      <if test="email != null">
-        #{email,jdbcType=VARCHAR},
+      <if test="email1 != null">
+        #{email1,jdbcType=VARCHAR},
       </if>
       <if test="active != null">
         #{active,jdbcType=CHAR},
@@ -299,6 +307,12 @@
       </if>
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="webSite != null">
+        #{webSite,jdbcType=VARCHAR},
+      </if>
+      <if test="email2 != null">
+        #{email2,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -341,8 +355,8 @@
       <if test="record.fax != null">
         FAX = #{record.fax,jdbcType=VARCHAR},
       </if>
-      <if test="record.email != null">
-        EMAIL = #{record.email,jdbcType=VARCHAR},
+      <if test="record.email1 != null">
+        EMAIL1 = #{record.email1,jdbcType=VARCHAR},
       </if>
       <if test="record.active != null">
         ACTIVE = #{record.active,jdbcType=CHAR},
@@ -377,6 +391,12 @@
       <if test="record.description != null">
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       </if>
+      <if test="record.webSite != null">
+        WEB_SITE = #{record.webSite,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email2 != null">
+        EMAIL2 = #{record.email2,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -394,7 +414,7 @@
       ADDRESS1 = #{record.address1,jdbcType=VARCHAR},
       ADDRESS2 = #{record.address2,jdbcType=VARCHAR},
       FAX = #{record.fax,jdbcType=VARCHAR},
-      EMAIL = #{record.email,jdbcType=VARCHAR},
+      EMAIL1 = #{record.email1,jdbcType=VARCHAR},
       ACTIVE = #{record.active,jdbcType=CHAR},
       REMARK = #{record.remark,jdbcType=VARCHAR},
       COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
@@ -405,7 +425,9 @@
       UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
       UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
       UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
-      DESCRIPTION = #{record.description,jdbcType=VARCHAR}
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      WEB_SITE = #{record.webSite,jdbcType=VARCHAR},
+      EMAIL2 = #{record.email2,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -518,7 +540,7 @@
     ADDRESS1 = #{record.address1,jdbcType=VARCHAR}, 
     ADDRESS2 = #{record.address2,jdbcType=VARCHAR}, 
     FAX = #{record.fax,jdbcType=VARCHAR}, 
-    EMAIL = #{record.email,jdbcType=VARCHAR}, 
+    EMAIL1 = #{record.email1,jdbcType=VARCHAR}, 
     ACTIVE = #{record.active,jdbcType=CHAR}, 
     REMARK = #{record.remark,jdbcType=VARCHAR}, 
     COMPANY_ID = #{record.companyId,jdbcType=DECIMAL}, 
@@ -528,7 +550,9 @@
     CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP}, 
     UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR}, 
     UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
-    DESCRIPTION = #{record.description,jdbcType=VARCHAR}
+    DESCRIPTION = #{record.description,jdbcType=VARCHAR}, 
+    WEB_SITE = #{record.webSite,jdbcType=VARCHAR}, 
+    EMAIL2 = #{record.email2,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
     </if>
@@ -573,8 +597,8 @@
         <if test="record.fax != null">
           FAX = #{record.fax,jdbcType=VARCHAR},
         </if>
-        <if test="record.email != null">
-          EMAIL = #{record.email,jdbcType=VARCHAR},
+        <if test="record.email1 != null">
+          EMAIL1 = #{record.email1,jdbcType=VARCHAR},
         </if>
         <if test="record.active != null">
           ACTIVE = #{record.active,jdbcType=CHAR},
@@ -605,6 +629,12 @@
         </if>
         <if test="record.description != null">
           DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+        </if>
+        <if test="record.webSite != null">
+          WEB_SITE = #{record.webSite,jdbcType=VARCHAR},
+        </if>
+        <if test="record.email2 != null">
+          EMAIL2 = #{record.email2,jdbcType=VARCHAR},
         </if>
       </trim>
     </set>

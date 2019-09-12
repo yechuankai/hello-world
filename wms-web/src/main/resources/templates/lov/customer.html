@@ -18,7 +18,8 @@
 								    {field:'address1',hidden:true},
 								    {field:'address2',hidden:true},
 								    {field:'fax',hidden:true},
-								    {field:'email',hidden:true}
+								    {field:'email1',hidden:true},
+								    {field:'email2',hidden:true}
 							    ]]
 							" />
 <script type="text/javascript">
@@ -69,8 +70,11 @@
 		if ($("#fax").length > 0) {
 			$("#fax").textbox('setValue', data.fax);
 		}
-		if ($("#email").length > 0) {
-			$("#email").textbox('setValue', data.email);
+		if ($("#email1").length > 0) {
+			$("#email1").textbox('setValue', data.email1);
+		}
+		if ($("#email2").length > 0) {
+			$("#email2").textbox('setValue', data.email2);
 		}
 	}
 </script>

@@ -207,14 +207,17 @@ public class PutawayRest extends BaseController{
 					.warehouseId(request.getWarehouseId())
 					.companyId(request.getCompanyId())
 					.build();
+			String fromLpnNumber = null;
 			if(LpnTypeEnum.Container.getCode().equals(putaway.getLpnType())){
 				//容器号
 				lpn.setContainerNumber(putaway.getContainerNumber());
 				lpns = lpnService.findByContainerNumber(lpn);
+				fromLpnNumber = putaway.getContainerNumber();
 			}else if(LpnTypeEnum.Carton.getCode().equals(putaway.getLpnType())){
 				//lpn
 				Set<String> lpnNumbers = Sets.newHashSet(putaway.getLpnNumber());
 				lpns = lpnService.findByLpnNumbers(lpn, lpnNumbers);
+				fromLpnNumber = putaway.getLpnNumber();
 			}
 			Set<Long> lpnIds = lpns.stream().map(LpnTEntity::getLpnId).collect(Collectors.toSet());
 			List<InventoryOnhandTEntity> inventoryOnhands = inventoryService.findByLpnId(inventory, lpnIds);
@@ -239,16 +242,19 @@ public class PutawayRest extends BaseController{
 			List<TaskDetailTEntity> taskList = taskService.findByFromLpn(TaskDetailTEntity.builder()
 					.warehouseId(request.getWarehouseId())
 					.companyId(request.getCompanyId())
+					.fromLpnNumber(fromLpnNumber)
 					.build(), TaskStatusEnum.New, TaskStatusEnum.Processing);
 			List<TaskDetailTEntity> updateTask = Lists.newArrayList();
 			taskList.forEach(t -> {
 				TaskDetailTEntity update = TaskDetailTEntity.builder()
 											.warehouseId(request.getWarehouseId())
 											.companyId(request.getCompanyId())
+											.toLocationCode(putaway.getLocationCode())
 											.status(TaskStatusEnum.Completed.getCode())
 											.endTime(new Date())
 											.completeTime(new Date())
 											.userName(request.getUserName())
+											.taskDetailId(t.getTaskDetailId())
 											.build();
 				updateTask.add(update);
 			});

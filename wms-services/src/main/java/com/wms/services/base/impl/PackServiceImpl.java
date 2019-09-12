@@ -1,6 +1,7 @@
 package com.wms.services.base.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.enums.YesNoEnum;
@@ -128,6 +129,8 @@ public class PackServiceImpl implements IPackService {
 		
 		for (PackTEntity p : list) {
 			
+			validate(p);
+			
 			PackTEntity update = PackTEntity.builder()
 					.packDescr(p.getPackDescr())
 					.uom(p.getUom())
@@ -190,8 +193,10 @@ public class PackServiceImpl implements IPackService {
 					.andPackCodeEqualTo(code);
 			Long count = packDao.countByExample(TExample);
 			if (count > 0) {
-				throw new BusinessServiceException("PackServiceImpl", "owner.record.exists" , new Object[] {code}); 
+				throw new BusinessServiceException("PackServiceImpl", "pack.record.exists" , new Object[] {code}); 
 			}
+			
+			validate(p);
 
 			PackTEntity update = PackTEntity.builder()
 					.packId(KeyUtils.getUID())
@@ -239,27 +244,43 @@ public class PackServiceImpl implements IPackService {
 		if (CollectionUtils.isEmpty(packs)){
 			throw new BusinessServiceException("no record add.");
 		}
-		for (PackTEntity w : packs) {
+		for (PackTEntity p : packs) {
 
-			String code = w.getPackCode().toUpperCase();
+			String code = p.getPackCode().toUpperCase();
+			
+			validate(p);
 
 			PackTEntity update = PackTEntity.builder()
 					.packId(KeyUtils.getUID())
 					.packCode(code)
-					.packDescr(w.getPackDescr())
-					.uom(w.getUom())
-					.qty(w.getQty())
-					.uomInner(w.getUomInner())
-					.qtyInner(w.getQtyInner())
-					.uomCase(w.getUomCase())
-					.qtyCase(w.getQtyCase())
-					.active(w.getActive())
-					.remark(w.getRemark())
-					.createBy(w.getUpdateBy())
-                    .updateBy(w.getUpdateBy())
+					.packDescr(p.getPackDescr())
+					.uom(p.getUom())
+					.qty(p.getQty())
+					.uomInner(p.getUomInner())
+					.qtyInner(p.getQtyInner())
+					.uomCase(p.getUomCase())
+					.qtyCase(p.getQtyCase())
+					.volumeInner(p.getVolumeInner())
+					.widthInner(p.getWidthInner())
+					.heightInner(p.getHeightInner())
+					.lengthInner(p.getLengthInner())
+					.weightGrossInner(p.getWeightGrossInner())
+					.weightNetInner(p.getWeightNetInner())
+					.weightTareInner(p.getWeightTareInner())
+					.volumeCase(p.getVolumeCase())
+					.widthCase(p.getWidthCase())
+					.heightCase(p.getHeightCase())
+					.lengthCase(p.getLengthCase())
+					.weightGrossCase(p.getWeightGrossCase())
+					.weightNetCase(p.getWeightNetCase())
+					.weightTareCase(p.getWeightTareCase())
+					.active(p.getActive())
+					.remark(p.getRemark())
+					.createBy(p.getUpdateBy())
+                    .updateBy(p.getUpdateBy())
 					.createTime(new Date())
-					.companyId(w.getCompanyId())
-					.warehouseId(w.getWarehouseId())
+					.companyId(p.getCompanyId())
+					.warehouseId(p.getWarehouseId())
 					.build();
 
 			int row = packDao.insertSelective(update);
@@ -318,6 +339,45 @@ public class PackServiceImpl implements IPackService {
 			return Lists.newArrayList();
 		
 		return packs;
+	}
+	
+	public Boolean validate(PackTEntity pack) {
+		if (StringUtils.isEmpty(pack.getUom()))
+			throw new BusinessServiceException("PackServiceImpl", "uom.isnull" , null); 
+
+		if(BigDecimal.ZERO.compareTo(pack.getQty()) == 0)
+			throw new BusinessServiceException("PackServiceImpl", "pack.uom.qty.zero" , null); 
+		
+		Set<String> uomSet = Sets.newHashSet();
+		uomSet.add(pack.getUom());
+		
+		if (StringUtils.isNotEmpty(pack.getUomInner())) {
+			if(BigDecimal.ZERO.compareTo(pack.getQtyInner()) == 0)
+				throw new BusinessServiceException("PackServiceImpl", "pack.inneruom.qty.zero" , null); 
+			
+			if (pack.getQtyInner().compareTo(pack.getQty()) < 0)
+				throw new BusinessServiceException("PackServiceImpl", "pack.innerqty.lessthan.qty" , null); 
+			
+			if (uomSet.contains(pack.getUomInner()))
+				throw new BusinessServiceException("PackServiceImpl", "pack.uom.repeat" , null); 
+			
+			uomSet.add(pack.getUomInner());
+		}
+		
+		if (StringUtils.isNotEmpty(pack.getUomCase())) {
+			if(BigDecimal.ZERO.compareTo(pack.getQtyCase()) == 0)
+				throw new BusinessServiceException("PackServiceImpl", "pack.caseuom.qty.zero" , null); 
+			
+			if (pack.getQtyCase().compareTo(pack.getQtyInner()) < 0)
+				throw new BusinessServiceException("PackServiceImpl", "pack.caseqty.lessthan.innerqty" , null); 
+			
+			if (uomSet.contains(pack.getUomCase()))
+				throw new BusinessServiceException("PackServiceImpl", "pack.uom.repeat" , null); 
+		}
+		
+		
+		
+		return Boolean.TRUE;
 	}
 
 	@Override

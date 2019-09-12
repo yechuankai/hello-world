@@ -66,9 +66,11 @@
                         <input id="contact1" name="contact1" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.contact1}',labelPosition:'top'" />
                     </td>
                     <td width="200px">
-                        <input id="contact2" name="contact2" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.contact2}',labelPosition:'top'" />
+                        <input id="phone1" name="phone1" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.phone1}',labelPosition:'top'" />
                     </td>
-                    <td></td>
+                    <td>
+                    	<input id="email1" name="email1" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.email1}',labelPosition:'top'" />
+                    </td>
                 </tr>
                 <tr>
                     <td>
@@ -81,31 +83,34 @@
 							" />
                     </td>
                     <td >
-                        <input id="phone1" name="phone1" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.phone1}',labelPosition:'top'" />
+                        <input id="contact2" name="contact2" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.contact2}',labelPosition:'top'" />
                     </td>
                     <td >
                         <input id="phone2" name="phone2" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.phone2}',labelPosition:'top'" />
                     </td>
-                    <td></td>
+                    <td>
+                    	<input id="email2" name="email2" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.email2}',labelPosition:'top'" />
+                    </td>
                 </tr>
                 <tr>
-                    <td>
-                        <input id="address1" name="contact2" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.address1}',labelPosition:'top'" />
+                    <td colspan="4">
+                        <input id="address1" name="contact2" class="lazy-load"  lazy-load="easyui-textbox" style="width: 600px;"  wms:data-options="label:'${web.label.address1}',labelPosition:'top'" />
                     </td>
-                    <td>
-                        <input id="address2" name="address2" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.address2}',labelPosition:'top'" />
-                    </td>
-                    <td >
-                        <input id="fax" name="fax" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.fax}',labelPosition:'top'" />
-                    </td>
-                    <td >
-                        <input id="email" name="email" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.email}',labelPosition:'top'" />
-                    </td>
+                </tr>
+                <tr >
+                	 <td colspan="4">
+                        <input id="address2" name="address2" class="lazy-load"  lazy-load="easyui-textbox" style="width: 600px;" wms:data-options="label:'${web.label.address2}',labelPosition:'top'" />
+                	 </td>
                 </tr>
             </table>
         </div>
         <div wms:title="${web.label.transport}" >
             <table border="0" >
+                <tr>
+                	<td>
+                	   	<input id="carrierCode" name="carrierCode" th:replace="lov/carrier" />
+                	</td>
+                </tr>
                 <tr>
                     <td width="200px">
                         <input name="driver" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.carrierdriver}',labelPosition:'top'" />
@@ -116,11 +121,6 @@
                     <td width="200px">
                         <input id="containerNumber" name="containerNumber" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="label:'${web.label.containernumber}',labelPosition:'top'" />
                     </td>
-                </tr>
-                <tr>
-                	<td>
-                	   	<input id="carrierCode" name="carrierCode" th:replace="lov/carrier" />
-                	</td>
                 </tr>
             </table>
         </div>

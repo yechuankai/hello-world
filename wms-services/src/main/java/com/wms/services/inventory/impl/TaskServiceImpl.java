@@ -193,7 +193,7 @@ public class TaskServiceImpl implements ITaskService {
 
 		for (TaskDetailTEntity task : list) {
 
-			String locationCode =task.getToLocationCode().toUpperCase();
+			String locationCode = task.getToLocationCode().toUpperCase();
 
 			LocationTEntity location = locationService.find(LocationTEntity.builder()
 					.locationCode(locationCode)

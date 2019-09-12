@@ -40,7 +40,7 @@ public class OutboundHeaderTEntity extends BaseEntity {
 
     private String fax;
 
-    private String email;
+    private String email1;
 
     private String shipLabel;
 
@@ -81,6 +81,8 @@ public class OutboundHeaderTEntity extends BaseEntity {
     private Long carrierId;
 
     private String carrierCode;
+
+    private String email2;
 
     public Long getOutboundHeaderId() {
         return outboundHeaderId;
@@ -218,12 +220,12 @@ public class OutboundHeaderTEntity extends BaseEntity {
         this.fax = fax == null ? null : fax.trim();
     }
 
-    public String getEmail() {
-        return email;
+    public String getEmail1() {
+        return email1;
     }
 
-    public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
+    public void setEmail1(String email1) {
+        this.email1 = email1 == null ? null : email1.trim();
     }
 
     public String getShipLabel() {
@@ -397,6 +399,14 @@ public class OutboundHeaderTEntity extends BaseEntity {
         this.carrierCode = carrierCode == null ? null : carrierCode.trim();
     }
 
+    public String getEmail2() {
+        return email2;
+    }
+
+    public void setEmail2(String email2) {
+        this.email2 = email2 == null ? null : email2.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -420,7 +430,7 @@ public class OutboundHeaderTEntity extends BaseEntity {
         sb.append(", address1=").append(address1);
         sb.append(", address2=").append(address2);
         sb.append(", fax=").append(fax);
-        sb.append(", email=").append(email);
+        sb.append(", email1=").append(email1);
         sb.append(", shipLabel=").append(shipLabel);
         sb.append(", carNumber=").append(carNumber);
         sb.append(", driver=").append(driver);
@@ -441,6 +451,7 @@ public class OutboundHeaderTEntity extends BaseEntity {
         sb.append(", description=").append(description);
         sb.append(", carrierId=").append(carrierId);
         sb.append(", carrierCode=").append(carrierCode);
+        sb.append(", email2=").append(email2);
         sb.append("]");
         return sb.toString();
     }
@@ -474,7 +485,7 @@ public class OutboundHeaderTEntity extends BaseEntity {
             && (this.getAddress1() == null ? other.getAddress1() == null : this.getAddress1().equals(other.getAddress1()))
             && (this.getAddress2() == null ? other.getAddress2() == null : this.getAddress2().equals(other.getAddress2()))
             && (this.getFax() == null ? other.getFax() == null : this.getFax().equals(other.getFax()))
-            && (this.getEmail() == null ? other.getEmail() == null : this.getEmail().equals(other.getEmail()))
+            && (this.getEmail1() == null ? other.getEmail1() == null : this.getEmail1().equals(other.getEmail1()))
             && (this.getShipLabel() == null ? other.getShipLabel() == null : this.getShipLabel().equals(other.getShipLabel()))
             && (this.getCarNumber() == null ? other.getCarNumber() == null : this.getCarNumber().equals(other.getCarNumber()))
             && (this.getDriver() == null ? other.getDriver() == null : this.getDriver().equals(other.getDriver()))
@@ -494,7 +505,8 @@ public class OutboundHeaderTEntity extends BaseEntity {
             && (this.getUpdateVersion() == null ? other.getUpdateVersion() == null : this.getUpdateVersion().equals(other.getUpdateVersion()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
             && (this.getCarrierId() == null ? other.getCarrierId() == null : this.getCarrierId().equals(other.getCarrierId()))
-            && (this.getCarrierCode() == null ? other.getCarrierCode() == null : this.getCarrierCode().equals(other.getCarrierCode()));
+            && (this.getCarrierCode() == null ? other.getCarrierCode() == null : this.getCarrierCode().equals(other.getCarrierCode()))
+            && (this.getEmail2() == null ? other.getEmail2() == null : this.getEmail2().equals(other.getEmail2()));
     }
 
     @Override
@@ -518,7 +530,7 @@ public class OutboundHeaderTEntity extends BaseEntity {
         result = prime * result + ((getAddress1() == null) ? 0 : getAddress1().hashCode());
         result = prime * result + ((getAddress2() == null) ? 0 : getAddress2().hashCode());
         result = prime * result + ((getFax() == null) ? 0 : getFax().hashCode());
-        result = prime * result + ((getEmail() == null) ? 0 : getEmail().hashCode());
+        result = prime * result + ((getEmail1() == null) ? 0 : getEmail1().hashCode());
         result = prime * result + ((getShipLabel() == null) ? 0 : getShipLabel().hashCode());
         result = prime * result + ((getCarNumber() == null) ? 0 : getCarNumber().hashCode());
         result = prime * result + ((getDriver() == null) ? 0 : getDriver().hashCode());
@@ -539,6 +551,7 @@ public class OutboundHeaderTEntity extends BaseEntity {
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getCarrierId() == null) ? 0 : getCarrierId().hashCode());
         result = prime * result + ((getCarrierCode() == null) ? 0 : getCarrierCode().hashCode());
+        result = prime * result + ((getEmail2() == null) ? 0 : getEmail2().hashCode());
         return result;
     }
 
@@ -821,15 +834,15 @@ public class OutboundHeaderTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OUTBOUND_HEADER_T.EMAIL
+         * This method sets the value of the database column OUTBOUND_HEADER_T.EMAIL1
          *
-         * @param email the value for OUTBOUND_HEADER_T.EMAIL
+         * @param email1 the value for OUTBOUND_HEADER_T.EMAIL1
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder email(String email) {
-            obj.setEmail(email);
+        public Builder email1(String email1) {
+            obj.setEmail1(email1);
             return this;
         }
 
@@ -1115,6 +1128,20 @@ public class OutboundHeaderTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column OUTBOUND_HEADER_T.EMAIL2
+         *
+         * @param email2 the value for OUTBOUND_HEADER_T.EMAIL2
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder email2(String email2) {
+            obj.setEmail2(email2);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
          * This method corresponds to the database table OUTBOUND_HEADER_T
          *
          * @mbg.generated
@@ -1225,7 +1252,7 @@ public class OutboundHeaderTEntity extends BaseEntity {
         address1("ADDRESS1", "address1", "VARCHAR", false),
         address2("ADDRESS2", "address2", "VARCHAR", false),
         fax("FAX", "fax", "VARCHAR", false),
-        email("EMAIL", "email", "VARCHAR", false),
+        email1("EMAIL1", "email1", "VARCHAR", false),
         shipLabel("SHIP_LABEL", "shipLabel", "VARCHAR", false),
         carNumber("CAR_NUMBER", "carNumber", "VARCHAR", false),
         driver("DRIVER", "driver", "VARCHAR", false),
@@ -1245,7 +1272,8 @@ public class OutboundHeaderTEntity extends BaseEntity {
         updateVersion("UPDATE_VERSION", "updateVersion", "DECIMAL", false),
         description("DESCRIPTION", "description", "VARCHAR", false),
         carrierId("CARRIER_ID", "carrierId", "DECIMAL", false),
-        carrierCode("CARRIER_CODE", "carrierCode", "VARCHAR", false);
+        carrierCode("CARRIER_CODE", "carrierCode", "VARCHAR", false),
+        email2("EMAIL2", "email2", "VARCHAR", false);
 
         /**
          * This field was generated by MyBatis Generator.

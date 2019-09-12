@@ -243,10 +243,10 @@
             }).dialog('open');
             $(panel).find('form').form('reset');
             $('#outboundHeaderId').val("");
-            
             loadCustomerLov(null,function(data){
             	setCustomerResult(data);
-            })
+            });
+            $('.tooltip').remove();
         });
 
         $('.viewDetail').click(function(){

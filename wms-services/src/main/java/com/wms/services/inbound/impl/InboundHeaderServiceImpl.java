@@ -524,11 +524,16 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 					.inboundHeaderId(d.getInboundHeaderId())
 					.build();
 			List<InboundDetailTEntity> detailList = inboundDetailService.findByHeaderId(detail);
+			int closeCount = 0;
 			if(CollectionUtils.isNotEmpty(detailList)) {
-				detailList.forEach(v -> {
+				for (InboundDetailTEntity v : detailList) {
 					if (InboundStatusEnum.Closed.getCode().equals(v.getStatus())
 							|| InboundStatusEnum.Cancel.getCode().equals(v.getStatus())) {
 						throw new BusinessServiceException("InboundHeaderServiceImpl", "inbound.line.status.not.process" ,  new Object[] {v.getLineNumber()});
+					}
+					if (!(InboundStatusEnum.InReceive.getCode().equals(v.getStatus())
+							|| InboundStatusEnum.Receive.getCode().equals(v.getStatus()))) {
+						continue;
 					}
 					v.setUpdateBy(request.getUserName());
                     v.setStatus(InboundStatusEnum.Closed.getCode());
@@ -536,9 +541,11 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
                     v.setWarehouseId(request.getWarehouseId());
                     v.setCompanyId(request.getCompanyId());
 					inboundDetailService.modify(v);
-				});
-
+					closeCount ++;
+				}
 			}
+			if (closeCount == 0)
+				throw new BusinessServiceException("InboundHeaderServiceImpl", "inbound.close.no.line" ,  new Object[] {d.getInboundNumber()});
 
 			d.setStatus(InboundStatusEnum.Closed.getCode());
 			d.setUpdateBy(request.getUserName());

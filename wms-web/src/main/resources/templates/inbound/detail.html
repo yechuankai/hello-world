@@ -156,7 +156,14 @@
 					</tr>
 					<tr>
 						<td >
-							<input name="uom" id="uom" class="lazy-load" lazy-load="easyui-combobox" wms:data-options="label:'${web.label.uom}',labelPosition:'top',required:true,panelHeight:100" />
+							<input name="uom" id="uom" class="lazy-load" lazy-load="easyui-combobox" wms:data-options="
+							label:'${web.label.uom}',
+							labelPosition:'top',
+							required:true,
+							panelHeight:100,
+							onChange(newValue, oldValue){
+								calculate(undefined, newValue);
+							}" />
 						</td>
 						<td>
 							<input id="uomQuantityReceive" name="uomQuantityReceive" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.label.quantityreceive}',labelPosition:'top',required:true,precision:4" />
@@ -288,8 +295,12 @@
 			}
 			loadSkuLov({ownerId:owner}, function(data){
 				setSkuResult(data);
-				skuData=data;
-				loadPackLov({packId:data.packId});
+				skuData = data;
+				//loadPackLov({packId:data.packId});
+				loadPackLov({}, function(data){
+					packData = data;
+					setPackResult(data);
+				});
 				$("#packCode").combo('setValue', data.packCode)
 							.combo('setText', data.packCode);
 				
@@ -305,7 +316,8 @@
 			loadPutawayStrategyLov();
 			loadLocationLov();
 
-			$("#locationCode").combo('setValue', 'STAGE')
+			$("#locationCode")
+			.combo('setValue', 'STAGE')
 			.combo('setText', 'STAGE');
 			$('#detailAddButton').show();
 			$('#detailEditButton').hide();
@@ -416,6 +428,7 @@
 					showError(data.msg);
 					return;
 				}
+				debugger;
 				data =data.rows[0];
 				packData=data;
 				var comData = [];
@@ -545,26 +558,60 @@
 	/**
 	 * 根据预期量计算毛重、净重、皮重、体积
 	 **/
-	function calculate(quantityExpected) {
-		if(null==packData || null == skuData){
+	function calculate(quantityExpected, uom) {
+		if(null == packData || null == skuData){
 			return;
 		}
-		var uom=$("#uom").combobox("getValue");
+		if (quantityExpected == undefined){
+			quantityExpected = $('#uomQuantityExpected').numberbox('getValue');
+		}
+		if (uom == undefined){
+			uom = $("#uom").combobox("getValue");
+		}
+		/* 
+		//仅按货品记录计算
 		switch (uom) {
 			case packData.uom:
-				quantityExpected=Number(quantityExpected)*Number(packData.qty);
+				quantityExpected = Number(quantityExpected) * Number(packData.qty);
 				break;
 			case packData.uomInner:
-				quantityExpected=Number(quantityExpected)*Number(packData.qtyInner);
+				quantityExpected = Number(quantityExpected) * Number(packData.qtyInner);
 				break;
 			case packData.uomCase:
-				quantityExpected=Number(quantityExpected)*Number(packData.qtyCase);
+				quantityExpected = Number(quantityExpected) * Number(packData.qtyCase);
 				break;
 		}
 		$('#weightGross').numberbox('setValue',Number(skuData.weightGross)*quantityExpected);
 		$('#weightNet').numberbox('setValue',Number(skuData.weightNet)*quantityExpected);
 		$('#weightTare').numberbox('setValue',Number(skuData.weightTare)*quantityExpected);
 		$('#volume').numberbox('setValue',Number(skuData.volume)*quantityExpected);
+		*/
+		debugger;
+		//按包装计算
+		switch (uom) {
+			case packData.uom:
+				quantityExpected = Number(quantityExpected) * Number(packData.qty);
+				$('#weightGross').numberbox('setValue', Number(skuData.weightGross) * quantityExpected);
+				$('#weightNet').numberbox('setValue', Number(skuData.weightNet) * quantityExpected);
+				$('#weightTare').numberbox('setValue', Number(skuData.weightTare) * quantityExpected);
+				$('#volume').numberbox('setValue', Number(skuData.volume) * quantityExpected);
+				break;
+			case packData.uomInner:
+				quantityExpected = Number(quantityExpected) * 1;
+				$('#weightGross').numberbox('setValue', Number(packData.weightGrossInner) * quantityExpected);
+				$('#weightNet').numberbox('setValue', Number(packData.weightNetInner) * quantityExpected);
+				$('#weightTare').numberbox('setValue', Number(packData.weightTareInner) * quantityExpected);
+				$('#volume').numberbox('setValue', Number(packData.volumeInner) * quantityExpected);
+				break;
+			case packData.uomCase:
+				quantityExpected = Number(quantityExpected) * 1;
+				$('#weightGross').numberbox('setValue', Number(packData.weightGrossCase) * quantityExpected);
+				$('#weightNet').numberbox('setValue', Number(packData.weightNetCase) * quantityExpected);
+				$('#weightTare').numberbox('setValue', Number(packData.weightTareCase) * quantityExpected);
+				$('#volume').numberbox('setValue', Number(packData.volumeCase) * quantityExpected);
+				break;
+		}
+		
 	}
 	
 	function detailEditable(status) {
