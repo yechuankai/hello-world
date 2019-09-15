@@ -488,8 +488,9 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 									.warehouseId(tran.getWarehouseId())
 									.companyId(tran.getCompanyId())
 									.build(), skus);
-		Map<String, SkuTEntity> skuMap = list.stream().collect( 
-			      Collectors.toMap(SkuTEntity::getSkuCode, (l) -> l)); 
+		Map<String, SkuTEntity> skuMap = list.stream().filter(v -> 
+			tran.getOwnerMap().containsKey(v.getOwnerCode())  //必须相同货主
+		).collect(Collectors.toMap(SkuTEntity::getSkuCode,  (l) -> l)); 
 		return skuMap;
 	}
 	private Map<String, OwnerTEntity> findOwner(InventoryTranVO tran, Set<String> owners ){

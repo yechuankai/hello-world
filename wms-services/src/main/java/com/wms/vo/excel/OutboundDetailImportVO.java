@@ -56,11 +56,11 @@ public class OutboundDetailImportVO extends AbstractExcelModel {
     @Excel(name = "address2")
     private String address2;
 
-    @Excel(name = "fax")
-    private String fax;
-
-    @Excel(name = "email")
-    private String email;
+    @Excel(name = "email1")
+    private String email1;
+    
+    @Excel(name = "email2")
+    private String email2;
 
     @Excel(name = "shipLabel")
     private String shipLabel;
@@ -258,23 +258,23 @@ public class OutboundDetailImportVO extends AbstractExcelModel {
         this.address2 = address2;
     }
 
-    public String getFax() {
-        return fax;
-    }
+    public String getEmail1() {
+		return email1;
+	}
 
-    public void setFax(String fax) {
-        this.fax = fax;
-    }
+	public void setEmail1(String email1) {
+		this.email1 = email1;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public String getEmail2() {
+		return email2;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setEmail2(String email2) {
+		this.email2 = email2;
+	}
 
-    public Long getLineNumber() {
+	public Long getLineNumber() {
         return lineNumber;
     }
 

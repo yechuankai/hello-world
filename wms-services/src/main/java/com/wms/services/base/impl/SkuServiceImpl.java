@@ -92,6 +92,12 @@ public class SkuServiceImpl implements ISkuService, IExcelService<SkuVO> {
 		.andCompanyIdEqualTo(sku.getCompanyId())
 		.andSkuCodeIn(Lists.newArrayList(codes));
 		
+		if (StringUtils.isNotEmpty(sku.getOwnerCode()))
+			criteria.andOwnerCodeEqualTo(sku.getOwnerCode());
+		
+		if (sku.getOwnerId() != null)
+			criteria.andOwnerIdEqualTo(sku.getSkuId());
+		
 		List<SkuTEntity> skus = skuDao.selectByExample(example);
 		
 		return skus;
@@ -198,6 +204,7 @@ public class SkuServiceImpl implements ISkuService, IExcelService<SkuVO> {
 			codes.add(sku.getSkuCode());
 			sku.setCompanyId(request.getCompanyId());
 			sku.setWarehouseId(request.getWarehouseId());
+			sku.setOwnerCode(skuVO.getOwnerCode());
 			List<SkuTEntity> skus =findBySkuCodes(sku,codes);
 
 			List<SkuTEntity> updates=Lists.newArrayList();

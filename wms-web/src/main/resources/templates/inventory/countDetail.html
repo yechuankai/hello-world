@@ -105,6 +105,36 @@
     </table>
 </div>
 <script type="text/javascript" th:inline="text">
+	var detailEditData;
+	var detailFilterRules = [{
+		field:'createTime',
+		type:'datebox',
+		op:['contains','less','greater']
+	},
+	{
+		field:'updateTime',
+		type:'datebox',
+		op:['contains','less','greater']
+	},{
+		field:'status',
+		type:'combobox',
+		options:{
+			panelHeight:'auto',
+			data:getFilterCodelkupValue('COUNTSTATUS'),
+			onChange:function(value){
+				if (value == '---' || value == ''){
+					$('#countDetailTable').datagrid('removeFilterRule', 'status');
+				} else {
+					$('#countDetailTable').datagrid('addFilterRule', {
+						field: 'status',
+						op: 'equal',
+						value: value
+					});
+				}
+				$('#countDetailTable').datagrid('doFilter');
+			}
+		}
+	}];
 
     function refreshCountDetail(data) {
         var countDetailTableId = '#countDetailTable';
@@ -117,7 +147,10 @@
         $(countDetailTableId).datagrid({
             url: url,
             queryParams: baseData,
-            sort: 'lineNumber'
-        }).datagrid('clearChecked');
+            sort: 'lineNumber',
+            filterPosition: 'top',
+			filterCache: [],
+			filterRules: []
+        }).datagrid('clearChecked').datagrid('enableFilter', detailFilterRules);;
     }
 </script>

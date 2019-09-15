@@ -191,17 +191,20 @@ public class AllocateServiceImpl implements IAllocateService , IExcelService<All
     }
     
     @Override
-    public List<AllocateTEntity> findBySkuAndLocation(Long warehouseId,Long companyId,Set<Long> skuIds,Set<Long> locationIds) {
+    public List<AllocateTEntity> findBySkuAndLocation(AllocateTEntity allocate, Set<Long> skuIds,Set<Long> locationIds) {
+    	if (CollectionUtils.isEmpty(skuIds))
+    		return Lists.newArrayList();
+    	
     	AllocateTExample example = new AllocateTExample();
     	Criteria criteria = example.createCriteria();
     	criteria
     			.andDelFlagEqualTo(YesNoEnum.No.getCode())
-    			.andCompanyIdEqualTo(companyId)
-    			.andWarehouseIdEqualTo(warehouseId)
+    			.andCompanyIdEqualTo(allocate.getCompanyId())
+    			.andWarehouseIdEqualTo(allocate.getWarehouseId())
     			.andAllocateStrategyTypeEqualTo(AllocateStrategyTypeEnum.Soft.getCode())
     			.andSkuIdIn(Lists.newArrayList(skuIds));
     
-    	if (locationIds != null && locationIds.size() != 0) {
+    	if (CollectionUtils.isNotEmpty(locationIds)) {
     		criteria.andLocationIdIn(Lists.newArrayList(locationIds));
 		}
     	List<AllocateTEntity> results = allocateDao.selectByExample(example);

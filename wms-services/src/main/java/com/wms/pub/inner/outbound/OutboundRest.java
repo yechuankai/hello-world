@@ -120,6 +120,12 @@ public class OutboundRest extends BaseController{
 				OutboundHeaderTEntity header = outboundService.find(d);
 				returnList.add(header);
 			});
+			//只有一个单据的情况下，提示库存不足
+			if (returnList.size() == 1) {
+				if (!OutboundStatusEnum.Picked.getCode().equals(returnList.get(0).getStatus())) {
+					return success(returnList, "pick.not.all");
+				}
+			}
 			return success(returnList);
 		} catch (Exception e) {
 			return fail(e.getMessage());
@@ -156,6 +162,12 @@ public class OutboundRest extends BaseController{
 				OutboundHeaderTEntity header = outboundService.find(d);
 				returnList.add(header);
 			});
+			//只有一个单据的情况下，提示库存不足
+			if (returnList.size() == 1) {
+				if (!OutboundStatusEnum.Shiped.getCode().equals(returnList.get(0).getStatus())) {
+					return success(returnList, "ship.not.all");
+				}
+			}
 			return success(returnList);
 		} catch (Exception e) {
 			return fail(e.getMessage());

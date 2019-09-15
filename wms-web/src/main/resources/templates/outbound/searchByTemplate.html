@@ -1,42 +1,69 @@
-<div class="easyui-layout" wms:title="${web.label.outboundlist.title}" id="outboundsLayout" style="width: 100%;height: 100%;display: none;" data-options="fix:true">
-     <table id="outbounds" wms:title="${web.label.outboundlist.title}" class="easyui-datagrid"
+<div class="easyui-layout" wms:title="${web.label.outboundlist.title}" id="outboundsLayout" style="width: 800px;height: 500px;display: none;" data-options="fix:true">
+     <table id="outbounds" class="easyui-datagrid"
             data-options="rownumbers:true,
-			  toollbar:'#waveTool',
+			  toolbar:'#waveTool',
 			  collapsible:true,
-			  fit:true">
+			  fit:true,
+			  pageSize: 10,
+			  pageList: [10,50,100,500,1000],
+			  multiSort: false,
+				remoteSort: false
+				">
+         <thead  data-options="frozen:true">
+	         <tr>
+	         	 <th field="outboundHeaderId" data-options="checkbox:true"></th>
+	         </tr>
+         </thead>
          <thead>
-         <th field="outboundHeaderId" data-options="checkbox:true"></th>
-         <th field="outboundNumber" width="100" wms:text="${web.label.outboundnumber}"
-             data-options="sortable:true">outboundNumber
-         </th>
-         <th field="sourceNumber" width="100" wms:text="${web.label.sourcenumber}">sourceNumber</th>
-         <th field="type" width="80" wms:text="${web.label.type}" data-options="
-				sortable:true,
-				formatter:function(value,row){
-					return getCodelkupValue('OUTBOUNDTYPE',value);
-				}
-			">type
-         </th>
-         <th field="status" width="80" wms:text="${web.label.status}" data-options="
-				sortable:true,
-				formatter:function(value,row){
-					return getCodelkupValue('OUTBOUNDSTATUS',value);
-				}
-			">status
-         </th>
-         <th field="ownerCode" width="80" wms:text="${web.label.owner}">ownerCode</th>
-         <th field="customerCode" width="80" wms:text="${web.label.customercode}">customerCode</th>
-         <th field="expectedoutbounddate" width="130" wms:text="${web.label.expectedoutbounddate}">
-             expectedoutbounddate
-         </th>
-         <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+         	<tr>
+		         <th field="outboundNumber" width="130" wms:text="${web.label.outboundnumber}"
+		             data-options="sortable:true">outboundNumber
+		         </th>
+		         <th field="sourceNumber" width="100" wms:text="${web.label.sourcenumber}">sourceNumber</th>
+		         <th field="type" width="80" wms:text="${web.label.type}" data-options="
+						sortable:true,
+						formatter:function(value,row){
+							return getCodelkupValue('OUTBOUNDTYPE',value);
+						}
+					">type
+		         </th>
+		         <th field="status" width="80" wms:text="${web.label.status}" data-options="
+						sortable:true,
+						formatter:function(value,row){
+							return getCodelkupValue('OUTBOUNDSTATUS',value);
+						}
+					">status
+		         </th>
+		         <th field="ownerCode" width="80" wms:text="${web.label.owner}">ownerCode</th>
+		         <th field="customerCode" width="80" wms:text="${web.label.customercode}">customerCode</th>
+		         <th field="carrierCode" width="80" wms:text="${web.label.carrier}">carrierCode</th>
+		         <th field="expectedoutbounddate" width="130" wms:text="${web.label.expectedoutbounddate}">
+		             expectedoutbounddate
+		         </th>
+		         <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+                 <th field="createTime" width="130" wms:text="${web.label.createtime}"
+                     data-options="sortable:true">createTime
+                 </th>
+                 <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+                 <th field="updateTime" width="130" wms:text="${web.label.updatetime}"
+                     data-options="sortable:true">updateTime
+                 </th>
+		      </tr>
          </thead>
      </table>
  </div>
- <div id="waveTool">
- 	skjafjksdkj
+ <div id="waveTool" style="padding-left: 20px;">
+ 	<a href="#"  class="easyui-linkbutton" onclick="createWave()"  wms:text="${web.label.createwave}" >Create Wave</a>
+ 	<a href="#"  class="easyui-linkbutton" onclick="remove()"  wms:text="${web.label.delete}" >Delete</a>
  </div>
 <script type="text/javascript">
+	var gridData = [];
+	function loadData(){
+		$("#outbounds").datagrid({
+			loadFilter:pagerFilter
+		}).datagrid('loadData', gridData);
+	}
+	
 	/*自定义前端分页插件*/
 	function pagerFilter(data){
 		if (typeof data.length == 'number' && typeof data.splice == 'function'){	// is array
@@ -69,25 +96,57 @@
 	}
 
 	/*通过模板id显示*/
-    function showById(templateId){
-    	$("#outboundsLayout").dialog({
-    		 closed: true,
-		    modal: true,
-		    fix: true,
-		    width:800,
-		    height:450
-    	}).dialog('open');
-    	var baseData = getBaseData();
-		baseData.waveBuildId = templateId;
+    function findOutbound(template){
+    	var baseData = getBaseData(template);
+    	loading();
     	$.post({
-    		url:getServiceUrl() + "/services/inner/waveTemplate/findByTemplate",
+    		url:getServiceUrl() + "/services/inner/outbound/waveTemplate/findOutbound",
     		data:baseData,
     		success:function(data){
-    			var gridData = returnData(data);
-    			$("#outbounds").datagrid({
-    				loadFilter:pagerFilter
-    			}).datagrid('loadData',gridData);
+    			var rdata = returnData(data);
+    			closeLoading();
+    			gridData = rdata.data;
+    			loadData();
+    			$("#outboundsLayout").dialog({
+    	    		closed: true,
+    			    modal: true,
+    			    fix: true
+    	    	}).dialog('open');
     		}
     	});
     }
+	
+	function remove(){
+		var checkedRows = $('#outbounds').datagrid('getChecked');
+		if (checkedRows.length == 0) {
+			showError($.locale.selectOneRow);
+			return;
+		}
+		confirmMsg( $.locale.deleteOneRow,{row:checkedRows.length}, function(r){
+			if (!r){
+				return;
+			}
+			var gridOpt = $('#outbounds').datagrid('options');
+			var pageNumber = gridOpt.pageNumber;
+			var pageSize = gridOpt.pageSize;
+			var arrIndex = ((pageNumber - 1) * pageSize);
+			var total = 0;
+			checkedRows.forEach(function(row,index){
+				var rowindex = $('#outbounds').datagrid('getRowIndex', row);
+				rowindex = arrIndex + rowindex - total;
+				debugger;
+				gridData.splice(rowindex, 1);
+				total = total + 1;
+			});
+			loadData();
+		});
+	}
+	
+	function createWave(){
+		
+		
+		
+	}
+	
+	
 </script>

@@ -3203,7 +3203,7 @@ create table wave_build_t (
 wave_build_id number,
 build_code varchar2(50),
 build_descr varchar2(200),
-ware_type varchar2(50),
+wave_type varchar2(50),
 remark varchar2(500),
   company_id         number        default '0',
   warehouse_id       number        default '0',
@@ -3221,7 +3221,7 @@ comment on table wave_build_t is '波次模板';
 comment on column wave_build_t.wave_build_id is '波次模板ID';
 comment on column wave_build_t.build_code is '代码';
 comment on column wave_build_t.build_descr is '描述';
-comment on column wave_build_t.ware_type is '波次类型';
+comment on column wave_build_t.wave_type is '波次类型';
 comment on column wave_build_t.remark is '备注';
 comment on column wave_build_t.company_id      is '公司ID';
 comment on column wave_build_t.warehouse_id    is '仓库ID';
@@ -3673,4 +3673,24 @@ comment on column supplier_t.web_site is '公司网站';
 
 alter table carrier_t add (web_site varchar2(200));
 comment on column carrier_t.web_site is '公司网站';
+
+alter table customer_t rename column email to email1;
+alter table customer_t add (email2 varchar2(100));
+comment on column customer_t.email2 is '邮箱2';
+
+alter table supplier_t rename column email to email1;
+alter table supplier_t add (email2 varchar2(100));
+comment on column supplier_t.email2 is '邮箱2';
+
+alter table owner_t rename column email to email1;
+alter table owner_t add (email2 varchar2(100));
+comment on column carrier_t.email2 is '邮箱2';
+
+alter table carrier_t rename column email to email1;
+alter table carrier_t add (email2 varchar2(100));
+comment on column carrier_t.email2 is '邮箱2';
+
+alter table outbound_header_t rename column email to email1;
+alter table outbound_header_t add (email2 varchar2(100));
+comment on column outbound_header_t.email2 is '邮箱2';
 

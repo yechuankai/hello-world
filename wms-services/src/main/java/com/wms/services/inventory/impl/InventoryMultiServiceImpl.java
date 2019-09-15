@@ -25,7 +25,7 @@ import com.wms.services.outbound.IAllocateService;
 import com.wms.vo.InventoryMultiCountVo;
 
 @Service
-public class InventroyMultiServiceImpl implements IInventoryMultiService{
+public class InventoryMultiServiceImpl implements IInventoryMultiService{
 	
 	private static final String exp_1 = "%";
 	private static final String exp_2 = "*";
@@ -41,7 +41,10 @@ public class InventroyMultiServiceImpl implements IInventoryMultiService{
 	public List<InventoryMultiCountVo> selectByLocation(PageRequest request) {
 		replaceExpression(request);
 		List<InventoryMultiCountVo> list = inventoryMultiDao.selectByLocation(request);
-		fitMultiSoftQuantityLocation(request.getWarehouseId(), request.getCompanyId(), list);
+		fitMultiSoftQuantityLocation(AllocateTEntity.builder().
+				warehouseId(request.getWarehouseId()).
+				companyId(request.getCompanyId())
+				.build(), list);
 		return list;
 	}
 
@@ -55,7 +58,10 @@ public class InventroyMultiServiceImpl implements IInventoryMultiService{
 	public List<InventoryMultiCountVo> selectBySku(PageRequest request) {
 		replaceExpression(request);
 		List<InventoryMultiCountVo> list = inventoryMultiDao.selectBySku(request);
-		fitMultiSoftQuantitySku(request.getWarehouseId(), request.getCompanyId(), list);
+		fitMultiSoftQuantitySku(AllocateTEntity.builder().
+								warehouseId(request.getWarehouseId()).
+								companyId(request.getCompanyId())
+								.build(), list);
 		return list;
 	}
 
@@ -72,7 +78,7 @@ public class InventroyMultiServiceImpl implements IInventoryMultiService{
 	 * @param companyId
 	 * @param list
 	 */
-    private void fitMultiSoftQuantityLocation(Long warehouseId,Long companyId,List<InventoryMultiCountVo> list) {
+    private void fitMultiSoftQuantityLocation(AllocateTEntity allocate, List<InventoryMultiCountVo> list) {
     	HashSet<Long> skuIds = new HashSet<>();
     	HashSet<Long> locationIds = new HashSet<>();
     	for (InventoryMultiCountVo vo : list) {
@@ -81,7 +87,7 @@ public class InventroyMultiServiceImpl implements IInventoryMultiService{
 			skuIds.add(skuId);
 			locationIds.add(locationId);
     	}
-    	List<AllocateTEntity> results = allocateService.findBySkuAndLocation(warehouseId, companyId, skuIds, locationIds);
+    	List<AllocateTEntity> results = allocateService.findBySkuAndLocation(allocate, skuIds, locationIds);
     	//缓存结果集
     	Map<InventoryMultiCountVo, BigDecimal> cache = new HashMap<>();
     	for (InventoryMultiCountVo vo : list) {
@@ -119,12 +125,12 @@ public class InventroyMultiServiceImpl implements IInventoryMultiService{
      * @param companyId
      * @param list
      */
-    private void fitMultiSoftQuantitySku(Long warehouseId,Long companyId,List<InventoryMultiCountVo> list) {
+    private void fitMultiSoftQuantitySku(AllocateTEntity allocate, List<InventoryMultiCountVo> list) {
     	HashSet<Long> skuIds = new HashSet<>();
     	for (InventoryMultiCountVo vo : list) {
 			skuIds.add(vo.getSkuId());
     	}
-    	List<AllocateTEntity> results = allocateService.findBySkuAndLocation(warehouseId, companyId, skuIds, null);
+    	List<AllocateTEntity> results = allocateService.findBySkuAndLocation(allocate, skuIds, null);
     	//缓存结果集
     	Map<Long, BigDecimal> cache = new HashMap<>();
     	for (InventoryMultiCountVo vo : list) {

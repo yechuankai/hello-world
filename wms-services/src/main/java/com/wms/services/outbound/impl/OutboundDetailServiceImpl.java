@@ -589,6 +589,7 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 		allocateList.forEach(al -> {
 			AllocateVO vo = new AllocateVO(al);
 			vo.setQuantityPick(al.getQuantityAllocated());
+			vo.setUpdateBy(_updateBy);
 			pickList.add(vo);
 		});
 		
@@ -673,6 +674,7 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 		allocateList.forEach(al -> {
 			AllocateVO vo = new AllocateVO(al);
 			vo.setQuantityShip(al.getQuantityAllocated());
+			vo.setUpdateBy(_updateBy);
 			shipList.add(vo);
 		});
 		
@@ -1161,6 +1163,7 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 				OutboundDetailVO detailVo = new OutboundDetailVO(d);
 				BeanUtils.copyBeanProp(vo, h);
 				BeanUtils.copyBeanProp(vo, detailVo);
+				vo.setOutboundNumber(h.getOutboundNumber());
 				returnList.add(vo);
 			});
 		});

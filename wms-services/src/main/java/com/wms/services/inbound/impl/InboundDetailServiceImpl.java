@@ -377,6 +377,10 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 		if (detail.getUomQuantityReceive() != null && detail.getUomQuantityReceive().compareTo(BigDecimal.ZERO) > 0)
 			detail.setQuantityReceive(detail.getUomQuantityReceive().multiply(uomQuantity));
 
+		if (StringUtils.isNotEmpty(detail.getLpnNumber())) {
+			detail.setLpnNumber(detail.getLpnNumber().toUpperCase());
+		}
+		
 		
 		if (inbound.getOperatorType() == OperatorTypeEnum.Modify) {
 			return Boolean.TRUE;
@@ -1497,6 +1501,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 					.companyId(detail.getCompanyId())
 					.warehouseId(inbound.getToWarehouseId())
 					.skuCode(detail.getSkuCode().toUpperCase())
+					.ownerCode(detail.getOwnerCode())
 					.active(YesNoEnum.Yes.getCode())
 					.build();
 			Set<String> codes = Sets.newHashSet();

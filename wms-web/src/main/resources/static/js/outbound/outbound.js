@@ -45,6 +45,12 @@ function baseAction(type, checkedRows) {
                 if (singleData && type == 'allocate' && headerData.status != '30'){
                 	showWarn(data.msg);
                 }
+                if (singleData && type == 'pick' && headerData.status != '60'){
+                	showWarn(data.msg);
+                }
+                if (singleData && type == 'ship' && headerData.status != '80'){
+                	showWarn(data.msg);
+                }
             }
         });
     });

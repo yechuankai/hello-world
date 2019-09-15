@@ -7,6 +7,7 @@ import com.wms.common.enums.OutboundStatusEnum;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.entity.auto.OutboundHeaderTEntity;
 import com.wms.vo.outbound.OutboundVO;
+import com.wms.vo.outbound.WaveBuildVO;
 
 import java.util.List;
 import java.util.Set;
@@ -77,5 +78,5 @@ public interface IOutboundHeaderService {
      * @param pageRequest
      * @return
      */
-	List<OutboundHeaderTEntity> findByWaveTemplate(AjaxRequest request);
+	List<OutboundHeaderTEntity> findByWaveTemplate(AjaxRequest<WaveBuildVO> request);
 }
