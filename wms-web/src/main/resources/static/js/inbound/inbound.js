@@ -26,6 +26,7 @@ function baseAction(type, checkedRows){
 					}else {
 						$('#detailLayout').layout('collapse', 'south');
 					}
+					headerData = data.data[0];
 				}else{
 					var header = data.data;
 					if (Array.isArray(header)){

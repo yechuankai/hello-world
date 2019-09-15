@@ -106,12 +106,23 @@ public class InventoryCountRequestImpl implements IInventoryCountRequestService 
 
 		List<InventoryCountRequestTEntity> list = request.getData();
 
-		for (InventoryCountRequestTEntity w : list) {
+		for (InventoryCountRequestTEntity r : list) {
 
 			InventoryCountRequestTEntity update = InventoryCountRequestTEntity.builder()
-					.requestDescr(w.getRequestDescr())
-					.requestType(w.getRequestType())
-					.quantityShowFlag(w.getQuantityShowFlag())
+					.requestDescr(r.getRequestDescr())
+					.requestType(r.getRequestType())
+					.quantityShowFlag(r.getQuantityShowFlag())
+					.requestDate(r.getRequestDate())
+					.fromLocationCode(r.getFromLocationCode())
+					.toLocationCode(r.getToLocationCode())
+					.fromSkuCode(r.getFromSkuCode())
+					.toSkuCode(r.getToSkuCode())
+					.fromLpnNumber(r.getFromLpnNumber())
+					.toLpnNumber(r.getToLpnNumber())
+					.fromZoneCode(r.getFromZoneCode())
+					.toZoneCode(r.getToZoneCode())
+					.skuCodeIn(r.getSkuCodeIn())
+					.lpnNumberIn(r.getLpnNumberIn())
 					.updateBy(request.getUserName())
 					.updateTime(new Date())
 					.build();
@@ -120,9 +131,9 @@ public class InventoryCountRequestImpl implements IInventoryCountRequestService 
 			example.createCriteria()
 					.andWarehouseIdEqualTo(request.getWarehouseId())
 					.andCompanyIdEqualTo(request.getCompanyId())
-					.andInventoryCountRequestIdEqualTo(w.getInventoryCountRequestId());
+					.andInventoryCountRequestIdEqualTo(r.getInventoryCountRequestId());
 
-			int row = inventoryCountRequestDao.updateWithVersionByExampleSelective(w.getUpdateVersion(), update, example);
+			int row = inventoryCountRequestDao.updateWithVersionByExampleSelective(r.getUpdateVersion(), update, example);
 			if (row == 0) {
 				throw new BusinessServiceException("record update error.");
 			}
@@ -138,9 +149,9 @@ public class InventoryCountRequestImpl implements IInventoryCountRequestService 
 
 		List<InventoryCountRequestTEntity> list = request.getData();
 
-		for (InventoryCountRequestTEntity w : list) {
+		for (InventoryCountRequestTEntity r : list) {
 			InventoryCountRequestTEntity update = new InventoryCountRequestTEntity();
-			BeanUtils.copyBeanProp(update,w,Boolean.FALSE);
+			BeanUtils.copyBeanProp(update,r,Boolean.FALSE);
 			update.setInventoryCountRequestId(KeyUtils.getUID());
 			update.setRequestNumber(KeyUtils.getOrderNumber(request.getCompanyId(),request.getWarehouseId(), OrderNumberTypeEnum.RequestNumber));
 			//新建默认盘点类型为按明细

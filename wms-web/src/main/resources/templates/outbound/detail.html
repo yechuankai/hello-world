@@ -3,6 +3,9 @@
        data-addpanel="#addDetailDiv">
         <span wms:text="${web.label.add}">Add</span>
     </a>
+    <a href="#" class="lazy-load outbounddetail-copy" lazy-load="easyui-linkbutton" wms:title="${web.label.copy}" data-addpanel="#addDetailDiv">
+		<span wms:text="${web.label.copy}">Copy</span>
+	</a>
     <a href="#" class="lazy-load common-rowsave" lazy-load="easyui-linkbutton" data-table="#outboundDetailData"
        th:data-url="@{/services/inner/outboundDetail/listSave}">
         <span wms:text="${web.label.save}">Save</span>
@@ -210,6 +213,8 @@
 <script type="text/javascript" th:src="@{/static/ui/plugins/datagrid-filter.js}"></script>
 <script type="text/javascript" th:inline="text">
 	var detailEditData;
+	var skuData;
+	var packData;
 	var detailFilterRules = [{
 		field:'status',
 		type:'combobox',
@@ -233,37 +238,8 @@
 	
     $(function () {
         $('.outbounddetail-add').click(function () {
-        	var headerData = getOutboundHeaderData();
-        	if (headerData.status == 90) {
-				showError($.locale.statusError);
-				return false;
-			}
-            $('#outboundDetailForm').form('reset');
-            lazyLoadView('#outboundDetailForm');
-            var grid = $("#outboundDetailData").datagrid('getData');
-            var maxNumber = 0;
-			grid.rows.forEach(function(e){
-				if(e.lineNumber != null && parseInt(e.lineNumber) > maxNumber){
-					maxNumber = parseInt(e.lineNumber);
-				}
-			});
-			$("#lineNumber").textbox('setValue', maxNumber + 10);
-            var owner = getOwnerId();
-            if (owner == '-1') {
-                showError($.locale.ownerRequired);
-                return false;
-            }
-            loadSkuLov({ownerId: owner}, function (data) {
-                loadPackLov({packId: data.packId});
-
-                $("#packCode").combo('setValue', data.packCode)
-                    .combo('setText', data.packCode);
-                setSkuResult(data);
-                setUom(data.packId);
-            });
-            //新增所有都可编辑
-            outboundDetailEditable(0);
-            loadAllocateStrategyLov();
+        	
+        	initAdd();
 
             $('#detailAddButton').show();
             $('#detailEditButton').hide();
@@ -275,6 +251,11 @@
                 buttons: '#detailAddButton'
             }).dialog('open');
         });
+        
+      	//复制行
+		$('.outbounddetail-copy').click(function(){
+			lineCopy();
+		});
 
         //判断是否可编辑
         $('#outboundDetailData').datagrid({
@@ -350,6 +331,42 @@
             });
         });
     });
+    
+    function initAdd(){
+    	var headerData = getOutboundHeaderData();
+    	if (headerData.status == 90) {
+			showError($.locale.statusError);
+			return false;
+		}
+        $('#outboundDetailForm').form('reset');
+        lazyLoadView('#outboundDetailForm');
+        var grid = $("#outboundDetailData").datagrid('getData');
+        var maxNumber = 0;
+		grid.rows.forEach(function(e){
+			if(e.lineNumber != null && parseInt(e.lineNumber) > maxNumber){
+				maxNumber = parseInt(e.lineNumber);
+			}
+		});
+		maxNumber = maxNumber + 10;
+		$("#lineNumber").textbox('setValue', maxNumber);
+        var owner = getOwnerId();
+        if (owner == '-1') {
+            showError($.locale.ownerRequired);
+            return false;
+        }
+        loadSkuLov({ownerId: owner}, function (data) {
+            loadPackLov({packId: data.packId});
+
+            $("#packCode").combo('setValue', data.packCode)
+                .combo('setText', data.packCode);
+            setSkuResult(data);
+            setPackUom({packId: data.packId});
+        });
+        //新增所有都可编辑
+        outboundDetailEditable(0);
+        loadAllocateStrategyLov();
+        return maxNumber;
+    }
 
     function refreshOutboundDetail(data) {
         var outboundDetailDataId = '#outboundDetailData';
@@ -404,6 +421,35 @@
 
         return data;
     }
+    
+    function lineCopy(){
+		var checkedRows = $('#outboundDetailData').datagrid('getChecked');
+		if (checkedRows.length == 0) {
+			showError($.locale.selectOneRow);
+			return;
+		}
+		debugger;
+		var copyData = checkedRows[0];
+		copyData.outboundDetailId = null;
+		copyData.uomQuantityExpected = 0;
+		var maxNumber = initAdd();
+		copyData.lineNumber = maxNumber;
+		$('#detailAddButton').show();
+		$('#detailEditButton').hide();
+		var panel = '#addDetailDiv';
+		$(panel).dialog({
+			closed: true,
+			modal: true,
+			fix: true,
+			buttons: '#detailAddButton'
+		}).dialog('open');
+		var from = '#outboundDetailForm';
+		setSkuData({skuId: copyData.skuId});
+		setPackUom({packId: copyData.packId});
+		setSkuLotLabel(skuData);
+		$(from).form('load', copyData);
+		$('.tooltip').remove();
+	}
 
     function toEditDetail(data) {
         if (typeof(data) == 'object') {
@@ -491,7 +537,7 @@
     }
 
     /**
-     * 批属性是否不可编辑
+     	* 批属性是否不可编辑
      * @Param isDisabled true-不可编辑，false-可编辑
      **/
     function lotAttributeEditable(isDisabled) {
@@ -503,36 +549,5 @@
             }
         }
     }
-
-    function setUom(packId){
-        var search = {packId:packId};
-        var data = getBaseData();
-        $.extend(data, search);
-        $.post({
-            url: '../../services/inner/base/pack/find',
-            data:data,
-            success: function(data){
-                data = returnData(data);
-                if (data.code == '0') {
-                    showError(data.msg);
-                    return;
-                }
-
-                data =data.rows[0];
-
-                var comData = [];
-
-                comData.push({value: data.uom, label: getCodelkupValue('UOM',data.uom)});
-                comData.push({value: data.uomInner, label: getCodelkupValue('UOM',data.uomInner)});
-                comData.push({value: data.uomCase, label: getCodelkupValue('UOM',data.uomCase)});
-
-                $("#uom").combobox({
-                    data : comData,
-                    value : data.uom,
-                    idField: 'value',
-                    textField: 'label'
-                });
-            }
-        });
-    }
+    
 </script>

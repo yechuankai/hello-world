@@ -3,60 +3,104 @@
        th:data-url="@{/services/inner/inventory/inventoryCount/detailSave}">
         <span wms:text="${web.label.save}">Save</span>
     </a>
-    <a href="#" class="easyui-linkbutton common-rowsave" data-table="#countDetailTable"
+    <a href="#" class="easyui-linkbutton common-other" data-table="#countDetailTable"
        th:data-url="@{/services/inner/inventory/inventoryCount/replayCountDetail}">
-        <span wms:text="${web.label.replaycount}">replayCountDetail</span>
+        <span wms:text="${web.label.replaycount}">Replay Count</span>
     </a>
-    <a href="#" class="easyui-linkbutton common-rowdel" data-table="#countDetailTable"
+    <a href="#" class="easyui-linkbutton common-other" data-table="#countDetailTable"
        th:data-url="@{/services/inner/inventory/inventoryCount/cancelDetail}">
         <span wms:text="${web.label.cancel}">cancelDetail</span>
     </a>
 </div>
 <div style="width: 100%; height: 100%">
     <table id="countDetailTable" wms:title="${web.label.countdetaillist.title}" class="easyui-datagrid"
-           data-options=" toolbar: '#detailToolbar'"
+           data-options="toolbar: '#detailToolbar',
+			   			onBeforeEdit: function(rowIndex, rowData){
+		   					var confirmColumn = $('#countDetailTable').datagrid('getColumnOption','quantityConfirm');
+		   					if (confirmColumn.editor1 == null) {
+		   						confirmColumn.editor1 = confirmColumn.editor;
+		   					}
+		   					debugger;
+			   				if (rowData.status == '30'){
+			   					confirmColumn.editor = confirmColumn.editor1;
+			   				}else{
+			   					confirmColumn.editor = null;
+			   				}
+			   			}"
            th:data-delayUrl="@{/services/inner/inventory/inventoryCount/findDetail}" style="width: 100%; height: 100%">
         <thead data-options="frozen:true">
-        <th field="inventoryCountDetailId" data-options="checkbox:true"></th>
-        <th field="lineNumber" width="50" wms:text="${web.label.linenumber}">lineNumber</th>
+        	<tr>
+	        <th field="inventoryCountDetailId" data-options="checkbox:true"></th>
+	        <th field="lineNumber" width="50" wms:text="${web.label.linenumber}">lineNumber</th>
+	        </tr>
         </thead>
         <thead>
-        <th field="ownerCode" width="100" wms:text="${web.inventory.ownerCode}" data-options="sortable:true">ownerCode</th>
-        <th field="skuCode" width="100" wms:text="${web.label.sku}" data-options="sortable:true">skuCode</th>
-        <th field="skuAlias" width="120" wms:text="${web.label.skualias}" >skuAlias</th>
-        <th field="lotNumber" width="130" wms:text="${web.label.lotnumber}" data-options="sortable:true">lotNumber</th>
-        <th field="locationCode" width="100" wms:text="${web.label.location}">
-            locationCode
-        </th>
-        <th field="lpnNumber" width="100" wms:text="${web.label.lpnnumber}" data-options="sortable:true">
-            lpnNumber
-        </th>
-        <th field="quantitySystem" width="80" wms:text="${web.label.quantitysystem}" data-options="sortable:true" >quantity</th>
-        <th field="quantityCount" width="60" wms:text="${web.label.quantitycount}" data-options="
-					sortable:true,
-					editor: 'numberbox'
-					">Count Quantity</th>
-        <th field="quantityReplay" width="80" wms:text="${web.label.quantityreplay}" data-options="sortable:true" >quantityReplay</th>
-        <th field="quantityDifference" width="80" wms:text="${web.label.quantitydifference}" data-options="sortable:true" >quantityDifference</th>
-        <th field="quantityConfirm" width="80" wms:text="${web.label.quantityconfirm}" data-options="sortable:true" >quantityConfirm</th>
-        <th field="status" width="60" wms:text="${web.label.status}" data-options="
-					sortable:true,
-					formatter:function(value,row){
-						return getCodelkupValue('COUNTSTATUS',value);
-					}
-				" >status</th>
-        <th field="reason" width="150" wms:text="${web.label.reason}" data-options="sortable:true" >reason</th>
-        <th field="remark" width="150" wms:text="${web.label.remark}"
-            data-options="sortable:false,editor:'text'">remark
-        </th>
-        <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
-        <th field="createTime" width="150" wms:text="${web.label.createtime}"
-            data-options="sortable:true">createTime
-        </th>
-        <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
-        <th field="updateTime" width="150" wms:text="${web.label.updatetime}"
-            data-options="sortable:true">updateTime
-        </th>
+        	<tr>
+		        <th field="ownerCode" width="100" wms:text="${web.inventory.ownerCode}" data-options="sortable:true">ownerCode</th>
+		        <th field="skuCode" width="100" wms:text="${web.label.sku}" data-options="sortable:true">skuCode</th>
+		        <th field="skuAlias" width="120" wms:text="${web.label.skualias}" >skuAlias</th>
+		        <th field="lotNumber" width="130" wms:text="${web.label.lotnumber}" data-options="sortable:true">lotNumber</th>
+		        <th field="locationCode" width="100" wms:text="${web.label.location}">
+		            locationCode
+		        </th>
+		        <th field="lpnNumber" width="100" wms:text="${web.label.lpnnumber}" data-options="sortable:true">
+		            lpnNumber
+		        </th>
+		        <th field="quantitySystem" width="80" wms:text="${web.label.quantitysystem}" data-options="sortable:true" >quantity</th>
+		        <th field="quantityCount" width="60" wms:text="${web.label.quantitycount}" data-options="
+							sortable:true,
+							editor:{
+								type: 'numberbox',
+								options: {
+									precision:4,
+									required: true
+								}
+							}
+							">Count Quantity</th>
+		        <th field="quantityReplay" width="80" wms:text="${web.label.quantityreplay}" data-options="sortable:true" >quantityReplay</th>
+		        <th field="quantityDifference" width="80" wms:text="${web.label.quantitydifference}" data-options="sortable:true" >quantityDifference</th>
+		        <th field="quantityConfirm" width="80" wms:text="${web.label.quantityconfirm}" data-options="
+		        		sortable:true,
+		        		editor:{
+								type: 'numberbox',
+								options: {
+									precision:4,
+									required: true
+								}
+							}" >quantityConfirm</th>
+		        <th field="status" width="60" wms:text="${web.label.status}" data-options="
+							sortable:true,
+							formatter:function(value,row){
+								return getCodelkupValue('COUNTSTATUS',value);
+							}
+						" >status</th>
+		        <th field="reason" width="150" wms:text="${web.label.reason}" data-options="
+		        		sortable:true,
+						formatter:function(value,row){
+							return getCodelkupValue('COUNTREASON',value);
+						},
+						editor:{
+								type:'combobox',
+								options:{
+									valueField:'code',
+									textField:'descr',
+									data: codelkups['COUNTREASON'],
+									required: true
+								}
+							}
+						" >reason</th>
+		        <th field="remark" width="150" wms:text="${web.label.remark}"
+		            data-options="sortable:false,editor:'text'">remark
+		        </th>
+		        <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+		        <th field="createTime" width="150" wms:text="${web.label.createtime}"
+		            data-options="sortable:true">createTime
+		        </th>
+		        <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+		        <th field="updateTime" width="150" wms:text="${web.label.updatetime}"
+		            data-options="sortable:true">updateTime
+		        </th>
+	        </tr>
         </thead>
     </table>
 </div>
@@ -72,7 +116,8 @@
 
         $(countDetailTableId).datagrid({
             url: url,
-            queryParams: baseData
+            queryParams: baseData,
+            sort: 'lineNumber'
         }).datagrid('clearChecked');
     }
 </script>

@@ -241,29 +241,68 @@
 					<table style="width: 100%;padding-left: 10px;">
 						 <tr>
 							<td >
-								<input name="weightGrossInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:4,label:'${web.inventory.weightgross}',labelPosition:'top'">
+								<input name="weightGrossInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
+									required:true,
+									precision:4,
+									label:'${web.inventory.weightgross}',
+									labelPosition:'top'
+									">
 							</td>
 							<td >
-								<input name="weightNetInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:4,label:'${web.inventory.weightnet}',labelPosition:'top'">
+								<input name="weightNetInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
+									required:true,
+									precision:4,
+									label:'${web.inventory.weightnet}',
+									labelPosition:'top'
+									">
 							</td>
 							<td >
-								<input name="weightTareInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:4,label:'${web.inventory.weighttare}',labelPosition:'top'">
+								<input name="weightTareInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
+									required:true,
+									precision:4,
+									label:'${web.inventory.weighttare}',
+									labelPosition:'top'
+									">
 							</td>
 						 </tr>
 						  <tr>
 							<td >
-								<input name="lengthInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:4,label:'${web.inventory.length}',labelPosition:'top'">
+								<input id="lengthInner" name="lengthInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
+									required:true,
+									precision:4,
+									label:'${web.inventory.length}',
+									labelPosition:'top',
+									onChange(newValue, oldValue){
+										calculateCase(newValue);
+									}
+									">
 							</td>
 							<td >
-								<input name="widthInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:4,label:'${web.inventory.width}',labelPosition:'top'">
+								<input id="widthInner" name="widthInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
+									required:true,
+									precision:4,
+									label:'${web.inventory.width}',
+									labelPosition:'top',
+									onChange(newValue, oldValue){
+										calculateInner(newValue);
+									}
+									">
 							</td>
 							<td >
-								<input name="heightInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:4,label:'${web.inventory.height}',labelPosition:'top'">
+								<input id="heightInner" name="heightInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
+									required:true,
+									precision:4,
+									label:'${web.inventory.height}',
+									labelPosition:'top',
+									onChange(newValue, oldValue){
+										calculateInner(newValue);
+									}
+									">
 							</td>
 						 </tr>
 						 <tr>
 						 	<td >
-								<input name="volumeInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:4,label:'${web.inventory.volume}',labelPosition:'top'">
+								<input id="volumeInner" name="volumeInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:4,label:'${web.inventory.volume}',labelPosition:'top'">
 							</td>
 							<td >
 								&nbsp;
@@ -289,18 +328,47 @@
 						 </tr>
 						  <tr>
 							<td >
-								<input name="lengthCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:4,label:'${web.inventory.length}',labelPosition:'top'">
+								<input id="lengthCase" name="lengthCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
+									required:true,
+									precision:4,
+									label:'${web.inventory.length}',
+									labelPosition:'top',
+									onChange(newValue, oldValue){
+										calculateCase(newValue);
+									}
+									">
 							</td>
 							<td >
-								<input name="widthCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:4,label:'${web.inventory.width}',labelPosition:'top'">
+								<input id="widthCase" name="widthCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
+									required:true,
+									precision:4,
+									label:'${web.inventory.width}',
+									labelPosition:'top',
+									onChange(newValue, oldValue){
+										calculateCase(newValue);
+									}
+									">
 							</td>
 							<td >
-								<input name="heightCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:4,label:'${web.inventory.height}',labelPosition:'top'">
+								<input id="heightCase" name="heightCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
+									required:true,
+									precision:4,
+									label:'${web.inventory.height}',
+									labelPosition:'top',
+									onChange(newValue, oldValue){
+										calculateCase(newValue);
+									}
+									">
 							</td>
 						 </tr>
 						 <tr>
 						 	<td >
-								<input name="volumeCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:4,label:'${web.inventory.volume}',labelPosition:'top'">
+								<input id="volumeCase" name="volumeCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
+									required:true,
+									precision:4,
+									label:'${web.inventory.volume}',
+									labelPosition:'top'
+									">
 							</td>
 							<td >
 								&nbsp;
@@ -362,7 +430,6 @@ function toEdit(data) {
     $(panel).find('form').form('reset');
     var from = $(panel).find('form');
     $(from).form('load', editData);
-    $('#lotValidateCode').textbox({readonly:true});
 }
 
 function save(){
@@ -392,6 +459,35 @@ function save(){
 		}
 	});
 }
+
+/**
+ * 根据长、宽、高自动计算体积
+ **/
+function calculateInner() {
+	//var volume = $('#volume').numberbox('getValue');
+	//if (Number(volume) != 0){
+	//	return;
+	//}
+	var length = $('#lengthInner').numberbox('getValue');
+	var width = $('#widthInner').numberbox('getValue');
+	var height = $('#heightInner').numberbox('getValue');
+	$('#volumeInner').numberbox('setValue',Number(length) * Number(width) * Number(height));
+}
+
+/**
+ * 根据长、宽、高自动计算体积
+ **/
+function calculateCase() {
+	//var volume = $('#volume').numberbox('getValue');
+	//if (Number(volume) != 0){
+	//	return;
+	//}
+	var length = $('#lengthCase').numberbox('getValue');
+	var width = $('#widthCase').numberbox('getValue');
+	var height = $('#heightCase').numberbox('getValue');
+	$('#volumeCase').numberbox('setValue',Number(length) * Number(width) * Number(height));
+}
+
 
 </script>
 </html>

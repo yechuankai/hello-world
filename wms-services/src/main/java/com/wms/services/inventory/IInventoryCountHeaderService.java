@@ -29,7 +29,7 @@ public interface IInventoryCountHeaderService {
 	/**
 	 * 产生复盘任务
 	 */
-	Long createReplayCount(AjaxRequest<InventoryCountHeaderTEntity> request) throws BusinessServiceException;
+	Long createReplayCount(AjaxRequest<List<InventoryCountHeaderTEntity>> request) throws BusinessServiceException;
 	
 	/**
 	 * 按明细产生复盘任务

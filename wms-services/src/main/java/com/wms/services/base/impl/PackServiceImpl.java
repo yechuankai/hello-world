@@ -375,7 +375,12 @@ public class PackServiceImpl implements IPackService {
 				throw new BusinessServiceException("PackServiceImpl", "pack.uom.repeat" , null); 
 		}
 		
+		//验证毛重不能小于净重
+		if (pack.getWeightGrossInner().compareTo(pack.getWeightNetInner()) < 0) 
+			throw new BusinessServiceException("PackServiceImpl", "inner.weight.gross.morethen.net" , new Object[] {pack.getPackCode()}); 
 		
+		if (pack.getWeightGrossCase().compareTo(pack.getWeightNetCase()) < 0) 
+			throw new BusinessServiceException("PackServiceImpl", "case.weight.gross.morethen.net" , new Object[] {pack.getPackCode()}); 
 		
 		return Boolean.TRUE;
 	}

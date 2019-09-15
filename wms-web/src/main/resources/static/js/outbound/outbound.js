@@ -31,11 +31,12 @@ function baseAction(type, checkedRows) {
 	                if (checkedRows.length == 1){
 	                	singleData = true;
 	                }
+	                headerData = data.data[0];
                 }else{
                 	singleData = true;
-                	headerData = data.data;
-					if (Array.isArray(header)){
-						headerData = data.data[0];
+                	var dataList = data.data;
+					if (Array.isArray(dataList)){
+						headerData = dataList[0];
 					}
 					refreshOutboundHeader(headerData);
 					//编辑界面时刷新列表

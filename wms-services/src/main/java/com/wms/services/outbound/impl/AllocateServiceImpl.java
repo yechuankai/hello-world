@@ -194,7 +194,9 @@ public class AllocateServiceImpl implements IAllocateService , IExcelService<All
     public List<AllocateTEntity> findBySkuAndLocation(Long warehouseId,Long companyId,Set<Long> skuIds,Set<Long> locationIds) {
     	AllocateTExample example = new AllocateTExample();
     	Criteria criteria = example.createCriteria();
-    	criteria.andCompanyIdEqualTo(companyId)
+    	criteria
+    			.andDelFlagEqualTo(YesNoEnum.No.getCode())
+    			.andCompanyIdEqualTo(companyId)
     			.andWarehouseIdEqualTo(warehouseId)
     			.andAllocateStrategyTypeEqualTo(AllocateStrategyTypeEnum.Soft.getCode())
     			.andSkuIdIn(Lists.newArrayList(skuIds));

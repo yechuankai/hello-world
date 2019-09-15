@@ -1,6 +1,9 @@
 <div id="detailToolbar" class="tableToolbar detailToolbar">
-	<a href="#" class="lazy-load inbounddetail-add" lazy-load="easyui-linkbutton" wms:title="${web.label.inbound.add}" data-addpanel="#addDetailDiv">
+	<a href="#" class="lazy-load inbounddetail-add" lazy-load="easyui-linkbutton" wms:title="${web.label.add}" data-addpanel="#addDetailDiv">
 		<span wms:text="${web.label.add}">Add</span>
+	</a>
+	<a href="#" class="lazy-load inbounddetail-copy" lazy-load="easyui-linkbutton" wms:title="${web.label.copy}" data-addpanel="#addDetailDiv">
+		<span wms:text="${web.label.copy}">Copy</span>
 	</a>
 	<a href="#" class="lazy-load common-rowsave" lazy-load="easyui-linkbutton" data-table="#inboundDetailData" th:data-url="@{/services/inner/inboundDetail/listSave}" >
 		<span wms:text="${web.label.save}">Save</span>
@@ -16,7 +19,20 @@
 </div>
 <div style="width: 100%; height: 100%">
 	<table id="inboundDetailData" wms:title="${web.label.inbounddetaillist.title}"
-		   			wms:data-options="toolbar: '#detailToolbar'"
+		   			wms:data-options="
+		   			toolbar: '#detailToolbar',
+		   			onBeforeEdit: function(rowIndex, rowData){
+	   					var receiveColumn = $('#inboundDetailData').datagrid('getColumnOption','uomQuantityReceive');
+	   					debugger;
+	   					if (receiveColumn.editor1 == null) {
+	   						receiveColumn.editor1 = receiveColumn.editor;
+	   					}
+		   				if (rowData.status == '30'){
+		   					receiveColumn.editor = null;
+		   				}else{
+		   					receiveColumn.editor = receiveColumn.editor1;
+		   				}
+		   			}"
 					th:data-delayUrl="@{/services/inner/inboundDetail/findByHeader}" style="width: 100%; height: 100%">
 		<thead data-options="frozen:true">
 			<tr>
@@ -269,53 +285,10 @@
 		}
 	}];
 	
+	
 	$(function(){
 		$('.inbounddetail-add').click(function(){
-			var headerData = getInboundHeaderData();
-			if(headerData.status == 40 || headerData.status == 50){
-				showError($.locale.statusError);
-				return false;
-			}
-			$('#inboundDetailForm').form('reset');
-			lazyLoadView('#inboundDetailForm');
-			var grid = $("#inboundDetailData").datagrid('getData');
-			var maxNumber = 0;
-			grid.rows.forEach(function(e){
-				if(e.lineNumber != null && parseInt(e.lineNumber) > maxNumber){
-					maxNumber = parseInt(e.lineNumber);
-				}
-			});
-			
-			$("#lineNumber").textbox('setValue', maxNumber + 10);
-			
-			var owner = getOwnerId();
-			if (owner == '-1'){
-				showError($.locale.ownerRequired);
-				return false;
-			}
-			loadSkuLov({ownerId:owner}, function(data){
-				setSkuResult(data);
-				skuData = data;
-				//loadPackLov({packId:data.packId});
-				loadPackLov({}, function(data){
-					packData = data;
-					setPackResult(data);
-				});
-				$("#packCode").combo('setValue', data.packCode)
-							.combo('setText', data.packCode);
-				
-				setUom(data.packId);
-
-				$("#putawayStrategyCode").combo('setValue', data.putawayStrategyCode)
-						.combo('setText', data.putawayStrategyCode);
-				$("#putawayStrategyId").val(data.putawayStrategyId);
-			});
-			//新增所有都可编辑
-			detailEditable(0);
-
-			loadPutawayStrategyLov();
-			loadLocationLov();
-
+			initAdd();
 			$("#locationCode")
 			.combo('setValue', 'STAGE')
 			.combo('setText', 'STAGE');
@@ -328,6 +301,11 @@
 			    fix: true,
 				buttons: '#detailAddButton'
 			}).dialog('open');
+		});
+		
+		//复制行
+		$('.inbounddetail-copy').click(function(){
+			lineCopy();
 		});
 
 		//判断是否可编辑
@@ -407,6 +385,57 @@
 		});
 	});
 	
+	function initAdd(){
+		var headerData = getInboundHeaderData();
+		if(headerData.status == 40 || headerData.status == 50){
+			showError($.locale.statusError);
+			return false;
+		}
+		$('#inboundDetailForm').form('reset');
+		lazyLoadView('#inboundDetailForm');
+		var grid = $("#inboundDetailData").datagrid('getData');
+		//var maxNumber = grid.total * 10;
+		var maxNumber = 0;
+		grid.rows.forEach(function(e){
+			if(e.lineNumber != null && parseInt(e.lineNumber) > maxNumber){
+				maxNumber = parseInt(e.lineNumber);
+			}
+		});
+		maxNumber = maxNumber + 10;
+		$("#lineNumber").textbox('setValue', maxNumber);
+		
+		var owner = getOwnerId();
+		if (owner == '-1'){
+			showError($.locale.ownerRequired);
+			return false;
+		}
+		loadSkuLov({ownerId:owner}, function(data){
+			setSkuResult(data);
+			skuData = data;
+			//loadPackLov({packId:data.packId});
+			loadPackLov({}, function(data){
+				packData = data;
+				setPackResult(data);
+			});
+			$("#packCode").combo('setValue', data.packCode)
+						.combo('setText', data.packCode);
+			
+			setPackUom({packId: data.packId});
+
+			$("#putawayStrategyCode").combo('setValue', data.putawayStrategyCode)
+					.combo('setText', data.putawayStrategyCode);
+			$("#putawayStrategyId").val(data.putawayStrategyId);
+		});
+		//新增所有都可编辑
+		detailEditable(0);
+
+		loadPutawayStrategyLov();
+		loadLocationLov();
+		
+		return maxNumber;
+	}
+	
+	
 	function getOwnerId(){
 		var owner = $('#ownerId').val();
 		if (owner == undefined || owner == '' ){
@@ -415,41 +444,6 @@
 		return owner;
 	}
 	
-	function setUom(packId){
-		var search = {packId:packId};
-		var data = getBaseData();
-		$.extend(data, search);
-		$.post({
-			url: '../../services/inner/base/pack/find',
-			data:data,
-			success: function(data){
-				// data = returnData(data);
-				if (data.code == '0') {
-					showError(data.msg);
-					return;
-				}
-				debugger;
-				data =data.rows[0];
-				packData=data;
-				var comData = [];
-
-				comData.push({value: data.uom, label: getCodelkupValue('UOM',data.uom)});
-				comData.push({value: data.uomInner, label: getCodelkupValue('UOM',data.uomInner)});
-				comData.push({value: data.uomCase, label: getCodelkupValue('UOM',data.uomCase)});
-
-				$("#uom").combobox({
-					data : comData,
-					value : data.uom,
-					idField: 'value',
-					textField: 'label',
-					onHidePanel :function () {
-						var quantityExpected = $('#uomQuantityExpected').numberbox('getValue');
-						calculate(quantityExpected);
-					}
-				});
-			}
-		});
-	}
 	
 	function refreshInboundDetail(data){
 		var inboundDetailDataId = '#inboundDetailData';
@@ -523,6 +517,40 @@
 				}
 			});
 		});
+	}
+	
+	function lineCopy(){
+		var checkedRows = $('#inboundDetailData').datagrid('getChecked');
+		if (checkedRows.length == 0) {
+			showError($.locale.selectOneRow);
+			return;
+		}
+		debugger;
+		var copyData = checkedRows[0];
+		copyData.inboundDetailId = null;
+		copyData.uomQuantityReceive = 0;
+		copyData.uomQuantityExpected = 0;
+		copyData.weightGross = 0;
+		copyData.weightNet = 0;
+		copyData.weightTare = 0;
+		copyData.volume = 0;
+		var maxNumber = initAdd();
+		copyData.lineNumber = maxNumber;
+		$('#detailAddButton').show();
+		$('#detailEditButton').hide();
+		var panel = '#addDetailDiv';
+		$(panel).dialog({
+			closed: true,
+			modal: true,
+			fix: true,
+			buttons: '#detailAddButton'
+		}).dialog('open');
+		var from = '#inboundDetailForm';
+		setSkuData({skuId:copyData.skuId});
+		setPackUom({packId: copyData.packId});
+		setSkuLotLabel(skuData);
+		$(from).form('load', copyData);
+		$('.tooltip').remove();
 	}
 
 	function toEditDetail(data) {
@@ -614,6 +642,7 @@
 		
 	}
 	
+
 	function detailEditable(status) {
 		if('0' == status){
 			//新增一条数据
@@ -656,10 +685,14 @@
 			$('#uomQuantityExpected').numberbox({readonly:false});
 			$('#locationCode').combogrid({readonly:true});
 			$('#uom').combobox({readonly:true});
-			$('#uomQuantityReceive').numberbox({readonly:false});
 			$('#lpnNumber').textbox({readonly:true});
 			$('#containerNumber').textbox({readonly:true});
 			lotAttributeEditable(true);
+			if ('30' == status){
+				$('#uomQuantityReceive').numberbox({readonly:true});
+			}else{
+				$('#uomQuantityReceive').numberbox({readonly:false});
+			}
 		}else if('40' == status ||'50' == status){
 			//已关闭、已取消
 			$('#lineNumber').textbox({readonly:true});

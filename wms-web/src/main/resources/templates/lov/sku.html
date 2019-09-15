@@ -51,12 +51,37 @@
 		if ($("#skuId").length > 0) {
 			$("#skuId").val(data.skuId);
 		}
+		setSkuLotLabel(data);
+	}
+	
+	function setSkuLotLabel(sku){
 		for(var i=1;i<13;i++){
 			if('4'== i||'5' == i||'11'== i||'12'== i){
-				$("#lotAttribute"+i).datebox('label').html(data['lotAttribute'+i+'Label']);
+				$("#lotAttribute"+i).datebox('label').html(sku['lotAttribute'+i+'Label']);
 			}else {
-				$("#lotAttribute"+i).textbox('label').html(data['lotAttribute'+i+'Label']);
+				$("#lotAttribute"+i).textbox('label').html(sku['lotAttribute'+i+'Label']);
 			}
 		}
+	}
+	
+	function setSkuData(sku){
+		var data = getBaseData();
+		$.extend(data, sku);
+		$.post({
+			url: '../../services/inner/base/sku/find',
+			data: data,
+			async: false,
+			success: function(data){
+				// data = returnData(data);
+				if (data.code == '0') {
+					showError(data.msg);
+					return;
+				}
+				debugger;
+				if (Array.isArray(data.rows)){
+					skuData = data.rows[0];
+				}
+			}
+		});
 	}
 </script>

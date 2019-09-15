@@ -6,7 +6,6 @@
 </head>
 <body class="easyui-layout">
 <div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
-
     <div id="searchDiv">
         <div style="margin-left: 10px;">
             <form id="searchForm" data-table="#dataTable">
@@ -54,10 +53,10 @@
                 </div>
                 <a href="#" class="easyui-menubutton" data-options="menu:'#reportMenuButton',plain:false" wms:text="${web.label.report}">Report</a>
                 <div id="reportMenuButton">
-                    <div  wms:text="${wms.label.count}" onclick="exportPDFReport('COUNT')">COUNT</div>
-                    <div  wms:text="${wms.label.countconfirm}" onclick="exportPDFReport('COUNTCONFIRM')">COUNTCONFIRM</div>
+                    <div  wms:text="${web.label.countreport}" onclick="exportPDFReport('COUNT')">COUNT</div>
+                    <div  wms:text="${wms.label.countconfirmreport}" onclick="exportPDFReport('COUNTCONFIRM')">COUNTCONFIRM</div>
                 </div>
-                <a href="#" class="easyui-linkbutton areaHeader-rowdel" data-table="#dataTable"
+                <a href="#" class="easyui-linkbutton common-rowdel" data-table="#dataTable"
                    th:data-url="@{/services/inner/inventory/inventoryCount/headerDelete}">
                     <span wms:text="${web.label.delete}">Delete</span>
                 </a>
@@ -87,6 +86,7 @@
 							</thead>
 							<thead>
 								<tr>
+									<!--  
 									<th field="type" width="100" wms:text="${web.label.type}"
 										data-options="
 											sortable:true,
@@ -95,15 +95,14 @@
 											}
 										">type
 									</th>
-									<!--  
+									-->
 			                        <th field="replayFlag" width="100" wms:text="${web.label.replayflag}" data-options="
 										sortable:true,
 										formatter:function(value,row){
 											return getCodelkupValue('YESNO',value);
 										}
-									">type
+									">replayFlag
 			                        </th>
-			                        -->
 									<th field="parentCountNumber" width="100"
 										wms:text="${web.label.parentcountnumber}"
 										data-options="sortable:true">parentCountNumber</th>
@@ -133,7 +132,7 @@
 </div>
 </body>
 <script th:replace="common/js"/>
-<script type="text/javascript" th:src="@{/js/codelkupList?listName=COUNTTYPE,YESNO,COUNTSTATUS}"></script>
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=COUNTTYPE,YESNO,COUNTSTATUS,COUNTREASON}"></script>
 <script type="text/javascript" th:inline="text">
     var headerData;
     $(function () {
@@ -229,5 +228,20 @@
             });
         });
     }
+    
+	/* 导出文件  */
+	function exportPDFReport(type) {
+		var checkedRows = $('#dataTable').datagrid('getChecked');
+		if (checkedRows.length != 1) {
+			showError($.locale.selectOneRow);
+			return;
+		}
+		rowData = checkedRows[0];
+		exportReport({
+			fileType: "pdf",
+			reportType: type,
+			id: rowData.inventoryCountHeaderId
+		});
+	}
 </script>
 </html>
