@@ -20,8 +20,8 @@ $.extend($.fn.combogrid.defaults, {
 	fix:true,
 	rownumbers: true,
 	pagination: true,
-	pageSize: 20,
-	pageList: [20,50,100,500,1000]
+	pageSize: 15,
+	pageList: [15,50,100,500,1000]
 });
 $.extend($.fn.datagrid.defaults, {
 	striped: true,
@@ -31,8 +31,8 @@ $.extend($.fn.datagrid.defaults, {
 	method: 'post',
 	pagination: true,
 	pagePosition: 'top',
-	pageSize: 20,
-	pageList: [20,50,100,500,1000],
+	pageSize: 15,
+	pageList: [15,50,100,500,1000],
 	multiSort: true,
 	remoteSort: true
 });

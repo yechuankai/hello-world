@@ -33,8 +33,6 @@ public class TaskDetailTEntity extends BaseEntity {
 
     private String fromLpnNumber;
 
-    private String fromLpnType;
-
     private String fromLocationCode;
 
     private String fromZoneCode;
@@ -90,6 +88,8 @@ public class TaskDetailTEntity extends BaseEntity {
     private Long updateVersion;
 
     private String description;
+
+    private String fromLpnType;
 
     public Long getTaskDetailId() {
         return taskDetailId;
@@ -193,14 +193,6 @@ public class TaskDetailTEntity extends BaseEntity {
 
     public void setFromLpnNumber(String fromLpnNumber) {
         this.fromLpnNumber = fromLpnNumber == null ? null : fromLpnNumber.trim();
-    }
-
-    public String getFromLpnType() {
-        return fromLpnType;
-    }
-
-    public void setFromLpnType(String fromLpnType) {
-        this.fromLpnType = fromLpnType == null ? null : fromLpnType.trim();
     }
 
     public String getFromLocationCode() {
@@ -438,6 +430,14 @@ public class TaskDetailTEntity extends BaseEntity {
         this.description = description == null ? null : description.trim();
     }
 
+    public String getFromLpnType() {
+        return fromLpnType;
+    }
+
+    public void setFromLpnType(String fromLpnType) {
+        this.fromLpnType = fromLpnType == null ? null : fromLpnType.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -457,7 +457,6 @@ public class TaskDetailTEntity extends BaseEntity {
         sb.append(", packCode=").append(packCode);
         sb.append(", lotNumber=").append(lotNumber);
         sb.append(", fromLpnNumber=").append(fromLpnNumber);
-        sb.append(", fromLpnType=").append(fromLpnType);
         sb.append(", fromLocationCode=").append(fromLocationCode);
         sb.append(", fromZoneCode=").append(fromZoneCode);
         sb.append(", toLpnNumber=").append(toLpnNumber);
@@ -486,6 +485,7 @@ public class TaskDetailTEntity extends BaseEntity {
         sb.append(", updateTime=").append(updateTime);
         sb.append(", updateVersion=").append(updateVersion);
         sb.append(", description=").append(description);
+        sb.append(", fromLpnType=").append(fromLpnType);
         sb.append("]");
         return sb.toString();
     }
@@ -515,7 +515,6 @@ public class TaskDetailTEntity extends BaseEntity {
             && (this.getPackCode() == null ? other.getPackCode() == null : this.getPackCode().equals(other.getPackCode()))
             && (this.getLotNumber() == null ? other.getLotNumber() == null : this.getLotNumber().equals(other.getLotNumber()))
             && (this.getFromLpnNumber() == null ? other.getFromLpnNumber() == null : this.getFromLpnNumber().equals(other.getFromLpnNumber()))
-            && (this.getFromLpnType() == null ? other.getFromLpnType() == null : this.getFromLpnType().equals(other.getFromLpnType()))
             && (this.getFromLocationCode() == null ? other.getFromLocationCode() == null : this.getFromLocationCode().equals(other.getFromLocationCode()))
             && (this.getFromZoneCode() == null ? other.getFromZoneCode() == null : this.getFromZoneCode().equals(other.getFromZoneCode()))
             && (this.getToLpnNumber() == null ? other.getToLpnNumber() == null : this.getToLpnNumber().equals(other.getToLpnNumber()))
@@ -543,7 +542,8 @@ public class TaskDetailTEntity extends BaseEntity {
             && (this.getUpdateBy() == null ? other.getUpdateBy() == null : this.getUpdateBy().equals(other.getUpdateBy()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
             && (this.getUpdateVersion() == null ? other.getUpdateVersion() == null : this.getUpdateVersion().equals(other.getUpdateVersion()))
-            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()));
+            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
+            && (this.getFromLpnType() == null ? other.getFromLpnType() == null : this.getFromLpnType().equals(other.getFromLpnType()));
     }
 
     @Override
@@ -563,7 +563,6 @@ public class TaskDetailTEntity extends BaseEntity {
         result = prime * result + ((getPackCode() == null) ? 0 : getPackCode().hashCode());
         result = prime * result + ((getLotNumber() == null) ? 0 : getLotNumber().hashCode());
         result = prime * result + ((getFromLpnNumber() == null) ? 0 : getFromLpnNumber().hashCode());
-        result = prime * result + ((getFromLpnType() == null) ? 0 : getFromLpnType().hashCode());
         result = prime * result + ((getFromLocationCode() == null) ? 0 : getFromLocationCode().hashCode());
         result = prime * result + ((getFromZoneCode() == null) ? 0 : getFromZoneCode().hashCode());
         result = prime * result + ((getToLpnNumber() == null) ? 0 : getToLpnNumber().hashCode());
@@ -592,6 +591,7 @@ public class TaskDetailTEntity extends BaseEntity {
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getUpdateVersion() == null) ? 0 : getUpdateVersion().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
+        result = prime * result + ((getFromLpnType() == null) ? 0 : getFromLpnType().hashCode());
         return result;
     }
 
@@ -813,20 +813,6 @@ public class TaskDetailTEntity extends BaseEntity {
          */
         public Builder fromLpnNumber(String fromLpnNumber) {
             obj.setFromLpnNumber(fromLpnNumber);
-            return this;
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column TASK_DETAIL_T.FROM_LPN_TYPE
-         *
-         * @param fromLpnType the value for TASK_DETAIL_T.FROM_LPN_TYPE
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        public Builder fromLpnType(String fromLpnType) {
-            obj.setFromLpnType(fromLpnType);
             return this;
         }
 
@@ -1224,6 +1210,20 @@ public class TaskDetailTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column TASK_DETAIL_T.FROM_LPN_TYPE
+         *
+         * @param fromLpnType the value for TASK_DETAIL_T.FROM_LPN_TYPE
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder fromLpnType(String fromLpnType) {
+            obj.setFromLpnType(fromLpnType);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
          * This method corresponds to the database table TASK_DETAIL_T
          *
          * @mbg.generated
@@ -1330,7 +1330,6 @@ public class TaskDetailTEntity extends BaseEntity {
         packCode("PACK_CODE", "packCode", "VARCHAR", false),
         lotNumber("LOT_NUMBER", "lotNumber", "VARCHAR", false),
         fromLpnNumber("FROM_LPN_NUMBER", "fromLpnNumber", "VARCHAR", false),
-        fromLpnType("FROM_LPN_TYPE", "fromLpnType", "VARCHAR", false),
         fromLocationCode("FROM_LOCATION_CODE", "fromLocationCode", "VARCHAR", false),
         fromZoneCode("FROM_ZONE_CODE", "fromZoneCode", "VARCHAR", false),
         toLpnNumber("TO_LPN_NUMBER", "toLpnNumber", "VARCHAR", false),
@@ -1358,7 +1357,8 @@ public class TaskDetailTEntity extends BaseEntity {
         updateBy("UPDATE_BY", "updateBy", "VARCHAR", false),
         updateTime("UPDATE_TIME", "updateTime", "TIMESTAMP", false),
         updateVersion("UPDATE_VERSION", "updateVersion", "DECIMAL", false),
-        description("DESCRIPTION", "description", "VARCHAR", false);
+        description("DESCRIPTION", "description", "VARCHAR", false),
+        fromLpnType("FROM_LPN_TYPE", "fromLpnType", "VARCHAR", false);
 
         /**
          * This field was generated by MyBatis Generator.

@@ -33,8 +33,6 @@ public class LpnTEntity extends BaseEntity {
 
     private String parentLpnCode;
 
-    private String containerNumber;
-
     private Long companyId;
 
     private Long warehouseId;
@@ -52,6 +50,8 @@ public class LpnTEntity extends BaseEntity {
     private Long updateVersion;
 
     private String description;
+
+    private String containerNumber;
 
     public Long getLpnId() {
         return lpnId;
@@ -157,14 +157,6 @@ public class LpnTEntity extends BaseEntity {
         this.parentLpnCode = parentLpnCode == null ? null : parentLpnCode.trim();
     }
 
-    public String getContainerNumber() {
-        return containerNumber;
-    }
-
-    public void setContainerNumber(String containerNumber) {
-        this.containerNumber = containerNumber == null ? null : containerNumber.trim();
-    }
-
     public Long getCompanyId() {
         return companyId;
     }
@@ -248,6 +240,14 @@ public class LpnTEntity extends BaseEntity {
         this.description = description == null ? null : description.trim();
     }
 
+    public String getContainerNumber() {
+        return containerNumber;
+    }
+
+    public void setContainerNumber(String containerNumber) {
+        this.containerNumber = containerNumber == null ? null : containerNumber.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -267,7 +267,6 @@ public class LpnTEntity extends BaseEntity {
         sb.append(", weightTare=").append(weightTare);
         sb.append(", parentLpnId=").append(parentLpnId);
         sb.append(", parentLpnCode=").append(parentLpnCode);
-        sb.append(", containerNumber=").append(containerNumber);
         sb.append(", companyId=").append(companyId);
         sb.append(", warehouseId=").append(warehouseId);
         sb.append(", delFlag=").append(delFlag);
@@ -277,6 +276,7 @@ public class LpnTEntity extends BaseEntity {
         sb.append(", updateTime=").append(updateTime);
         sb.append(", updateVersion=").append(updateVersion);
         sb.append(", description=").append(description);
+        sb.append(", containerNumber=").append(containerNumber);
         sb.append("]");
         return sb.toString();
     }
@@ -306,7 +306,6 @@ public class LpnTEntity extends BaseEntity {
             && (this.getWeightTare() == null ? other.getWeightTare() == null : this.getWeightTare().equals(other.getWeightTare()))
             && (this.getParentLpnId() == null ? other.getParentLpnId() == null : this.getParentLpnId().equals(other.getParentLpnId()))
             && (this.getParentLpnCode() == null ? other.getParentLpnCode() == null : this.getParentLpnCode().equals(other.getParentLpnCode()))
-            && (this.getContainerNumber() == null ? other.getContainerNumber() == null : this.getContainerNumber().equals(other.getContainerNumber()))
             && (this.getCompanyId() == null ? other.getCompanyId() == null : this.getCompanyId().equals(other.getCompanyId()))
             && (this.getWarehouseId() == null ? other.getWarehouseId() == null : this.getWarehouseId().equals(other.getWarehouseId()))
             && (this.getDelFlag() == null ? other.getDelFlag() == null : this.getDelFlag().equals(other.getDelFlag()))
@@ -315,7 +314,8 @@ public class LpnTEntity extends BaseEntity {
             && (this.getUpdateBy() == null ? other.getUpdateBy() == null : this.getUpdateBy().equals(other.getUpdateBy()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
             && (this.getUpdateVersion() == null ? other.getUpdateVersion() == null : this.getUpdateVersion().equals(other.getUpdateVersion()))
-            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()));
+            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
+            && (this.getContainerNumber() == null ? other.getContainerNumber() == null : this.getContainerNumber().equals(other.getContainerNumber()));
     }
 
     @Override
@@ -335,7 +335,6 @@ public class LpnTEntity extends BaseEntity {
         result = prime * result + ((getWeightTare() == null) ? 0 : getWeightTare().hashCode());
         result = prime * result + ((getParentLpnId() == null) ? 0 : getParentLpnId().hashCode());
         result = prime * result + ((getParentLpnCode() == null) ? 0 : getParentLpnCode().hashCode());
-        result = prime * result + ((getContainerNumber() == null) ? 0 : getContainerNumber().hashCode());
         result = prime * result + ((getCompanyId() == null) ? 0 : getCompanyId().hashCode());
         result = prime * result + ((getWarehouseId() == null) ? 0 : getWarehouseId().hashCode());
         result = prime * result + ((getDelFlag() == null) ? 0 : getDelFlag().hashCode());
@@ -345,6 +344,7 @@ public class LpnTEntity extends BaseEntity {
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getUpdateVersion() == null) ? 0 : getUpdateVersion().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
+        result = prime * result + ((getContainerNumber() == null) ? 0 : getContainerNumber().hashCode());
         return result;
     }
 
@@ -571,20 +571,6 @@ public class LpnTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column LPN_T.CONTAINER_NUMBER
-         *
-         * @param containerNumber the value for LPN_T.CONTAINER_NUMBER
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        public Builder containerNumber(String containerNumber) {
-            obj.setContainerNumber(containerNumber);
-            return this;
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
          * This method sets the value of the database column LPN_T.COMPANY_ID
          *
          * @param companyId the value for LPN_T.COMPANY_ID
@@ -711,6 +697,20 @@ public class LpnTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column LPN_T.CONTAINER_NUMBER
+         *
+         * @param containerNumber the value for LPN_T.CONTAINER_NUMBER
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder containerNumber(String containerNumber) {
+            obj.setContainerNumber(containerNumber);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
          * This method corresponds to the database table LPN_T
          *
          * @mbg.generated
@@ -817,7 +817,6 @@ public class LpnTEntity extends BaseEntity {
         weightTare("WEIGHT_TARE", "weightTare", "DECIMAL", false),
         parentLpnId("PARENT_LPN_ID", "parentLpnId", "DECIMAL", false),
         parentLpnCode("PARENT_LPN_CODE", "parentLpnCode", "VARCHAR", false),
-        containerNumber("CONTAINER_NUMBER", "containerNumber", "VARCHAR", false),
         companyId("COMPANY_ID", "companyId", "DECIMAL", false),
         warehouseId("WAREHOUSE_ID", "warehouseId", "DECIMAL", false),
         delFlag("DEL_FLAG", "delFlag", "CHAR", false),
@@ -826,7 +825,8 @@ public class LpnTEntity extends BaseEntity {
         updateBy("UPDATE_BY", "updateBy", "VARCHAR", false),
         updateTime("UPDATE_TIME", "updateTime", "TIMESTAMP", false),
         updateVersion("UPDATE_VERSION", "updateVersion", "DECIMAL", false),
-        description("DESCRIPTION", "description", "VARCHAR", false);
+        description("DESCRIPTION", "description", "VARCHAR", false),
+        containerNumber("CONTAINER_NUMBER", "containerNumber", "VARCHAR", false);
 
         /**
          * This field was generated by MyBatis Generator.

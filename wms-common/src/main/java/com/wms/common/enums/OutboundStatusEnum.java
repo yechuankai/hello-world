@@ -9,9 +9,8 @@ import java.util.Map;
 public enum OutboundStatusEnum {
 
 	Draft("0","草稿"),
-	Waitingorder("3","待接单"),
-	WaitingShip("5","待出货"),
-	New("10", "新建"), 
+	WaitingReview("3","待审核"),
+	New("10", "新建"),
 	PartAllocated("20", "部分分配"), 
 	Allocated("30", "已全部分配"), 
 	Release("40", "已下发"), 

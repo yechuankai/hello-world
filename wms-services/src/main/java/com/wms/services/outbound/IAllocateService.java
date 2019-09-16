@@ -75,6 +75,6 @@ public interface IAllocateService {
      * @param locationIds 库位id集合
      * @return
      */
-	List<AllocateTEntity> findBySkuAndLocation(Long warehouseId, Long companyId, Set<Long> skuIds,
+	List<AllocateTEntity> findBySkuAndLocation(AllocateTEntity allocate, Set<Long> skuIds,
 			Set<Long> locationIds);
 }

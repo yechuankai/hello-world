@@ -204,6 +204,13 @@ public class InventoryCountDetailServiceImpl implements IInventoryCountDetailSer
 			if (CollectionUtils.isNotEmpty(replayCountList))
 				throw new BusinessServiceException("InventoryCountDetailServiceImpl", "countdetail.has.replaycount" , new Object[] {countDetail.getLineNumber()});
 				
+			/*
+			//复盘任务已完成状态不可更新
+			if (CountStatusEnum.Complated.getCode().equals(countDetail.getStatus())
+					&& countDetail.getSourceLineNumber() != null)
+				throw new BusinessServiceException("InventoryCountDetailServiceImpl", "replay.countdetail.is.complate" , new Object[] {countDetail.getLineNumber()});
+			*/
+			
 			// cancel header
 			InventoryCountDetailTExample TExample = new InventoryCountDetailTExample();
 			InventoryCountDetailTExample.Criteria TExampleCriteria  = TExample.createCriteria();
@@ -343,14 +350,19 @@ public class InventoryCountDetailServiceImpl implements IInventoryCountDetailSer
 			notProcess(detail);
 			
 			//复盘状态则不可更新
-			if (CountStatusEnum.Replay.getCode().equals(detail.getStatus())) {
+			if (CountStatusEnum.Replay.getCode().equals(detail.getStatus())) 
 				throw new BusinessServiceException("InventoryCountDetailServiceImpl", "countdetail.is.replaystatus" , new Object[] {detail.getLineNumber()});
-			}
+			
+			//复盘任务已完成状态不可更新
+			if (CountStatusEnum.Complated.getCode().equals(detail.getStatus())
+					&& d.getSourceLineNumber() != null)
+				throw new BusinessServiceException("InventoryCountDetailServiceImpl", "replay.countdetail.is.complate" , new Object[] {detail.getLineNumber()});
 			
 			//更新状态、盘点数量、系统数量（如果前台传入不为空，则系统自动获取，试用于PC）// cancel header
 			InventoryCountDetailTEntity update = InventoryCountDetailTEntity.builder()
-													.quantityConfirm(d.getQuantityConfirm())
 													.status(CountStatusEnum.Complated.getCode())
+													.reason(d.getReason())
+													.remark(d.getRemark())
 													.updateBy(request.getUserName())
 													.updateTime(new Date())
 													.build();
@@ -358,7 +370,8 @@ public class InventoryCountDetailServiceImpl implements IInventoryCountDetailSer
 			BigDecimal quantitySystem = detail.getQuantitySystem();
 			BigDecimal quantityDifference = BigDecimal.ZERO;
 			//前台传入为空，则通过系统获取
-			if (d.getQuantitySystem() == null) {
+			if (d.getQuantitySystem() == null 
+					|| BigDecimal.ZERO.compareTo(quantitySystem) == 0) {
 				try {
 					InventoryOnhandTEntity onhand = inventoryService.find(InventoryOnhandTEntity.builder()
 							.companyId(request.getCompanyId())
@@ -374,8 +387,12 @@ public class InventoryCountDetailServiceImpl implements IInventoryCountDetailSer
 			//计算差异数量
 			quantityDifference = d.getQuantityCount().subtract(quantitySystem);
 			update.setQuantitySystem(quantitySystem);
+			update.setQuantityCount(d.getQuantityCount());
 			update.setQuantityDifference(quantityDifference);
-			
+			if (BigDecimal.ZERO.compareTo(d.getQuantityConfirm()) == 0)
+				update.setQuantityConfirm(quantityDifference);
+			else
+				update.setQuantityConfirm(d.getQuantityConfirm());
 			
 			InventoryCountDetailTExample TExample = new InventoryCountDetailTExample();
 			InventoryCountDetailTExample.Criteria TExampleCriteria  = TExample.createCriteria();
@@ -390,8 +407,9 @@ public class InventoryCountDetailServiceImpl implements IInventoryCountDetailSer
 				throw new BusinessServiceException("record submit error.");
 			
 			detail.setQuantitySystem(quantitySystem);
+			detail.setQuantityCount(d.getQuantityCount());
 			detail.setQuantityDifference(quantityDifference);
-			detail.setQuantityConfirm(d.getQuantityConfirm());
+			update.setQuantityConfirm(quantityDifference);
 			//一次提交要求必须是一个单据
 			headerId = detail.getInventoryCountHeaderId();
 		}
@@ -451,9 +469,10 @@ public class InventoryCountDetailServiceImpl implements IInventoryCountDetailSer
 			
 			//开始更新父行
 			InventoryCountDetailTEntity update = InventoryCountDetailTEntity.builder()
-					.quantityReplay(countDetail.getQuantityConfirm())
+					.quantityReplay(countDetail.getQuantityCount())
 					.quantitySystem(countDetail.getQuantitySystem())
 					.quantityDifference(countDetail.getQuantityDifference())
+					.quantityConfirm(countDetail.getQuantityConfirm())
 					.status(CountStatusEnum.Complated.getCode())
 					.updateBy(request.getUserName())
 					.updateTime(new Date())
@@ -474,8 +493,8 @@ public class InventoryCountDetailServiceImpl implements IInventoryCountDetailSer
 			
 			pd.setQuantitySystem(countDetail.getQuantitySystem());
 			pd.setQuantityDifference(countDetail.getQuantityDifference());
+			pd.setQuantityCount(countDetail.getQuantityCount());
 			pd.setQuantityConfirm(countDetail.getQuantityConfirm());
-			
 		});
 		
 		//更新状态
@@ -547,7 +566,7 @@ public class InventoryCountDetailServiceImpl implements IInventoryCountDetailSer
 			notProcess(detail);
 			
 			//有差异的执行调整
-			if (BigDecimal.ZERO.compareTo(d.getQuantityDifference()) < 0) {
+			if (BigDecimal.ZERO.compareTo(d.getQuantityConfirm()) != 0) {
 				postDetail.add(detail);
 			}
 			
@@ -595,7 +614,7 @@ public class InventoryCountDetailServiceImpl implements IInventoryCountDetailSer
 				detailVO.setCreateBy(request.getUserName());
 				detailVO.setSourceLineNumber(String.valueOf(d.getLineNumber()));
 				detailVO.setSourceNumber(String.valueOf(d.getInventoryCountDetailId()));
-				detailVO.setQuantityAdjustment(d.getQuantityDifference());
+				detailVO.setQuantityAdjustment(d.getQuantityConfirm());
 				detailVO.setReason(AdjustmentReasonEnum.Cc.getCode());
 				detailVO.setTransactionCategory(AdjustmentReasonEnum.Cc.getCode());
 				adjustmentDetail.add(detailVO);

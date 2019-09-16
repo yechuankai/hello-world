@@ -152,6 +152,23 @@ public class InventoryCountRest extends BaseController {
             return fail(e.getMessage());
         }
     }
+    
+    @RequestMapping(value = "/cancel")
+    public AjaxResult headerCancel(@RequestBody String req) {
+        try {
+            AjaxRequest<List<InventoryCountHeaderTEntity>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<InventoryCountHeaderTEntity> >>() {});
+            if (CollectionUtils.isEmpty(request.getData())) {
+                return fail("no record update.");
+            }
+            boolean flag = headerService.cancel(request);
+            if (flag) {
+                return success();
+            }
+        } catch (Exception e) {
+            return fail(e.getMessage());
+        }
+        return fail();
+    }
 
     @RequestMapping(value = "/headerDelete")
     public AjaxResult headerDelete(@RequestBody String req) {
@@ -189,10 +206,8 @@ public class InventoryCountRest extends BaseController {
     @RequestMapping(value = "/replayCount")
     public AjaxResult replayCount(@RequestBody String req) {
         try {
-            AjaxRequest<InventoryCountHeaderTEntity> request = ajaxRequest(req, new TypeReference<AjaxRequest<InventoryCountHeaderTEntity>>() {});
-
+            AjaxRequest<List<InventoryCountHeaderTEntity>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<InventoryCountHeaderTEntity>>>() {});
             long count = headerService.createReplayCount(request);
-
             String message = "countdetail.created";
             message = MessageUtils.message(message, count);
             return success(message);

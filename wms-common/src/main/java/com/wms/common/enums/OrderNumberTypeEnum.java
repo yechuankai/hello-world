@@ -13,7 +13,9 @@ public enum OrderNumberTypeEnum {
 	Lot("LOT", "批次号"),
 	TaskNumber("TASKNUMBER","任务号"),
 	RequestNumber("REQUESTNUMBER","请求单号"),
-	CountNumber("COUNT", "盘点单号");
+	CountNumber("COUNT", "盘点单号"),
+	WaveTemplate("WAVETEMPLATE", "盘点单号"),
+	Wave("WAVE", "盘点单号");
 
 	private final String code;
 	private final String desc;

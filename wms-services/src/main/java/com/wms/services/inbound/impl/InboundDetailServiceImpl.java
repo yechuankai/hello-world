@@ -345,6 +345,11 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 			detail.setPutawayStrategyId(putawayStrategy.getPutawayStrategyId());
 			detail.setPutawayStrategyCode(putawayStrategy.getPutawayStrategyCode());
 		}
+		
+		//验证毛重/净重
+		if (detail.getWeightGross().compareTo(detail.getWeightNet()) < 0) 
+			throw new BusinessServiceException("InboundDetailServiceImpl", "weight.gross.morethen.net" , new Object[] {detail.getLineNumber()}); 
+		
 		PackTEntity pack = packService.find(PackTEntity.builder()
 				.warehouseId(detail.getWarehouseId())
 				.companyId(detail.getCompanyId())
@@ -372,6 +377,11 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 		if (detail.getUomQuantityReceive() != null && detail.getUomQuantityReceive().compareTo(BigDecimal.ZERO) > 0)
 			detail.setQuantityReceive(detail.getUomQuantityReceive().multiply(uomQuantity));
 
+		if (StringUtils.isNotEmpty(detail.getLpnNumber())) {
+			detail.setLpnNumber(detail.getLpnNumber().toUpperCase());
+		}
+		
+		
 		if (inbound.getOperatorType() == OperatorTypeEnum.Modify) {
 			return Boolean.TRUE;
 		}
@@ -1132,7 +1142,13 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
                     break;
 				case Submit:
 					d.setStatus(InboundStatusEnum.WaitingReview.getCode());
-					modify(d);
+					if(null == d.getInboundDetailId() || 0L == d.getInboundDetailId()){//提交时新增
+						d.setCreateBy(request.getUserName());
+						d.setCreateTime(new Date());
+						add(d);
+					}else {
+						modify(d);
+					}
 					statusHistory.setOldStatus(InboundStatusEnum.Draft.getCode());
 					statusHistory.setNewStatus(InboundStatusEnum.WaitingReview.getCode());
 					break;
@@ -1491,6 +1507,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 					.companyId(detail.getCompanyId())
 					.warehouseId(inbound.getToWarehouseId())
 					.skuCode(detail.getSkuCode().toUpperCase())
+					.ownerCode(detail.getOwnerCode())
 					.active(YesNoEnum.Yes.getCode())
 					.build();
 			Set<String> codes = Sets.newHashSet();

@@ -199,23 +199,15 @@
             var url = $(this).attr('data-url');
 
             var editingRows = $(datagrid).datagrid('getEditingRowIndexs');
-            for(var i in editingRows) {
-                var flag = $(datagrid).datagrid('validateRow', editingRows[i]);
-                if (!flag){
-                    showError($.locale.errorRow,{row:editingRows[i]});
-                    return;
-                }
-            }
-
-            var rows = $(datagrid).datagrid('getChanges');
-
-            if (editingRows.length == 0 && rows.length == 0) {
-                showError($.locale.noChange);
-                return;
-            }
             if (editingRows.length > 0){
                 $(datagrid).datagrid('endCellEdit');
-                rows = $(datagrid).datagrid('getChanges');
+            }
+            
+            var rows = $(datagrid).datagrid('getChecked');
+
+            if (rows.length == 0) {
+            	showError($.locale.selectOneRow);
+                return;
             }
 
             var headerData = getAdjustmentHeaderData();

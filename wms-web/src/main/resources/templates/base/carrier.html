@@ -60,110 +60,150 @@
     <div>
         <table id="carrierData" wms:title="${web.label.carrierlist}" class="easyui-datagrid"
                th:data-delayUrl="@{/services/inner/base/carrier/find}">
-            <thead>
-            <tr>
-                <th field="carrierId" data-options="checkbox:true"></th>
+            <thead data-options="frozen:true">
+             	<th field="carrierId" data-options="checkbox:true"></th>
                 <th field="carrierCode" width="80" wms:text="${web.label.carrier}" data-options="sortable:true">supplierCode</th>
-                <th field="carrierDescr" width="150" wms:text="${web.label.descr}" data-options="sortable:false,editor:{
-																													type: 'validatebox',
-																													options: {
-																														required: true
-																													}
-																												}">supplierDescr</th>
-                <th field="contact1" width="80" wms:text="${web.label.contact1}" data-options="sortable:false,editor:'text'">contact1</th>
-                <th field="contact2" width="80" wms:text="${web.label.contact2}" data-options="sortable:false,editor:'text'">contact2</th>
-                <th field="phone1" width="80" wms:text="${web.label.phone1}" data-options="sortable:false,editor:'text'">phone1</th>
-                <th field="phone2" width="80" wms:text="${web.label.phone2}" data-options="sortable:false,editor:'text'">phone2</th>
-                <th field="address1" width="80" wms:text="${web.label.address1}" data-options="sortable:false,editor:'text'">address1</th>
-                <th field="address2" width="80" wms:text="${web.label.address2}" data-options="sortable:false,editor:'text'">address2</th>
-                <th field="fax" width="80" wms:text="${web.label.fax}" data-options="sortable:false, editor:'text'">fax</th>
-                <th field="email" width="80" wms:text="${web.label.email}" data-options="validType:'email',editor:'text'">email</th>
-                <th field="active" width="50" wms:text="${web.label.active}" data-options="
-							sortable:true,
-							formatter:function(value,row){
-								return getCodelkupValue('YESNO',value);
-							},
-							editor:{
-								type:'combobox',
-								options:{
-									valueField:'code',
-									textField:'descr',
-									data: codelkups['YESNO'],
-									required: true
+            </thead>
+            <thead>
+	            <tr>
+	                <th field="carrierDescr" width="150" wms:text="${web.label.descr}" data-options="sortable:false,editor:{
+																														type: 'validatebox',
+																														options: {
+																															required: true
+																														}
+																													}">supplierDescr</th>
+	                <th field="address1" width="80" wms:text="${web.label.address1}" data-options="sortable:false,editor:'text'">address1</th>
+	                <th field="address2" width="80" wms:text="${web.label.address2}" data-options="sortable:false,editor:'text'">address2</th>
+	                <th field="contact1" width="80" wms:text="${web.label.contact1}" data-options="sortable:false,editor:'text'">contact1</th>
+	                <th field="phone1" width="80" wms:text="${web.label.phone1}" data-options="sortable:false,editor:'text'">phone1</th>
+	                <th field="email1" width="80" wms:text="${web.label.email1}" data-options="validType:'email',editor:'text'">email</th>
+	                <th field="contact2" width="80" wms:text="${web.label.contact2}" data-options="sortable:false,editor:'text'">contact2</th>
+	                <th field="phone2" width="80" wms:text="${web.label.phone2}" data-options="sortable:false,editor:'text'">phone2</th>
+	                <th field="email2" width="80" wms:text="${web.label.email2}" data-options="validType:'email',editor:'text'">email</th>
+	                <th field="webSite" width="80" wms:text="${web.label.website}" data-options="sortable:false, editor:'text'">website</th>
+	                <!-- 
+	                 <th field="fax" width="80" wms:text="${web.label.fax}" data-options="sortable:false, editor:'text'">fax</th>
+	                -->
+	                <th field="active" width="50" wms:text="${web.label.active}" data-options="
+								sortable:true,
+								formatter:function(value,row){
+									return getCodelkupValue('YESNO',value);
+								},
+								editor:{
+									type:'combobox',
+									options:{
+										valueField:'code',
+										textField:'descr',
+										data: codelkups['YESNO'],
+										required: true
+									}
 								}
-							}
-						" >active</th>
-                <th field="remark" width="100" wms:text="${web.label.remark}" data-options="sortable:false,editor:'text'">remark</th>
-                <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
-                <th field="createTime" width="150" wms:text="${web.label.createtime}"  data-options="sortable:true">createTime</th>
-                <th field="updateBy" width="80" wms:text="${web.label.updateby}" >updateBy</th>
-                <th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">updateTime</th>
-            </tr>
+							" >active</th>
+	                <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+	                <th field="createTime" width="150" wms:text="${web.label.createtime}"  data-options="sortable:true">createTime</th>
+	                <th field="updateBy" width="80" wms:text="${web.label.updateby}" >updateBy</th>
+	                <th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">updateTime</th>
+	            </tr>
             </thead>
         </table>
     </div>
 </div>
-<div id="addDiv" wms:title="${web.label.add}" style="width:460px;height:500px; display: none;">
-    <div style="width: 100%;padding-left: 50px;">
+<div id="addDiv" wms:title="${web.label.add}" style="width:460px;height:460px; display: none;">
+    <div style="width: 100%;">
         <form method="post" id="addForm" th:data-url="@{/services/inner/base/carrier/add}">
-            <table style="width: 100%;">
-                <tr>
-                    <td>
-                        <input name="carrierCode" class="easyui-textbox" wms:data-options="required:true,label:'${web.label.carrier}',labelPosition:'top'">
-                    </td>
-                    <td>
-                        <input name="carrierDescr" class="easyui-textbox"  wms:data-options="required:true,label:'${web.label.descr}',labelPosition:'top'">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input name="contact1" class="easyui-textbox"  wms:data-options="label:'${web.label.contact1}',labelPosition:'top'">
-                    </td>
-                    <td>
-                        <input name="contact2" class="easyui-textbox"  wms:data-options="label:'${web.label.contact2}',labelPosition:'top'">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input name="phone1" class="easyui-textbox"  wms:data-options="label:'${web.label.phone1}',labelPosition:'top'">
-                    </td>
-                    <td>
-                        <input name="phone2" class="easyui-textbox"  wms:data-options="label:'${web.label.phone2}',labelPosition:'top'">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input name="address1" class="easyui-textbox"  wms:data-options="label:'${web.label.address1}',labelPosition:'top'">
-                    </td>
-                    <td>
-                        <input name="address2" class="easyui-textbox"  wms:data-options="label:'${web.label.address2}',labelPosition:'top'">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input name="email" class="easyui-textbox"  wms:data-options="label:'${web.label.email}',labelPosition:'top' ">
-                    </td>
-                    <td>
-                        <input name="fax" class="easyui-textbox"  wms:data-options="label:'${web.label.fax}',labelPosition:'top'">
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input class="easyui-combobox" name="active" style="width: 100px;" wms:data-options="
-							required:true,
-							value: 'Y',
-							data: codelkups['YESNO'],
-							valueField: 'code',
-							textField: 'descr',
-							label: '${web.label.active}',
-							labelPosition: 'top'
-							" />
-                    </td>
-                    <td>
-                        <input name="remark" class="easyui-textbox"  wms:data-options="label:'${web.label.remark}',labelPosition:'top'">
-                    </td>
-                </tr>
-            </table>
+            <div class="lazy-load" lazy-load="easyui-tabs" style="width: 100%;height: 360px;">
+            	<div wms:title="${web.label.normal}" style="padding-left: 10px;">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td>
+                                <input name="carrierCode" class="easyui-textbox"
+                                       wms:data-options="required:true,label:'${web.label.carrier}',labelPosition:'top'">
+                            </td>
+                            <td>
+                                <input name="carrierDescr" class="easyui-textbox" style="width: 100%;"
+                                       wms:data-options="required:true,label:'${web.label.descr}',labelPosition:'top'">
+                            </td>
+                        </tr>
+                        <tr>
+                        	<td colspan="2">
+                                <input name="address1" class="easyui-textbox" style="width: 96%;"
+                                       wms:data-options="label:'${web.label.address1}',labelPosition:'top'">
+                            </td>
+                       	</tr>
+                       	<tr>
+                        	<td colspan="2">
+                                <input name="address2" class="easyui-textbox" style="width: 96%;"
+                                       wms:data-options="label:'${web.label.address2}',labelPosition:'top'">
+                            </td>
+                       	</tr>
+                        <tr>
+                            <td colspan="2">
+                                <input name="webSite" class="easyui-textbox" style="width: 96%;"
+                                       wms:data-options="label:'${web.label.website}',labelPosition:'top'">
+                            </td>
+                        </tr>
+                        <tr>
+                        	 <td colspan="2">
+                                <input class="easyui-combobox" name="active" style="width: 100px;" wms:data-options="
+								required:true,
+								value: 'Y',
+								data: codelkups['YESNO'],
+								valueField: 'code',
+								textField: 'descr',
+								label: '${web.label.active}',
+								labelPosition: 'top'
+								"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div wms:title="${web.label.contact1}" style="padding-left: 10px;">
+                 	<table style="width: 100%;">
+                        <tr>
+                            <td>
+                                <input name="contact1" class="easyui-textbox"
+                                       wms:data-options="label:'${web.label.contact1}',labelPosition:'top'">
+                            </td>
+                             <td>
+                                <input name="phone1" class="easyui-textbox"
+                                       wms:data-options="label:'${web.label.phone1}',labelPosition:'top'">
+                            </td>
+                        </tr>
+                        <tr>
+                        	<td>
+                                <input name="email1" class="easyui-textbox"
+                                       wms:data-options="label:'${web.label.email1}',labelPosition:'top' ">
+                            </td>
+                            <td>
+                            	&nbsp;
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div wms:title="${web.label.contact2}" style="padding-left: 10px;">
+                 	<table style="width: 100%;">
+                        <tr>
+                            <td>
+                                <input name="contact2" class="easyui-textbox"
+                                       wms:data-options="label:'${web.label.contact2}',labelPosition:'top'">
+                            </td>
+                             <td>
+                                <input name="phone2" class="easyui-textbox"
+                                       wms:data-options="label:'${web.label.phone2}',labelPosition:'top'">
+                            </td>
+                        </tr>
+                        <tr>
+                        	<td>
+                                <input name="email2" class="easyui-textbox"
+                                       wms:data-options="label:'${web.label.email2}',labelPosition:'top' ">
+                            </td>
+                            <td>
+                            	&nbsp;
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </form>
     </div>
     <div style="text-align: center;margin-top: 15px;">

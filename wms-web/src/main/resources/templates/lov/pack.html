@@ -67,4 +67,37 @@
 			});
 		}
 	}
+	
+	
+	function setPackUom(pack){
+		var data = getBaseData();
+		$.extend(data, pack);
+		$.post({
+			url: '../../services/inner/base/pack/find',
+			data:data,
+			async: false,
+			success: function(data){
+				// data = returnData(data);
+				if (data.code == '0') {
+					showError(data.msg);
+					return;
+				}
+				debugger;
+				data = data.rows[0];
+				packData = data;
+				var comData = [];
+
+				comData.push({value: data.uom, label: getCodelkupValue('UOM',data.uom)});
+				comData.push({value: data.uomInner, label: getCodelkupValue('UOM',data.uomInner)});
+				comData.push({value: data.uomCase, label: getCodelkupValue('UOM',data.uomCase)});
+
+				$("#uom").combobox({
+					data : comData,
+					value : data.uom,
+					idField: 'value',
+					textField: 'label'
+				});
+			}
+		});
+	}
 </script>

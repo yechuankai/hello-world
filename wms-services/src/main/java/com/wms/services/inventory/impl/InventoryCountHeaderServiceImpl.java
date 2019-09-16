@@ -1,5 +1,6 @@
 package com.wms.services.inventory.impl;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -329,7 +330,9 @@ public class InventoryCountHeaderServiceImpl implements IInventoryCountHeaderSer
 			c.setCompanyId(request.getCompanyId());
 			InventoryCountHeaderTEntity count = find(c);
 			//判断状态
-			notProcess(count);
+			if (!CountStatusEnum.New.getCode().equals(count.getStatus()))
+				throw new BusinessServiceException("InventoryCountHeaderServiceImpl", "count.status.not.process" , new Object[] {count.getCountNumber()});
+			
 			//判断是否存在复盘未完成的任务
 			List<InventoryCountHeaderTEntity> replayCountList = replayCount(count, CountStatusEnum.New, CountStatusEnum.Counting, CountStatusEnum.Replay);
 			if (CollectionUtils.isNotEmpty(replayCountList))
@@ -373,15 +376,22 @@ public class InventoryCountHeaderServiceImpl implements IInventoryCountHeaderSer
 	 */
 	@Override
 	@Transactional
-	public Long createReplayCount(AjaxRequest<InventoryCountHeaderTEntity> request) throws BusinessServiceException {
-		InventoryCountHeaderTEntity count = request.getData();
-		//查询盘点完成的明细行
-		List<InventoryCountDetailTEntity> detailList = detailService.findByHeaderId(InventoryCountDetailTEntity.builder()
-					.warehouseId(request.getWarehouseId())
-					.companyId(request.getCompanyId())
-					.inventoryCountHeaderId(count.getInventoryCountHeaderId())
-					.build(), CountStatusEnum.Complated);
-		long detailSize = createReplayCount(request, detailList);
+	public Long createReplayCount(AjaxRequest<List<InventoryCountHeaderTEntity>> request) throws BusinessServiceException {
+		List<InventoryCountHeaderTEntity> countList = request.getData();
+		if (CollectionUtils.isEmpty(countList))
+			throw new BusinessServiceException("no data create.");
+		
+		long detailSize = 0;
+		for (InventoryCountHeaderTEntity count : countList) {
+			//查询盘点完成的明细行
+			List<InventoryCountDetailTEntity> detailList = detailService.findByHeaderId(InventoryCountDetailTEntity.builder()
+						.warehouseId(request.getWarehouseId())
+						.companyId(request.getCompanyId())
+						.inventoryCountHeaderId(count.getInventoryCountHeaderId())
+						.build(), CountStatusEnum.Complated);
+			detailSize += createReplayCount(new AjaxRequest<InventoryCountHeaderTEntity>(count, request), detailList);
+		}
+			
 		return detailSize;
 	}
 	
@@ -437,6 +447,13 @@ public class InventoryCountHeaderServiceImpl implements IInventoryCountHeaderSer
 			//判断明盘
 			if (YesNoEnum.Yes.getCode().equals(countRequest.getQuantityShowFlag())) 
 				detail.setQuantitySystem(oriDetail.getQuantitySystem());
+			else
+				detail.setQuantitySystem(BigDecimal.ZERO);
+			
+			detail.setQuantityConfirm(BigDecimal.ZERO);
+			detail.setQuantityCount(BigDecimal.ZERO);
+			detail.setQuantityDifference(BigDecimal.ZERO);
+			detail.setQuantityReplay(BigDecimal.ZERO);
 			
 			newDetailList.add(detail);
 		}
@@ -559,8 +576,8 @@ public class InventoryCountHeaderServiceImpl implements IInventoryCountHeaderSer
 															.companyId(request.getCompanyId())
 															.inventoryCountHeaderId(c.getInventoryCountHeaderId())
 															.build(), CountStatusEnum.New, CountStatusEnum.Counting, CountStatusEnum.Complated);
-			
-			detailService.modifyStatus(new AjaxRequest<List<InventoryCountDetailTEntity>>(detailList, request), CountStatusEnum.Post);
+			if (CollectionUtils.isNotEmpty(detailList))
+				detailService.modifyStatus(new AjaxRequest<List<InventoryCountDetailTEntity>>(detailList, request), CountStatusEnum.Post);
 		});
 		
 		boolean postFlag = postReplayCount(new AjaxRequest<List<InventoryCountHeaderTEntity>>(replayList, request));

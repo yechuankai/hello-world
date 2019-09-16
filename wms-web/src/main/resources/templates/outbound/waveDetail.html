@@ -1,0 +1,136 @@
+<div id="detailToolbar" class="tableToolbar">
+    <a href="#" class="easyui-linkbutton outbound-add" onclick="addOutboundDiv()" >
+        <span wms:text="${web.label.add}">Add</span>
+    </a>
+    <a href="#" class="easyui-linkbutton common-rowdel" data-table="#waveDetailTable"
+       th:data-url="@{/services/inner/outbound/wavedetail/delete}">
+        <span wms:text="${web.label.delete}">delete</span>
+    </a>
+</div>
+<div style="width: 100%; height: 100%">
+    <table id="waveDetailTable" wms:title="${web.label.wavedetaillist.title}" class="easyui-datagrid"
+           data-options="toolbar: '#detailToolbar'"
+           th:data-delayUrl="@{/services/inner/outbound/wavedetail/find}" style="width: 100%; height: 100%">
+        <thead data-options="frozen:true">
+        	<tr>
+	        <th field="waveDetailId" data-options="checkbox:true"></th>
+	        <th field="outboundNumber" width="130" wms:text="${web.label.outboundnumber}">outboundNumber</th>
+	        </tr>
+        </thead>
+        <thead>
+        	<tr>
+		       <th field="sourceNumber" width="100" wms:text="${web.label.sourcenumber}">sourceNumber</th>
+		         <th field="type" width="80" wms:text="${web.label.type}" data-options="
+						sortable:true,
+						formatter:function(value,row){
+							return getCodelkupValue('OUTBOUNDTYPE',value);
+						}
+					">type
+		         </th>
+		         <th field="status" width="80" wms:text="${web.label.status}" data-options="
+						sortable:true,
+						formatter:function(value,row){
+							return getCodelkupValue('OUTBOUNDSTATUS',value);
+						}
+					">status
+		         </th>
+		         <th field="ownerCode" width="80" wms:text="${web.label.owner}">ownerCode</th>
+		         <th field="customerCode" width="80" wms:text="${web.label.customercode}">customerCode</th>
+		         <th field="carrierCode" width="80" wms:text="${web.label.carrier}">carrierCode</th>
+		         <th field="expectedoutbounddate" width="130" wms:text="${web.label.expectedoutbounddate}">
+		             expectedoutbounddate
+		         </th>
+		          <th field="remark" width="120" wms:text="${web.label.remark}">remark</th>
+		         <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+                 <th field="createTime" width="130" wms:text="${web.label.createtime}"
+                     data-options="sortable:true">createTime
+                 </th>
+                 <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+                 <th field="updateTime" width="130" wms:text="${web.label.updatetime}"
+                     data-options="sortable:true">updateTime
+                 </th>
+	        </tr>
+        </thead>
+    </table>
+</div>
+<div th:replace="outbound/searchByTemplate"/>
+<script type="text/javascript" th:inline="text">
+	var detailEditData;
+	var detailFilterRules = [{
+		field:'createTime',
+		type:'datebox',
+		op:['contains','less','greater']
+	},
+	{
+		field:'updateTime',
+		type:'datebox',
+		op:['contains','less','greater']
+	},
+	{
+		field:'expectedoutbounddate',
+		type:'datebox',
+		op:['contains','less','greater']
+	},
+	{
+		field:'status',
+		type:'combobox',
+		options:{
+			panelHeight:'auto',
+			data:getFilterCodelkupValue('OUTBOUNDSTATUS'),
+			onChange:function(value){
+				if (value == '---' || value == ''){
+					$('#waveDetailTable').datagrid('removeFilterRule', 'status');
+				} else {
+					$('#waveDetailTable').datagrid('addFilterRule', {
+						field: 'status',
+						op: 'equal',
+						value: value
+					});
+				}
+				$('#waveDetailTable').datagrid('doFilter');
+			}
+		}
+	}];
+	
+	var waveData = {};
+	$(function(){
+		$('#addtoWave').click(function(){
+			addtowave(waveData, function(){
+				$("#outboundsLayout").dialog('close');
+				refreshWaveDetail(waveData);
+			});
+		});
+	});
+
+    function refreshWaveDetail(data) {
+    	waveData = data;
+        var waveDetailTableId = '#waveDetailTable';
+        var url = $(waveDetailTableId).attr('data-delayUrl');
+
+        var searchData = {waveId: data.waveId};
+        var baseData = getBaseData();
+        $.extend(baseData, searchData);
+
+        $(waveDetailTableId).datagrid({
+            url: url,
+            queryParams: baseData,
+            filterPosition: 'top',
+			filterCache: [],
+			filterRules: []
+        }).datagrid('clearChecked').datagrid('enableFilter', detailFilterRules);;
+    }
+    
+    function addOutboundDiv(){
+    	debugger;
+    	loading();
+    	findAllOutbound();
+    	$("#outboundsLayout").dialog({
+    		closed: true,
+		    modal: true,
+		    fix: true
+    	}).dialog('open');
+    	closeLoading();
+    }
+    
+    
+</script>

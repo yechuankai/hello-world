@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${wms.wave.title}">wave</title>
+    <head th:replace="common/head"/>
+    <script th:replace="common/js"/>
+	<script type="text/javascript" th:src="@{/static/ui/plugins/datagrid-filter.js}"></script>
+	<script type="text/javascript" th:src="@{/js/codelkupList?listName=PROCESSSTATUS,OUTBOUNDTYPE,OUTBOUNDSTATUS}"></script>
+</head>
+<body class="easyui-layout">
+<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+    <div id="searchDiv">
+        <div style="margin-left: 10px;">
+            <form id="searchForm" data-table="#dataTable">
+                <div style="margin-bottom:10px">
+                    <input name="waveNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.wavenumber}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combobox" name="waveType" wms:data-options="
+						data: codelkups['WAVETYPE'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.wavetype}',
+						labelPosition: 'top'
+						">
+                </div>
+            </form>
+        </div>
+        <div style="text-align: center;">
+            <a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-search'">
+                <span wms:text="${web.label.search}">Search</span>
+            </a>
+            <a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-clear'">
+                <span wms:text="${web.label.clear}">Clear</span>
+            </a>
+        </div>
+    </div>
+</div>
+<div data-options="region:'center'">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'north',collapsible:false" style="height:35px;">
+            <div id="dataTableToolbar" style="padding-left: 20px;">
+            	<a href="#"  class="easyui-linkbutton common-rowsave"  wms:text="${web.label.save}" data-table="#dataTable" th:data-url="@{/services/inner/outbound/wave/save}">Save</a>
+                <a href="#" class="easyui-menubutton" data-options="menu:'#optionsMenuButton',plain:false"
+                   wms:text="${web.label.options}">Actions</a>
+                <div id="optionsMenuButton">
+                    <div  wms:text="${web.label.allocate}" class="common-other" data-table="#dataTable" th:data-url="@{/services/inner/outbound/wave/allocate}">Allocate</div>
+                    <div  wms:text="${web.label.unallocate}" class="common-other" data-table="#dataTable" th:data-url="@{/services/inner/outbound/wave/unallocate}">Unallocate</div>
+                    <!-- <div  wms:text="${web.label.release}" onclick="action('release')">Release</div>-->
+                    <div  wms:text="${web.label.pick}" class="common-other" data-table="#dataTable" th:data-url="@{/services/inner/outbound/wave/pick}">Pick</div>
+                    <div  wms:text="${web.label.unpick}" class="common-other" data-table="#dataTable" th:data-url="@{/services/inner/outbound/wave/unpick}">Unpick</div>
+                    <div  wms:text="${web.label.ship}" class="common-other" data-table="#dataTable" th:data-url="@{/services/inner/outbound/wave/ship}">Ship</div>
+                </div>
+                <a href="#" class="easyui-menubutton" data-options="menu:'#reportMenuButton',plain:false" wms:text="${web.label.report}">Report</a>
+                <div id="reportMenuButton">
+                    <div  wms:text="${wms.label.pickreport}" onclick="exportPDFReport('PICKLIST')">Allocate</div>
+                    <div  wms:text="${web.label.shiplabel}" onclick="exportPDFShipLabel()">Ship Label</div>
+                </div>
+                <a href="#" class="easyui-linkbutton common-rowdel" data-table="#dataTable"
+                   th:data-url="@{/services/inner/outbound/wave/delete}">
+                    <span wms:text="${web.label.delete}">Delete</span>
+                </a>
+            </div>
+        </div>
+        <div data-options="region:'center',collapsible:false,border:false">
+            <div class="easyui-layout" id="detailLayout" style="width: 100%;height: 100%;"
+                 data-options="fix:true">
+                <div data-options="region:'center',collapsible:false,border:false">
+                    <table id="dataTable" wms:title="${web.label.wavelist.title}" class="easyui-datagrid"
+                           th:data-delayUrl="@{/services/inner/outbound/wave/find}">
+							<thead data-options="frozen:true">
+								<tr>
+									<th field="waveId" data-options="checkbox:true"></th>
+									<th field="detail"
+										data-options="
+											formatter:function(value,row){
+												var data = JSON.stringify(row);
+												var detail = '<span onclick=\'viewDetail('+data+')\' class=\'icon-detail\'>&nbsp;</span>';
+												return detail;
+											}
+										"></th>
+									<th field="waveNumber" width="120"
+										wms:text="${web.label.wavenumber}"
+										data-options="sortable:true">waveNumber</th>
+								</tr>
+							</thead>
+							<thead>
+								<tr>
+									<th field="waveType" width="100" wms:text="${web.label.wavetype}"
+										data-options="
+											sortable:true,
+											formatter:function(value,row){
+												return getCodelkupValue('WAVETYPE',value);
+											}
+										">type
+									</th>
+									<th field="remark" width="200"
+										wms:text="${web.label.remark}"
+										data-options="sortable:true,editor: 'text'">remark</th>
+									<th field="processStatus" width="100" wms:text="${web.label.status}"
+										data-options="
+											sortable:true,
+											formatter:function(value,row){
+												return getCodelkupValue('PROCESSSTATUS',value);
+											}
+										">status
+									</th>
+									<th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+									<th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true">createTime</th>
+									<th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+									<th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">updateTime</th>
+							</thead>
+							</tr>
+                    </table>
+                </div>
+                <div id="detailPanel" data-options="region:'south',border:false,split:true,minimized:true"
+                     title=" " style="height: 300px;">
+                    <div th:replace="outbound/waveDetail"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" th:inline="text">
+    var headerData;
+    $(function () {
+        $('.common-search').click(function () {
+            $('#detailLayout').layout('collapse', 'south');
+        });
+        $('.common-other').click(function(){
+            $('#detailLayout').layout('collapse', 'south');
+        });
+    });
+
+    function viewDetail(data) {
+        if (typeof (data) == 'object') {
+            headerData = data;
+        } else {
+            var checkedRows = $('#dataTable').datagrid('getChecked');
+            if (checkedRows.length != 1) {
+                showError($.locale.selectOneRow);
+                return;
+            }
+            headerData = checkedRows[0];
+        }
+
+        var detailPanelOptions = $('#detailPanel').panel('options');
+        var collapsed = detailPanelOptions.collapsed;
+        if (collapsed) {
+            $('#detailPanel').panel({
+                height: 300,
+                minimized: false
+            });
+            $('#detailLayout').layout('expand', 'south');
+        }
+        refreshWaveDetail(headerData);
+    }
+    
+	/* 导出文件  */
+	function exportPDFReport(type) {
+		var checkedRows = $('#dataTable').datagrid('getChecked');
+		if (checkedRows.length != 1) {
+			showError($.locale.selectOneRow);
+			return;
+		}
+		rowData = checkedRows[0];
+		exportReport({
+			fileType: "pdf",
+			reportType: type,
+			id: rowData.inventoryCountHeaderId
+		});
+	}
+</script>
+</html>

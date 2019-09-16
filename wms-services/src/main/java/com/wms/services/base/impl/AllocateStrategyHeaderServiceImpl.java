@@ -199,7 +199,7 @@ public class AllocateStrategyHeaderServiceImpl implements IAllocateStrategyHeade
 
         AllocateStrategyTEntity selectStrategy = allocateStrategyDao.selectOneByExample(example);
         if (selectStrategy == null){
-        	throw new BusinessServiceException("AllocateStrategyHeaderServiceImpl", "allocateStrategyCode.record.exists" , new Object[] {allocate.getAllocateStrategyCode()});
+        	throw new BusinessServiceException("AllocateStrategyHeaderServiceImpl", "allocateStrategyCode.record.not.exists" , new Object[] {allocate.getAllocateStrategyCode()});
         }
 
         return selectStrategy;

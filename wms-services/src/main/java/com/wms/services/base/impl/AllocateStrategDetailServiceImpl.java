@@ -260,4 +260,5 @@ public class AllocateStrategDetailServiceImpl implements IAllocateStrategDetailS
         }
         return Boolean.TRUE;
     }
+    
 }

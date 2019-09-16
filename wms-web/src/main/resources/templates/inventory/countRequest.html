@@ -63,7 +63,16 @@
         <table id="requestData" wms:title="${web.label.requestlist}" class="easyui-datagrid"
                th:data-delayUrl="@{/services/inner/inventory/inventoryCount/findRequest}">
             <thead data-options="frozen:true">
-            <th field="inventoryCountRequestId" data-options="checkbox:true"></th>
+            	<tr>
+            		<th field="inventoryCountRequestId" data-options="checkbox:true"></th>
+            		<th field="edit" data-options="
+										formatter:function(value,row){
+											var data = JSON.stringify(row);
+											var detail = '<span title = \'编辑\' onclick=\'toEdit('+data+')\' class=\'icon-edit\'>&nbsp;</span>';
+											return detail;
+										}
+									"></th>
+            	</tr>
             </thead>
             <thead>
             <tr>
@@ -114,6 +123,8 @@
 <div id="addDiv" wms:title="${web.label.add}" style="width:550px;height:620px; display: none;">
     <div style="width: 100%;padding-left: 50px;">
         <form method="post" id="addForm" th:data-url="@{/services/inner/inventory/inventoryCount/addRequest}">
+            <input type="hidden" name="inventoryCountRequestId" />
+            <input type="hidden" name="updateVersion" />
             <table style="width: 100%;">
                 <tr>
                     <td>
@@ -141,38 +152,38 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <input id="fromZoneCode" name="fromZoneCode"  class="easyui-textbox" value="0"  wms:data-options="label:'${web.label.fromzonecode}',labelPosition:'top'">
+                        <input id="fromZoneCode" name="fromZoneCode"  class="easyui-textbox" value="0"  wms:data-options="label:'${web.label.startzone}',labelPosition:'top'">
                     </td>
                     <td></td>
                     <td colspan="2">
-                        <input id="toZoneCode" name="toZoneCode"  class="easyui-textbox" value="ZZZZZZZZZZ"  wms:data-options="label:'${web.label.tozonecode}',labelPosition:'top'">
+                        <input id="toZoneCode" name="toZoneCode"  class="easyui-textbox" value="ZZZZZZZZZZ"  wms:data-options="label:'${web.label.endzone}',labelPosition:'top'">
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <input id="fromLocationCode" name="fromLocationCode"  class="easyui-textbox" value="0"  wms:data-options="label:'${web.label.fromlocationcode}',labelPosition:'top'">
+                        <input id="fromLocationCode" name="fromLocationCode"  class="easyui-textbox" value="0"  wms:data-options="label:'${web.label.startloc}',labelPosition:'top'">
                     </td>
                     <td></td>
                     <td colspan="2">
-                        <input id="toLocationCode" name="toLocationCode"  class="easyui-textbox" value="ZZZZZZZZZZ"  wms:data-options="label:'${web.label.tolocationcode}',labelPosition:'top'">
+                        <input id="toLocationCode" name="toLocationCode"  class="easyui-textbox" value="ZZZZZZZZZZ"  wms:data-options="label:'${web.label.endloc}',labelPosition:'top'">
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <input id="fromSkuCode" name="fromSkuCode"  class="easyui-textbox" value="0"  wms:data-options="label:'${web.label.fromskucode}',labelPosition:'top'">
+                        <input id="fromSkuCode" name="fromSkuCode"  class="easyui-textbox" value="0"  wms:data-options="label:'${web.label.startsku}',labelPosition:'top'">
                     </td>
                     <td></td>
                     <td colspan="2">
-                        <input id="toSkuCode" name="toSkuCode"  class="easyui-textbox" value="ZZZZZZZZZZ"  wms:data-options="label:'${web.label.toskucode}',labelPosition:'top'">
+                        <input id="toSkuCode" name="toSkuCode"  class="easyui-textbox" value="ZZZZZZZZZZ"  wms:data-options="label:'${web.label.endsku}',labelPosition:'top'">
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <input id="fromLpnNumber" name="fromLpnNumber"  class="easyui-textbox" value="0"  wms:data-options="label:'${web.label.fromlpnnumber}',labelPosition:'top'">
+                        <input id="fromLpnNumber" name="fromLpnNumber"  class="easyui-textbox" value="0"  wms:data-options="label:'${web.label.startlpn}',labelPosition:'top'">
                     </td>
                     <td></td>
                     <td colspan="2">
-                        <input id="toLpnNumber" name="toLpnNumber"  class="easyui-textbox" value="ZZZZZZZZZZ"  wms:data-options="label:'${web.label.tolpnnumber}',labelPosition:'top'">
+                        <input id="toLpnNumber" name="toLpnNumber"  class="easyui-textbox" value="ZZZZZZZZZZ"  wms:data-options="label:'${web.label.endlpn}',labelPosition:'top'">
                     </td>
                 </tr>
                 <tr>
@@ -189,10 +200,10 @@
         </form>
     </div>
     <div style="text-align: center;margin-top: 10px;">
-        <a href="#" class="easyui-linkbutton common-confirmadd" data-form="#addForm" data-table="#requestData"
-           id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
-            <span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
-        </a>
+    	<a href="#" class="easyui-linkbutton request-save" data-form="#addForm" data-table="#requestData" id="submitsaveForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
+			<span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
+		</a>
+		<a href="#" style="display: none;" class="common-confirmadd" data-form="#addForm" data-table="#requestData" id="submitaddForm" >Add</a>
         <a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');"
            data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
             <span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
@@ -229,16 +240,68 @@
                     $(datagrid).datagrid('reload').datagrid('clearChecked');
                 }
             });
-
         });
+        $('.request-save').click(function(){
+    		if (addFlag){
+    			$('.common-confirmadd').trigger('click');
+    		}else{
+    			save();
+    		}
+    	});
     });
-    function getParams (params){
-        var data = getBaseData();
-        data['active'] = 'Y';
-        if (typeof(params) == 'object'){
-            $.extend(data, params);
+    
+    var editData;
+    var addFlag = true;
+    
+    function toEdit(data) {
+    	addFlag = false;
+        if (typeof(data) == 'object') {
+            editData = data;
+        }else{
+        	showError($.locale.selectOneRow);
         }
-        return data;
+        var panel = '#addDiv';
+        lazyLoadView(panel);
+        $(panel).dialog({
+            closed: true,
+            modal: true,
+            fix: true,
+            buttons: '#editButton',
+        }).dialog('open');
+        $(panel).find('form').form('reset');
+        var from = $(panel).find('form');
+        $(from).form('load', editData);
+        $('#lotValidateCode').textbox({readonly:true});
     }
+
+    function save(){
+    	var valid = $('#addForm').form('validate');
+    	if (!valid) {
+    		return;
+    	}
+    	var data = $('#addForm').serializeObject();
+    	var dataArr = [data];
+    	data = getBaseData(dataArr);
+    	loading();
+    	$.post({
+    		url: '../../services/inner/inventory/inventoryCount/requestSave',
+    		data:data,
+    		success: function(data){
+    			data = returnData(data);
+    			closeLoading();
+    			if (data.code == '0') {
+    				showError(data.msg);
+    				return;
+    			}
+    			$('#addForm').form('reset');
+    			$('#addForm').parents('.window-body').dialog('close');
+    			if ($('.common-search').length > 0){
+    				$('.common-search').trigger('click');
+    			}
+    		}
+    	});
+    }
+    
+    
 </script>
 </html>

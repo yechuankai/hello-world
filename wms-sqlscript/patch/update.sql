@@ -79,7 +79,7 @@ values ('1150590036726005760', 'en_US', 'web.label.uomquantityshiped', 'Shiped Q
 --菜单波次模板
 delete uums.WEB_FUNC where func_id = 'wms:outbound:wave:template';
 insert into UUMS.WEB_FUNC (func_id, func_name, menu_id, func_desc, func_url, func_id_seq, sys_code, is_valid, sys_url, real_sys_code, invalid_time, invalid_user, create_time, version, func_unique_id)
-values ('wms:outbound:wave:template', '波次模板', 'wms:outbound', '波次模板', 'outbound/wareTemplate', 10, 'WMS', 'Y', null, null, null, null, to_date('16-08-2019 13:53:20', 'dd-mm-yyyy hh24:mi:ss'), '0', 1136869832319441001);
+values ('wms:outbound:wave:template', '波次模板', 'wms:outbound', '波次模板', 'outbound/waveTemplate', 10, 'WMS', 'Y', null, null, null, null, to_date('16-08-2019 13:53:20', 'dd-mm-yyyy hh24:mi:ss'), '0', 1136869832319441001);
 
 delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:outbound:wave:template';
 insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
@@ -526,3 +526,4 @@ insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JO
 values ('1170953149065203712', 'en_US', 'web.label.toskucode', 'To SKU', null, null, null, null, null, null, 'Y', 'N', '彭臻', to_date('09-09-2019 14:52:40', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('11-09-2019 21:30:46', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
 
 
+alter table wave_build_t rename column ware_type to wave_type;
