@@ -181,6 +181,12 @@ public class WaveBuildServiceImpl implements IWaveBuildService{
 		request.getData().setDetail(list);	
 		return outboundHeaderService.findByWaveTemplate(request);
 	}
+	
+	@Override
+	public List<OutboundHeaderTEntity> findAllOutbounds(PageRequest request) {
+		request.put(OutboundHeaderServiceImpl.NO_WAVE, YesNoEnum.Yes.getCode());
+		return outboundHeaderService.find(request);
+	}
 
 	@Override
 	@Transactional

@@ -2,8 +2,9 @@ package com.wms.common.enums;
 
 public enum OutboundProcessStatusEnum {
 
+	NotStart("0", "未开始"),
 	Allocating("10", "分配中"), 
-	allocated("20", "分配完成"), 
+	Allocated("20", "分配完成"), 
 	UnAllocating("30", "撤销分配中"), 
 	UnAllocated("40", "撤销分配完成"), 
 	Releasing("50", "发放中"), 

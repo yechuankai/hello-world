@@ -79,7 +79,7 @@ values ('1150590036726005760', 'en_US', 'web.label.uomquantityshiped', 'Shiped Q
 --菜单波次模板
 delete uums.WEB_FUNC where func_id = 'wms:outbound:wave:template';
 insert into UUMS.WEB_FUNC (func_id, func_name, menu_id, func_desc, func_url, func_id_seq, sys_code, is_valid, sys_url, real_sys_code, invalid_time, invalid_user, create_time, version, func_unique_id)
-values ('wms:outbound:wave:template', '波次模板', 'wms:outbound', '波次模板', 'outbound/waveTemplate', 10, 'WMS', 'Y', null, null, null, null, to_date('16-08-2019 13:53:20', 'dd-mm-yyyy hh24:mi:ss'), '0', 1136869832319441001);
+values ('wms:outbound:wave:template', '波次模板', 'wms:outbound', '波次模板', 'outbound/waveTemplate', 9, 'WMS', 'Y', null, null, null, null, to_date('16-08-2019 13:53:20', 'dd-mm-yyyy hh24:mi:ss'), '0', 1136869832319441001);
 
 delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:outbound:wave:template';
 insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
@@ -94,7 +94,7 @@ values (1313, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '波次模板', '波次模板', 
 --菜单波次
 delete uums.WEB_FUNC where func_id = 'wms:outbound:wave';
 insert into UUMS.WEB_FUNC (func_id, func_name, menu_id, func_desc, func_url, func_id_seq, sys_code, is_valid, sys_url, real_sys_code, invalid_time, invalid_user, create_time, version, func_unique_id)
-values ('wms:outbound:wave', '波次', 'wms:outbound:wave', '波次', 'outbound/wave', 9, 'WMS', 'Y', null, null, null, null, to_date('16-08-2019 13:53:20', 'dd-mm-yyyy hh24:mi:ss'), '0', 1136869832319441001);
+values ('wms:outbound:wave', '波次', 'wms:outbound', '波次', 'outbound/wave', 10, 'WMS', 'Y', null, null, null, null, to_date('16-08-2019 13:53:20', 'dd-mm-yyyy hh24:mi:ss'), '0', 1136869832319441001);
 
 delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:outbound:wave';
 insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)

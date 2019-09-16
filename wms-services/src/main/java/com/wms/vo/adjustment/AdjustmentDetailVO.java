@@ -52,10 +52,6 @@ public class AdjustmentDetailVO extends InventoryAdjustmentDetailTEntity {
 	
 	public AdjustmentDetailVO(InventoryAdjustmentDetailTEntity adjustmentDetail){
 		BeanUtils.copyBeanProp(this, adjustmentDetail, Boolean.TRUE);
-		if (getUomQuantity() != null && getUomQuantity().compareTo(BigDecimal.ZERO) > 0) {
-			this.setUomQuantityOnhand(this.getQuantityOnhand().divide(this.getUomQuantity(),5,ROUND_FLOOR));
-			this.setUomQuantityAdjustment(this.getQuantityAdjustment().divide(this.getUomQuantity(),5,ROUND_FLOOR));
-		}
 	}
 	
 	

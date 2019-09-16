@@ -107,10 +107,7 @@
 			<div data-options="region:'center',collapsible:false,border:false" >
 				<div class="easyui-layout" id="detailLayout" style="width: 100%;height: 100%;" data-options="fix:true">
 					<div data-options="region:'center',collapsible:false,border:false" >
-						<table id="inboundData" wms:title="${web.label.inboundlist.title}" class="easyui-datagrid" wms:data-options="
-										sortOrder: 'desc',
-										sortName: 'inboundHeaderId',
-										"
+						<table id="inboundData" wms:title="${web.label.inboundlist.title}" class="easyui-datagrid"
 										th:data-delayUrl="@{/services/inner/inbound/find}">
 							<thead data-options="frozen:true">
 								<tr>
@@ -307,8 +304,8 @@
 			buttons: '#headerEditButton',
 		}).dialog('open');
 		$(panel).find('form').form('reset');
-
 		refreshEditHeader(headerData);
+		$('.tooltip').remove();
 	}
 	
 	function action(type){

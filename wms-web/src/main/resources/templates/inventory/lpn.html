@@ -19,39 +19,39 @@
 						data: codelkups['LPNTYPE'],
 						valueField: 'code',
 						textField: 'descr',
-						label: '${web.inventory.lpntype}',
+						label: '${web.label.lpntype}',
 						labelPosition: 'top'
 						" />
 					</div>
 					<div style="margin-bottom:10px">
-						<input name="lpnSize" class="easyui-textbox" wms:data-options="label:'${web.inventory.lpnsize}',labelPosition:'top'" />
+						<input name="lpnSize" class="easyui-textbox" wms:data-options="label:'${web.label.lpnsize}',labelPosition:'top'" />
 					</div>
 					<div style="margin-bottom:10px">
-						<input name="volume" class="easyui-textbox" wms:data-options="label:'${web.inventory.volume}',labelPosition:'top'" />
+						<input name="volume" class="easyui-textbox" wms:data-options="label:'${web.label.volume}',labelPosition:'top'" />
 					</div>
 					<div style="margin-bottom:10px">
-						<input name="length" class="easyui-textbox" wms:data-options="label:'${web.inventory.length}',labelPosition:'top'" />
+						<input name="length" class="easyui-textbox" wms:data-options="label:'${web.label.length}',labelPosition:'top'" />
 					</div>
 					<div style="margin-bottom:10px">
-						<input name="width" class="easyui-textbox" wms:data-options="label:'${web.inventory.width}',labelPosition:'top'" />
+						<input name="width" class="easyui-textbox" wms:data-options="label:'${web.label.width}',labelPosition:'top'" />
 					</div>
 					<div style="margin-bottom:10px">
-						<input name="height" class="easyui-textbox" wms:data-options="label:'${web.inventory.height}',labelPosition:'top'" />
+						<input name="height" class="easyui-textbox" wms:data-options="label:'${web.label.height}',labelPosition:'top'" />
 					</div>
 					<div style="margin-bottom:10px">
-						<input name="weightGross" class="easyui-textbox" wms:data-options="label:'${web.inventory.weightgross}',labelPosition:'top'" />
+						<input name="weightGross" class="easyui-textbox" wms:data-options="label:'${web.label.weightgross}',labelPosition:'top'" />
 					</div>
 					<div style="margin-bottom:10px">
-						<input name="weightNet" class="easyui-textbox" wms:data-options="label:'${web.inventory.weightnet}',labelPosition:'top'" />
+						<input name="weightNet" class="easyui-textbox" wms:data-options="label:'${web.label.weightnet}',labelPosition:'top'" />
 					</div>
 					<div style="margin-bottom:10px">
-						<input name="weightTare" class="easyui-textbox" wms:data-options="label:'${web.inventory.weighttare}',labelPosition:'top'" />
+						<input name="weightTare" class="easyui-textbox" wms:data-options="label:'${web.label.weighttare}',labelPosition:'top'" />
 					</div>
 					<div style="margin-bottom:10px">
-						<input name="parentLpnCode" class="easyui-textbox" wms:data-options="label:'${web.inventory.parentLpncode}',labelPosition:'top'" />
+						<input name="parentLpnCode" class="easyui-textbox" wms:data-options="label:'${web.label.parentLpncode}',labelPosition:'top'" />
 					</div>
 					<div style="margin-bottom:60px">
-						<input name="containerNumber" class="easyui-textbox" wms:data-options="label:'${web.inventory.containernumber}',labelPosition:'top'" />
+						<input name="containerNumber" class="easyui-textbox" wms:data-options="label:'${web.label.containernumber}',labelPosition:'top'" />
 					</div>
 				</form>
 			</div>
@@ -75,22 +75,22 @@
 				<thead>
 					<tr>
 					    <th field="lpnNumber" width="100" wms:text="${web.label.lpnnumber}" data-options="sortable:true" >lpnNumber</th>
-					    <th field="containerNumber" width="100" wms:text="${web.inventory.containernumber}" data-options="sortable:true" >containerNumber</th>
-						<th field="lpnType" width="100" wms:text="${web.inventory.lpntype}" data-options="
+					    <th field="containerNumber" width="100" wms:text="${web.label.containernumber}" data-options="sortable:true" >containerNumber</th>
+						<th field="lpnType" width="100" wms:text="${web.label.lpntype}" data-options="
 							sortable:true,
 							formatter:function(value,row){
 								return getCodelkupValue('LPNTYPE',value);
 							}
 						">lpnType</th>
-						<th field="lpnSize" width="100" wms:text="${web.inventory.lpnsize}" data-options="sortable:true" >lpnSize</th>
-						<th field="volume" width="100" wms:text="${web.inventory.volume}" data-options="sortable:true" >lpnSize</th>
-						<th field="length" width="100" wms:text="${web.inventory.length}" data-options="sortable:true" >length</th>
-						<th field="width" width="100" wms:text="${web.inventory.width}" data-options="sortable:true" >width</th>
-				        <th field="height" width="100" wms:text="${web.inventory.height}" data-options="sortable:true" >height</th>
-					    <th field="weightGross" width="100" wms:text="${web.inventory.weightgross}" data-options="sortable:true" >weightGross</th>
-				        <th field="weightNet" width="100" wms:text="${web.inventory.weightnet}" data-options="sortable:true" >weightNet</th>
-					    <th field="weightTare" width="100" wms:text="${web.inventory.weighttare}" data-options="sortable:true" >weightTare</th>
-					    <th field="parentLpnCode" width="100" wms:text="${web.inventory.parentLpncode}" data-options="sortable:true" >parentLpnCode</th>
+						<th field="lpnSize" width="100" wms:text="${web.label.lpnsize}" data-options="sortable:true" >lpnSize</th>
+						<th field="volume" width="100" wms:text="${web.label.volume}" data-options="sortable:true" >lpnSize</th>
+						<th field="length" width="100" wms:text="${web.label.length}" data-options="sortable:true" >length</th>
+						<th field="width" width="100" wms:text="${web.label.width}" data-options="sortable:true" >width</th>
+				        <th field="height" width="100" wms:text="${web.label.height}" data-options="sortable:true" >height</th>
+					    <th field="weightGross" width="100" wms:text="${web.label.weightgross}" data-options="sortable:true" >weightGross</th>
+				        <th field="weightNet" width="100" wms:text="${web.label.weightnet}" data-options="sortable:true" >weightNet</th>
+					    <th field="weightTare" width="100" wms:text="${web.label.weighttare}" data-options="sortable:true" >weightTare</th>
+					    <th field="parentLpnCode" width="100" wms:text="${web.label.parentLpncode}" data-options="sortable:true" >parentLpnCode</th>
 					    <th field="createBy" width="80" wms:text="${web.label.createby}" >createBy</th>
 						<th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true" >createTime</th>
 						<th field="updateBy" width="80" wms:text="${web.label.updateby}" >updateBy</th>

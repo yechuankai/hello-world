@@ -151,7 +151,7 @@
 		filterBtnPosition: 'right',
 		filterPosition: 'bottom',
 		remoteFilter: false,
-		clientPaging: true,
+		clientPaging: false,
 		showFilterBar: true,
 		filterDelay: 400,
 		filterRules: [],

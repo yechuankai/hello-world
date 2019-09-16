@@ -11,15 +11,15 @@
             <form id="searchForm" data-table="#onhandData">
                 <div style="margin-bottom:10px">
                     <input name="ownerCode" class="easyui-textbox"
-                           wms:data-options="label:'${web.inventory.ownerCode}',labelPosition:'top'"/>
+                           wms:data-options="label:'${web.label.owner}',labelPosition:'top'"/>
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="skuCode" class="easyui-textbox"
-                           wms:data-options="label:'${web.inventory.skuCode}',labelPosition:'top'"/>
+                           wms:data-options="label:'${web.label.sku}',labelPosition:'top'"/>
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="skuAlias" class="easyui-textbox"
-                           wms:data-options="label:'${web.inventory.skuAlias}',labelPosition:'top'"/>
+                           wms:data-options="label:'${web.label.skualias}',labelPosition:'top'"/>
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="locationCode" class="easyui-textbox"
@@ -77,13 +77,13 @@
                    th:data-delayUrl="@{/services/inner/inventory/onhand/find}">
                 <thead>
 	                <tr>
-	                    <th field="ownerCode" width="100" wms:text="${web.inventory.ownerCode}"
+	                    <th field="ownerCode" width="100" wms:text="${web.label.owner}"
 	                        data-options="sortable:true">ownerCode
 	                    </th>
-	                    <th field="skuCode" width="100" wms:text="${web.inventory.skuCode}" data-options="sortable:true">
+	                    <th field="skuCode" width="100" wms:text="${web.label.sku}" data-options="sortable:true">
 	                        skuCode
 	                    </th>
-	                    <th field="skuAlias" width="100" wms:text="${web.inventory.skuAlias}" data-options="sortable:true">
+	                    <th field="skuAlias" width="100" wms:text="${web.label.skualias}" data-options="sortable:true">
 	                        skuAlias
 	                    </th>
 	                    <th field="lotNumber" width="100" wms:text="${web.label.lotnumber}" data-options="sortable:true">

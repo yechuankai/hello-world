@@ -59,13 +59,13 @@
             <tr>
                 <th field="inventoryLockedId" data-options="checkbox:true"></th>
                 <th field="inventoryOnhandId" data-options="hidden:true"></th>
-                 <th field="ownerCode" width="100" wms:text="${web.inventory.ownerCode}"
+                 <th field="ownerCode" width="100" wms:text="${web.label.owner}"
                      data-options="sortable:true">ownerCode
                  </th>
-                 <th field="skuCode" width="100" wms:text="${web.inventory.skuCode}" data-options="sortable:true">
+                 <th field="skuCode" width="100" wms:text="${web.label.sku}" data-options="sortable:true">
                      skuCode
                  </th>
-                 <th field="skuAlias" width="100" wms:text="${web.inventory.skuAlias}" data-options="sortable:true">
+                 <th field="skuAlias" width="100" wms:text="${web.label.skualias}" data-options="sortable:true">
                      skuAlias
                  </th>
                  <th field="lotNumber" width="100" wms:text="${web.label.lotnumber}" data-options="sortable:true">
@@ -124,7 +124,7 @@
 						labelAlign:'right'
 						">
         <input id="remark" name="remark" class="easyui-textbox"
-               wms:data-options="label:'${web.label.remark}',labelPosition:'before',labelAlign:'right'"
+               wms:data-options="required: true,label:'${web.label.remark}',labelPosition:'before',labelAlign:'right'"
                style="width: 300px;margin-left: 30px;"/>
     </div>
     <table id="addData" class="easyui-datagrid" style="height: 100%;width:100%;"
@@ -142,11 +142,11 @@
 	                ownerCode
 	            </th>
 	            <th field="ownerId" data-options="hidden:true"></th>
-	            <th field="skuCode" width="80" wms:text="${web.inventory.skuCode}" wms:data-options="
+	            <th field="skuCode" width="80" wms:text="${web.label.sku}" wms:data-options="
 								sortable:true">
 	                skuCode
 	            </th>
-	            <th field="skuAlias" width="100" wms:text="${web.inventory.skuAlias}">
+	            <th field="skuAlias" width="100" wms:text="${web.label.skualias}">
 	                skuAlias
 	            </th>
 	            <th field="skuId" data-options="hidden:true"></th>
@@ -203,6 +203,27 @@
 <script type="text/javascript" th:src="@{/static/ui/plugins/datagrid-filter.js}"></script>
 <script type="text/javascript" th:src="@{/js/codelkupList?listName=LOCKFLAG,LOCKREASON}"></script>
 <script type="text/javascript" th:inline="text">
+	var detailFilterRules = [{
+	    field:'quantityLocked',
+	    type:'numberbox',
+	    op:['nofilter']
+	},
+	{
+	    field:'quantityOnhand',
+	    type:'numberbox',
+	    op:['nofilter']
+	},
+	{
+	    field:'quantityAllocated',
+	    type:'numberbox',
+	    op:['nofilter']
+	},
+	{
+	    field:'quantityAvailable',
+	    type:'numberbox',
+	    op:['nofilter']
+	}];
+    
     $(function () {
         $('.lock-add').click(function () {
             var panel = $(this).attr('data-addpanel');
@@ -219,27 +240,21 @@
             var url = $(this).attr('data-url');
 
             var editingRows = $(datagrid).datagrid('getEditingRowIndexs');
-            for(var i in editingRows) {
-                var flag = $(datagrid).datagrid('validateRow', editingRows[i]);
-                if (!flag){
-                    showError($.locale.errorRow,{row: editingRows[i]});
-                    return;
-                }
-            }
-
-            var rows = $(datagrid).datagrid('getChanges');
-
-            if (editingRows.length == 0 && rows.length == 0) {
-                showError($.locale.noChange);
-                return;
-            }
             if (editingRows.length > 0){
                 $(datagrid).datagrid('endCellEdit');
-                rows = $(datagrid).datagrid('getChanges');
             }
+
+            var rows = $(datagrid).datagrid('getChecked');
+
+            if (rows.length == 0) {
+                showError($.locale.selectOneRow);
+                return;
+            }
+            
             var data=[];
             var reason = $('#reason').val();
             var remark = $('#remark').val();
+            var rowcount = 0;
             for(var j in rows) {
                 if(null == rows[j].toQuantityLocked || undefined == rows[j].toQuantityLocked || 0 == rows[j].toQuantityLocked || "" == rows[j].toQuantityLocked){
                     //冻结数量为0不生成
@@ -252,6 +267,11 @@
                     reason : reason,
                     remark : remark
                 });
+                rowcount = rowcount + 1;
+            }
+            if (rowcount == 0) {
+            	showError($.locale.noChange);
+                return;
             }
             data = getBaseData(data);
             loading();
@@ -325,7 +345,7 @@
                     $.extend(obj, qObj);
                 }
             }
-        }).datagrid('clearChecked').datagrid('destroyFilter').datagrid('enableFilter');
+        }).datagrid('clearChecked').datagrid('destroyFilter').datagrid('enableFilter', detailFilterRules);
 
     }
 </script>

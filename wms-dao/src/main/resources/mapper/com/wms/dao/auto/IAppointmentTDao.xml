@@ -1,23 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wms.dao.auto.IInventoryCountRequestTDao">
-  <resultMap id="BaseResultMap" type="com.wms.entity.auto.InventoryCountRequestTEntity">
-    <id column="INVENTORY_COUNT_REQUEST_ID" jdbcType="DECIMAL" property="inventoryCountRequestId" />
-    <result column="REQUEST_NUMBER" jdbcType="VARCHAR" property="requestNumber" />
-    <result column="REQUEST_DESCR" jdbcType="VARCHAR" property="requestDescr" />
-    <result column="REQUEST_TYPE" jdbcType="VARCHAR" property="requestType" />
-    <result column="QUANTITY_SHOW_FLAG" jdbcType="CHAR" property="quantityShowFlag" />
-    <result column="FROM_ZONE_CODE" jdbcType="VARCHAR" property="fromZoneCode" />
-    <result column="TO_ZONE_CODE" jdbcType="VARCHAR" property="toZoneCode" />
-    <result column="FROM_LOCATION_CODE" jdbcType="VARCHAR" property="fromLocationCode" />
-    <result column="TO_LOCATION_CODE" jdbcType="VARCHAR" property="toLocationCode" />
-    <result column="FROM_SKU_CODE" jdbcType="VARCHAR" property="fromSkuCode" />
-    <result column="TO_SKU_CODE" jdbcType="VARCHAR" property="toSkuCode" />
-    <result column="SKU_CODE_IN" jdbcType="VARCHAR" property="skuCodeIn" />
-    <result column="FROM_LPN_NUMBER" jdbcType="VARCHAR" property="fromLpnNumber" />
-    <result column="TO_LPN_NUMBER" jdbcType="VARCHAR" property="toLpnNumber" />
-    <result column="LPN_NUMBER_IN" jdbcType="VARCHAR" property="lpnNumberIn" />
-    <result column="REQUEST_DATE" jdbcType="TIMESTAMP" property="requestDate" />
+<mapper namespace="com.wms.dao.auto.IAppointmentTDao">
+  <resultMap id="BaseResultMap" type="com.wms.entity.auto.AppointmentTEntity">
+    <id column="APPOINTMENT_ID" jdbcType="DECIMAL" property="appointmentId" />
+    <result column="APPOINTMENT_CODE" jdbcType="VARCHAR" property="appointmentCode" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="PLATFORM_ID" jdbcType="DECIMAL" property="platformId" />
+    <result column="PLATFORM_CODE" jdbcType="VARCHAR" property="platformCode" />
+    <result column="SOURCE_BILL_NUMBER" jdbcType="VARCHAR" property="sourceBillNumber" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
     <result column="REMARK" jdbcType="VARCHAR" property="remark" />
     <result column="COMPANY_ID" jdbcType="DECIMAL" property="companyId" />
     <result column="WAREHOUSE_ID" jdbcType="DECIMAL" property="warehouseId" />
@@ -28,7 +19,6 @@
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="UPDATE_VERSION" jdbcType="DECIMAL" property="updateVersion" />
     <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
-    <result column="OWNER_CODE" jdbcType="VARCHAR" property="ownerCode" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -126,19 +116,17 @@
     </where >
   </sql>
   <sql id="Base_Column_List">
-    INVENTORY_COUNT_REQUEST_ID, REQUEST_NUMBER, REQUEST_DESCR, REQUEST_TYPE, QUANTITY_SHOW_FLAG, 
-    FROM_ZONE_CODE, TO_ZONE_CODE, FROM_LOCATION_CODE, TO_LOCATION_CODE, FROM_SKU_CODE, 
-    TO_SKU_CODE, SKU_CODE_IN, FROM_LPN_NUMBER, TO_LPN_NUMBER, LPN_NUMBER_IN, REQUEST_DATE, 
-    REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
-    UPDATE_VERSION, DESCRIPTION, OWNER_CODE
+    APPOINTMENT_ID, APPOINTMENT_CODE, TYPE, PLATFORM_ID, PLATFORM_CODE, SOURCE_BILL_NUMBER, 
+    STATUS, REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, 
+    UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
   </sql>
-  <select id="selectByExample" parameterType="com.wms.dao.example.InventoryCountRequestTExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.wms.dao.example.AppointmentTExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from INVENTORY_COUNT_REQUEST_T
+    from APPOINTMENT_T
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -146,84 +134,49 @@
       order by ${orderByClause}
     </if>
   </select>
-  <delete id="deleteByExample" parameterType="com.wms.dao.example.InventoryCountRequestTExample">
-    delete from INVENTORY_COUNT_REQUEST_T
+  <delete id="deleteByExample" parameterType="com.wms.dao.example.AppointmentTExample">
+    delete from APPOINTMENT_T
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.wms.entity.auto.InventoryCountRequestTEntity">
-    insert into INVENTORY_COUNT_REQUEST_T (INVENTORY_COUNT_REQUEST_ID, REQUEST_NUMBER, 
-      REQUEST_DESCR, REQUEST_TYPE, QUANTITY_SHOW_FLAG, 
-      FROM_ZONE_CODE, TO_ZONE_CODE, FROM_LOCATION_CODE, 
-      TO_LOCATION_CODE, FROM_SKU_CODE, TO_SKU_CODE, 
-      SKU_CODE_IN, FROM_LPN_NUMBER, TO_LPN_NUMBER, 
-      LPN_NUMBER_IN, REQUEST_DATE, REMARK, 
-      COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, 
-      CREATE_BY, CREATE_TIME, UPDATE_BY, 
-      UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, 
-      OWNER_CODE)
-    values (#{inventoryCountRequestId,jdbcType=DECIMAL}, #{requestNumber,jdbcType=VARCHAR}, 
-      #{requestDescr,jdbcType=VARCHAR}, #{requestType,jdbcType=VARCHAR}, #{quantityShowFlag,jdbcType=CHAR}, 
-      #{fromZoneCode,jdbcType=VARCHAR}, #{toZoneCode,jdbcType=VARCHAR}, #{fromLocationCode,jdbcType=VARCHAR}, 
-      #{toLocationCode,jdbcType=VARCHAR}, #{fromSkuCode,jdbcType=VARCHAR}, #{toSkuCode,jdbcType=VARCHAR}, 
-      #{skuCodeIn,jdbcType=VARCHAR}, #{fromLpnNumber,jdbcType=VARCHAR}, #{toLpnNumber,jdbcType=VARCHAR}, 
-      #{lpnNumberIn,jdbcType=VARCHAR}, #{requestDate,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, 
-      #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, 
-      #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, 
-      #{ownerCode,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.wms.entity.auto.AppointmentTEntity">
+    insert into APPOINTMENT_T (APPOINTMENT_ID, APPOINTMENT_CODE, TYPE, 
+      PLATFORM_ID, PLATFORM_CODE, SOURCE_BILL_NUMBER, 
+      STATUS, REMARK, COMPANY_ID, 
+      WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
+      CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
+      UPDATE_VERSION, DESCRIPTION)
+    values (#{appointmentId,jdbcType=DECIMAL}, #{appointmentCode,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{platformId,jdbcType=DECIMAL}, #{platformCode,jdbcType=VARCHAR}, #{sourceBillNumber,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, 
+      #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.wms.entity.auto.InventoryCountRequestTEntity">
-    insert into INVENTORY_COUNT_REQUEST_T
+  <insert id="insertSelective" parameterType="com.wms.entity.auto.AppointmentTEntity">
+    insert into APPOINTMENT_T
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="inventoryCountRequestId != null">
-        INVENTORY_COUNT_REQUEST_ID,
+      <if test="appointmentId != null">
+        APPOINTMENT_ID,
       </if>
-      <if test="requestNumber != null">
-        REQUEST_NUMBER,
+      <if test="appointmentCode != null">
+        APPOINTMENT_CODE,
       </if>
-      <if test="requestDescr != null">
-        REQUEST_DESCR,
+      <if test="type != null">
+        TYPE,
       </if>
-      <if test="requestType != null">
-        REQUEST_TYPE,
+      <if test="platformId != null">
+        PLATFORM_ID,
       </if>
-      <if test="quantityShowFlag != null">
-        QUANTITY_SHOW_FLAG,
+      <if test="platformCode != null">
+        PLATFORM_CODE,
       </if>
-      <if test="fromZoneCode != null">
-        FROM_ZONE_CODE,
+      <if test="sourceBillNumber != null">
+        SOURCE_BILL_NUMBER,
       </if>
-      <if test="toZoneCode != null">
-        TO_ZONE_CODE,
-      </if>
-      <if test="fromLocationCode != null">
-        FROM_LOCATION_CODE,
-      </if>
-      <if test="toLocationCode != null">
-        TO_LOCATION_CODE,
-      </if>
-      <if test="fromSkuCode != null">
-        FROM_SKU_CODE,
-      </if>
-      <if test="toSkuCode != null">
-        TO_SKU_CODE,
-      </if>
-      <if test="skuCodeIn != null">
-        SKU_CODE_IN,
-      </if>
-      <if test="fromLpnNumber != null">
-        FROM_LPN_NUMBER,
-      </if>
-      <if test="toLpnNumber != null">
-        TO_LPN_NUMBER,
-      </if>
-      <if test="lpnNumberIn != null">
-        LPN_NUMBER_IN,
-      </if>
-      <if test="requestDate != null">
-        REQUEST_DATE,
+      <if test="status != null">
+        STATUS,
       </if>
       <if test="remark != null">
         REMARK,
@@ -255,58 +208,28 @@
       <if test="description != null">
         DESCRIPTION,
       </if>
-      <if test="ownerCode != null">
-        OWNER_CODE,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="inventoryCountRequestId != null">
-        #{inventoryCountRequestId,jdbcType=DECIMAL},
+      <if test="appointmentId != null">
+        #{appointmentId,jdbcType=DECIMAL},
       </if>
-      <if test="requestNumber != null">
-        #{requestNumber,jdbcType=VARCHAR},
+      <if test="appointmentCode != null">
+        #{appointmentCode,jdbcType=VARCHAR},
       </if>
-      <if test="requestDescr != null">
-        #{requestDescr,jdbcType=VARCHAR},
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
       </if>
-      <if test="requestType != null">
-        #{requestType,jdbcType=VARCHAR},
+      <if test="platformId != null">
+        #{platformId,jdbcType=DECIMAL},
       </if>
-      <if test="quantityShowFlag != null">
-        #{quantityShowFlag,jdbcType=CHAR},
+      <if test="platformCode != null">
+        #{platformCode,jdbcType=VARCHAR},
       </if>
-      <if test="fromZoneCode != null">
-        #{fromZoneCode,jdbcType=VARCHAR},
+      <if test="sourceBillNumber != null">
+        #{sourceBillNumber,jdbcType=VARCHAR},
       </if>
-      <if test="toZoneCode != null">
-        #{toZoneCode,jdbcType=VARCHAR},
-      </if>
-      <if test="fromLocationCode != null">
-        #{fromLocationCode,jdbcType=VARCHAR},
-      </if>
-      <if test="toLocationCode != null">
-        #{toLocationCode,jdbcType=VARCHAR},
-      </if>
-      <if test="fromSkuCode != null">
-        #{fromSkuCode,jdbcType=VARCHAR},
-      </if>
-      <if test="toSkuCode != null">
-        #{toSkuCode,jdbcType=VARCHAR},
-      </if>
-      <if test="skuCodeIn != null">
-        #{skuCodeIn,jdbcType=VARCHAR},
-      </if>
-      <if test="fromLpnNumber != null">
-        #{fromLpnNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="toLpnNumber != null">
-        #{toLpnNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="lpnNumberIn != null">
-        #{lpnNumberIn,jdbcType=VARCHAR},
-      </if>
-      <if test="requestDate != null">
-        #{requestDate,jdbcType=TIMESTAMP},
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
       </if>
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
@@ -338,67 +261,37 @@
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
       </if>
-      <if test="ownerCode != null">
-        #{ownerCode,jdbcType=VARCHAR},
-      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.wms.dao.example.InventoryCountRequestTExample" resultType="java.lang.Long">
-    select count(*) from INVENTORY_COUNT_REQUEST_T
+  <select id="countByExample" parameterType="com.wms.dao.example.AppointmentTExample" resultType="java.lang.Long">
+    select count(*) from APPOINTMENT_T
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update INVENTORY_COUNT_REQUEST_T
+    update APPOINTMENT_T
     <set>
-      <if test="record.inventoryCountRequestId != null">
-        INVENTORY_COUNT_REQUEST_ID = #{record.inventoryCountRequestId,jdbcType=DECIMAL},
+      <if test="record.appointmentId != null">
+        APPOINTMENT_ID = #{record.appointmentId,jdbcType=DECIMAL},
       </if>
-      <if test="record.requestNumber != null">
-        REQUEST_NUMBER = #{record.requestNumber,jdbcType=VARCHAR},
+      <if test="record.appointmentCode != null">
+        APPOINTMENT_CODE = #{record.appointmentCode,jdbcType=VARCHAR},
       </if>
-      <if test="record.requestDescr != null">
-        REQUEST_DESCR = #{record.requestDescr,jdbcType=VARCHAR},
+      <if test="record.type != null">
+        TYPE = #{record.type,jdbcType=VARCHAR},
       </if>
-      <if test="record.requestType != null">
-        REQUEST_TYPE = #{record.requestType,jdbcType=VARCHAR},
+      <if test="record.platformId != null">
+        PLATFORM_ID = #{record.platformId,jdbcType=DECIMAL},
       </if>
-      <if test="record.quantityShowFlag != null">
-        QUANTITY_SHOW_FLAG = #{record.quantityShowFlag,jdbcType=CHAR},
+      <if test="record.platformCode != null">
+        PLATFORM_CODE = #{record.platformCode,jdbcType=VARCHAR},
       </if>
-      <if test="record.fromZoneCode != null">
-        FROM_ZONE_CODE = #{record.fromZoneCode,jdbcType=VARCHAR},
+      <if test="record.sourceBillNumber != null">
+        SOURCE_BILL_NUMBER = #{record.sourceBillNumber,jdbcType=VARCHAR},
       </if>
-      <if test="record.toZoneCode != null">
-        TO_ZONE_CODE = #{record.toZoneCode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.fromLocationCode != null">
-        FROM_LOCATION_CODE = #{record.fromLocationCode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.toLocationCode != null">
-        TO_LOCATION_CODE = #{record.toLocationCode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.fromSkuCode != null">
-        FROM_SKU_CODE = #{record.fromSkuCode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.toSkuCode != null">
-        TO_SKU_CODE = #{record.toSkuCode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.skuCodeIn != null">
-        SKU_CODE_IN = #{record.skuCodeIn,jdbcType=VARCHAR},
-      </if>
-      <if test="record.fromLpnNumber != null">
-        FROM_LPN_NUMBER = #{record.fromLpnNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="record.toLpnNumber != null">
-        TO_LPN_NUMBER = #{record.toLpnNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="record.lpnNumberIn != null">
-        LPN_NUMBER_IN = #{record.lpnNumberIn,jdbcType=VARCHAR},
-      </if>
-      <if test="record.requestDate != null">
-        REQUEST_DATE = #{record.requestDate,jdbcType=TIMESTAMP},
+      <if test="record.status != null">
+        STATUS = #{record.status,jdbcType=VARCHAR},
       </if>
       <if test="record.remark != null">
         REMARK = #{record.remark,jdbcType=VARCHAR},
@@ -430,32 +323,20 @@
       <if test="record.description != null">
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       </if>
-      <if test="record.ownerCode != null">
-        OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR},
-      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update INVENTORY_COUNT_REQUEST_T
-    set INVENTORY_COUNT_REQUEST_ID = #{record.inventoryCountRequestId,jdbcType=DECIMAL},
-      REQUEST_NUMBER = #{record.requestNumber,jdbcType=VARCHAR},
-      REQUEST_DESCR = #{record.requestDescr,jdbcType=VARCHAR},
-      REQUEST_TYPE = #{record.requestType,jdbcType=VARCHAR},
-      QUANTITY_SHOW_FLAG = #{record.quantityShowFlag,jdbcType=CHAR},
-      FROM_ZONE_CODE = #{record.fromZoneCode,jdbcType=VARCHAR},
-      TO_ZONE_CODE = #{record.toZoneCode,jdbcType=VARCHAR},
-      FROM_LOCATION_CODE = #{record.fromLocationCode,jdbcType=VARCHAR},
-      TO_LOCATION_CODE = #{record.toLocationCode,jdbcType=VARCHAR},
-      FROM_SKU_CODE = #{record.fromSkuCode,jdbcType=VARCHAR},
-      TO_SKU_CODE = #{record.toSkuCode,jdbcType=VARCHAR},
-      SKU_CODE_IN = #{record.skuCodeIn,jdbcType=VARCHAR},
-      FROM_LPN_NUMBER = #{record.fromLpnNumber,jdbcType=VARCHAR},
-      TO_LPN_NUMBER = #{record.toLpnNumber,jdbcType=VARCHAR},
-      LPN_NUMBER_IN = #{record.lpnNumberIn,jdbcType=VARCHAR},
-      REQUEST_DATE = #{record.requestDate,jdbcType=TIMESTAMP},
+    update APPOINTMENT_T
+    set APPOINTMENT_ID = #{record.appointmentId,jdbcType=DECIMAL},
+      APPOINTMENT_CODE = #{record.appointmentCode,jdbcType=VARCHAR},
+      TYPE = #{record.type,jdbcType=VARCHAR},
+      PLATFORM_ID = #{record.platformId,jdbcType=DECIMAL},
+      PLATFORM_CODE = #{record.platformCode,jdbcType=VARCHAR},
+      SOURCE_BILL_NUMBER = #{record.sourceBillNumber,jdbcType=VARCHAR},
+      STATUS = #{record.status,jdbcType=VARCHAR},
       REMARK = #{record.remark,jdbcType=VARCHAR},
       COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
       WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL},
@@ -465,13 +346,12 @@
       UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
       UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
       UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
-      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-      OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR}
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <select id="selectOneByExample" parameterType="com.wms.dao.example.InventoryCountRequestTExample" resultMap="BaseResultMap">
+  <select id="selectOneByExample" parameterType="com.wms.dao.example.AppointmentTExample" resultMap="BaseResultMap">
     <!--
       WARNING - @mbg.generated
       This element is automatically generated by MyBatis Generator, do not modify.
@@ -479,7 +359,7 @@
     -->
     select
     <include refid="Base_Column_List" />
-    from INVENTORY_COUNT_REQUEST_T
+    from APPOINTMENT_T
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -493,7 +373,7 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    update INVENTORY_COUNT_REQUEST_T set DEL_FLAG = 'Y'
+    update APPOINTMENT_T set DEL_FLAG = 'Y'
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -504,7 +384,7 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    update INVENTORY_COUNT_REQUEST_T
+    update APPOINTMENT_T
     set UPDATE_VERSION = UPDATE_VERSION + 1,DEL_FLAG = 'Y'
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
@@ -516,8 +396,8 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    update INVENTORY_COUNT_REQUEST_T set DEL_FLAG = 'Y'
-    where INVENTORY_COUNT_REQUEST_ID = #{inventoryCountRequestId,jdbcType=DECIMAL}
+    update APPOINTMENT_T set DEL_FLAG = 'Y'
+    where APPOINTMENT_ID = #{appointmentId,jdbcType=DECIMAL}
   </update>
   <update id="logicalDeleteWithVersionByPrimaryKey" parameterType="map">
     <!--
@@ -525,10 +405,10 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    update INVENTORY_COUNT_REQUEST_T
+    update APPOINTMENT_T
     set UPDATE_VERSION = UPDATE_VERSION + 1,DEL_FLAG = 'Y'
     where UPDATE_VERSION = #{version,jdbcType=DECIMAL}
-      and INVENTORY_COUNT_REQUEST_ID = #{key,jdbcType=DECIMAL}
+      and APPOINTMENT_ID = #{key,jdbcType=DECIMAL}
   </update>
   <select id="selectByPrimaryKeyWithLogicalDelete" parameterType="map" resultMap="BaseResultMap">
     <!--
@@ -538,8 +418,8 @@
     -->
     select 
     <include refid="Base_Column_List" />
-    from INVENTORY_COUNT_REQUEST_T
-    where INVENTORY_COUNT_REQUEST_ID = #{inventoryCountRequestId,jdbcType=DECIMAL}
+    from APPOINTMENT_T
+    where APPOINTMENT_ID = #{appointmentId,jdbcType=DECIMAL}
       and DEL_FLAG = 
     <choose>
       <when test="andLogicalDeleted">
@@ -556,7 +436,7 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    delete from INVENTORY_COUNT_REQUEST_T
+    delete from APPOINTMENT_T
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
     </if>
@@ -567,24 +447,15 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    update INVENTORY_COUNT_REQUEST_T
+    update APPOINTMENT_T
     set UPDATE_VERSION = UPDATE_VERSION + 1,
-    INVENTORY_COUNT_REQUEST_ID = #{record.inventoryCountRequestId,jdbcType=DECIMAL}, 
-    REQUEST_NUMBER = #{record.requestNumber,jdbcType=VARCHAR}, 
-    REQUEST_DESCR = #{record.requestDescr,jdbcType=VARCHAR}, 
-    REQUEST_TYPE = #{record.requestType,jdbcType=VARCHAR}, 
-    QUANTITY_SHOW_FLAG = #{record.quantityShowFlag,jdbcType=CHAR}, 
-    FROM_ZONE_CODE = #{record.fromZoneCode,jdbcType=VARCHAR}, 
-    TO_ZONE_CODE = #{record.toZoneCode,jdbcType=VARCHAR}, 
-    FROM_LOCATION_CODE = #{record.fromLocationCode,jdbcType=VARCHAR}, 
-    TO_LOCATION_CODE = #{record.toLocationCode,jdbcType=VARCHAR}, 
-    FROM_SKU_CODE = #{record.fromSkuCode,jdbcType=VARCHAR}, 
-    TO_SKU_CODE = #{record.toSkuCode,jdbcType=VARCHAR}, 
-    SKU_CODE_IN = #{record.skuCodeIn,jdbcType=VARCHAR}, 
-    FROM_LPN_NUMBER = #{record.fromLpnNumber,jdbcType=VARCHAR}, 
-    TO_LPN_NUMBER = #{record.toLpnNumber,jdbcType=VARCHAR}, 
-    LPN_NUMBER_IN = #{record.lpnNumberIn,jdbcType=VARCHAR}, 
-    REQUEST_DATE = #{record.requestDate,jdbcType=TIMESTAMP}, 
+    APPOINTMENT_ID = #{record.appointmentId,jdbcType=DECIMAL}, 
+    APPOINTMENT_CODE = #{record.appointmentCode,jdbcType=VARCHAR}, 
+    TYPE = #{record.type,jdbcType=VARCHAR}, 
+    PLATFORM_ID = #{record.platformId,jdbcType=DECIMAL}, 
+    PLATFORM_CODE = #{record.platformCode,jdbcType=VARCHAR}, 
+    SOURCE_BILL_NUMBER = #{record.sourceBillNumber,jdbcType=VARCHAR}, 
+    STATUS = #{record.status,jdbcType=VARCHAR}, 
     REMARK = #{record.remark,jdbcType=VARCHAR}, 
     COMPANY_ID = #{record.companyId,jdbcType=DECIMAL}, 
     WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL}, 
@@ -593,8 +464,7 @@
     CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP}, 
     UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR}, 
     UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
-    DESCRIPTION = #{record.description,jdbcType=VARCHAR}, 
-    OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR}
+    DESCRIPTION = #{record.description,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
     </if>
@@ -605,57 +475,30 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    update INVENTORY_COUNT_REQUEST_T
+    update APPOINTMENT_T
     <set>
       <trim suffixOverrides=",">
         UPDATE_VERSION = UPDATE_VERSION + 1,
-        <if test="record.inventoryCountRequestId != null">
-          INVENTORY_COUNT_REQUEST_ID = #{record.inventoryCountRequestId,jdbcType=DECIMAL},
+        <if test="record.appointmentId != null">
+          APPOINTMENT_ID = #{record.appointmentId,jdbcType=DECIMAL},
         </if>
-        <if test="record.requestNumber != null">
-          REQUEST_NUMBER = #{record.requestNumber,jdbcType=VARCHAR},
+        <if test="record.appointmentCode != null">
+          APPOINTMENT_CODE = #{record.appointmentCode,jdbcType=VARCHAR},
         </if>
-        <if test="record.requestDescr != null">
-          REQUEST_DESCR = #{record.requestDescr,jdbcType=VARCHAR},
+        <if test="record.type != null">
+          TYPE = #{record.type,jdbcType=VARCHAR},
         </if>
-        <if test="record.requestType != null">
-          REQUEST_TYPE = #{record.requestType,jdbcType=VARCHAR},
+        <if test="record.platformId != null">
+          PLATFORM_ID = #{record.platformId,jdbcType=DECIMAL},
         </if>
-        <if test="record.quantityShowFlag != null">
-          QUANTITY_SHOW_FLAG = #{record.quantityShowFlag,jdbcType=CHAR},
+        <if test="record.platformCode != null">
+          PLATFORM_CODE = #{record.platformCode,jdbcType=VARCHAR},
         </if>
-        <if test="record.fromZoneCode != null">
-          FROM_ZONE_CODE = #{record.fromZoneCode,jdbcType=VARCHAR},
+        <if test="record.sourceBillNumber != null">
+          SOURCE_BILL_NUMBER = #{record.sourceBillNumber,jdbcType=VARCHAR},
         </if>
-        <if test="record.toZoneCode != null">
-          TO_ZONE_CODE = #{record.toZoneCode,jdbcType=VARCHAR},
-        </if>
-        <if test="record.fromLocationCode != null">
-          FROM_LOCATION_CODE = #{record.fromLocationCode,jdbcType=VARCHAR},
-        </if>
-        <if test="record.toLocationCode != null">
-          TO_LOCATION_CODE = #{record.toLocationCode,jdbcType=VARCHAR},
-        </if>
-        <if test="record.fromSkuCode != null">
-          FROM_SKU_CODE = #{record.fromSkuCode,jdbcType=VARCHAR},
-        </if>
-        <if test="record.toSkuCode != null">
-          TO_SKU_CODE = #{record.toSkuCode,jdbcType=VARCHAR},
-        </if>
-        <if test="record.skuCodeIn != null">
-          SKU_CODE_IN = #{record.skuCodeIn,jdbcType=VARCHAR},
-        </if>
-        <if test="record.fromLpnNumber != null">
-          FROM_LPN_NUMBER = #{record.fromLpnNumber,jdbcType=VARCHAR},
-        </if>
-        <if test="record.toLpnNumber != null">
-          TO_LPN_NUMBER = #{record.toLpnNumber,jdbcType=VARCHAR},
-        </if>
-        <if test="record.lpnNumberIn != null">
-          LPN_NUMBER_IN = #{record.lpnNumberIn,jdbcType=VARCHAR},
-        </if>
-        <if test="record.requestDate != null">
-          REQUEST_DATE = #{record.requestDate,jdbcType=TIMESTAMP},
+        <if test="record.status != null">
+          STATUS = #{record.status,jdbcType=VARCHAR},
         </if>
         <if test="record.remark != null">
           REMARK = #{record.remark,jdbcType=VARCHAR},
@@ -683,9 +526,6 @@
         </if>
         <if test="record.description != null">
           DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-        </if>
-        <if test="record.ownerCode != null">
-          OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR},
         </if>
       </trim>
     </set>

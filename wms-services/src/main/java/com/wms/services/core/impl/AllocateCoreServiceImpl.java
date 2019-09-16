@@ -219,7 +219,7 @@ public class AllocateCoreServiceImpl implements IAllocateCoreService, Initializi
 				.companyId(allocate.getCompanyId())
 				.outboundHeaderId(allocate.getOutboundHeaderId())
 				.updateBy(allocate.getUpdateBy())
-				.processStatus(OutboundProcessStatusEnum.allocated.getCode())
+				.processStatus(OutboundProcessStatusEnum.Allocated.getCode())
 				.build();
 		outboundHeaderService.modify(new OutboundVO(header));
 	
@@ -356,6 +356,7 @@ public class AllocateCoreServiceImpl implements IAllocateCoreService, Initializi
 			allocateDetail.setCreateTime(currentDate);
 			allocateDetail.setUpdateTime(currentDate);
 			allocateDetail.setSourceBillNumber(allocate.getOutboundNumber());
+			allocateDetail.setSourceWaveNumber(allocate.getSourceWaveNumber());
 			allocateDetail.setSourceNumber(detail.getOutboundDetailId());
 			allocateDetail.setSourceLineNumber(detail.getLineNumber());
 			allocateDetail.setStatus(AllocateStatusEnum.Allocated.getCode());

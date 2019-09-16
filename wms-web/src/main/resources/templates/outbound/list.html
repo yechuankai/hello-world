@@ -127,10 +127,7 @@
             <div class="easyui-layout" id="detailLayout" style="width: 100%;height: 100%;" data-options="fix:true">
                 <div data-options="region:'center',collapsible:false,border:false">
                     <table id="outboundData" wms:title="${web.label.outboundlist.title}" class="easyui-datagrid"
-                           wms:data-options="
-										sortOrder: 'desc',
-										sortName: 'outboundHeaderId',
-										"
+                           wms:data-options=""
                            th:data-delayUrl="@{/services/inner/outbound/find}">
                         <thead data-options="frozen:true">
 	                        <tr>
@@ -340,9 +337,8 @@
             buttons: '#headerEditButton'
         }).dialog('open');
         $(panel).find('form').form('reset');
-
         refreshEditHeader(headerData);
-
+        $('.tooltip').remove();
     }
 
     function action(type) {

@@ -56,6 +56,11 @@ public class LocaleUtils {
 		if (LocaleUtils.localMap.containsKey(locale)) {
 			lableValue = LocaleUtils.localMap.get(locale).get(labelKey);
 		}
+		//按指定语言查询为空，继续按默认语言查询
+		if (StringUtils.isEmpty(lableValue) 
+				&& LocaleUtils.localMap.containsKey(Global.locale)) {
+			lableValue = LocaleUtils.localMap.get(Global.locale).get(labelKey);
+		}
 		if (StringUtils.isEmpty(lableValue)) {
 			lableValue = labelKey;
 		}

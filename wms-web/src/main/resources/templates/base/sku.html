@@ -12,13 +12,13 @@
 			<div style="margin-left: 10px;height: 100%;" data-options="region:'north',border:false" >
 				<form id="searchForm" data-table="#skuData" style="height: 900px;">
 				    <div style="margin-bottom:10px">
-						<input name="ownerCode" class="easyui-textbox" wms:data-options="label:'${web.inventory.ownerCode}',labelPosition:'top'">
+						<input name="ownerCode" class="easyui-textbox" wms:data-options="label:'${web.label.owner}',labelPosition:'top'">
 					</div>
 					<div style="margin-bottom:10px">
-						<input name="skuCode" class="easyui-textbox" wms:data-options="label:'${web.inventory.skuCode}',labelPosition:'top'">
+						<input name="skuCode" class="easyui-textbox" wms:data-options="label:'${web.label.sku}',labelPosition:'top'">
 					</div>
 					<div style="margin-bottom:10px">
-						<input name="skuAlias" class="easyui-textbox" wms:data-options="label:'${web.inventory.skuAlias}',labelPosition:'top'">
+						<input name="skuAlias" class="easyui-textbox" wms:data-options="label:'${web.label.skualias}',labelPosition:'top'">
 					</div>
 					<div style="margin-bottom:10px">
 						<input name="skuDescr" class="easyui-textbox" wms:data-options="label:'${web.label.skudescr}',labelPosition:'top'">
@@ -28,7 +28,7 @@
 						data: codelkups['SKUTYPE'],
 						valueField: 'code',
 						textField: 'descr',
-						label: '${web.inventory.skutype}',
+						label: '${web.label.sku}',
 						labelPosition: 'top'
 						" />
 					</div>
@@ -94,9 +94,9 @@
 				<thead>
 					<tr>
 						<th field="skuId" data-options="checkbox:true"></th>
-						<th field="ownerCode" width="80" wms:text="${web.inventory.ownerCode}" data-options="sortable:true">ownerCode</th>
-						<th field="skuCode" width="80" wms:text="${web.inventory.skuCode}" data-options="sortable:true">skuCode</th>
-						<th field="skuAlias" width="80" wms:text="${web.inventory.skuAlias}" data-options="sortable:true,editor:'text'">skuAlias</th>
+						<th field="ownerCode" width="80" wms:text="${web.label.owner}" data-options="sortable:true">ownerCode</th>
+						<th field="skuCode" width="80" wms:text="${web.label.sku}" data-options="sortable:true">skuCode</th>
+						<th field="skuAlias" width="80" wms:text="${web.label.skualias}" data-options="sortable:true,editor:'text'">skuAlias</th>
 						<th field="barcode" width="100" wms:text="${web.label.barcode}" data-options="sortable:true,editor:'text'" >barcode</th>
 						<th field="skuDescr" width="100" wms:text="${web.label.skudescr}" data-options="sortable:true,editor:{
 																													type: 'validatebox',
@@ -104,7 +104,7 @@
 																														required: true
 																													}
 																												}">skuDescr</th>
-						<th field="skuType" width="80" wms:text="${web.inventory.skutype}" data-options="
+						<th field="skuType" width="80" wms:text="${web.label.sku}" data-options="
 							sortable:true,
 							required:true,
 							formatter:function(value,row){
@@ -152,49 +152,49 @@
 								}
 							}
 						" >uom</th>
-						<th field="volume" width="100" wms:text="${web.inventory.volume}" data-options="sortable:true,editor:{
+						<th field="volume" width="100" wms:text="${web.label.volume}" data-options="sortable:true,editor:{
 																													type: 'numberbox',
 																													options: {
 																														precision:4,
 																														required: true
 																													}
 																												}" >volume</th>
-						<th field="length" width="100" wms:text="${web.inventory.length}" data-options="sortable:true,editor:{
+						<th field="length" width="100" wms:text="${web.label.length}" data-options="sortable:true,editor:{
 																													type: 'numberbox',
 																													options: {
 																														precision:4,
 																														required: true
 																													}
 																												}" >length</th>
-						<th field="width" width="100" wms:text="${web.inventory.width}" data-options="sortable:true,editor:{
+						<th field="width" width="100" wms:text="${web.label.width}" data-options="sortable:true,editor:{
 																													type: 'numberbox',
 																													options: {
 																														precision:4,
 																														required: true
 																													}
 																												}" >width</th>
-				        <th field="height" width="100" wms:text="${web.inventory.height}" data-options="sortable:true,editor:{
+				        <th field="height" width="100" wms:text="${web.label.height}" data-options="sortable:true,editor:{
 																													type: 'numberbox',
 																													options: {
 																														precision:4,
 																														required: true
 																													}
 																												}" >height</th>
-					    <th field="weightGross" width="100" wms:text="${web.inventory.weightgross}" data-options="sortable:true,editor:{
+					    <th field="weightGross" width="100" wms:text="${web.label.weightgross}" data-options="sortable:true,editor:{
 																													type: 'numberbox',
 																													options: {
 																														precision:4,
 																														required: true
 																													}
 																												}" >weightGross</th>
-				        <th field="weightNet" width="100" wms:text="${web.inventory.weightnet}" data-options="sortable:true,editor:{
+				        <th field="weightNet" width="100" wms:text="${web.label.weightnet}" data-options="sortable:true,editor:{
 																													type: 'numberbox',
 																													options: {
 																														precision:4,
 																														required: true
 																													}
 																												}" >weightNet</th>
-					    <th field="weightTare" width="100" wms:text="${web.inventory.weighttare}" data-options="sortable:true,editor:{
+					    <th field="weightTare" width="100" wms:text="${web.label.weighttare}" data-options="sortable:true,editor:{
 																													type: 'numberbox',
 																													options: {
 																														precision:4,
@@ -339,10 +339,10 @@
 								<input type="hidden" name="ownerId" id="ownerId" />
 							</td>
 							<td width="200">
-								<input id="skuCode" name="skuCode" class="easyui-textbox"  wms:data-options="required:true,label:'${web.inventory.skuCode}',labelPosition:'top'">
+								<input id="skuCode" name="skuCode" class="easyui-textbox"  wms:data-options="required:true,label:'${web.label.sku}',labelPosition:'top'">
 							</td>
 							<td width="200">
-								<input name="skuAlias" class="easyui-textbox"  wms:data-options="label:'${web.inventory.skuAlias}',labelPosition:'top'">
+								<input name="skuAlias" class="easyui-textbox"  wms:data-options="label:'${web.label.skualias}',labelPosition:'top'">
 							</td>
 							<td width="200">
 								<input id="barcode"  name="barcode" class="easyui-textbox"  wms:data-options="label:'${web.label.barcode}',labelPosition:'top'">
@@ -359,11 +359,11 @@
 									data: codelkups['SKUTYPE'],
 									valueField: 'code',
 									textField: 'descr',
-									label: '${web.inventory.skutype}',
+									label: '${web.label.sku}',
 									labelPosition: 'top'" />
 							</td>
 							<td >
-								<input id="volume" name="volume" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:4,label:'${web.inventory.volume}',labelPosition:'top'">
+								<input id="volume" name="volume" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:4,label:'${web.label.volume}',labelPosition:'top'">
 							</td>
 						 </tr>
 						 <tr>
@@ -375,7 +375,7 @@
 								<input id="length" name="length" class="lazy-load" lazy-load="easyui-numberbox" value="0" wms:data-options="
 								required:true,
 								precision:4,
-								label:'${web.inventory.length}',
+								label:'${web.label.length}',
 								labelPosition:'top',
 								onChange(newValue, oldValue){
 									calculate(newValue);
@@ -386,7 +386,7 @@
 								<input id="width" name="width" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
 								required:true,
 								precision:4,
-								label:'${web.inventory.width}',
+								label:'${web.label.width}',
 								labelPosition:'top',
 								onChange(newValue, oldValue){
 									calculate(newValue);
@@ -397,7 +397,7 @@
 								<input id="height" name="height" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
 								required:true,
 								precision:4,
-								label:'${web.inventory.height}',
+								label:'${web.label.height}',
 								labelPosition:'top',
 								onChange(newValue, oldValue){
 									calculate(newValue);
@@ -418,13 +418,13 @@
 									" />
 							</td>
 							<td >
-								<input name="weightGross" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:4,label:'${web.inventory.weightgross}',labelPosition:'top'">
+								<input name="weightGross" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:4,label:'${web.label.weightgross}',labelPosition:'top'">
 							</td>
 							<td >
-								<input name="weightNet" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:4,label:'${web.inventory.weightnet}',labelPosition:'top'">
+								<input name="weightNet" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:4,label:'${web.label.weightnet}',labelPosition:'top'">
 							</td>
 							<td >
-								<input name="weightTare" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:4,label:'${web.inventory.weighttare}',labelPosition:'top'">
+								<input name="weightTare" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:4,label:'${web.label.weighttare}',labelPosition:'top'">
 							</td>
 						 </tr>
 						 <tr>

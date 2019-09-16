@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 @Service
 public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 
+	public static final String NO_WAVE = "NO_WAVE";
 	@Autowired
 	private IOutboundHeaderTDao outboundHeaderDao;
 	@Autowired
@@ -70,13 +71,20 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 				.build(request)
 				.orderby(example);
 
-		if (StringUtils.isBlank(request.getString("from")) && StringUtils.isBlank(request.getString("status"))) {
+		if (StringUtils.isBlank(request.getString("from")) 
+				&& StringUtils.isBlank(request.getString("status"))) {
 			//WMS自己查询排除草稿、待接单、待出货三个状态的订单
 			List<String> excludeStatus = Lists.newArrayList();
 			excludeStatus.add(OutboundStatusEnum.Draft.getCode());
 			excludeStatus.add(OutboundStatusEnum.WaitingReview.getCode());
 			exampleCriteria.andStatusNotIn(excludeStatus);
 		}
+		
+		if (YesNoEnum.Yes.getCode().equals(request.getString(NO_WAVE))) {
+			exampleCriteria.andSourceWaveNumberIsNull();
+		}
+		
+		
 		exampleCriteria.andDelFlagEqualTo(YesNoEnum.No.getCode());
 
 		List<OutboundHeaderTEntity> inboundList = outboundHeaderDao.selectByExample(example);
@@ -263,7 +271,8 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 	@Transactional
 	public Boolean modify(OutboundHeaderTEntity outbound) throws BusinessServiceException {
         OutboundHeaderTEntity updateHeader = OutboundHeaderTEntity.builder()
-                .status(outbound.getStatus())
+                .sourceWaveNumber(outbound.getSourceWaveNumber())
+        		.status(outbound.getStatus())
                 .updateBy(outbound.getUpdateBy())
                 .updateTime(new Date())
                 .build();
@@ -857,6 +866,7 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 		headerCriteria.andCompanyIdEqualTo(request.getCompanyId())
 				.andWarehouseIdEqualTo(request.getWarehouseId())
 				.andDelFlagEqualTo(YesNoEnum.No.getCode())
+				.andSourceWaveNumberIsNull()
 				.andStatusEqualTo(OutboundStatusEnum.New.getCode());
 		WaveBuildUtils.addTableCondition(WaveBuildUtils.ConditionType.Header, headerCriteria, list);
 		List<OutboundHeaderTEntity> outbounds = outboundHeaderDao.selectByExample(headerExample);

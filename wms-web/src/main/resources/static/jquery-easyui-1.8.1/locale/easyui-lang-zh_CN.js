@@ -80,10 +80,10 @@ var locale = {
 	selectOneRow: "请选择一行数据",
 	errorRow: '编辑行{row}校验失败',
 	enterInboundNumber: "请输入入库单号",
-	enterSku:'请选择商品',
+	enterSku:'请选择货品',
 	enterQuantity:'请输入接收量',
 	submitRowIsNull:'提交的行为空',
-	noChange:'数据不曾改变',
+	noChange:'数据没有改变',
 	statusError:'状态错误',
 	ownerRequired: '需要选择货主',
 	selectOneSku:'请选择一件货品',
@@ -94,7 +94,6 @@ var locale = {
 	selectFile:'请选择文件',
 	selectOneRole:'请选择一个角色',
 	selectCompany:'请选择一个公司',
-	
 	submitSuccess:'提交成功',
 	exportTip:'导出中......',
 	addSuccess:'添加成功',
@@ -102,7 +101,6 @@ var locale = {
 	saveSuccess:'保存成功',
 	uploadSuccess:'上传成功',
 	changePasswordSuccess:'密码修改成功',
-	
 	exitConfirm:'退出当前页 ?',
 	exportExcel:'根据当前条件导出Excel文件?',
 	closeAll:'关闭所有页面?',

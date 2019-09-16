@@ -54,7 +54,7 @@ public class WaveDetailRest extends BaseController{
 	
 	@RequestMapping("/add")
 	public AjaxResult add(@RequestBody String req) {
-		AjaxRequest<List<WaveDetailTEntity>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<WaveDetailTEntity>>>() {});
+		AjaxRequest<List<WaveDetailVO>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<WaveDetailVO>>>() {});
 		try {
 			Boolean save = waveDetailService.add(request);
 			if (save) {

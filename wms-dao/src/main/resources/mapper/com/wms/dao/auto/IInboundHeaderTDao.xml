@@ -33,6 +33,7 @@
     <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
     <result column="TO_WAREHOUSE_CODE" jdbcType="VARCHAR" property="toWarehouseCode" />
     <result column="TO_WAREHOUSE_ID" jdbcType="DECIMAL" property="toWarehouseId" />
+    <result column="CARRIER_DRIVER_PHONE" jdbcType="VARCHAR" property="carrierDriverPhone" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -134,7 +135,8 @@
     OWNER_CODE, SUPPLIER_ID, SUPPLIER_CODE, INBOUND_DATE, EXPECTED_INBOUND_DATE, CLOSED_DATE, 
     STATUS, CARRIER_ID, CARRIER_CODE, CARRIER_CAR_NUMBER, CARRIER_DRIVER, SHIP_ADDRESS1, 
     SHIP_ADDRESS2, REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, 
-    UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, TO_WAREHOUSE_CODE, TO_WAREHOUSE_ID
+    UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, TO_WAREHOUSE_CODE, TO_WAREHOUSE_ID, 
+    CARRIER_DRIVER_PHONE
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.InboundHeaderTExample" resultMap="BaseResultMap">
     select
@@ -167,7 +169,7 @@
       WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
       CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
       UPDATE_VERSION, DESCRIPTION, TO_WAREHOUSE_CODE, 
-      TO_WAREHOUSE_ID)
+      TO_WAREHOUSE_ID, CARRIER_DRIVER_PHONE)
     values (#{inboundHeaderId,jdbcType=DECIMAL}, #{inboundNumber,jdbcType=VARCHAR}, #{sourceNumber,jdbcType=VARCHAR}, 
       #{referenceNumber,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{ownerId,jdbcType=DECIMAL}, 
       #{ownerCode,jdbcType=VARCHAR}, #{supplierId,jdbcType=DECIMAL}, #{supplierCode,jdbcType=VARCHAR}, 
@@ -178,7 +180,7 @@
       #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, #{toWarehouseCode,jdbcType=VARCHAR}, 
-      #{toWarehouseId,jdbcType=DECIMAL})
+      #{toWarehouseId,jdbcType=DECIMAL}, #{carrierDriverPhone,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.InboundHeaderTEntity">
     insert into INBOUND_HEADER_T
@@ -276,6 +278,9 @@
       <if test="toWarehouseId != null">
         TO_WAREHOUSE_ID,
       </if>
+      <if test="carrierDriverPhone != null">
+        CARRIER_DRIVER_PHONE,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="inboundHeaderId != null">
@@ -370,6 +375,9 @@
       </if>
       <if test="toWarehouseId != null">
         #{toWarehouseId,jdbcType=DECIMAL},
+      </if>
+      <if test="carrierDriverPhone != null">
+        #{carrierDriverPhone,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -475,6 +483,9 @@
       <if test="record.toWarehouseId != null">
         TO_WAREHOUSE_ID = #{record.toWarehouseId,jdbcType=DECIMAL},
       </if>
+      <if test="record.carrierDriverPhone != null">
+        CARRIER_DRIVER_PHONE = #{record.carrierDriverPhone,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -512,7 +523,8 @@
       UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
       DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       TO_WAREHOUSE_CODE = #{record.toWarehouseCode,jdbcType=VARCHAR},
-      TO_WAREHOUSE_ID = #{record.toWarehouseId,jdbcType=DECIMAL}
+      TO_WAREHOUSE_ID = #{record.toWarehouseId,jdbcType=DECIMAL},
+      CARRIER_DRIVER_PHONE = #{record.carrierDriverPhone,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -644,7 +656,8 @@
     UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
     DESCRIPTION = #{record.description,jdbcType=VARCHAR}, 
     TO_WAREHOUSE_CODE = #{record.toWarehouseCode,jdbcType=VARCHAR}, 
-    TO_WAREHOUSE_ID = #{record.toWarehouseId,jdbcType=DECIMAL}
+    TO_WAREHOUSE_ID = #{record.toWarehouseId,jdbcType=DECIMAL}, 
+    CARRIER_DRIVER_PHONE = #{record.carrierDriverPhone,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
     </if>
@@ -748,6 +761,9 @@
         </if>
         <if test="record.toWarehouseId != null">
           TO_WAREHOUSE_ID = #{record.toWarehouseId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.carrierDriverPhone != null">
+          CARRIER_DRIVER_PHONE = #{record.carrierDriverPhone,jdbcType=VARCHAR},
         </if>
       </trim>
     </set>

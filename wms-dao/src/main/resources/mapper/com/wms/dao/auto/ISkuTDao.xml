@@ -7,10 +7,12 @@
     <result column="OWNER_CODE" jdbcType="VARCHAR" property="ownerCode" />
     <result column="SKU_CODE" jdbcType="VARCHAR" property="skuCode" />
     <result column="SKU_ALIAS" jdbcType="VARCHAR" property="skuAlias" />
+    <result column="BARCODE" jdbcType="VARCHAR" property="barcode" />
     <result column="SKU_DESCR" jdbcType="VARCHAR" property="skuDescr" />
     <result column="SKU_TYPE" jdbcType="VARCHAR" property="skuType" />
     <result column="PACK_ID" jdbcType="DECIMAL" property="packId" />
     <result column="PACK_CODE" jdbcType="VARCHAR" property="packCode" />
+    <result column="UOM" jdbcType="VARCHAR" property="uom" />
     <result column="VOLUME" jdbcType="DECIMAL" property="volume" />
     <result column="LENGTH" jdbcType="DECIMAL" property="length" />
     <result column="WIDTH" jdbcType="DECIMAL" property="width" />
@@ -18,8 +20,11 @@
     <result column="WEIGHT_GROSS" jdbcType="DECIMAL" property="weightGross" />
     <result column="WEIGHT_NET" jdbcType="DECIMAL" property="weightNet" />
     <result column="WEIGHT_TARE" jdbcType="DECIMAL" property="weightTare" />
+    <result column="LOT_VALIDATE_ID" jdbcType="DECIMAL" property="lotValidateId" />
+    <result column="LOT_VALIDATE_CODE" jdbcType="VARCHAR" property="lotValidateCode" />
     <result column="PUTAWAY_STRATEGY_ID" jdbcType="DECIMAL" property="putawayStrategyId" />
     <result column="PUTAWAY_STRATEGY_CODE" jdbcType="VARCHAR" property="putawayStrategyCode" />
+    <result column="PUTAWAY_ZONE_CODE" jdbcType="VARCHAR" property="putawayZoneCode" />
     <result column="PUTAWAY_LOCATION_CODE" jdbcType="VARCHAR" property="putawayLocationCode" />
     <result column="ALLOCATE_STRATEGY_ID" jdbcType="DECIMAL" property="allocateStrategyId" />
     <result column="ALLOCATE_STRATEGY_CODE" jdbcType="VARCHAR" property="allocateStrategyCode" />
@@ -46,11 +51,6 @@
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="UPDATE_VERSION" jdbcType="DECIMAL" property="updateVersion" />
     <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
-    <result column="PUTAWAY_ZONE_CODE" jdbcType="VARCHAR" property="putawayZoneCode" />
-    <result column="BARCODE" jdbcType="VARCHAR" property="barcode" />
-    <result column="UOM" jdbcType="VARCHAR" property="uom" />
-    <result column="LOT_VALIDATE_ID" jdbcType="DECIMAL" property="lotValidateId" />
-    <result column="LOT_VALIDATE_CODE" jdbcType="VARCHAR" property="lotValidateCode" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -148,15 +148,15 @@
     </where >
   </sql>
   <sql id="Base_Column_List">
-    SKU_ID, OWNER_ID, OWNER_CODE, SKU_CODE, SKU_ALIAS, SKU_DESCR, SKU_TYPE, PACK_ID, 
-    PACK_CODE, VOLUME, LENGTH, WIDTH, HEIGHT, WEIGHT_GROSS, WEIGHT_NET, WEIGHT_TARE, 
-    PUTAWAY_STRATEGY_ID, PUTAWAY_STRATEGY_CODE, PUTAWAY_LOCATION_CODE, ALLOCATE_STRATEGY_ID, 
-    ALLOCATE_STRATEGY_CODE, LOT_ATTRIBUTE1_LABEL, LOT_ATTRIBUTE2_LABEL, LOT_ATTRIBUTE3_LABEL, 
-    LOT_ATTRIBUTE4_LABEL, LOT_ATTRIBUTE5_LABEL, LOT_ATTRIBUTE6_LABEL, LOT_ATTRIBUTE7_LABEL, 
-    LOT_ATTRIBUTE8_LABEL, LOT_ATTRIBUTE9_LABEL, LOT_ATTRIBUTE10_LABEL, LOT_ATTRIBUTE11_LABEL, 
-    LOT_ATTRIBUTE12_LABEL, ACTIVE, REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
-    CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, PUTAWAY_ZONE_CODE, 
-    BARCODE, UOM, LOT_VALIDATE_ID, LOT_VALIDATE_CODE
+    SKU_ID, OWNER_ID, OWNER_CODE, SKU_CODE, SKU_ALIAS, BARCODE, SKU_DESCR, SKU_TYPE, 
+    PACK_ID, PACK_CODE, UOM, VOLUME, LENGTH, WIDTH, HEIGHT, WEIGHT_GROSS, WEIGHT_NET, 
+    WEIGHT_TARE, LOT_VALIDATE_ID, LOT_VALIDATE_CODE, PUTAWAY_STRATEGY_ID, PUTAWAY_STRATEGY_CODE, 
+    PUTAWAY_ZONE_CODE, PUTAWAY_LOCATION_CODE, ALLOCATE_STRATEGY_ID, ALLOCATE_STRATEGY_CODE, 
+    LOT_ATTRIBUTE1_LABEL, LOT_ATTRIBUTE2_LABEL, LOT_ATTRIBUTE3_LABEL, LOT_ATTRIBUTE4_LABEL, 
+    LOT_ATTRIBUTE5_LABEL, LOT_ATTRIBUTE6_LABEL, LOT_ATTRIBUTE7_LABEL, LOT_ATTRIBUTE8_LABEL, 
+    LOT_ATTRIBUTE9_LABEL, LOT_ATTRIBUTE10_LABEL, LOT_ATTRIBUTE11_LABEL, LOT_ATTRIBUTE12_LABEL, 
+    ACTIVE, REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, 
+    UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.SkuTExample" resultMap="BaseResultMap">
     select
@@ -180,43 +180,43 @@
   </delete>
   <insert id="insert" parameterType="com.wms.entity.auto.SkuTEntity">
     insert into SKU_T (SKU_ID, OWNER_ID, OWNER_CODE, 
-      SKU_CODE, SKU_ALIAS, SKU_DESCR, 
-      SKU_TYPE, PACK_ID, PACK_CODE, 
-      VOLUME, LENGTH, WIDTH, 
-      HEIGHT, WEIGHT_GROSS, WEIGHT_NET, 
-      WEIGHT_TARE, PUTAWAY_STRATEGY_ID, PUTAWAY_STRATEGY_CODE, 
-      PUTAWAY_LOCATION_CODE, ALLOCATE_STRATEGY_ID, 
-      ALLOCATE_STRATEGY_CODE, LOT_ATTRIBUTE1_LABEL, 
-      LOT_ATTRIBUTE2_LABEL, LOT_ATTRIBUTE3_LABEL, 
-      LOT_ATTRIBUTE4_LABEL, LOT_ATTRIBUTE5_LABEL, 
-      LOT_ATTRIBUTE6_LABEL, LOT_ATTRIBUTE7_LABEL, 
-      LOT_ATTRIBUTE8_LABEL, LOT_ATTRIBUTE9_LABEL, 
-      LOT_ATTRIBUTE10_LABEL, LOT_ATTRIBUTE11_LABEL, 
-      LOT_ATTRIBUTE12_LABEL, ACTIVE, REMARK, 
-      COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, 
-      CREATE_BY, CREATE_TIME, UPDATE_BY, 
-      UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, 
-      PUTAWAY_ZONE_CODE, BARCODE, UOM, 
-      LOT_VALIDATE_ID, LOT_VALIDATE_CODE)
+      SKU_CODE, SKU_ALIAS, BARCODE, 
+      SKU_DESCR, SKU_TYPE, PACK_ID, 
+      PACK_CODE, UOM, VOLUME, 
+      LENGTH, WIDTH, HEIGHT, 
+      WEIGHT_GROSS, WEIGHT_NET, WEIGHT_TARE, 
+      LOT_VALIDATE_ID, LOT_VALIDATE_CODE, PUTAWAY_STRATEGY_ID, 
+      PUTAWAY_STRATEGY_CODE, PUTAWAY_ZONE_CODE, PUTAWAY_LOCATION_CODE, 
+      ALLOCATE_STRATEGY_ID, ALLOCATE_STRATEGY_CODE, 
+      LOT_ATTRIBUTE1_LABEL, LOT_ATTRIBUTE2_LABEL, 
+      LOT_ATTRIBUTE3_LABEL, LOT_ATTRIBUTE4_LABEL, 
+      LOT_ATTRIBUTE5_LABEL, LOT_ATTRIBUTE6_LABEL, 
+      LOT_ATTRIBUTE7_LABEL, LOT_ATTRIBUTE8_LABEL, 
+      LOT_ATTRIBUTE9_LABEL, LOT_ATTRIBUTE10_LABEL, 
+      LOT_ATTRIBUTE11_LABEL, LOT_ATTRIBUTE12_LABEL, 
+      ACTIVE, REMARK, COMPANY_ID, 
+      WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
+      CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
+      UPDATE_VERSION, DESCRIPTION)
     values (#{skuId,jdbcType=DECIMAL}, #{ownerId,jdbcType=DECIMAL}, #{ownerCode,jdbcType=VARCHAR}, 
-      #{skuCode,jdbcType=VARCHAR}, #{skuAlias,jdbcType=VARCHAR}, #{skuDescr,jdbcType=VARCHAR}, 
-      #{skuType,jdbcType=VARCHAR}, #{packId,jdbcType=DECIMAL}, #{packCode,jdbcType=VARCHAR}, 
-      #{volume,jdbcType=DECIMAL}, #{length,jdbcType=DECIMAL}, #{width,jdbcType=DECIMAL}, 
-      #{height,jdbcType=DECIMAL}, #{weightGross,jdbcType=DECIMAL}, #{weightNet,jdbcType=DECIMAL}, 
-      #{weightTare,jdbcType=DECIMAL}, #{putawayStrategyId,jdbcType=DECIMAL}, #{putawayStrategyCode,jdbcType=VARCHAR}, 
-      #{putawayLocationCode,jdbcType=VARCHAR}, #{allocateStrategyId,jdbcType=DECIMAL}, 
-      #{allocateStrategyCode,jdbcType=VARCHAR}, #{lotAttribute1Label,jdbcType=VARCHAR}, 
-      #{lotAttribute2Label,jdbcType=VARCHAR}, #{lotAttribute3Label,jdbcType=VARCHAR}, 
-      #{lotAttribute4Label,jdbcType=VARCHAR}, #{lotAttribute5Label,jdbcType=VARCHAR}, 
-      #{lotAttribute6Label,jdbcType=VARCHAR}, #{lotAttribute7Label,jdbcType=VARCHAR}, 
-      #{lotAttribute8Label,jdbcType=VARCHAR}, #{lotAttribute9Label,jdbcType=VARCHAR}, 
-      #{lotAttribute10Label,jdbcType=VARCHAR}, #{lotAttribute11Label,jdbcType=VARCHAR}, 
-      #{lotAttribute12Label,jdbcType=VARCHAR}, #{active,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, 
-      #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, 
-      #{putawayZoneCode,jdbcType=VARCHAR}, #{barcode,jdbcType=VARCHAR}, #{uom,jdbcType=VARCHAR}, 
-      #{lotValidateId,jdbcType=DECIMAL}, #{lotValidateCode,jdbcType=VARCHAR})
+      #{skuCode,jdbcType=VARCHAR}, #{skuAlias,jdbcType=VARCHAR}, #{barcode,jdbcType=VARCHAR}, 
+      #{skuDescr,jdbcType=VARCHAR}, #{skuType,jdbcType=VARCHAR}, #{packId,jdbcType=DECIMAL}, 
+      #{packCode,jdbcType=VARCHAR}, #{uom,jdbcType=VARCHAR}, #{volume,jdbcType=DECIMAL}, 
+      #{length,jdbcType=DECIMAL}, #{width,jdbcType=DECIMAL}, #{height,jdbcType=DECIMAL}, 
+      #{weightGross,jdbcType=DECIMAL}, #{weightNet,jdbcType=DECIMAL}, #{weightTare,jdbcType=DECIMAL}, 
+      #{lotValidateId,jdbcType=DECIMAL}, #{lotValidateCode,jdbcType=VARCHAR}, #{putawayStrategyId,jdbcType=DECIMAL}, 
+      #{putawayStrategyCode,jdbcType=VARCHAR}, #{putawayZoneCode,jdbcType=VARCHAR}, #{putawayLocationCode,jdbcType=VARCHAR}, 
+      #{allocateStrategyId,jdbcType=DECIMAL}, #{allocateStrategyCode,jdbcType=VARCHAR}, 
+      #{lotAttribute1Label,jdbcType=VARCHAR}, #{lotAttribute2Label,jdbcType=VARCHAR}, 
+      #{lotAttribute3Label,jdbcType=VARCHAR}, #{lotAttribute4Label,jdbcType=VARCHAR}, 
+      #{lotAttribute5Label,jdbcType=VARCHAR}, #{lotAttribute6Label,jdbcType=VARCHAR}, 
+      #{lotAttribute7Label,jdbcType=VARCHAR}, #{lotAttribute8Label,jdbcType=VARCHAR}, 
+      #{lotAttribute9Label,jdbcType=VARCHAR}, #{lotAttribute10Label,jdbcType=VARCHAR}, 
+      #{lotAttribute11Label,jdbcType=VARCHAR}, #{lotAttribute12Label,jdbcType=VARCHAR}, 
+      #{active,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, 
+      #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.SkuTEntity">
     insert into SKU_T
@@ -236,6 +236,9 @@
       <if test="skuAlias != null">
         SKU_ALIAS,
       </if>
+      <if test="barcode != null">
+        BARCODE,
+      </if>
       <if test="skuDescr != null">
         SKU_DESCR,
       </if>
@@ -247,6 +250,9 @@
       </if>
       <if test="packCode != null">
         PACK_CODE,
+      </if>
+      <if test="uom != null">
+        UOM,
       </if>
       <if test="volume != null">
         VOLUME,
@@ -269,11 +275,20 @@
       <if test="weightTare != null">
         WEIGHT_TARE,
       </if>
+      <if test="lotValidateId != null">
+        LOT_VALIDATE_ID,
+      </if>
+      <if test="lotValidateCode != null">
+        LOT_VALIDATE_CODE,
+      </if>
       <if test="putawayStrategyId != null">
         PUTAWAY_STRATEGY_ID,
       </if>
       <if test="putawayStrategyCode != null">
         PUTAWAY_STRATEGY_CODE,
+      </if>
+      <if test="putawayZoneCode != null">
+        PUTAWAY_ZONE_CODE,
       </if>
       <if test="putawayLocationCode != null">
         PUTAWAY_LOCATION_CODE,
@@ -353,21 +368,6 @@
       <if test="description != null">
         DESCRIPTION,
       </if>
-      <if test="putawayZoneCode != null">
-        PUTAWAY_ZONE_CODE,
-      </if>
-      <if test="barcode != null">
-        BARCODE,
-      </if>
-      <if test="uom != null">
-        UOM,
-      </if>
-      <if test="lotValidateId != null">
-        LOT_VALIDATE_ID,
-      </if>
-      <if test="lotValidateCode != null">
-        LOT_VALIDATE_CODE,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="skuId != null">
@@ -385,6 +385,9 @@
       <if test="skuAlias != null">
         #{skuAlias,jdbcType=VARCHAR},
       </if>
+      <if test="barcode != null">
+        #{barcode,jdbcType=VARCHAR},
+      </if>
       <if test="skuDescr != null">
         #{skuDescr,jdbcType=VARCHAR},
       </if>
@@ -396,6 +399,9 @@
       </if>
       <if test="packCode != null">
         #{packCode,jdbcType=VARCHAR},
+      </if>
+      <if test="uom != null">
+        #{uom,jdbcType=VARCHAR},
       </if>
       <if test="volume != null">
         #{volume,jdbcType=DECIMAL},
@@ -418,11 +424,20 @@
       <if test="weightTare != null">
         #{weightTare,jdbcType=DECIMAL},
       </if>
+      <if test="lotValidateId != null">
+        #{lotValidateId,jdbcType=DECIMAL},
+      </if>
+      <if test="lotValidateCode != null">
+        #{lotValidateCode,jdbcType=VARCHAR},
+      </if>
       <if test="putawayStrategyId != null">
         #{putawayStrategyId,jdbcType=DECIMAL},
       </if>
       <if test="putawayStrategyCode != null">
         #{putawayStrategyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="putawayZoneCode != null">
+        #{putawayZoneCode,jdbcType=VARCHAR},
       </if>
       <if test="putawayLocationCode != null">
         #{putawayLocationCode,jdbcType=VARCHAR},
@@ -502,21 +517,6 @@
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
       </if>
-      <if test="putawayZoneCode != null">
-        #{putawayZoneCode,jdbcType=VARCHAR},
-      </if>
-      <if test="barcode != null">
-        #{barcode,jdbcType=VARCHAR},
-      </if>
-      <if test="uom != null">
-        #{uom,jdbcType=VARCHAR},
-      </if>
-      <if test="lotValidateId != null">
-        #{lotValidateId,jdbcType=DECIMAL},
-      </if>
-      <if test="lotValidateCode != null">
-        #{lotValidateCode,jdbcType=VARCHAR},
-      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.wms.dao.example.SkuTExample" resultType="java.lang.Long">
@@ -543,6 +543,9 @@
       <if test="record.skuAlias != null">
         SKU_ALIAS = #{record.skuAlias,jdbcType=VARCHAR},
       </if>
+      <if test="record.barcode != null">
+        BARCODE = #{record.barcode,jdbcType=VARCHAR},
+      </if>
       <if test="record.skuDescr != null">
         SKU_DESCR = #{record.skuDescr,jdbcType=VARCHAR},
       </if>
@@ -554,6 +557,9 @@
       </if>
       <if test="record.packCode != null">
         PACK_CODE = #{record.packCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uom != null">
+        UOM = #{record.uom,jdbcType=VARCHAR},
       </if>
       <if test="record.volume != null">
         VOLUME = #{record.volume,jdbcType=DECIMAL},
@@ -576,11 +582,20 @@
       <if test="record.weightTare != null">
         WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL},
       </if>
+      <if test="record.lotValidateId != null">
+        LOT_VALIDATE_ID = #{record.lotValidateId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lotValidateCode != null">
+        LOT_VALIDATE_CODE = #{record.lotValidateCode,jdbcType=VARCHAR},
+      </if>
       <if test="record.putawayStrategyId != null">
         PUTAWAY_STRATEGY_ID = #{record.putawayStrategyId,jdbcType=DECIMAL},
       </if>
       <if test="record.putawayStrategyCode != null">
         PUTAWAY_STRATEGY_CODE = #{record.putawayStrategyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.putawayZoneCode != null">
+        PUTAWAY_ZONE_CODE = #{record.putawayZoneCode,jdbcType=VARCHAR},
       </if>
       <if test="record.putawayLocationCode != null">
         PUTAWAY_LOCATION_CODE = #{record.putawayLocationCode,jdbcType=VARCHAR},
@@ -660,21 +675,6 @@
       <if test="record.description != null">
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       </if>
-      <if test="record.putawayZoneCode != null">
-        PUTAWAY_ZONE_CODE = #{record.putawayZoneCode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.barcode != null">
-        BARCODE = #{record.barcode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.uom != null">
-        UOM = #{record.uom,jdbcType=VARCHAR},
-      </if>
-      <if test="record.lotValidateId != null">
-        LOT_VALIDATE_ID = #{record.lotValidateId,jdbcType=DECIMAL},
-      </if>
-      <if test="record.lotValidateCode != null">
-        LOT_VALIDATE_CODE = #{record.lotValidateCode,jdbcType=VARCHAR},
-      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -687,10 +687,12 @@
       OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR},
       SKU_CODE = #{record.skuCode,jdbcType=VARCHAR},
       SKU_ALIAS = #{record.skuAlias,jdbcType=VARCHAR},
+      BARCODE = #{record.barcode,jdbcType=VARCHAR},
       SKU_DESCR = #{record.skuDescr,jdbcType=VARCHAR},
       SKU_TYPE = #{record.skuType,jdbcType=VARCHAR},
       PACK_ID = #{record.packId,jdbcType=DECIMAL},
       PACK_CODE = #{record.packCode,jdbcType=VARCHAR},
+      UOM = #{record.uom,jdbcType=VARCHAR},
       VOLUME = #{record.volume,jdbcType=DECIMAL},
       LENGTH = #{record.length,jdbcType=DECIMAL},
       WIDTH = #{record.width,jdbcType=DECIMAL},
@@ -698,8 +700,11 @@
       WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL},
       WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL},
       WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL},
+      LOT_VALIDATE_ID = #{record.lotValidateId,jdbcType=DECIMAL},
+      LOT_VALIDATE_CODE = #{record.lotValidateCode,jdbcType=VARCHAR},
       PUTAWAY_STRATEGY_ID = #{record.putawayStrategyId,jdbcType=DECIMAL},
       PUTAWAY_STRATEGY_CODE = #{record.putawayStrategyCode,jdbcType=VARCHAR},
+      PUTAWAY_ZONE_CODE = #{record.putawayZoneCode,jdbcType=VARCHAR},
       PUTAWAY_LOCATION_CODE = #{record.putawayLocationCode,jdbcType=VARCHAR},
       ALLOCATE_STRATEGY_ID = #{record.allocateStrategyId,jdbcType=DECIMAL},
       ALLOCATE_STRATEGY_CODE = #{record.allocateStrategyCode,jdbcType=VARCHAR},
@@ -725,12 +730,7 @@
       UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
       UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
       UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
-      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-      PUTAWAY_ZONE_CODE = #{record.putawayZoneCode,jdbcType=VARCHAR},
-      BARCODE = #{record.barcode,jdbcType=VARCHAR},
-      UOM = #{record.uom,jdbcType=VARCHAR},
-      LOT_VALIDATE_ID = #{record.lotValidateId,jdbcType=DECIMAL},
-      LOT_VALIDATE_CODE = #{record.lotValidateCode,jdbcType=VARCHAR}
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -838,10 +838,12 @@
     OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR}, 
     SKU_CODE = #{record.skuCode,jdbcType=VARCHAR}, 
     SKU_ALIAS = #{record.skuAlias,jdbcType=VARCHAR}, 
+    BARCODE = #{record.barcode,jdbcType=VARCHAR}, 
     SKU_DESCR = #{record.skuDescr,jdbcType=VARCHAR}, 
     SKU_TYPE = #{record.skuType,jdbcType=VARCHAR}, 
     PACK_ID = #{record.packId,jdbcType=DECIMAL}, 
     PACK_CODE = #{record.packCode,jdbcType=VARCHAR}, 
+    UOM = #{record.uom,jdbcType=VARCHAR}, 
     VOLUME = #{record.volume,jdbcType=DECIMAL}, 
     LENGTH = #{record.length,jdbcType=DECIMAL}, 
     WIDTH = #{record.width,jdbcType=DECIMAL}, 
@@ -849,8 +851,11 @@
     WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL}, 
     WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL}, 
     WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL}, 
+    LOT_VALIDATE_ID = #{record.lotValidateId,jdbcType=DECIMAL}, 
+    LOT_VALIDATE_CODE = #{record.lotValidateCode,jdbcType=VARCHAR}, 
     PUTAWAY_STRATEGY_ID = #{record.putawayStrategyId,jdbcType=DECIMAL}, 
     PUTAWAY_STRATEGY_CODE = #{record.putawayStrategyCode,jdbcType=VARCHAR}, 
+    PUTAWAY_ZONE_CODE = #{record.putawayZoneCode,jdbcType=VARCHAR}, 
     PUTAWAY_LOCATION_CODE = #{record.putawayLocationCode,jdbcType=VARCHAR}, 
     ALLOCATE_STRATEGY_ID = #{record.allocateStrategyId,jdbcType=DECIMAL}, 
     ALLOCATE_STRATEGY_CODE = #{record.allocateStrategyCode,jdbcType=VARCHAR}, 
@@ -875,12 +880,7 @@
     CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP}, 
     UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR}, 
     UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
-    DESCRIPTION = #{record.description,jdbcType=VARCHAR}, 
-    PUTAWAY_ZONE_CODE = #{record.putawayZoneCode,jdbcType=VARCHAR}, 
-    BARCODE = #{record.barcode,jdbcType=VARCHAR}, 
-    UOM = #{record.uom,jdbcType=VARCHAR}, 
-    LOT_VALIDATE_ID = #{record.lotValidateId,jdbcType=DECIMAL}, 
-    LOT_VALIDATE_CODE = #{record.lotValidateCode,jdbcType=VARCHAR}
+    DESCRIPTION = #{record.description,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
     </if>
@@ -910,6 +910,9 @@
         <if test="record.skuAlias != null">
           SKU_ALIAS = #{record.skuAlias,jdbcType=VARCHAR},
         </if>
+        <if test="record.barcode != null">
+          BARCODE = #{record.barcode,jdbcType=VARCHAR},
+        </if>
         <if test="record.skuDescr != null">
           SKU_DESCR = #{record.skuDescr,jdbcType=VARCHAR},
         </if>
@@ -921,6 +924,9 @@
         </if>
         <if test="record.packCode != null">
           PACK_CODE = #{record.packCode,jdbcType=VARCHAR},
+        </if>
+        <if test="record.uom != null">
+          UOM = #{record.uom,jdbcType=VARCHAR},
         </if>
         <if test="record.volume != null">
           VOLUME = #{record.volume,jdbcType=DECIMAL},
@@ -943,11 +949,20 @@
         <if test="record.weightTare != null">
           WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL},
         </if>
+        <if test="record.lotValidateId != null">
+          LOT_VALIDATE_ID = #{record.lotValidateId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.lotValidateCode != null">
+          LOT_VALIDATE_CODE = #{record.lotValidateCode,jdbcType=VARCHAR},
+        </if>
         <if test="record.putawayStrategyId != null">
           PUTAWAY_STRATEGY_ID = #{record.putawayStrategyId,jdbcType=DECIMAL},
         </if>
         <if test="record.putawayStrategyCode != null">
           PUTAWAY_STRATEGY_CODE = #{record.putawayStrategyCode,jdbcType=VARCHAR},
+        </if>
+        <if test="record.putawayZoneCode != null">
+          PUTAWAY_ZONE_CODE = #{record.putawayZoneCode,jdbcType=VARCHAR},
         </if>
         <if test="record.putawayLocationCode != null">
           PUTAWAY_LOCATION_CODE = #{record.putawayLocationCode,jdbcType=VARCHAR},
@@ -1023,21 +1038,6 @@
         </if>
         <if test="record.description != null">
           DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-        </if>
-        <if test="record.putawayZoneCode != null">
-          PUTAWAY_ZONE_CODE = #{record.putawayZoneCode,jdbcType=VARCHAR},
-        </if>
-        <if test="record.barcode != null">
-          BARCODE = #{record.barcode,jdbcType=VARCHAR},
-        </if>
-        <if test="record.uom != null">
-          UOM = #{record.uom,jdbcType=VARCHAR},
-        </if>
-        <if test="record.lotValidateId != null">
-          LOT_VALIDATE_ID = #{record.lotValidateId,jdbcType=DECIMAL},
-        </if>
-        <if test="record.lotValidateCode != null">
-          LOT_VALIDATE_CODE = #{record.lotValidateCode,jdbcType=VARCHAR},
         </if>
       </trim>
     </set>
