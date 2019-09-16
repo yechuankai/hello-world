@@ -116,9 +116,6 @@ public class OutboundRest extends BaseController {
                 case "submit":
                     outboundVO.setOperatorType(OperatorTypeEnum.Submit);
                     break;
-                case "confirm":
-                    outboundVO.setOperatorType(OperatorTypeEnum.Confirm);
-                    break;
                 case "review":
                     outboundVO.setOperatorType(OperatorTypeEnum.Review);
                     break;

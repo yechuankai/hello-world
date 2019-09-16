@@ -1142,7 +1142,13 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
                     break;
 				case Submit:
 					d.setStatus(InboundStatusEnum.WaitingReview.getCode());
-					modify(d);
+					if(null == d.getInboundDetailId() || 0L == d.getInboundDetailId()){//提交时新增
+						d.setCreateBy(request.getUserName());
+						d.setCreateTime(new Date());
+						add(d);
+					}else {
+						modify(d);
+					}
 					statusHistory.setOldStatus(InboundStatusEnum.Draft.getCode());
 					statusHistory.setNewStatus(InboundStatusEnum.WaitingReview.getCode());
 					break;

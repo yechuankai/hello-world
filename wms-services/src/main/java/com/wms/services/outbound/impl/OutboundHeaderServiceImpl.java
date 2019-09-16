@@ -1,57 +1,19 @@
 package com.wms.services.outbound.impl;
 
-import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.alibaba.druid.sql.dialect.mysql.ast.clause.ConditionValue.ConditionType;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
-import com.wms.common.enums.InboundStatusEnum;
-import com.wms.common.enums.OperatorTypeEnum;
-import com.wms.common.enums.OrderNumberTypeEnum;
-import com.wms.common.enums.OutboundProcessStatusEnum;
-import com.wms.common.enums.OutboundStatusEnum;
-import com.wms.common.enums.YesNoEnum;
+import com.wms.common.enums.*;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.common.utils.ExampleUtils;
 import com.wms.common.utils.StringUtils;
 import com.wms.common.utils.bean.BeanUtils;
 import com.wms.common.utils.key.KeyUtils;
 import com.wms.dao.auto.IOutboundHeaderTDao;
-import com.wms.dao.example.OutboundDetailTExample;
 import com.wms.dao.example.OutboundHeaderTExample;
-import com.wms.dao.example.OutboundHeaderTExample.Criteria;
-import com.wms.entity.auto.CarrierTEntity;
-import com.wms.entity.auto.CustomerTEntity;
-import com.wms.entity.auto.EntCarrierTEntity;
-import com.wms.entity.auto.EntCustomerTEntity;
-import com.wms.entity.auto.EntInventoryOnhandTEntity;
-import com.wms.entity.auto.OutboundDetailTEntity;
-import com.wms.entity.auto.OutboundHeaderTEntity;
-import com.wms.entity.auto.OwnerTEntity;
-import com.wms.entity.auto.PackTEntity;
-import com.wms.entity.auto.StatusHistoryTEntity;
-import com.wms.entity.auto.SysWarehousesTEntity;
-import com.wms.entity.auto.WaveBuildDetailTEntity;
-import com.wms.services.base.ICarrierService;
-import com.wms.services.base.ICustomerService;
-import com.wms.services.base.IEnterpriseService;
-import com.wms.services.base.IOwnerService;
-import com.wms.services.base.IPackService;
+import com.wms.entity.auto.*;
+import com.wms.services.base.*;
 import com.wms.services.outbound.IOutboundDetailService;
 import com.wms.services.outbound.IOutboundHeaderService;
 import com.wms.services.sys.IStatusHistoryService;
@@ -61,6 +23,14 @@ import com.wms.vo.inventory.EntInventoryOnhandVO;
 import com.wms.vo.outbound.OutboundDetailVO;
 import com.wms.vo.outbound.OutboundVO;
 import com.wms.vo.outbound.WaveBuildVO;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
@@ -104,8 +74,7 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 			//WMS自己查询排除草稿、待接单、待出货三个状态的订单
 			List<String> excludeStatus = Lists.newArrayList();
 			excludeStatus.add(OutboundStatusEnum.Draft.getCode());
-			excludeStatus.add(OutboundStatusEnum.Waitingorder.getCode());
-			excludeStatus.add(OutboundStatusEnum.WaitingShip.getCode());
+			excludeStatus.add(OutboundStatusEnum.WaitingReview.getCode());
 			exampleCriteria.andStatusNotIn(excludeStatus);
 		}
 		exampleCriteria.andDelFlagEqualTo(YesNoEnum.No.getCode());
@@ -257,7 +226,7 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 			throw new BusinessServiceException("OutboundHeaderServiceImpl", "outbound.status.not.process" , new Object[] {selectHeader.getOutboundNumber()});
 		}
 		OutboundStatusEnum status = null;
-		if(!StringUtils.equals(selectHeader.getStatus(),OutboundStatusEnum.Draft.getCode())&&!StringUtils.equals(selectHeader.getStatus(),OutboundStatusEnum.WaitingShip.getCode())&&!StringUtils.equals(selectHeader.getStatus(),OutboundStatusEnum.Waitingorder.getCode())){
+		if(!StringUtils.equals(selectHeader.getStatus(),OutboundStatusEnum.Draft.getCode())&&!StringUtils.equals(selectHeader.getStatus(),OutboundStatusEnum.WaitingReview.getCode())){
 			//非草稿,待接单，待出货状态就自动计算状态
 			status= outboundStatus(selectHeader,Boolean.FALSE);
 		}
@@ -651,24 +620,26 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 				addList.add(outboundVO);
 				break;
 			case Submit:
-				outboundVO.setStatus(OutboundStatusEnum.Waitingorder.getCode());
-				modify(outboundVO);
-				addList.add(outboundVO);
+				if(null == outboundVO.getOutboundHeaderId()){
+					addList = deal(outboundVO);
+					addList.forEach(d ->{
+						d.setStatus(OutboundStatusEnum.WaitingReview.getCode());
+						validate(d);
+						add(d);
+					});
+				}else {
+					outboundVO.setStatus(OutboundStatusEnum.WaitingReview.getCode());
+					modify(outboundVO);
+					addList.add(outboundVO);
+				}
 				statusHistory.setOldStatus(OutboundStatusEnum.Draft.getCode());
-				statusHistory.setNewStatus(OutboundStatusEnum.Waitingorder.getCode());
-				break;
-			case Confirm:
-				outboundVO.setStatus(OutboundStatusEnum.WaitingShip.getCode());
-				modify(outboundVO);
-				addList.add(outboundVO);
-				statusHistory.setOldStatus(OutboundStatusEnum.Waitingorder.getCode());
-				statusHistory.setNewStatus(OutboundStatusEnum.WaitingShip.getCode());
+				statusHistory.setNewStatus(OutboundStatusEnum.WaitingReview.getCode());
 				break;
 			case Review:
 				outboundVO.setStatus(OutboundStatusEnum.New.getCode());
 				modify(outboundVO);
 				addList.add(outboundVO);
-				statusHistory.setOldStatus(OutboundStatusEnum.WaitingShip.getCode());
+				statusHistory.setOldStatus(OutboundStatusEnum.WaitingReview.getCode());
 				statusHistory.setNewStatus(OutboundStatusEnum.New.getCode());
 				break;
 			default:

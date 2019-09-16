@@ -749,7 +749,7 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 			d.setOutboundHeaderId(outbound.getOutboundHeaderId());
 			d.setCompanyId(outboundVO.getCompanyId());
 			d.setWarehouseId(outboundVO.getWarehouseId());
-
+			d.setUpdateBy(outboundVO.getUpdateBy());
 			StatusHistoryTEntity statusHistory = StatusHistoryTEntity.builder()
 					.companyId(outboundVO.getCompanyId())
 					.warehouseId(outboundVO.getWarehouseId())
@@ -762,6 +762,7 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 			validate(outbound,d);
 			switch (outboundVO.getOperatorType()) {
 				case Add:
+					d.setCreateBy(outboundVO.getUpdateBy());
 					d.setStatus(OutboundStatusEnum.Draft.getCode());
 					add(d);
 					break;
@@ -770,21 +771,20 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 					modify(d,Boolean.TRUE);
 					break;
 				case Submit:
-					d.setStatus(OutboundStatusEnum.Waitingorder.getCode());
-					modify(d,Boolean.TRUE);
+					d.setStatus(OutboundStatusEnum.WaitingReview.getCode());
+					if(null == d.getOutboundDetailId()){
+						d.setCreateBy(outboundVO.getUpdateBy());
+						add(d);
+					}else {
+						modify(d,Boolean.TRUE);
+					}
 					statusHistory.setOldStatus(OutboundStatusEnum.Draft.getCode());
-					statusHistory.setNewStatus(OutboundStatusEnum.Waitingorder.getCode());
-					break;
-				case Confirm:
-					d.setStatus(OutboundStatusEnum.WaitingShip.getCode());
-					modify(d,Boolean.TRUE);
-					statusHistory.setOldStatus(OutboundStatusEnum.Waitingorder.getCode());
-					statusHistory.setNewStatus(OutboundStatusEnum.WaitingShip.getCode());
+					statusHistory.setNewStatus(OutboundStatusEnum.WaitingReview.getCode());
 					break;
 				case Review:
 					d.setStatus(OutboundStatusEnum.New.getCode());
 					modify(d,Boolean.TRUE);
-					statusHistory.setOldStatus(OutboundStatusEnum.WaitingShip.getCode());
+					statusHistory.setOldStatus(OutboundStatusEnum.WaitingReview.getCode());
 					statusHistory.setNewStatus(OutboundStatusEnum.New.getCode());
 					break;
 				default:
@@ -880,7 +880,7 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 			detail.setAllocateStrategyCode(allocateStrategy.getAllocateStrategyCode());
 			detail.setAllocateStrategyId(allocateStrategy.getAllocateStrategyId());
 		}
-		if (outboundVO.getOperatorType() != OperatorTypeEnum.Add) {
+		if (outboundVO.getOperatorType() != OperatorTypeEnum.Add&&outboundVO.getOperatorType() != OperatorTypeEnum.Submit) {
 			return Boolean.TRUE;
 		}
 

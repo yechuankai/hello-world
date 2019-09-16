@@ -6,7 +6,6 @@
     <result column="OBJECT_ID" jdbcType="VARCHAR" property="objectId" />
     <result column="FILE_TYPE" jdbcType="VARCHAR" property="fileType" />
     <result column="FILE_NAME" jdbcType="VARCHAR" property="fileName" />
-    <result column="TEMPLATE" jdbcType="VARCHAR" property="template" />
     <result column="FILE_SIZE" jdbcType="DECIMAL" property="fileSize" />
     <result column="CONTENT_TYPE" jdbcType="VARCHAR" property="contentType" />
     <result column="STATUS" jdbcType="VARCHAR" property="status" />
@@ -23,6 +22,7 @@
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="UPDATE_VERSION" jdbcType="DECIMAL" property="updateVersion" />
     <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="TEMPLATE" jdbcType="VARCHAR" property="template" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -120,9 +120,9 @@
     </where >
   </sql>
   <sql id="Base_Column_List">
-    FILE_ID, OBJECT_ID, FILE_TYPE, FILE_NAME, TEMPLATE, FILE_SIZE, CONTENT_TYPE, STATUS, 
-    START_TIME, END_TIME, USER_ID, REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
-    CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
+    FILE_ID, OBJECT_ID, FILE_TYPE, FILE_NAME, FILE_SIZE, CONTENT_TYPE, STATUS, START_TIME, 
+    END_TIME, USER_ID, REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, 
+    UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, TEMPLATE
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.SysFileTExample" resultMap="BaseResultMap">
     select
@@ -146,20 +146,20 @@
   </delete>
   <insert id="insert" parameterType="com.wms.entity.auto.SysFileTEntity">
     insert into SYS_FILE_T (FILE_ID, OBJECT_ID, FILE_TYPE, 
-      FILE_NAME, TEMPLATE, FILE_SIZE, 
-      CONTENT_TYPE, STATUS, START_TIME, 
-      END_TIME, USER_ID, REMARK, 
-      COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, 
-      CREATE_BY, CREATE_TIME, UPDATE_BY, 
-      UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
+      FILE_NAME, FILE_SIZE, CONTENT_TYPE, 
+      STATUS, START_TIME, END_TIME, 
+      USER_ID, REMARK, COMPANY_ID, 
+      WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
+      CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
+      UPDATE_VERSION, DESCRIPTION, TEMPLATE
       )
     values (#{fileId,jdbcType=DECIMAL}, #{objectId,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR}, 
-      #{fileName,jdbcType=VARCHAR}, #{template,jdbcType=VARCHAR}, #{fileSize,jdbcType=DECIMAL}, 
-      #{contentType,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, 
-      #{endTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, 
-      #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, 
-      #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}
+      #{fileName,jdbcType=VARCHAR}, #{fileSize,jdbcType=DECIMAL}, #{contentType,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{userId,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, 
+      #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, #{template,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.SysFileTEntity">
@@ -176,9 +176,6 @@
       </if>
       <if test="fileName != null">
         FILE_NAME,
-      </if>
-      <if test="template != null">
-        TEMPLATE,
       </if>
       <if test="fileSize != null">
         FILE_SIZE,
@@ -228,6 +225,9 @@
       <if test="description != null">
         DESCRIPTION,
       </if>
+      <if test="template != null">
+        TEMPLATE,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="fileId != null">
@@ -241,9 +241,6 @@
       </if>
       <if test="fileName != null">
         #{fileName,jdbcType=VARCHAR},
-      </if>
-      <if test="template != null">
-        #{template,jdbcType=VARCHAR},
       </if>
       <if test="fileSize != null">
         #{fileSize,jdbcType=DECIMAL},
@@ -293,6 +290,9 @@
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
       </if>
+      <if test="template != null">
+        #{template,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.wms.dao.example.SysFileTExample" resultType="java.lang.Long">
@@ -315,9 +315,6 @@
       </if>
       <if test="record.fileName != null">
         FILE_NAME = #{record.fileName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.template != null">
-        TEMPLATE = #{record.template,jdbcType=VARCHAR},
       </if>
       <if test="record.fileSize != null">
         FILE_SIZE = #{record.fileSize,jdbcType=DECIMAL},
@@ -367,6 +364,9 @@
       <if test="record.description != null">
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       </if>
+      <if test="record.template != null">
+        TEMPLATE = #{record.template,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -378,7 +378,6 @@
       OBJECT_ID = #{record.objectId,jdbcType=VARCHAR},
       FILE_TYPE = #{record.fileType,jdbcType=VARCHAR},
       FILE_NAME = #{record.fileName,jdbcType=VARCHAR},
-      TEMPLATE = #{record.template,jdbcType=VARCHAR},
       FILE_SIZE = #{record.fileSize,jdbcType=DECIMAL},
       CONTENT_TYPE = #{record.contentType,jdbcType=VARCHAR},
       STATUS = #{record.status,jdbcType=VARCHAR},
@@ -394,7 +393,8 @@
       UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
       UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
       UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
-      DESCRIPTION = #{record.description,jdbcType=VARCHAR}
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      TEMPLATE = #{record.template,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -501,7 +501,6 @@
     OBJECT_ID = #{record.objectId,jdbcType=VARCHAR}, 
     FILE_TYPE = #{record.fileType,jdbcType=VARCHAR}, 
     FILE_NAME = #{record.fileName,jdbcType=VARCHAR}, 
-    TEMPLATE = #{record.template,jdbcType=VARCHAR}, 
     FILE_SIZE = #{record.fileSize,jdbcType=DECIMAL}, 
     CONTENT_TYPE = #{record.contentType,jdbcType=VARCHAR}, 
     STATUS = #{record.status,jdbcType=VARCHAR}, 
@@ -516,7 +515,8 @@
     CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP}, 
     UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR}, 
     UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
-    DESCRIPTION = #{record.description,jdbcType=VARCHAR}
+    DESCRIPTION = #{record.description,jdbcType=VARCHAR}, 
+    TEMPLATE = #{record.template,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
     </if>
@@ -542,9 +542,6 @@
         </if>
         <if test="record.fileName != null">
           FILE_NAME = #{record.fileName,jdbcType=VARCHAR},
-        </if>
-        <if test="record.template != null">
-          TEMPLATE = #{record.template,jdbcType=VARCHAR},
         </if>
         <if test="record.fileSize != null">
           FILE_SIZE = #{record.fileSize,jdbcType=DECIMAL},
@@ -590,6 +587,9 @@
         </if>
         <if test="record.description != null">
           DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+        </if>
+        <if test="record.template != null">
+          TEMPLATE = #{record.template,jdbcType=VARCHAR},
         </if>
       </trim>
     </set>
