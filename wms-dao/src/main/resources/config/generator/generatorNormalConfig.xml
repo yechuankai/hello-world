@@ -326,5 +326,11 @@
 		<table tableName="warehouse_active_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
 		 	<property name="versionColumn" value="UPDATE_VERSION"/>
 		</table>
+		<table tableName="platform_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
+		<table tableName="appointment_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
 	</context>
 </generatorConfiguration>

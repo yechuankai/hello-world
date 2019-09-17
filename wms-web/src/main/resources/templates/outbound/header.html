@@ -107,19 +107,25 @@
         <div wms:title="${web.label.transport}" >
             <table border="0" >
                 <tr>
-                	<td>
+                	<td width="200px">
                 	   	<input id="carrierCode" name="carrierCode" th:replace="lov/carrier" />
+                	</td>
+                	<td width="200px">
+                		 <input id="containerNumber" name="containerNumber" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="label:'${web.label.outbound.containernumber}',labelPosition:'top'" />
+                	</td>
+                	<td>
+                		&nbsp;
                 	</td>
                 </tr>
                 <tr>
-                    <td width="200px">
+                    <td >
                         <input name="driver" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.carrierdriver}',labelPosition:'top'" />
                     </td>
-                    <td width="200px">
+                    <td >
                         <input id="carNumber" name="carNumber" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.carriercarnumber}',labelPosition:'top'" />
                     </td>
-                    <td width="200px">
-                        <input id="containerNumber" name="containerNumber" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="label:'${web.label.containernumber}',labelPosition:'top'" />
+                    <td>
+                       <input name="driverPhone" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.driverphone}',labelPosition:'top'" />
                     </td>
                 </tr>
             </table>

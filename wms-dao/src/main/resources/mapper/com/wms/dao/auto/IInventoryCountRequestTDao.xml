@@ -28,6 +28,7 @@
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="UPDATE_VERSION" jdbcType="DECIMAL" property="updateVersion" />
     <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="OWNER_CODE" jdbcType="VARCHAR" property="ownerCode" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -129,7 +130,7 @@
     FROM_ZONE_CODE, TO_ZONE_CODE, FROM_LOCATION_CODE, TO_LOCATION_CODE, FROM_SKU_CODE, 
     TO_SKU_CODE, SKU_CODE_IN, FROM_LPN_NUMBER, TO_LPN_NUMBER, LPN_NUMBER_IN, REQUEST_DATE, 
     REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
-    UPDATE_VERSION, DESCRIPTION
+    UPDATE_VERSION, DESCRIPTION, OWNER_CODE
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.InventoryCountRequestTExample" resultMap="BaseResultMap">
     select
@@ -160,8 +161,8 @@
       LPN_NUMBER_IN, REQUEST_DATE, REMARK, 
       COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, 
       CREATE_BY, CREATE_TIME, UPDATE_BY, 
-      UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
-      )
+      UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, 
+      OWNER_CODE)
     values (#{inventoryCountRequestId,jdbcType=DECIMAL}, #{requestNumber,jdbcType=VARCHAR}, 
       #{requestDescr,jdbcType=VARCHAR}, #{requestType,jdbcType=VARCHAR}, #{quantityShowFlag,jdbcType=CHAR}, 
       #{fromZoneCode,jdbcType=VARCHAR}, #{toZoneCode,jdbcType=VARCHAR}, #{fromLocationCode,jdbcType=VARCHAR}, 
@@ -170,8 +171,8 @@
       #{lpnNumberIn,jdbcType=VARCHAR}, #{requestDate,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, 
       #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, 
       #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}
-      )
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, 
+      #{ownerCode,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.InventoryCountRequestTEntity">
     insert into INVENTORY_COUNT_REQUEST_T
@@ -254,6 +255,9 @@
       <if test="description != null">
         DESCRIPTION,
       </if>
+      <if test="ownerCode != null">
+        OWNER_CODE,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="inventoryCountRequestId != null">
@@ -333,6 +337,9 @@
       </if>
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="ownerCode != null">
+        #{ownerCode,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -423,6 +430,9 @@
       <if test="record.description != null">
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       </if>
+      <if test="record.ownerCode != null">
+        OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -455,7 +465,8 @@
       UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
       UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
       UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
-      DESCRIPTION = #{record.description,jdbcType=VARCHAR}
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -582,7 +593,8 @@
     CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP}, 
     UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR}, 
     UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
-    DESCRIPTION = #{record.description,jdbcType=VARCHAR}
+    DESCRIPTION = #{record.description,jdbcType=VARCHAR}, 
+    OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
     </if>
@@ -671,6 +683,9 @@
         </if>
         <if test="record.description != null">
           DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+        </if>
+        <if test="record.ownerCode != null">
+          OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR},
         </if>
       </trim>
     </set>

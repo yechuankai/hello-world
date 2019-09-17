@@ -112,6 +112,7 @@ public class InventoryCountRequestImpl implements IInventoryCountRequestService 
 					.requestDescr(r.getRequestDescr())
 					.requestType(r.getRequestType())
 					.quantityShowFlag(r.getQuantityShowFlag())
+					.ownerCode(r.getOwnerCode())
 					.requestDate(r.getRequestDate())
 					.fromLocationCode(r.getFromLocationCode())
 					.toLocationCode(r.getToLocationCode())
@@ -229,9 +230,19 @@ public class InventoryCountRequestImpl implements IInventoryCountRequestService 
 		.andLocationCodeGreaterThanOrEqualTo(request.getFromLocationCode())
 		.andLocationCodeLessThanOrEqualTo(request.getToLocationCode())
 		.andSkuCodeGreaterThanOrEqualTo(request.getFromSkuCode())
-		.andSkuCodeLessThanOrEqualTo(request.getToSkuCode())
-		.andLpnNumberGreaterThanOrEqualTo(request.getFromLpnNumber())
-		.andLpnNumberLessThanOrEqualTo(request.getToLpnNumber());
+		.andSkuCodeLessThanOrEqualTo(request.getToSkuCode());
+		
+		if (StringUtils.isNotEmpty(request.getOwnerCode())) {
+			criteria.andOwnerCodeEqualTo(request.getOwnerCode());
+		}
+		
+		if (StringUtils.isNotEmpty(request.getFromLpnNumber())) {
+			criteria.andLpnNumberGreaterThanOrEqualTo(request.getFromLpnNumber());
+		}
+		
+		if (StringUtils.isNotEmpty(request.getToLpnNumber())) {
+			criteria.andLpnNumberLessThanOrEqualTo(request.getToLpnNumber());
+		}
 		
 		if (StringUtils.isNotEmpty(request.getSkuCodeIn())) {
 			String [] skuCodes = request.getSkuCodeIn().split(SEPARATORCHARS);

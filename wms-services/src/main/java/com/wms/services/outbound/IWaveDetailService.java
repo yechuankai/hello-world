@@ -26,6 +26,14 @@ public interface IWaveDetailService {
 	List<WaveDetailVO> find(PageRequest request)  throws BusinessServiceException;
 	
 	/**
+	 * 波次明細查詢
+	 * @param request
+	 * @return
+	 * @throws BusinessServiceException
+	 */
+	WaveDetailTEntity find(WaveDetailTEntity detail)  throws BusinessServiceException;
+	
+	/**
 	 * 波次查询明细
 	 * @param request
 	 * @return
@@ -48,6 +56,6 @@ public interface IWaveDetailService {
 	 * @return
 	 * @throws BusinessServiceException
 	 */
-	Boolean add(AjaxRequest<List<WaveDetailTEntity>> request) throws BusinessServiceException;
+	Boolean add(AjaxRequest<List<WaveDetailVO>> request) throws BusinessServiceException;
 	
 }

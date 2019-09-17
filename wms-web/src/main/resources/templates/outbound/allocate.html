@@ -23,11 +23,11 @@
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="ownerCode" class="easyui-textbox"
-                           wms:data-options="label:'${web.inventory.ownerCode}',labelPosition:'top'">
+                           wms:data-options="label:'${web.label.owner}',labelPosition:'top'">
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="skuCode" class="easyui-textbox"
-                           wms:data-options="label:'${web.inventory.skuCode}',labelPosition:'top'">
+                           wms:data-options="label:'${web.label.sku}',labelPosition:'top'">
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="skuAlias" class="easyui-textbox"
@@ -143,10 +143,10 @@
 		            <th field="ownerCode" width="50" wms:text="${web.label.owner}">
 		                ownerCode
 		            </th>
-		            <th field="skuCode" width="100" wms:text="${web.inventory.skuCode}">
+		            <th field="skuCode" width="100" wms:text="${web.label.sku}">
 		                skuCode
 		            </th>
-		            <th field="skuAlias" width="100" wms:text="${web.inventory.skuAlias}">
+		            <th field="skuAlias" width="100" wms:text="${web.label.skualias}">
 		                skuAlias
 		            </th>
 		             <th field="lotNumber" width="100" wms:text="${web.label.lotnumber}">

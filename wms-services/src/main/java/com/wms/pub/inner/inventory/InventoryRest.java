@@ -3,6 +3,7 @@ package com.wms.pub.inner.inventory;
 import com.alibaba.fastjson.TypeReference;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
 import com.wms.common.core.controller.BaseController;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
@@ -35,6 +36,9 @@ public class InventoryRest extends BaseController {
 			PageRequest pageRequest = pageRequest(req);
 			Page page = PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
 			list = inventoryService.find(pageRequest);
+			if (list == null)
+				list = Lists.newArrayList();
+			
 			return page(page, list);
 		} catch (Exception e) {
 			return pageFail(e.getMessage());
@@ -75,6 +79,9 @@ public class InventoryRest extends BaseController {
 			PageRequest pageRequest = pageRequest(req);
 			Page page = PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
 			list = lockService.find(pageRequest);
+			if (list == null)
+				list = Lists.newArrayList();
+			
 			return page(page, list);
 		} catch (Exception e) {
 			return pageFail(e.getMessage());

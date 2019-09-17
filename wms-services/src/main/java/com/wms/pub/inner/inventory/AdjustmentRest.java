@@ -39,6 +39,8 @@ public class AdjustmentRest extends BaseController {
             PageRequest pageRequest = pageRequest(req);
             PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
             list = adjustmentService.find(pageRequest);
+            if (list == null)
+            	list = Lists.newArrayList();
         } catch (Exception e) {
             return pageFail(e.getMessage());
         }

@@ -11,7 +11,7 @@
             <form id="searchForm" data-table="#ownerData">
                 <div style="margin-bottom:10px">
                     <input name="ownerCode" class="easyui-textbox"
-                           wms:data-options="label:'${web.inventory.ownerCode}',labelPosition:'top'">
+                           wms:data-options="label:'${web.label.owner}',labelPosition:'top'">
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="ownerDescr" class="easyui-textbox"
@@ -72,7 +72,7 @@
                th:data-delayUrl="@{/services/inner/base/owner/find}">
             <thead data-options="frozen:true">
             	<th field="ownerId" data-options="checkbox:true"></th>
-                <th field="ownerCode" width="80" wms:text="${web.inventory.ownerCode}" data-options="sortable:true">
+                <th field="ownerCode" width="80" wms:text="${web.label.owner}" data-options="sortable:true">
                     ownerCode
                 </th>
             </thead>
@@ -139,7 +139,7 @@
                         <tr>
                             <td>
                                 <input name="ownerCode" class="easyui-textbox"
-                                       wms:data-options="required:true,label:'${web.inventory.ownerCode}',labelPosition:'top'">
+                                       wms:data-options="required:true,label:'${web.label.owner}',labelPosition:'top'">
                             </td>
                             <td>
                                 <input name="ownerDescr" class="easyui-textbox" style="width: 100%;"

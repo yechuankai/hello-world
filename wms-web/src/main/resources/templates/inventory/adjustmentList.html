@@ -11,9 +11,9 @@
      style="position: absolute; z-index: 999999;width: 100%; height: 100%;opacity: 1;background-color: white;">&nbsp;
 </div>
 <div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
-    <div id="searchDiv" class="easyui-layout" style="height: 100%;">
-        <div style="margin-left: 10px;height: 100%;" data-options="region:'center',border:false">
-            <form id="searchForm" data-table="#dataTable" style="height: 830px;">
+    <div id="searchDiv" style="height: 100%;">
+        <div style="margin-left: 10px;">
+            <form id="searchForm" data-table="#dataTable" >
                 <div style="margin-bottom:10px">
                     <input name=" inventoryAdjustmentNumber" class="easyui-textbox"
                            wms:data-options="label:'${web.label.inventoryadjustmentnumber}',labelPosition:'top'"/>
@@ -38,7 +38,7 @@
                 </div>
             </form>
         </div>
-        <div style="text-align: center;height:50px;" data-options="region:'south',border:false">
+        <div style="text-align: center;height:50px;" 	>
             <a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;"
                data-options="iconCls:'icon-search'">
                 <span wms:text="${web.label.search}">Search</span>

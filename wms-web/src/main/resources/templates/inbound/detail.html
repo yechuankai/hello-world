@@ -89,10 +89,10 @@
 					}
 				" >status</th>
 				<th field="inboundDate" width="130" wms:text="${web.label.inbounddate}">inboundDate</th>
-				<th field="weightGross" width="60" wms:text="${web.inventory.weightgross}">weightGross</th>
-				<th field="weightNet" width="60" wms:text="${web.inventory.weightnet}">weightGross</th>
-				<th field="weightTare" width="60" wms:text="${web.inventory.weighttare}">weightGross</th>
-				<th field="volume" width="60" wms:text="${web.inventory.volume}">weightGross</th>
+				<th field="weightGross" width="60" wms:text="${web.label.weightgross}">weightGross</th>
+				<th field="weightNet" width="60" wms:text="${web.label.weightnet}">weightGross</th>
+				<th field="weightTare" width="60" wms:text="${web.label.weighttare}">weightGross</th>
+				<th field="volume" width="60" wms:text="${web.label.volume}">weightGross</th>
 				<th field="parentLineNumber" width="65" wms:text="${web.label.parentlinenumber}" data-options="sortable:true">parentLineNumber</th>
 				<th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
 				<th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true">
@@ -193,16 +193,16 @@
 					</tr>
 					<tr>
 						<td>
-							<input id="weightGross" name="weightGross" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.inventory.weightgross}',labelPosition:'top',required:true,precision:4" />
+							<input id="weightGross" name="weightGross" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.label.weightgross}',labelPosition:'top',required:true,precision:4" />
 						</td>
 						<td>
-							<input id="weightNet" name="weightNet" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.inventory.weightnet}',labelPosition:'top',required:true,precision:4" />
+							<input id="weightNet" name="weightNet" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.label.weightnet}',labelPosition:'top',required:true,precision:4" />
 						</td>
 						<td>
-							<input id="weightTare" name="weightTare" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.inventory.weighttare}',labelPosition:'top',required:true,precision:4" />
+							<input id="weightTare" name="weightTare" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.label.weighttare}',labelPosition:'top',required:true,precision:4" />
 						</td>
 						<td>
-							<input id="volume" name="volume" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.inventory.volume}',labelPosition:'top',required:true,precision:4" />
+							<input id="volume" name="volume" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.label.volume}',labelPosition:'top',required:true,precision:4" />
 						</td>
 					</tr>
 				</table>

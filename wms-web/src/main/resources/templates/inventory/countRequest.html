@@ -78,6 +78,24 @@
             <tr>
                 <th field="requestNumber" width="120" wms:text="${web.label.requestnumber}" data-options="sortable:true">requestNumber</th>
                 <th field="requestDescr" width="150" wms:text="${web.label.descr}" data-options="sortable:true,editor:'text'">requestDescr</th>
+                <th field="ownerCode" width="100" wms:text="${web.label.owner}" wms:data-options="
+                	sortable:true,
+                	editor:{
+                		type: 'combogrid',
+	                		options: {
+	                		idField:'ownerCode',
+	  						textField:'ownerCode',
+							url:'../../services/inner/base/owner/find',
+							onBeforeLoad: function(param){
+									$.extend(param, getBaseData());
+								},
+							 columns:[[
+								    {field:'ownerCode',title:'${web.label.owner}',width:80},
+								    {field:'ownerDescr',title:'${web.label.descr}',width:150}
+							    ]]
+						}
+                	}
+                ">owner</th>
                 <!--  
                 <th field="requestType" width="100" wms:text="${web.label.type}" data-options="
 							sortable:true,
@@ -130,9 +148,6 @@
                     <td>
                         <input name="requestNumber" readonly="readonly" class="easyui-textbox" style="width: 120px;" wms:data-options="label:'${web.label.requestnumber}',labelPosition:'top'">
                     </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
                     <td style="padding-left: 15px;">
                         <input class="easyui-combobox" name="quantityShowFlag" style="width: 100px;" wms:data-options="
 						data: codelkups['YESNO'],
@@ -144,9 +159,25 @@
 						required: true
 						">
                     </td>
+                    <td colspan="2">
+                    	<input id="ownerCode" name="ownerCode" class="lazy-load" lazy-load="easyui-combogrid" wms:data-options="
+								label: '${web.label.owner}',
+								labelPosition: 'top',
+								idField:'ownerCode',
+    							textField:'ownerCode',
+								url:'../../services/inner/base/owner/find',
+								onBeforeLoad: function(param){
+									$.extend(param, getBaseData());
+								},
+							    columns:[[
+								    {field:'ownerCode',title:'${web.label.owner}',width:80},
+								    {field:'ownerDescr',title:'${web.label.descr}',width:150}
+							    ]]
+							" />
+                    </td>
                 </tr>
                 <tr>
-                    <td colspan="5">
+                    <td colspan="4">
                         <input name="requestDescr" style="width: 450px;" class="easyui-textbox"  wms:data-options="label:'${web.label.descr}',labelPosition:'top',required: true">
                     </td>
                 </tr>
@@ -179,20 +210,20 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <input id="fromLpnNumber" name="fromLpnNumber"  class="easyui-textbox" value="0"  wms:data-options="label:'${web.label.startlpn}',labelPosition:'top'">
+                        <input id="fromLpnNumber" name="fromLpnNumber"  class="easyui-textbox"  wms:data-options="label:'${web.label.startlpn}',labelPosition:'top'">
                     </td>
                     <td></td>
                     <td colspan="2">
-                        <input id="toLpnNumber" name="toLpnNumber"  class="easyui-textbox" value="ZZZZZZZZZZ"  wms:data-options="label:'${web.label.endlpn}',labelPosition:'top'">
+                        <input id="toLpnNumber" name="toLpnNumber"  class="easyui-textbox" wms:data-options="label:'${web.label.endlpn}',labelPosition:'top'">
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="5">
+                    <td colspan="4">
                         <input name="skuCodeIn" class="easyui-textbox" style="width: 450px;"  wms:data-options="label:'${web.label.skucodein}',labelPosition:'top'">
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="5">
+                    <td colspan="4">
                         <input name="lpnNumberIn" class="easyui-textbox" style="width: 450px;"  wms:data-options="label:'${web.label.lpnnumberin}',labelPosition:'top'">
                     </td>
                 </tr>

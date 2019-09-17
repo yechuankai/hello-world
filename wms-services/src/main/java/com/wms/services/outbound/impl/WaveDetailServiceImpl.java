@@ -72,6 +72,24 @@ public class WaveDetailServiceImpl implements IWaveDetailService {
 		});
 		return returnList;
 	}
+	
+	@Override
+	public WaveDetailTEntity find(WaveDetailTEntity detail)  throws BusinessServiceException{
+		WaveDetailTExample example = new WaveDetailTExample();
+		WaveDetailTExample.Criteria criteria = example.createCriteria();
+		criteria
+		.andDelFlagEqualTo(YesNoEnum.No.getCode())
+		.andWarehouseIdEqualTo(detail.getWarehouseId())
+		.andCompanyIdEqualTo(detail.getCompanyId())
+		.andWaveIdEqualTo(detail.getWaveId())
+		.andOutboundHeaderIdEqualTo(detail.getOutboundHeaderId());
+		
+		List<WaveDetailTEntity> list = waveDetailDao.selectByExample(example);
+		if (CollectionUtils.isEmpty(list))
+			return null;
+		
+		return list.get(0);
+	}
 
 	@Override
 	public List<WaveDetailTEntity> findDetail(WaveDetailTEntity waveDetail) throws BusinessServiceException {
@@ -113,12 +131,24 @@ public class WaveDetailServiceImpl implements IWaveDetailService {
 			int rowcount = waveDetailDao.updateWithVersionByExampleSelective(w.getUpdateVersion(), update, example);
 			if (rowcount == 0)
 				 throw new BusinessServiceException("record delete error.");
+			
+			//更新出库单来源波次字段
+			OutboundHeaderTEntity outboundHeader = OutboundHeaderTEntity.builder()
+													.sourceWaveNumber("")
+													.outboundHeaderId(w.getOutboundHeaderId())
+													.warehouseId(request.getWarehouseId())
+													.companyId(request.getCompanyId())
+													.updateBy(request.getUserName())
+													.build();
+			OutboundHeaderTEntity find = outboundService.find(outboundHeader);
+			outboundHeader.setUpdateVersion(find.getUpdateVersion());
+			outboundService.modify(outboundHeader);
 		});
 		return Boolean.TRUE;
 	}
 
 	@Override
-	public Boolean add(AjaxRequest<List<WaveDetailTEntity>> request) throws BusinessServiceException {
+	public Boolean add(AjaxRequest<List<WaveDetailVO>> request) throws BusinessServiceException {
 		if (CollectionUtils.isEmpty(request.getData()))
 			throw new BusinessServiceException("no data add.");
 		
@@ -127,15 +157,35 @@ public class WaveDetailServiceImpl implements IWaveDetailService {
 									.waveDetailId(KeyUtils.getUID())
 									.waveId(w.getWaveId())
 									.outboundHeaderId(w.getOutboundHeaderId())
+									.warehouseId(request.getWarehouseId())
+									.companyId(request.getCompanyId())
 									.createBy(request.getUserName())
 									.createTime(new Date())
 									.updateBy(request.getUserName())
 									.updateTime(new Date())
 									.build();
 			
+			//验证是否已存在
+			WaveDetailTEntity selectDetail = find(update);
+			if (selectDetail != null)
+				 throw new BusinessServiceException("WaveDetailServiceImpl", "wave.exists.outbound", new Object[] {w.getOutboundNumber()});
+			
 			int rowcount = waveDetailDao.insertSelective(update);
 			if (rowcount == 0)
 				 throw new BusinessServiceException("record add error.");
+			
+			//更新出库单来源波次字段
+			OutboundHeaderTEntity outboundHeader = OutboundHeaderTEntity.builder()
+													.sourceWaveNumber(w.getWaveNumber())
+													.outboundHeaderId(w.getOutboundHeaderId())
+													.warehouseId(request.getWarehouseId())
+													.companyId(request.getCompanyId())
+													.updateBy(request.getUserName())
+													.build();
+			OutboundHeaderTEntity find = outboundService.find(outboundHeader);
+			outboundHeader.setUpdateVersion(find.getUpdateVersion());
+			outboundService.modify(outboundHeader);
+			
 		});
 		return Boolean.TRUE;
 	}

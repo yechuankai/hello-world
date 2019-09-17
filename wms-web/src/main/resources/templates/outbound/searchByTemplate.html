@@ -1,14 +1,10 @@
 <div class="easyui-layout" wms:title="${web.label.outboundlist.title}" id="outboundsLayout" style="width: 800px;height: 500px;display: none;" data-options="fix:true">
-     <table id="outbounds" class="easyui-datagrid"
-            data-options="rownumbers:true,
+     <table id="outbounds" 
+            data-options="
 			  toolbar:'#waveTool',
-			  collapsible:true,
-			  fit:true,
-			  pageSize: 10,
-			  pageList: [10,50,100,500,1000],
-			  multiSort: false,
-				remoteSort: false
-				">
+			  fit:true
+				"
+				th:data-delayUrl="@{/services/inner/outbound/waveTemplate/findAllOutbound}">
          <thead  data-options="frozen:true">
 	         <tr>
 	         	 <th field="outboundHeaderId" data-options="checkbox:true"></th>
@@ -51,17 +47,71 @@
 		      </tr>
          </thead>
      </table>
- </div>
- <div id="waveTool" style="padding-left: 20px;">
- 	<a href="#"  class="easyui-linkbutton" onclick="createWave()"  wms:text="${web.label.createwave}" >Create Wave</a>
- 	<a href="#"  class="easyui-linkbutton" onclick="remove()"  wms:text="${web.label.delete}" >Delete</a>
+	 <div id="waveTool" style="padding-left: 20px;">
+	 	<a href="#"  class="easyui-linkbutton" onclick="remove()"  wms:text="${web.label.delete}" >Delete</a>
+	 	<input id="remark" name="remark" class="easyui-textbox"
+	               wms:data-options="label:'${web.label.remark}',labelPosition:'before',labelAlign:'right'"
+	               style="width: 300px;margin-left: 30px;"/>
+	    <a href="#"  class="easyui-linkbutton" id="createWave" onclick="createWave()"  wms:text="${web.label.createwave}" >Create Wave</a>
+	    <a href="#"  class="easyui-linkbutton" id="addtoWave"  wms:text="${web.label.addtowave}" >Add to Wave</a>
+	 </div>
  </div>
 <script type="text/javascript">
+	var detailFilterRules = [{
+		field:'createTime',
+		type:'datebox',
+		op:['nofilter']
+	},
+	{
+		field:'updateTime',
+		type:'datebox',
+		op:['nofilter']
+	},
+	{
+		field:'expectedoutbounddate',
+		type:'datebox',
+		op:['nofilter']
+	},
+	{
+		field:'status',
+		type:'combobox',
+		options:{
+			panelHeight:'auto',
+			data:getFilterCodelkupValue('outbounds'),
+			onChange:function(value){
+				if (value == '---' || value == ''){
+					$('#waveDetailTable').datagrid('removeFilterRule', 'status');
+				} else {
+					$('#waveDetailTable').datagrid('addFilterRule', {
+						field: 'status',
+						op: 'equal',
+						value: value
+					});
+				}
+				$('#waveDetailTable').datagrid('doFilter');
+			}
+		}
+	}];
+	
 	var gridData = [];
+	var waveTemplate = {};
+	var findAll = false; //标记是否查询所有订单
 	function loadData(){
 		$("#outbounds").datagrid({
-			loadFilter:pagerFilter
+			loadFilter:pagerFilter,
+			pageSize: 10,
+			pageList: [10,50,100,500,1000],
+			multiSort: false,
+			remoteSort: false
 		}).datagrid('loadData', gridData);
+	}
+	
+	function getAllData(){
+		if (findAll){
+			return $("#outbounds").datagrid('getChecked');
+		}else{
+			return gridData;
+		}
 	}
 	
 	/*自定义前端分页插件*/
@@ -97,6 +147,12 @@
 
 	/*通过模板id显示*/
     function findOutbound(template){
+		
+		//隐藏
+		$('#addtoWave').hide();
+    	$('#remark').val('');
+    	
+    	waveTemplate = template;
     	var baseData = getBaseData(template);
     	loading();
     	$.post({
@@ -105,6 +161,10 @@
     		success:function(data){
     			var rdata = returnData(data);
     			closeLoading();
+    			if (rdata.code == '0') {
+                    showError(rdata.msg);
+                    return;
+                }
     			gridData = rdata.data;
     			loadData();
     			$("#outboundsLayout").dialog({
@@ -115,6 +175,41 @@
     		}
     	});
     }
+	
+	function findAllOutbound(){
+		
+		//隐藏
+		$('#remark').val('');
+		$('#createWave').hide();
+		
+		findAll = true;
+		var url = $('#outbounds').attr('data-delayUrl');
+		
+		var data = getBaseData();
+		var queryParams = {status : '10'}; //仅查询新状态的订单
+		
+		$('#outbounds').datagrid({
+            url: url,
+            queryParams: data,
+            filterPosition: 'top',
+            remoteFilter: true,
+            clientPaging: false,
+            oldLoadFilter: undefined,
+            filterStringify: function(params, filter) {
+                var obj = params;
+                if (typeof(params) != 'object'){
+                    return;
+                }
+                for (var i in filter){
+                    var q = filter[i];
+                    var qObj = {};
+                    qObj[q.field] = q.value;
+                    $.extend(obj, qObj);
+                }
+            }
+        }).datagrid('clearChecked').datagrid('destroyFilter').datagrid('enableFilter', detailFilterRules);
+	}
+	
 	
 	function remove(){
 		var checkedRows = $('#outbounds').datagrid('getChecked');
@@ -133,19 +228,80 @@
 			var total = 0;
 			checkedRows.forEach(function(row,index){
 				var rowindex = $('#outbounds').datagrid('getRowIndex', row);
-				rowindex = arrIndex + rowindex - total;
-				debugger;
-				gridData.splice(rowindex, 1);
-				total = total + 1;
+				if(findAll){
+					 $('#outbounds').datagrid('deleteRow', rowindex);
+				}else{
+					rowindex = arrIndex + rowindex - total;
+					gridData.splice(rowindex, 1);
+					total = total + 1;
+				}
 			});
-			loadData();
+			if(!findAll){
+				loadData();
+			}
 		});
 	}
 	
 	function createWave(){
-		
-		
-		
+		var wave = {};
+		wave.waveType = waveTemplate.waveType;
+		wave.remark = $('#remark').val();
+		wave.detail = [];
+		getAllData().forEach(function(row,index){
+			var obj = {
+					outboundHeaderId : row.outboundHeaderId,
+					outboundNumber: row.outboundNumber
+			};
+			wave.detail.push(obj);
+		});
+		var baseData = getBaseData(wave);
+		loading();
+    	$.post({
+    		url: getServiceUrl() + "/services/inner/outbound/wave/add",
+    		data:baseData,
+    		success:function(data){
+    			var rdata = returnData(data);
+    			closeLoading();
+    			if (rdata.code == '0') {
+                    showError(rdata.msg);
+                    return;
+                }
+    			showMsg(rdata.msg, function(){
+    				window.top.addPanel($('#createWave').text(), getServiceUrl() + "/web/outbound/wave");
+    			});
+    		}
+    	});
+	}
+	
+	function addtowave(wave, func){
+		var remark = $('#remark').val();
+		var detail = [];
+		getAllData().forEach(function(row,index){
+			var obj = {
+					outboundHeaderId : row.outboundHeaderId,
+					waveId : wave.waveId,
+					waveNumber: wave.waveNumber,
+					outboundNumber: row.outboundNumber,
+					remark : remark
+			};
+			detail.push(obj);
+		});
+		var baseData = getBaseData(detail);
+		loading();
+    	$.post({
+    		url: getServiceUrl() + "/services/inner/outbound/wavedetail/add",
+    		data:baseData,
+    		success:function(data){
+    			var rdata = returnData(data);
+    			closeLoading();
+    			if (rdata.code == '0') {
+                    showError(rdata.msg);
+                    return;
+                }
+    			//执行回调方法
+    			func();
+    		}
+    	});
 	}
 	
 	

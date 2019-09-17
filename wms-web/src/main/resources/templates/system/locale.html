@@ -143,36 +143,36 @@
 							<input name="labelKey" class="easyui-textbox" wms:data-options="required:true,label:'${web.label.labelkey}',labelPosition:'top'">
 						</td>
 						<td>
-							<input name="labelValue" class="easyui-textbox" style="width: 100px;" wms:data-options="required:true,label:'${web.label.value}',labelPosition:'top'">
+							<input name="labelValue" class="easyui-textbox"  wms:data-options="required:true,label:'${web.label.value}',labelPosition:'top'">
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<input name="tableName" class="easyui-textbox" style="width: 100px;" wms:data-options="label:'${web.label.tablename}',labelPosition:'top'">
+							<input name="tableName" class="easyui-textbox"  wms:data-options="label:'${web.label.tablename}',labelPosition:'top'">
 						</td>
 						<td>
-							<input name="joinKey1" class="easyui-textbox" style="width: 100px;" wms:data-options="label:'${web.label.joinkey1}',labelPosition:'top'">
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input name="joinKey2" class="easyui-textbox" style="width: 100px;"  wms:data-options="label:'${web.label.joinkey2}',labelPosition:'top'">
-						</td>
-						<td>
-							<input name="joinKey3" class="easyui-textbox" style="width: 100px;" wms:data-options="label:'${web.label.joinkey3}',labelPosition:'top'">
+							<input name="joinKey1" class="easyui-textbox"  wms:data-options="label:'${web.label.joinkey1}',labelPosition:'top'">
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<input name="joinKey4" class="easyui-textbox" style="width: 100px;" wms:data-options="label:'${web.label.joinkey4}',labelPosition:'top'">
+							<input name="joinKey2" class="easyui-textbox"   wms:data-options="label:'${web.label.joinkey2}',labelPosition:'top'">
 						</td>
 						<td>
-							<input name="joinKey5" class="easyui-textbox" style="width: 100px;" wms:data-options="label:'${web.label.joinkey5}',labelPosition:'top'">
+							<input name="joinKey3" class="easyui-textbox"  wms:data-options="label:'${web.label.joinkey3}',labelPosition:'top'">
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<input class="easyui-combobox" name="active" style="width: 100px;" wms:data-options="
+							<input name="joinKey4" class="easyui-textbox"  wms:data-options="label:'${web.label.joinkey4}',labelPosition:'top'">
+						</td>
+						<td>
+							<input name="joinKey5" class="easyui-textbox"  wms:data-options="label:'${web.label.joinkey5}',labelPosition:'top'">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input class="easyui-combobox" name="active"  wms:data-options="
 							required:true,
 							value: 'Y',
 							data: codelkups['YESNO'],
@@ -189,7 +189,7 @@
 				</table>
 			</form>
 		</div>
-		<div style="text-align: center;">
+		<div style="text-align: center;margin-top: 10px;">
 				<a href="#" class="easyui-linkbutton common-confirmadd" data-form="#addForm" data-table="#localeData" id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
 					<span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
 				</a>

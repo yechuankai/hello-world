@@ -15,6 +15,7 @@ import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.core.domain.response.AjaxResult;
 import com.wms.common.core.domain.response.PageResult;
+import com.wms.common.utils.MessageUtils;
 import com.wms.entity.auto.WaveTEntity;
 import com.wms.services.outbound.IWaveService;
 import com.wms.vo.WaveVO;
@@ -47,9 +48,12 @@ public class WaveRest extends BaseController{
 	public AjaxResult add(@RequestBody String req) {
 		AjaxRequest<WaveVO> request = ajaxRequest(req, new TypeReference<AjaxRequest<WaveVO>>() {});
 		try {
+			WaveVO wave = request.getData();
 			Boolean save = waveService.createWave(request);
 			if (save) {
-				return success();
+				String message = "billnumber.show";
+				message = MessageUtils.message(message, wave.getWaveNumber());
+				return success(message);
 			}
 		} catch (Exception e) {
 			return fail(e.getMessage());
@@ -93,4 +97,58 @@ public class WaveRest extends BaseController{
         return fail();
 	}
 	
+	@RequestMapping(value = "/allocate")
+    public AjaxResult allocate(@RequestBody String req) {
+    	try {
+			AjaxRequest<List<WaveVO>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<WaveVO>>>() {});
+			waveService.allocate(request);
+			return success();
+		} catch (Exception e) {
+			return fail(e.getMessage());
+		}
+    }
+    
+    @RequestMapping(value = "/unallocate")
+    public AjaxResult unallocate(@RequestBody String req) {
+    	try {
+			AjaxRequest<List<WaveVO>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<WaveVO>>>() {});
+			waveService.unAllocate(request);
+			return success();
+		} catch (Exception e) {
+			return fail(e.getMessage());
+		}
+    }
+	
+	@RequestMapping(value = "/pick")
+    public AjaxResult pick(@RequestBody String req) {
+    	try {
+			AjaxRequest<List<WaveVO>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<WaveVO>>>() {});
+			waveService.pick(request);
+			return success();
+		} catch (Exception e) {
+			return fail(e.getMessage());
+		}
+    }
+    
+    @RequestMapping(value = "/unpick")
+    public AjaxResult unpick(@RequestBody String req) {
+    	try {
+			AjaxRequest<List<WaveVO>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<WaveVO>>>() {});
+			waveService.unPick(request);
+			return success();
+		} catch (Exception e) {
+			return fail(e.getMessage());
+		}
+    }
+    
+    @RequestMapping(value = "/ship")
+    public AjaxResult ship(@RequestBody String req) {
+    	try {
+			AjaxRequest<List<WaveVO>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<WaveVO>>>() {});
+			waveService.ship(request);
+			return success();
+		} catch (Exception e) {
+			return fail(e.getMessage());
+		}
+    }
 }

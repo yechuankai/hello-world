@@ -66,32 +66,23 @@
 						<input id="carrierCode" name="carrierCode" th:replace="lov/carrier" />
 					</td>
 					<td width="200px">
-						<input id="shipAddress1" name="shipAddress1" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.address1}',labelPosition:'top'" />
-					</td>
-					<td width="200px">
-						
-					</td>
-				</tr>
-				<tr>
-					<td >
 						<input id="carrierCarNumber" name="carrierCarNumber" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.carriercarnumber}',labelPosition:'top'" />
 					</td>
-					<td>
-						<input id="shipAddress2" name="shipAddress2" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.address2}',labelPosition:'top'" />
+					<td width="200px">
+						<input name="carrierDriver" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.carrierdriver}',labelPosition:'top'" />
 					</td>
-					<td>
-						&nbsp;
+					<td width="200px">
+						<input name="carrierDriverPhone" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.driverphone}',labelPosition:'top'" />
 					</td>
 				</tr>
 				<tr>
-					<td >
-						<input name="carrierDriver" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.carrierdriver}',labelPosition:'top'" />
+					<td colspan="4">
+						<input id="shipAddress1" name="shipAddress1" class="lazy-load"  lazy-load="easyui-textbox" style="width: 96%;"  wms:data-options="label:'${web.label.address1}',labelPosition:'top'" />
 					</td>
-					<td>
-						&nbsp;
-					</td>
-					<td>
-						&nbsp;
+				</tr>
+				<tr>
+					<td colspan="4">
+						<input id="shipAddress2" name="shipAddress2" class="lazy-load"  lazy-load="easyui-textbox" style="width: 96%;" wms:data-options="label:'${web.label.address2}',labelPosition:'top'" />
 					</td>
 				</tr>
 			</table>

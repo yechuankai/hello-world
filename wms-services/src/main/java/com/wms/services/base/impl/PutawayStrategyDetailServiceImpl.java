@@ -85,6 +85,8 @@ public class PutawayStrategyDetailServiceImpl implements IPutawayStrategyDetailS
             if (StringUtils.isNotEmpty(detail.getToZoneCode())) {
             	detail.setToZoneCode(detail.getToZoneCode().toUpperCase());
             }
+            
+            validate(detail);
 
             PutawayStrategyDetailTEntity update = PutawayStrategyDetailTEntity.builder()
                     .updateBy(request.getUserName())
@@ -141,6 +143,8 @@ public class PutawayStrategyDetailServiceImpl implements IPutawayStrategyDetailS
             if (count > 0) {
                 throw new BusinessServiceException("PutawayStrategyDetailServiceImpl", "linenumber.record.exists" , new Object[] {lineNumber});
             }
+            
+            validate(detail);
             
             if (StringUtils.isNotEmpty(detail.getFromLocationCode())) {
             	detail.setFromLocationCode(detail.getFromLocationCode().toUpperCase());
@@ -254,5 +258,13 @@ public class PutawayStrategyDetailServiceImpl implements IPutawayStrategyDetailS
             }
         }
         return Boolean.TRUE;
+    }
+    
+    
+    private Boolean validate(PutawayStrategyDetailTEntity detail) {
+    	if (StringUtils.isEmpty(detail.getType()))
+    		throw new BusinessServiceException("PutawayStrategyDetailServiceImpl", "type.isnull");
+    	
+    	return Boolean.TRUE;
     }
 }

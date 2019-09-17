@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.TypeReference;
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
 import com.wms.common.core.controller.BaseController;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
@@ -133,14 +134,38 @@ public class WaveBuildRest extends BaseController{
 	 * @return
 	 */
 	@RequestMapping("/findOutbound")
-	public AjaxResult<List<OutboundHeaderTEntity>> findOutboundsByWaveTemplate(@RequestBody String req){
+	public AjaxResult<List<OutboundHeaderTEntity>> findOutbound(@RequestBody String req){
 		AjaxRequest<WaveBuildVO> request = ajaxRequest(req, new TypeReference<AjaxRequest<WaveBuildVO>>() {});
 		List<OutboundHeaderTEntity> list = null;
 		try {
 			list = waveBuildService.findOutbounds(request);
+			if (list == null)
+				list = Lists.newArrayList();
+			
 			return success(list);
 		} catch (Exception e) {
 			return fail(e.getMessage());
+		}
+	}
+	
+	/**
+	 * 通过波次模板查询出库单
+	 * @param str
+	 * @return
+	 */
+	@RequestMapping("/findAllOutbound")
+	public PageResult<OutboundHeaderTEntity> findAllOutbounds(@RequestBody String req){
+		List<OutboundHeaderTEntity> list = null;
+		try {
+			PageRequest pageRequest = pageRequest(req);
+			PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
+			list = waveBuildService.findAllOutbounds(pageRequest);
+			if (list == null)
+				list = Lists.newArrayList();
+			
+			return page(list);
+		} catch (Exception e) {
+			return pageFail(e.getMessage());
 		}
 	}
 }

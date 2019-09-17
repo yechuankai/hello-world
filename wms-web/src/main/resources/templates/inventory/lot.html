@@ -13,10 +13,10 @@
 						<input name="lotNumber" class="easyui-textbox" wms:data-options="label:'${web.label.lotnumber}',labelPosition:'top'" />
 					</div>
 					<div style="margin-bottom:10px">
-						<input name="ownerCode" class="easyui-textbox" wms:data-options="label:'${web.inventory.ownerCode}',labelPosition:'top'" />
+						<input name="ownerCode" class="easyui-textbox" wms:data-options="label:'${web.label.owner}',labelPosition:'top'" />
 					</div>
 					<div style="margin-bottom:10px">
-						<input name="skuCode" class="easyui-textbox" wms:data-options="label:'${web.inventory.skuCode}',labelPosition:'top'" />
+						<input name="skuCode" class="easyui-textbox" wms:data-options="label:'${web.label.sku}',labelPosition:'top'" />
 					</div>	
 				</form>
 			</div>
@@ -38,9 +38,9 @@
 				<thead>
 					<tr>
 						<th field="lotNumber" width="100" wms:text="${web.label.lotnumber}" data-options="sortable:true">lotNumber</th>
-						<th field="ownerCode" width="100" wms:text="${web.inventory.ownerCode}" data-options="sortable:true" >ownerCode</th>
-						<th field="skuCode" width="100" wms:text="${web.inventory.skuCode}" data-options="sortable:true" >skuCode</th>
-						<th field="skuAlias" width="100" wms:text="${web.inventory.skuAlias}" data-options="sortable:true" >skuAlias</th>
+						<th field="ownerCode" width="100" wms:text="${web.label.owner}" data-options="sortable:true" >ownerCode</th>
+						<th field="skuCode" width="100" wms:text="${web.label.sku}" data-options="sortable:true" >skuCode</th>
+						<th field="skuAlias" width="100" wms:text="${web.label.skualias}" data-options="sortable:true" >skuAlias</th>
 						<th field="lotAttribute1" width="100" wms:text="${web.label.lotattribute1}">lotAttribute1</th>
 						<th field="lotAttribute2" width="100" wms:text="${web.label.lotattribute2}">lotAttribute2</th>
 						<th field="lotAttribute3" width="100" wms:text="${web.label.lotattribute3}">lotAttribute3</th>

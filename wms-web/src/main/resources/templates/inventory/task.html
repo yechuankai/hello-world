@@ -45,11 +45,11 @@
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="ownerCode" class="easyui-textbox"
-                           wms:data-options="label:'${web.inventory.ownerCode}',labelPosition:'top'">
+                           wms:data-options="label:'${web.label.owner}',labelPosition:'top'">
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="skuCode" class="easyui-textbox"
-                           wms:data-options="label:'${web.inventory.skuCode}',labelPosition:'top'">
+                           wms:data-options="label:'${web.label.sku}',labelPosition:'top'">
                 </div>
                 <!--  
                 <div style="margin-bottom:10px">
@@ -105,35 +105,35 @@
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="releaseTimeBegin" class="easyui-datebox"
-                           wms:data-options="label:'${web.inventory.releasetimebegin}',labelPosition:'top'"/>
+                           wms:data-options="label:'${web.label.releasetimebegin}',labelPosition:'top'"/>
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="releaseTimeEnd" class="easyui-datebox"
-                           wms:data-options="label:'${web.inventory.releasetimeend}',labelPosition:'top'"/>
+                           wms:data-options="label:'${web.label.releasetimeend}',labelPosition:'top'"/>
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="completeTimeBegin" class="easyui-datebox"
-                           wms:data-options="label:'${web.inventory.completetimebegin}',labelPosition:'top'"/>
+                           wms:data-options="label:'${web.label.completetimebegin}',labelPosition:'top'"/>
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="completeTimeEnd" class="easyui-datebox"
-                           wms:data-options="label:'${web.inventory.completetimeend}',labelPosition:'top'"/>
+                           wms:data-options="label:'${web.label.completetimeend}',labelPosition:'top'"/>
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="startTimeBegin" class="easyui-datebox"
-                           wms:data-options="label:'${web.inventory.starttimebegin}',labelPosition:'top'"/>
+                           wms:data-options="label:'${web.label.starttimebegin}',labelPosition:'top'"/>
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="startTimeEnd" class="easyui-datebox"
-                           wms:data-options="label:'${web.inventory.starttimeend}',labelPosition:'top'"/>
+                           wms:data-options="label:'${web.label.starttimeend}',labelPosition:'top'"/>
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="endTimeBegin" class="easyui-datebox"
-                           wms:data-options="label:'${web.inventory.endtimebegin}',labelPosition:'top'"/>
+                           wms:data-options="label:'${web.label.endtimebegin}',labelPosition:'top'"/>
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="endTimeEnd" class="easyui-datebox"
-                           wms:data-options="label:'${web.inventory.endtimeend}',labelPosition:'top'"/>
+                           wms:data-options="label:'${web.label.endtimeend}',labelPosition:'top'"/>
                 </div>
                 <!--  
                 <div style="margin-bottom:10px">
@@ -205,8 +205,8 @@
 										return getCodelkupValue('TASKSTATUS',value);
 									}
 								">status</th>
-		            <th field="ownerCode" width="80" wms:text="${web.inventory.ownerCode}" data-options="sortable:true">ownerCode</th>
-		            <th field="skuCode" width="80" wms:text="${web.inventory.skuCode}" data-options="sortable:true">skuCode</th>
+		            <th field="ownerCode" width="80" wms:text="${web.label.owner}" data-options="sortable:true">ownerCode</th>
+		            <th field="skuCode" width="80" wms:text="${web.label.sku}" data-options="sortable:true">skuCode</th>
 		            <th field="packCode" width="80" wms:text="${web.label.packcode}" data-options="sortable:true">packCode</th>
 		            <!--  
 		            <th field="uom" width="60" wms:text="${web.label.uom}" data-options="sortable:true">uom</th>

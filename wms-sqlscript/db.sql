@@ -3442,8 +3442,8 @@ comment on column warehouse_active_t.description   is '数据描述';
 -- ----------------------------
 -- 缺量记录
 -- ----------------------------
-drop table allocate_short_t cascade constraints;
-create table allocate_short_t (
+drop table platform_t cascade constraints;
+create table platform_t (
 allocate_short_id number,
 source_number number,
 source_line_number number,
@@ -3475,37 +3475,87 @@ remark varchar2(500),
   description             varchar2(500)   default null
 );
 
-alter table allocate_short_t add constraint pk_allocate_short_t primary key (allocate_short_id);
-comment on table allocate_short_t is '缺量记录';
-comment on column allocate_short_t.allocate_short_id is '缺量记录ID';
-comment on column allocate_short_t.source_number is '来源主键';
-comment on column allocate_short_t.source_line_number is '来源行号';
-comment on column allocate_short_t.source_bill_number is '来源单号';
-comment on column allocate_short_t.reason is '原因';
-comment on column allocate_short_t.file_id is '文件ID';
-comment on column allocate_short_t.quantity_original is '原始数量';
-comment on column allocate_short_t.quantity_actual is '实际数量';
-comment on column allocate_short_t.owner_id is '货主ID';
-comment on column allocate_short_t.owner_code is '货主代码';
-comment on column allocate_short_t.sku_id is '货品ID';
-comment on column allocate_short_t.sku_code is '货品代码';
-comment on column allocate_short_t.sku_alias is '货品别称';
-comment on column allocate_short_t.location_id is '库位ID';
-comment on column allocate_short_t.location_code is '库位';
-comment on column allocate_short_t.lpn_id is 'LPN ID';
-comment on column allocate_short_t.lpn_number is 'LPN';
-comment on column allocate_short_t.lot_id is '批次号 ID';
-comment on column allocate_short_t.lot_number is '批次号';
-comment on column allocate_short_t.remark is '备注';
-comment on column allocate_short_t.company_id      is '公司ID';
-comment on column allocate_short_t.warehouse_id    is '仓库ID';
-comment on column allocate_short_t.del_flag    is '删除标志（N代表存在 Y代表删除）';
-comment on column allocate_short_t.create_by     is '创建者';
-comment on column allocate_short_t.create_time   is '创建时间';
-comment on column allocate_short_t.update_by     is '更新者';
-comment on column allocate_short_t.update_time   is '更新时间';
-comment on column allocate_short_t.update_version   is '更新时间';
-comment on column allocate_short_t.description   is '数据描述';
+alter table platform_t add constraint pk_platform_t primary key (allocate_short_id);
+comment on table platform_t is '缺量记录';
+comment on column platform_t.allocate_short_id is '缺量记录ID';
+comment on column platform_t.source_number is '来源主键';
+comment on column platform_t.source_line_number is '来源行号';
+comment on column platform_t.source_bill_number is '来源单号';
+comment on column platform_t.reason is '原因';
+comment on column platform_t.file_id is '文件ID';
+comment on column platform_t.quantity_original is '原始数量';
+comment on column platform_t.quantity_actual is '实际数量';
+comment on column platform_t.owner_id is '货主ID';
+comment on column platform_t.owner_code is '货主代码';
+comment on column platform_t.sku_id is '货品ID';
+comment on column platform_t.sku_code is '货品代码';
+comment on column platform_t.sku_alias is '货品别称';
+comment on column platform_t.location_id is '库位ID';
+comment on column platform_t.location_code is '库位';
+comment on column platform_t.lpn_id is 'LPN ID';
+comment on column platform_t.lpn_number is 'LPN';
+comment on column platform_t.lot_id is '批次号 ID';
+comment on column platform_t.lot_number is '批次号';
+comment on column platform_t.remark is '备注';
+comment on column platform_t.company_id      is '公司ID';
+comment on column platform_t.warehouse_id    is '仓库ID';
+comment on column platform_t.del_flag    is '删除标志（N代表存在 Y代表删除）';
+comment on column platform_t.create_by     is '创建者';
+comment on column platform_t.create_time   is '创建时间';
+comment on column platform_t.update_by     is '更新者';
+comment on column platform_t.update_time   is '更新时间';
+comment on column platform_t.update_version   is '更新时间';
+comment on column platform_t.description   is '数据描述';
+
+
+-- ----------------------------
+-- 月台
+-- ----------------------------
+drop table platform_t cascade constraints;
+create table platform_t (
+platform_id number,
+platform_code varchar2(50),
+platform_type varchar2(50),
+car_number varchar2(50),
+car_driver varchar2(50),
+car_driver_phone varchar2(50),
+container_number varchar2(50),
+status varchar2(50),
+remark varchar2(500),
+  company_id         number        default '0',
+  warehouse_id       number        default '0',
+  del_flag                char(1)         default 'N',
+  create_by               varchar2(64)    default '',
+  create_time             date            default sysdate,
+  update_by               varchar2(64)    default '',
+  update_time             date            default sysdate,
+  update_version          number          default '1',
+  description             varchar2(500)   default null
+);
+
+alter table platform_t add constraint pk_platform_t primary key (platform_id);
+comment on table platform_t is '月台';
+comment on column platform_t.platform_id is '泊位ID';
+comment on column platform_t.platform_code is '泊位代码';
+comment on column platform_t.platform_type is '泊位类型';
+comment on column platform_t.car_number is '车牌号';
+comment on column platform_t.car_driver is '司机';
+comment on column platform_t.car_driver_phone is '司机电话';
+comment on column platform_t.container_number is '柜号';
+comment on column platform_t.status is '状态';
+comment on column platform_t.remark is '备注';
+comment on column platform_t.company_id      is '公司ID';
+comment on column platform_t.warehouse_id    is '仓库ID';
+comment on column platform_t.del_flag    is '删除标志（N代表存在 Y代表删除）';
+comment on column platform_t.create_by     is '创建者';
+comment on column platform_t.create_time   is '创建时间';
+comment on column platform_t.update_by     is '更新者';
+comment on column platform_t.update_time   is '更新时间';
+comment on column platform_t.update_version   is '更新时间';
+comment on column platform_t.description   is '数据描述';
+
+
+
 
 
 
@@ -3693,4 +3743,20 @@ comment on column carrier_t.email2 is '邮箱2';
 alter table outbound_header_t rename column email to email1;
 alter table outbound_header_t add (email2 varchar2(100));
 comment on column outbound_header_t.email2 is '邮箱2';
+
+alter table outbound_header_t add (SOURCE_WAVE_NUMBER varchar2(100));
+comment on column outbound_header_t.SOURCE_WAVE_NUMBER is '来源波次号';
+
+alter table wave_t add (process_status varchar2(5) default '0');
+comment on column wave_t.process_status is '处理状态 ';
+
+
+alter table inventory_count_request_t add (owner_code varchar2(50));
+comment on column inventory_count_request_t.owner_code is '货主 ';
+
+alter table inbound_header_t add (carrier_driver_phone varchar2(50));
+comment on column inbound_header_t.carrier_driver_phone is '司机电话 ';
+
+alter table outbound_header_t add (driver_phone varchar2(50));
+comment on column outbound_header_t.driver_phone is '司机电话 ';
 

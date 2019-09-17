@@ -26,5 +26,7 @@ public interface IWaveBuildService {
 	Boolean add(AjaxRequest<WaveBuildVO> request);
 
 	List<OutboundHeaderTEntity> findOutbounds(AjaxRequest<WaveBuildVO> request);
+	
+	List<OutboundHeaderTEntity> findAllOutbounds(PageRequest request);
 
 }
