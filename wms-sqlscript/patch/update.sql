@@ -1,7 +1,9 @@
 ﻿--菜单
+delete UUMS.WEB_FUNC where func_id = 'wms:system:report';
 insert into UUMS.WEB_FUNC (func_id, func_name, menu_id, func_desc, func_url, func_id_seq, sys_code, is_valid, sys_url, real_sys_code, invalid_time, invalid_user, create_time, version, func_unique_id)
-values ('wms:system:report', '报表管理', 'wms:system', '报表管理', 'report/report', 10, 'WMS', 'Y', null, null, null, null, to_date('16-08-2019 13:53:20', 'dd-mm-yyyy hh24:mi:ss'), '0', 1136869832319441001);
+values ('wms:system:report', '报表管理', 'wms:system', '报表管理', 'report/report', 10, 'WMS', 'Y', null, null, null, null, to_date('16-08-2019 13:53:20', 'dd-mm-yyyy hh24:mi:ss'), '0', 1136869832319441005);
 
+delete uums.sc_mappingconfig_lang where table_id = 'wms:system:report';
 insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
 values (1301, 'WEB_FUNC', 'FUNC_NAME', 'en_US', 'Report Management', 'Report Management', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:system:report', 'WMS');
 
@@ -94,14 +96,14 @@ values (1313, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '波次模板', '波次模板', 
 --菜单波次
 delete uums.WEB_FUNC where func_id = 'wms:outbound:wave';
 insert into UUMS.WEB_FUNC (func_id, func_name, menu_id, func_desc, func_url, func_id_seq, sys_code, is_valid, sys_url, real_sys_code, invalid_time, invalid_user, create_time, version, func_unique_id)
-values ('wms:outbound:wave', '波次', 'wms:outbound', '波次', 'outbound/wave', 10, 'WMS', 'Y', null, null, null, null, to_date('16-08-2019 13:53:20', 'dd-mm-yyyy hh24:mi:ss'), '0', 1136869832319441001);
+values ('wms:outbound:wave', '波次', 'wms:outbound', '波次', 'outbound/wave', 10, 'WMS', 'Y', null, null, null, null, to_date('16-08-2019 13:53:20', 'dd-mm-yyyy hh24:mi:ss'), '0', 1136869832319441002);
 
 delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:outbound:wave';
 insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
-values (1314, 'WEB_FUNC', 'FUNC_NAME', 'en_US', 'Wave Template', 'Wave Template', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave', 'WMS');
+values (1314, 'WEB_FUNC', 'FUNC_NAME', 'en_US', 'Wave', 'Wave', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave', 'WMS');
 
 insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
-values (1315, 'WEB_FUNC', 'FUNC_NAME', 'fr_FR', 'Rapport de gestion', 'Rapport de gestion', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave', 'WMS');
+values (1315, 'WEB_FUNC', 'FUNC_NAME', 'fr_FR', 'Vague', 'Vague', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave', 'WMS');
 
 insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
 values (1316, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '波次', '波次', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave', 'WMS');
@@ -175,7 +177,7 @@ values ('1164072373274148864', 'en_US', 'ZONETYPE_0', 'Normal', 'ZONETYPE', '0',
 --菜单盘点请求
 delete uums.WEB_FUNC where func_id = 'wms:inventory:count:request';
 insert into UUMS.WEB_FUNC (func_id, func_name, menu_id, func_desc, func_url, func_id_seq, sys_code, is_valid, sys_url, real_sys_code, invalid_time, invalid_user, create_time, version, func_unique_id)
-values ('wms:inventory:count:request', '盘点请求', 'wms:inventory', '盘点请求', 'inventory/countRequest', 10, 'WMS', 'Y', null, null, null, null, to_date('16-08-2019 13:53:20', 'dd-mm-yyyy hh24:mi:ss'), '0', 1136869832319441001);
+values ('wms:inventory:count:request', '盘点请求', 'wms:inventory', '盘点请求', 'inventory/countRequest', 10, 'WMS', 'Y', null, null, null, null, to_date('16-08-2019 13:53:20', 'dd-mm-yyyy hh24:mi:ss'), '0', 1136869832319441003);
 
 delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:inventory:count:request';
 insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
@@ -188,19 +190,21 @@ insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUA
 values (1303, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '盘点请求', '盘点请求', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:inventory:count:request', 'WMS');
 
 --菜单盘点
-delete uums.WEB_FUNC where func_id = 'wms:outbound:wave';
-insert into UUMS.WEB_FUNC (func_id, func_name, menu_id, func_desc, func_url, func_id_seq, sys_code, is_valid, sys_url, real_sys_code, invalid_time, invalid_user, create_time, version, func_unique_id)
-values ('wms:outbound:wave', '波次', 'wms:outbound:wave', '波次', 'outbound/wave', 9, 'WMS', 'Y', null, null, null, null, to_date('16-08-2019 13:53:20', 'dd-mm-yyyy hh24:mi:ss'), '0', 1136869832319441001);
+delete uums.WEB_FUNC where func_id = 'wms:inventory:count';
+insert into uums.web_func (FUNC_ID, FUNC_NAME, MENU_ID, FUNC_DESC, FUNC_URL, FUNC_ID_SEQ, SYS_CODE, IS_VALID, SYS_URL, REAL_SYS_CODE, INVALID_TIME, INVALID_USER, CREATE_TIME, VERSION, FUNC_UNIQUE_ID)
+values ('wms:inventory:count', '盘点', 'wms:inventory', '盘点', 'inventory/count', '10', 'WMS', 'Y', null, null, null, null, to_date('16-08-2019 13:53:20', 'dd-mm-yyyy hh24:mi:ss'), '0', '1136869832319441004');
 
-delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:outbound:wave';
+delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:inventory:count';
 insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
-values (1301, 'WEB_FUNC', 'FUNC_NAME', 'en_US', 'Wave Template', 'Wave Template', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave', 'WMS');
-
-insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
-values (1302, 'WEB_FUNC', 'FUNC_NAME', 'fr_FR', 'Rapport de gestion', 'Rapport de gestion', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave', 'WMS');
+values ('1324', 'WEB_FUNC', 'FUNC_NAME', 'en_US', 'Count', 'Count', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:inventory:count', 'WMS');
 
 insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
-values (1303, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '波次', '波次', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:wave', 'WMS');
+values ('1325', 'WEB_FUNC', 'FUNC_NAME', 'fr_FR', 'Inventaire', 'Inventaire', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:inventory:count', 'WMS');
+
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values ('1326', 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '盘点', '盘点', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:inventory:count', 'WMS');
+
+
 
 --分配明细表增加来源库位，来源LPN
 alter table WMS.ALLOCATE_T ADD (FROM_LOCATION_CODE varchar2(50));
@@ -527,3 +531,123 @@ values ('1170953149065203712', 'en_US', 'web.label.toskucode', 'To SKU', null, n
 
 
 alter table wave_build_t rename column ware_type to wave_type;
+
+
+alter table owner_t add (web_site varchar2(200));
+comment on column owner_t.web_site is '公司网站';
+
+alter table customer_t add (web_site varchar2(200));
+comment on column customer_t.web_site is '公司网站';
+
+alter table supplier_t add (web_site varchar2(200));
+comment on column supplier_t.web_site is '公司网站';
+
+alter table carrier_t add (web_site varchar2(200));
+comment on column carrier_t.web_site is '公司网站';
+
+alter table customer_t rename column email to email1;
+alter table customer_t add (email2 varchar2(100));
+comment on column customer_t.email2 is '邮箱2';
+
+alter table supplier_t rename column email to email1;
+alter table supplier_t add (email2 varchar2(100));
+comment on column supplier_t.email2 is '邮箱2';
+
+alter table owner_t rename column email to email1;
+alter table owner_t add (email2 varchar2(100));
+comment on column carrier_t.email2 is '邮箱2';
+
+alter table carrier_t rename column email to email1;
+alter table carrier_t add (email2 varchar2(100));
+comment on column carrier_t.email2 is '邮箱2';
+
+alter table outbound_header_t rename column email to email1;
+alter table outbound_header_t add (email2 varchar2(100));
+comment on column outbound_header_t.email2 is '邮箱2';
+
+alter table outbound_header_t add (SOURCE_WAVE_NUMBER varchar2(100));
+comment on column outbound_header_t.SOURCE_WAVE_NUMBER is '来源波次号';
+
+alter table wave_t add (process_status varchar2(5) default '0');
+comment on column wave_t.process_status is '处理状态 ';
+
+
+alter table inventory_count_request_t add (owner_code varchar2(50));
+comment on column inventory_count_request_t.owner_code is '货主 ';
+
+alter table inbound_header_t add (carrier_driver_phone varchar2(50));
+comment on column inbound_header_t.carrier_driver_phone is '司机电话 ';
+
+alter table outbound_header_t add (driver_phone varchar2(50));
+comment on column outbound_header_t.driver_phone is '司机电话 ';
+
+
+
+
+--新增"缺量记录"的子菜单
+delete uums.WEB_FUNC where func_id = 'wms:outbound:allocate:short';
+insert into uums.WEB_FUNC (FUNC_ID, FUNC_NAME, MENU_ID, FUNC_DESC, FUNC_URL, FUNC_ID_SEQ, SYS_CODE, IS_VALID, SYS_URL, REAL_SYS_CODE, INVALID_TIME, INVALID_USER, CREATE_TIME, VERSION, FUNC_UNIQUE_ID)
+values ('wms:outbound:allocate:short', '拣选缺量', 'wms:outbound', '拣选缺量', 'outbound/allocateShort', 10, 'WMS', 'Y', null, null, null, null, to_date('21-08-2019 14:08:28', 'dd-mm-yyyy hh24:mi:ss'), '0', 1173880490653638701);
+
+delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:outbound:allocate:short';
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1321, 'WEB_FUNC', 'FUNC_NAME', 'en_US', 'Allocate Short', 'Allocate Short', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:allocate:short', 'WMS');
+
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1322, 'WEB_FUNC', 'FUNC_NAME', 'fr_FR', 'Allouer court', 'Allouer court', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:allocate:short', 'WMS');
+
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1323, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '拣选缺量', '拣选缺量', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:allocate:short', 'WMS');
+
+
+
+--新增一级菜单 预约
+delete uums.web_func where func_id = 'wms:appointment';
+insert into uums.web_funcmenu (MENU_ID, MENU_NAME, MENU_DESC, SYS_CODE, MENU_ID_SEQ, IS_VALID, INVALID_TIME, INVALID_USER, CREATE_TIME, MENU_IMG_URL, VERSION, FUNCMENU_UNIQUE_ID)
+values ('wms:appointment', '预约', '预约', 'WMS', '1', 'Y', null, null, to_date('05-12-2016 10:46:09', 'dd-mm-yyyy hh24:mi:ss'), null, '0', '1');
+
+delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:outbound:allocate:short';
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1324, 'WEB_FUNCMENU', 'MENU_NAME', 'en_US', 'Appointment', 'Appointment', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:appointment', 'WMS');
+
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1325, 'WEB_FUNCMENU', 'MENU_NAME', 'fr_FR', 'Rendez-vous', 'Rendez-vous', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:appointment', 'WMS');
+
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1326, 'WEB_FUNCMENU', 'MENU_NAME', 'zh_CN', '预约', '预约', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:appointment', 'WMS');
+
+
+
+--新增"预约-泊位"的子菜单
+delete uums.WEB_FUNC where func_id = 'wms:appointment:platform';
+insert into uums.WEB_FUNC (FUNC_ID, FUNC_NAME, MENU_ID, FUNC_DESC, FUNC_URL, FUNC_ID_SEQ, SYS_CODE, IS_VALID, SYS_URL, REAL_SYS_CODE, INVALID_TIME, INVALID_USER, CREATE_TIME, VERSION, FUNC_UNIQUE_ID)
+values ('wms:appointment:platform', '泊位', 'wms:appointment', '泊位', 'appointment/platform', 10, 'WMS', 'Y', null, null, null, null, to_date('21-08-2019 14:08:28', 'dd-mm-yyyy hh24:mi:ss'), '0', 1173880490653638702);
+
+delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:appointment:platform';
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1327, 'WEB_FUNC', 'FUNC_NAME', 'en_US', 'Plat Form', 'Plat Form', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:appointment:platform', 'WMS');
+
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1328, 'WEB_FUNC', 'FUNC_NAME', 'fr_FR', 'Plate-forme', 'Plate-forme', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:appointment:platform', 'WMS');
+
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1329, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '泊位', '泊位', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:appointment:platform', 'WMS');
+
+--新增"预约-预约"的子菜单
+delete uums.WEB_FUNC where func_id = 'wms:appointment:appointment';
+insert into uums.WEB_FUNC (FUNC_ID, FUNC_NAME, MENU_ID, FUNC_DESC, FUNC_URL, FUNC_ID_SEQ, SYS_CODE, IS_VALID, SYS_URL, REAL_SYS_CODE, INVALID_TIME, INVALID_USER, CREATE_TIME, VERSION, FUNC_UNIQUE_ID)
+values ('wms:appointment:appointment', '预约', 'wms:appointment', '预约', 'appointment/appointment', 10, 'WMS', 'Y', null, null, null, null, to_date('21-08-2019 14:08:28', 'dd-mm-yyyy hh24:mi:ss'), '0', 1173880490653638703);
+
+delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:appointment:appointment';
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1331, 'WEB_FUNC', 'FUNC_NAME', 'en_US', 'Appointment', 'Appointment', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:appointment:appointment', 'WMS');
+
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1332, 'WEB_FUNC', 'FUNC_NAME', 'fr_FR', 'Rendez-vous', 'Rendez-vous', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:appointment:appointment', 'WMS');
+
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1333, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '预约', '预约', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:appointment:appointment', 'WMS');
+
+
+
+

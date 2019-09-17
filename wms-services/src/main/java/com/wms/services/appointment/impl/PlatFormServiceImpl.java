@@ -1,4 +1,4 @@
-package com.wms.services.base.impl;
+package com.wms.services.appointment.impl;
 
 import java.util.Date;
 import java.util.List;
@@ -8,16 +8,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Lists;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.enums.PlatFormStatusEnum;
 import com.wms.common.enums.YesNoEnum;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.common.utils.ExampleUtils;
+import com.wms.common.utils.key.KeyUtils;
 import com.wms.dao.auto.IPlatformTDao;
 import com.wms.dao.example.PlatformTExample;
+import com.wms.entity.auto.AppointmentTEntity;
 import com.wms.entity.auto.PlatformTEntity;
-import com.wms.services.base.IPlatFormService;
+import com.wms.services.appointment.IAppointmentService;
+import com.wms.services.appointment.IPlatFormService;
 
 /**
  * 泊位管理
@@ -26,9 +30,14 @@ import com.wms.services.base.IPlatFormService;
  */
 @Service
 public class PlatFormServiceImpl implements IPlatFormService {
+	
+	public static final String AVAILABEL = "PLATFORM_AVAILABEL";
 
     @Autowired
     private IPlatformTDao platDao;
+    
+    @Autowired
+    private IAppointmentService appointmentService;
 
     @Override
     public List<PlatformTEntity> find(PageRequest request) throws BusinessServiceException {
@@ -42,6 +51,11 @@ public class PlatFormServiceImpl implements IPlatFormService {
                 .build(request)
                 .orderby(PlatformTExample);
         PlatformTExampleCriteria.andDelFlagEqualTo(YesNoEnum.No.getCode());
+        
+        if (YesNoEnum.Yes.getCode().equals(request.getString(AVAILABEL))) {
+        	PlatformTExampleCriteria.andStatusIn(Lists.newArrayList(PlatFormStatusEnum.Idle.getCode(), PlatFormStatusEnum.Appointment.getCode()));
+        }
+        
         return platDao.selectByExample(PlatformTExample);
     }
     
@@ -65,6 +79,7 @@ public class PlatFormServiceImpl implements IPlatFormService {
                     .carDriverPhone(p.getCarDriverPhone())
                     .carNumber(p.getCarNumber())
                     .containerNumber(p.getContainerNumber())
+                    .status(p.getStatus())
                     .active(p.getActive())
                     .build();
 
@@ -74,7 +89,7 @@ public class PlatFormServiceImpl implements IPlatFormService {
                     .andCompanyIdEqualTo(request.getCompanyId())
                     .andPlatformIdEqualTo(p.getPlatformId());
 
-            int row = platDao.updateWithVersionByExampleSelective(p.getUpdateVersion(), update, example);
+            int row = platDao.updateByExampleSelective(update, example);
             if (row == 0) {
                 throw new BusinessServiceException("record update error.");
             }
@@ -100,8 +115,10 @@ public class PlatFormServiceImpl implements IPlatFormService {
         	}catch (BusinessServiceException e) {}
         	
         	if (selectPlatform != null) 
-        		throw new BusinessServiceException("PlatFormServiceImpl", "platform.record.exists", null);
+        		throw new BusinessServiceException("PlatFormServiceImpl", "platform.record.exists", new Object[] { p.getPlatformCode() });
         	
+        	p.setPlatformCode(p.getPlatformCode().toUpperCase());
+        	p.setPlatformId(KeyUtils.getUID());
         	p.setStatus(PlatFormStatusEnum.Idle.getCode());
         	p.setCreateBy(request.getUserName());
         	p.setUpdateBy(request.getUserName());
@@ -129,7 +146,7 @@ public class PlatFormServiceImpl implements IPlatFormService {
         	p.setWarehouseId(request.getWarehouseId());
         	p.setCompanyId(request.getCompanyId());
         	PlatformTEntity selectForm = find(p);
-        	if (PlatFormStatusEnum.Idle.getCode().equals(selectForm.getStatus())){
+        	if (!PlatFormStatusEnum.Idle.getCode().equals(selectForm.getStatus())){
         		throw new BusinessServiceException("PlatFormServiceImpl", "platform.status.not.process", new Object[] { p.getPlatformCode() });
         	}
         	
@@ -178,6 +195,50 @@ public class PlatFormServiceImpl implements IPlatFormService {
         }
         return w;
     }
+
+	@Override
+	public Boolean modifyStats(AjaxRequest<PlatformTEntity> request, PlatFormStatusEnum status) throws BusinessServiceException {
+		PlatformTEntity plat = request.getData();
+		plat.setWarehouseId(request.getWarehouseId());
+		plat.setCompanyId(request.getCompanyId());
+		plat = find(plat);
+		
+		String statusStr = status.getCode();
+		
+		//查询是否还存在预约的单据
+		List<AppointmentTEntity> appList = appointmentService.findByPlatForm(AppointmentTEntity.builder()
+											.warehouseId(request.getWarehouseId())
+											.companyId(request.getCompanyId())
+											.platformCode(plat.getPlatformCode())
+											.build());
+		if (CollectionUtils.isNotEmpty(appList))
+			statusStr = PlatFormStatusEnum.Appointment.getCode();
+		
+		PlatformTEntity update = PlatformTEntity.builder()
+                .updateBy(request.getUserName())
+                .updateTime(new Date())
+                .status(statusStr)
+                .build();
+		
+		//更新空闲状态时清空车辆信息
+		if (PlatFormStatusEnum.Idle.getCode().equals(statusStr)) {
+			update.setCarDriver("");
+			update.setCarDriverPhone("");
+			update.setCarNumber("");
+		}
+
+        PlatformTExample example = new PlatformTExample();
+        example.createCriteria()
+                .andWarehouseIdEqualTo(request.getWarehouseId())
+                .andCompanyIdEqualTo(request.getCompanyId())
+                .andPlatformIdEqualTo(plat.getPlatformId());
+
+        int row = platDao.updateWithVersionByExampleSelective(plat.getUpdateVersion(), update, example);
+        if (row == 0) {
+            throw new BusinessServiceException("record update error.");
+        }
+        return Boolean.TRUE;
+	}
 
 
   

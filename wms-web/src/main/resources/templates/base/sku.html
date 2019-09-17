@@ -91,9 +91,13 @@
 		<div>
 			<table id="skuData" wms:title="${web.label.skulist.title}" class="easyui-datagrid"
 							th:data-delayUrl="@{/services/inner/base/sku/find}">
+				<thead data-options="frozen:true">
+	            	<tr>
+	            		<th field="skuId" data-options="checkbox:true"></th>
+	            	</tr>
+	            </thead>
 				<thead>
 					<tr>
-						<th field="skuId" data-options="checkbox:true"></th>
 						<th field="ownerCode" width="80" wms:text="${web.label.owner}" data-options="sortable:true">ownerCode</th>
 						<th field="skuCode" width="80" wms:text="${web.label.sku}" data-options="sortable:true">skuCode</th>
 						<th field="skuAlias" width="80" wms:text="${web.label.skualias}" data-options="sortable:true,editor:'text'">skuAlias</th>

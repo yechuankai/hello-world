@@ -1,4 +1,4 @@
-package com.wms.pub.inner.base;
+package com.wms.pub.inner.appointment;
 
 import java.util.List;
 
@@ -16,28 +16,44 @@ import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.core.domain.response.AjaxResult;
 import com.wms.common.core.domain.response.PageResult;
-import com.wms.entity.auto.AppointmentTEntity;
-import com.wms.services.base.IAppointmentService;
+import com.wms.common.enums.YesNoEnum;
+import com.wms.entity.auto.PlatformTEntity;
+import com.wms.services.appointment.IPlatFormService;
+import com.wms.services.appointment.impl.PlatFormServiceImpl;
 
 /**
- * 预约
+ * 月台
  * @author yechuankai.chnet
  *
  */
 @RestController
-@RequestMapping("/services/inner/base/appointment")
-public class AppointmentRest extends BaseController {
+@RequestMapping("/services/inner/appointment/platForm")
+public class PlatFormRest extends BaseController {
 
     @Autowired
-    private IAppointmentService appointmentService;
+    private IPlatFormService platFormService;
 
     @RequestMapping(value = "/find")
-    public PageResult<AppointmentTEntity> find(@RequestBody String req) {
-        List<AppointmentTEntity> list = null;
+    public PageResult<PlatformTEntity> find(@RequestBody String req) {
+        List<PlatformTEntity> list = null;
         try {
             PageRequest pageRequest = pageRequest(req);
             PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
-            list = appointmentService.find(pageRequest);
+            list = platFormService.find(pageRequest);
+        } catch (Exception e) {
+            return pageFail(e.getMessage());
+        }
+        return page(list);
+    }
+    
+    @RequestMapping(value = "/findAvailable")
+    public PageResult<PlatformTEntity> findAvailable(@RequestBody String req) {
+        List<PlatformTEntity> list = null;
+        try {
+            PageRequest pageRequest = pageRequest(req);
+            pageRequest.put(PlatFormServiceImpl.AVAILABEL, YesNoEnum.Yes.getCode());
+            PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
+            list = platFormService.find(pageRequest);
         } catch (Exception e) {
             return pageFail(e.getMessage());
         }
@@ -47,9 +63,9 @@ public class AppointmentRest extends BaseController {
     @RequestMapping(value = "/add")
     public AjaxResult add(@RequestBody String req) {
         try {
-            AjaxRequest<AppointmentTEntity> request = ajaxRequest(req, new TypeReference<AjaxRequest<AppointmentTEntity>>() {});
-            List<AppointmentTEntity> updateList = Lists.newArrayList(request.getData());
-            boolean flag = appointmentService.add(ajaxRequest(updateList, request));
+            AjaxRequest<PlatformTEntity> request = ajaxRequest(req, new TypeReference<AjaxRequest<PlatformTEntity>>() {});
+            List<PlatformTEntity> updateList = Lists.newArrayList(request.getData());
+            boolean flag = platFormService.add(ajaxRequest(updateList, request));
             if (flag) {
                 return success();
             }
@@ -62,11 +78,11 @@ public class AppointmentRest extends BaseController {
     @RequestMapping(value = "/save")
     public AjaxResult save(@RequestBody String req) {
         try {
-            AjaxRequest<List<AppointmentTEntity> > request = ajaxRequest(req, new TypeReference<AjaxRequest<List<AppointmentTEntity> >>() {});
+            AjaxRequest<List<PlatformTEntity> > request = ajaxRequest(req, new TypeReference<AjaxRequest<List<PlatformTEntity> >>() {});
             if (CollectionUtils.isEmpty(request.getData())) {
                 return fail("no record update.");
             }
-            boolean flag = appointmentService.modify(request);
+            boolean flag = platFormService.modify(request);
             if (flag) {
                 return success();
             }
@@ -79,11 +95,11 @@ public class AppointmentRest extends BaseController {
     @RequestMapping(value = "/delete")
     public AjaxResult delete(@RequestBody String req) {
         try {
-        	AjaxRequest<List<AppointmentTEntity> > request = ajaxRequest(req, new TypeReference<AjaxRequest<List<AppointmentTEntity> >>() {});
+        	AjaxRequest<List<PlatformTEntity> > request = ajaxRequest(req, new TypeReference<AjaxRequest<List<PlatformTEntity> >>() {});
             if (CollectionUtils.isEmpty(request.getData())) {
                 return fail("no record update.");
             }
-            boolean flag = appointmentService.delete(request);
+            boolean flag = platFormService.delete(request);
             if (flag) {
                 return success();
             }

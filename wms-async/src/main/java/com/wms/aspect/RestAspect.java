@@ -16,6 +16,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.wms.async.manager.AsyncManager;
 import com.wms.async.manager.factory.AsyncFactory;
 import com.wms.common.constants.ConfigConstants;
@@ -54,7 +55,7 @@ public class RestAspect {
             	if (arg instanceof String)
             		args.append(arg);
             	else
-            		args.append(JSONObject.toJSONString(arg));
+            		args.append(JSONObject.toJSONString(arg, SerializerFeature.DisableCircularReferenceDetect));
             }
             
             if(log.isDebugEnabled())
@@ -85,7 +86,7 @@ public class RestAspect {
             }
             Object ret = pjp.proceed();
             if(log.isDebugEnabled())
-            	log.debug("<{}.{}>,response params:{}", controller, method, JSON.toJSONString(ret));
+            	log.debug("<{}.{}>,response params:{}", controller, method, JSON.toJSONString(ret, SerializerFeature.DisableCircularReferenceDetect));
             
             long endtime = new Date().getTime();
             

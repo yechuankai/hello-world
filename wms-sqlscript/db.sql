@@ -3410,8 +3410,8 @@ comment on column status_history_t.description   is '数据描述';
 drop table warehouse_active_t cascade constraints;
 create table warehouse_active_t (
 active_id number,
-active char(1),
-init char(1),
+active char(1) default 'N',
+init char(1) default 'N',
   company_id         number        default '0',
   warehouse_id       number        default '0',
   del_flag                char(1)         default 'N',
@@ -3520,8 +3520,9 @@ car_number varchar2(50),
 car_driver varchar2(50),
 car_driver_phone varchar2(50),
 container_number varchar2(50),
-status varchar2(50),
+status varchar2(50) default '10',
 remark varchar2(500),
+active char(1),
   company_id         number        default '0',
   warehouse_id       number        default '0',
   del_flag                char(1)         default 'N',
@@ -3544,6 +3545,7 @@ comment on column platform_t.car_driver_phone is '司机电话';
 comment on column platform_t.container_number is '柜号';
 comment on column platform_t.status is '状态';
 comment on column platform_t.remark is '备注';
+comment on column platform_t.active is '启用 Y是 N否';
 comment on column platform_t.company_id      is '公司ID';
 comment on column platform_t.warehouse_id    is '仓库ID';
 comment on column platform_t.del_flag    is '删除标志（N代表存在 Y代表删除）';
@@ -3556,6 +3558,49 @@ comment on column platform_t.description   is '数据描述';
 
 
 
+-- ----------------------------
+-- 预约
+-- ----------------------------
+drop table appointment_t cascade constraints;
+create table appointment_t (
+appointment_id number,
+appointment_code varchar2(50),
+type varchar2(50),
+platform_id number,
+platform_code varchar2(50),
+source_bill_number varchar2(50),
+status varchar2(50) default '20',
+remark varchar2(500),
+  company_id         number        default '0',
+  warehouse_id       number        default '0',
+  del_flag                char(1)         default 'N',
+  create_by               varchar2(64)    default '',
+  create_time             date            default sysdate,
+  update_by               varchar2(64)    default '',
+  update_time             date            default sysdate,
+  update_version          number          default '1',
+  description             varchar2(500)   default null
+);
+
+alter table appointment_t add constraint pk_appointment_t primary key (appointment_id);
+comment on table appointment_t is '预约';
+comment on column appointment_t.appointment_id is '预约ID';
+comment on column appointment_t.appointment_code is '预约代码';
+comment on column appointment_t.type is '类型 IN 入库 OUT 出库';
+comment on column appointment_t.platform_id is '泊位ID';
+comment on column appointment_t.platform_code is '泊位代码';
+comment on column appointment_t.source_bill_number is '单据号';
+comment on column appointment_t.status is '状态';
+comment on column appointment_t.remark is '备注';
+comment on column appointment_t.company_id      is '公司ID';
+comment on column appointment_t.warehouse_id    is '仓库ID';
+comment on column appointment_t.del_flag    is '删除标志（N代表存在 Y代表删除）';
+comment on column appointment_t.create_by     is '创建者';
+comment on column appointment_t.create_time   is '创建时间';
+comment on column appointment_t.update_by     is '更新者';
+comment on column appointment_t.update_time   is '更新时间';
+comment on column appointment_t.update_version   is '更新时间';
+comment on column appointment_t.description   is '数据描述';
 
 
 
@@ -3759,4 +3804,7 @@ comment on column inbound_header_t.carrier_driver_phone is '司机电话 ';
 
 alter table outbound_header_t add (driver_phone varchar2(50));
 comment on column outbound_header_t.driver_phone is '司机电话 ';
+
+alter table allocate_short_t add (SOURCE_WAVE_NUMBER varchar2(100));
+comment on column allocate_short_t.SOURCE_WAVE_NUMBER is '来源波次号';
 

@@ -11,6 +11,7 @@
     <result column="CONTAINER_NUMBER" jdbcType="VARCHAR" property="containerNumber" />
     <result column="STATUS" jdbcType="VARCHAR" property="status" />
     <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="ACTIVE" jdbcType="CHAR" property="active" />
     <result column="COMPANY_ID" jdbcType="DECIMAL" property="companyId" />
     <result column="WAREHOUSE_ID" jdbcType="DECIMAL" property="warehouseId" />
     <result column="DEL_FLAG" jdbcType="CHAR" property="delFlag" />
@@ -118,7 +119,7 @@
   </sql>
   <sql id="Base_Column_List">
     PLATFORM_ID, PLATFORM_CODE, PLATFORM_TYPE, CAR_NUMBER, CAR_DRIVER, CAR_DRIVER_PHONE, 
-    CONTAINER_NUMBER, STATUS, REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
+    CONTAINER_NUMBER, STATUS, REMARK, ACTIVE, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
     CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.PlatformTExample" resultMap="BaseResultMap">
@@ -145,17 +146,17 @@
     insert into PLATFORM_T (PLATFORM_ID, PLATFORM_CODE, PLATFORM_TYPE, 
       CAR_NUMBER, CAR_DRIVER, CAR_DRIVER_PHONE, 
       CONTAINER_NUMBER, STATUS, REMARK, 
-      COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, 
-      CREATE_BY, CREATE_TIME, UPDATE_BY, 
-      UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
-      )
+      ACTIVE, COMPANY_ID, WAREHOUSE_ID, 
+      DEL_FLAG, CREATE_BY, CREATE_TIME, 
+      UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, 
+      DESCRIPTION)
     values (#{platformId,jdbcType=DECIMAL}, #{platformCode,jdbcType=VARCHAR}, #{platformType,jdbcType=VARCHAR}, 
       #{carNumber,jdbcType=VARCHAR}, #{carDriver,jdbcType=VARCHAR}, #{carDriverPhone,jdbcType=VARCHAR}, 
       #{containerNumber,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, 
-      #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}
-      )
+      #{active,jdbcType=CHAR}, #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, 
+      #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, 
+      #{description,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.PlatformTEntity">
     insert into PLATFORM_T
@@ -186,6 +187,9 @@
       </if>
       <if test="remark != null">
         REMARK,
+      </if>
+      <if test="active != null">
+        ACTIVE,
       </if>
       <if test="companyId != null">
         COMPANY_ID,
@@ -242,6 +246,9 @@
       </if>
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="active != null">
+        #{active,jdbcType=CHAR},
       </if>
       <if test="companyId != null">
         #{companyId,jdbcType=DECIMAL},
@@ -308,6 +315,9 @@
       <if test="record.remark != null">
         REMARK = #{record.remark,jdbcType=VARCHAR},
       </if>
+      <if test="record.active != null">
+        ACTIVE = #{record.active,jdbcType=CHAR},
+      </if>
       <if test="record.companyId != null">
         COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
       </if>
@@ -351,6 +361,7 @@
       CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR},
       STATUS = #{record.status,jdbcType=VARCHAR},
       REMARK = #{record.remark,jdbcType=VARCHAR},
+      ACTIVE = #{record.active,jdbcType=CHAR},
       COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
       WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL},
       DEL_FLAG = #{record.delFlag,jdbcType=CHAR},
@@ -471,6 +482,7 @@
     CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR}, 
     STATUS = #{record.status,jdbcType=VARCHAR}, 
     REMARK = #{record.remark,jdbcType=VARCHAR}, 
+    ACTIVE = #{record.active,jdbcType=CHAR}, 
     COMPANY_ID = #{record.companyId,jdbcType=DECIMAL}, 
     WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL}, 
     DEL_FLAG = #{record.delFlag,jdbcType=CHAR}, 
@@ -519,6 +531,9 @@
         </if>
         <if test="record.remark != null">
           REMARK = #{record.remark,jdbcType=VARCHAR},
+        </if>
+        <if test="record.active != null">
+          ACTIVE = #{record.active,jdbcType=CHAR},
         </if>
         <if test="record.companyId != null">
           COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},

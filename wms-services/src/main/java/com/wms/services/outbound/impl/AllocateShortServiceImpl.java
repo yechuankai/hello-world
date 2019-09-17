@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
-import com.wms.common.core.domain.response.AjaxResult;
 import com.wms.common.enums.YesNoEnum;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.common.utils.ExampleUtils;

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${wms.allocateshort.title}">缺量记录</title>
+    <head th:replace="common/head"/>
+</head>
+<body class="easyui-layout">
+<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+    <div id="searchDiv" class="easyui-layout" style="height: 100%;">
+        <div style="margin-left: 10px;height: 100%;" data-options="region:'north',border:false">
+            <form id="searchForm" data-table="#dataTable">
+                <div style="margin-bottom:10px">
+                    <input name="sourceBillNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.sourcebillnumber}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="sourceLineNumber" class="easyui-numberbox"
+                           wms:data-options="label:'${web.label.sourcelinenumber}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="sourceWaveNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.sourcewavenumber}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="ownerCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.owner}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="skuCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.sku}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="skuAlias" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.skualias}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="lotNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.lotnumber}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="locationCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.locationcode}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="lpnNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.lpnnumber}',labelPosition:'top'">
+                </div>
+            </form>
+        </div>
+        <div style="text-align: center;height:50px;" data-options="region:'south',border:false">
+            <a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-search'">
+                <span wms:text="${web.label.search}">Search</span>
+            </a>
+            <a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-clear'">
+                <span wms:text="${web.label.clear}">Clear</span>
+            </a>
+        </div>
+    </div>
+</div>
+<div data-options="region:'center',border:false">
+    <div>
+        <table id="dataTable" wms:title="${web.label.allocate.title}" class="easyui-datagrid"
+               th:data-delayUrl="@{/services/inner/outbound/allocateShort/find}">
+            <thead>
+            	<tr>
+		            <th field="sourceBillNumber" width="100" wms:text="${web.label.sourcebillnumber}" data-options="sortable:true">
+		                sourceBillNumber
+		            </th>
+		            <th field="sourceLineNumber" width="100" wms:text="${web.label.sourcelinenumber}" data-options="sortable:true">
+		                sourceLineNumber
+		            </th>
+		            <th field="sourceWaveNumber" width="100" wms:text="${web.label.sourcewavenumber}" data-options="sortable:true">
+		                sourceWaveNumber
+		            </th>
+		            <th field="ownerCode" width="50" wms:text="${web.label.owner}">
+		                ownerCode
+		            </th>
+		            <th field="skuCode" width="100" wms:text="${web.label.sku}">
+		                skuCode
+		            </th>
+		            <th field="skuAlias" width="100" wms:text="${web.label.skualias}">
+		                skuAlias
+		            </th>
+		             <th field="lotNumber" width="100" wms:text="${web.label.lotnumber}">
+		                lotNumber
+		            </th>
+		             <th field="locationCode" width="80" wms:text="${web.label.location}">
+		                locationCode
+		            </th>
+		             <th field="lpnNumber" width="80" wms:text="${web.label.lpnnumber}">
+		                lpnNumber
+		            </th>
+		            <th field="quantityOriginal" width="50" wms:text="${web.label.quantitysystem}">
+		                System Quantity
+		            </th>
+		            <th field="quantityOriginal" width="50" wms:text="${web.label.quantityconfirm}">
+		                Confirm Quantity
+		            </th>
+		            <th field="download" data-options="
+										formatter:function(value,row){
+											if (row.fileId == undefined || row.fileId == null){
+												return '';
+											}else{
+												var data = JSON.stringify(row);
+												var detail = '<span title = \'download\' onclick=\'download('+data+')\' class=\'icon-detail\'>&nbsp;</span>';
+												return detail;
+											}
+										}
+									"></th>
+					<th field="reason" width="50" wms:text="${web.label.reason}">
+		                Reason
+		            </th>
+		            <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+		            <th field="createTime" width="150" wms:text="${web.label.createtime}"
+		                data-options="sortable:true">createTime
+		            </th>
+		            <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+		            <th field="updateTime" width="150" wms:text="${web.label.updatetime}"
+		                data-options="sortable:true">updateTime
+		            </th>
+		           </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+</body>
+<script th:replace="common/js"/>
+<script>
+function download(obj){
+	downloadFile(obj.fileId);
+}
+</script>
+</html>

@@ -13,6 +13,7 @@ import com.wms.dao.example.AllocateStrategyDetailTExample;
 import com.wms.entity.auto.AllocateStrategyDetailTEntity;
 import com.wms.entity.auto.AllocateStrategyTEntity;
 import com.wms.entity.auto.AreaTEntity;
+import com.wms.entity.auto.PutawayStrategyDetailTEntity;
 import com.wms.services.base.IAllocateStrategDetailService;
 import com.wms.services.base.IAreaHeaderService;
 import org.apache.commons.collections.CollectionUtils;
@@ -90,6 +91,8 @@ public class AllocateStrategDetailServiceImpl implements IAllocateStrategDetailS
             	detailTEntity.setAreaCode("");
             	detailTEntity.setAreaId(0L);
             }
+            
+            validate(detailTEntity);
 
             AllocateStrategyDetailTEntity update = AllocateStrategyDetailTEntity.builder()
                     .updateBy(request.getUserName())
@@ -161,6 +164,8 @@ public class AllocateStrategDetailServiceImpl implements IAllocateStrategDetailS
             	detail.setAreaId(null);
             }
 
+            validate(detail);
+            
             AllocateStrategyDetailTEntity insert = AllocateStrategyDetailTEntity.builder()
                     .createBy(request.getUserName())
                     .createTime(new Date())
@@ -259,6 +264,13 @@ public class AllocateStrategDetailServiceImpl implements IAllocateStrategDetailS
             }
         }
         return Boolean.TRUE;
+    }
+    
+    private Boolean validate(AllocateStrategyDetailTEntity detail) {
+    	if (StringUtils.isEmpty(detail.getType()))
+    		throw new BusinessServiceException("AllocateStrategDetailServiceImpl", "type.isnull");
+    	
+    	return Boolean.TRUE;
     }
     
 }

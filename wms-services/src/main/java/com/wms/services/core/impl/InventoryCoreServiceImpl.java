@@ -238,6 +238,8 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 			if (tran.getAllocateFlag()) {
 				//处理分配明细
 				AllocateVO allocate = detail.getAllocate();
+				//再次查询数量，保证数量正确
+				AllocateTEntity selectAllocate = allocateService.find(detail.getAllocate());
 				AllocateTEntity updateAllocate = AllocateTEntity.builder()
 													.warehouseId(tran.getWarehouseId())
 													.companyId(tran.getCompanyId())
@@ -247,13 +249,13 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 													.build();
 				//发运状态需保留分配明细
 				if (!AllocateStatusEnum.Ship.getCode().equals(allocate.getStatus()))
-					updateAllocate.setQuantityAllocated(allocate.getQuantityAllocated().add(outboundQuantity));
+					updateAllocate.setQuantityAllocated(selectAllocate.getQuantityAllocated().add(outboundQuantity));
 				
 				//短拣时删除明细
 				if (YesNoEnum.Yes.getCode().equals(allocate.getShortFlag())) {
 					updateAllocate.setQuantityAllocated(BigDecimal.ZERO);
 					//记录短拣数量
-					updateAllocate.setDescription(allocate.getQuantityAllocated().add(outboundQuantity).toString());
+					updateAllocate.setDescription(selectAllocate.getQuantityAllocated().add(outboundQuantity).toString());
 				}
 				allocateService.modify(Lists.newArrayList(updateAllocate));
 			}
@@ -590,6 +592,8 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 			inventory.setUpdateBy(tran.getUserName());
 			inventory.setUpdateTime(new Date());
 			inventory.setQuantityOnhand(detail.getTranQuantity());
+			inventory.setQuantityAllocated(BigDecimal.ZERO);
+			inventory.setQuantityLocked(BigDecimal.ZERO);
 			//处理扣减库存时硬分配库存分配量
 			if (tran.getAllocateFlag()
 					&& AllocateStrategyTypeEnum.Hard.getCode().equals(detail.getAllocate().getAllocateStrategyType()))

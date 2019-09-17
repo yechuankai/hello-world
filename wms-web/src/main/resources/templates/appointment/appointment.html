@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${wms.appointment.title}">预约</title>
+    <head th:replace="common/head"/>
+</head>
+<body class="easyui-layout">
+<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+    <div id="searchDiv">
+        <div style="margin-left: 10px;">
+            <form id="searchForm" data-table="#dataTable">
+                <div style="margin-bottom:10px">
+                    <input name="appointmentCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.appointment}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combobox" name="type" wms:data-options="
+						data: codelkups['APPOINTMENTTYPE'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.type}',
+						labelPosition: 'top'
+						" />
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="sourceBillNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.sourcebillnumber}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="platformCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.platform}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="carNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.carriercarnumber}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="carDriver" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.carrierdriver}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="carDriverPhone" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.driverphone}',labelPosition:'top'">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combobox" name="status" wms:data-options="
+						data: codelkups['APPOINTMENTSTATUS'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.status}',
+						labelPosition: 'top'
+						" />
+                </div>
+            </form>
+        </div>
+        <div style="text-align: center;">
+            <a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-search'">
+                <span wms:text="${web.label.search}">Search</span>
+            </a>
+            <a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-clear'">
+                <span wms:text="${web.label.clear}">Clear</span>
+            </a>
+        </div>
+    </div>
+</div>
+<div data-options="region:'center',border:false">
+    <div id="dataTableToolbar" style="padding-left: 20px;">
+        <a href="#" class="easyui-linkbutton common-add" data-addpanel="#addDiv">
+            <span wms:text="${web.label.add}">Add</span>
+        </a>
+        <a href="#" class="easyui-linkbutton common-rowsave" data-table="#dataTable"
+           th:data-url="@{/services/inner/appointment/save}">
+            <span wms:text="${web.label.save}">Save</span>
+        </a>
+        <a href="#" class="easyui-linkbutton common-other" data-table="#dataTable"
+           th:data-url="@{/services/inner/appointment/arrival}">
+            <span wms:text="${web.label.arrival}">Arrival</span>
+        </a>
+        <a href="#" class="easyui-linkbutton common-other" data-table="#dataTable"
+           th:data-url="@{/services/inner/appointment/leave}">
+            <span wms:text="${web.label.leave}">Leave</span>
+        </a>
+        <a href="#" class="easyui-linkbutton common-other" data-table="#dataTable"
+           th:data-url="@{/services/inner/appointment/cancel}">
+            <span wms:text="${web.label.cancel}">Cancel</span>
+        </a>
+        <a href="#" class="easyui-linkbutton common-rowdel" data-table="#dataTable"
+           th:data-url="@{/services/inner/appointment/delete}">
+            <span wms:text="${web.label.delete}">Delete</span>
+        </a>
+    </div>
+    <div>
+        <table id="dataTable" wms:title="${web.label.zone.title}" class="easyui-datagrid"
+               th:data-delayUrl="@{/services/inner/appointment/find}">
+            <thead data-options="frozen:true">
+            	<tr>
+            		<th field="appointmentId" data-options="checkbox:true"></th>
+            	</tr>
+            </thead>
+            <thead>
+	            <tr>
+	                <th field="appointmentCode" width="130" wms:text="${web.label.appointment}" data-options="sortable:true">
+	                    appointmentCode
+	                </th>
+	                <th field="type" width="80" wms:text="${web.label.type}" data-options="
+	                            sortable:true,
+	                            formatter:function(value,row){
+									return getCodelkupValue('APPOINTMENTTYPE',value);
+								},
+	                            editor:{
+									type:'combobox',
+									options:{
+										valueField:'code',
+										textField:'descr',
+										data: codelkups['APPOINTMENTTYPE']
+									}
+								}
+	                        ">type
+	                </th>
+	                <th field="sourceBillNumber" width="130" wms:text="${web.label.sourcebillnumber}" data-options="sortable:true">
+	                    sourceBillNumber
+	                </th>
+	                <th field="platformCode" width="100" wms:text="${web.label.platform}" wms:data-options="
+	                		sortable:true,
+	                		editor:{
+	                			type: 'combogrid',
+	                			options: {
+	                				idField:'platformCode',
+	    							textField:'platformCode',
+									url:'../../services/inner/appointment/platForm/findAvailable',
+									queryParams: getBaseData(),
+								    columns:[[
+									    {field:'platformCode',title:'${web.label.platform}',width:80},
+									    {field:'status',title:'${web.label.status}',width:80,formatter:function(value,row){
+												return getCodelkupValue('PLATFORMSTATUS',value);
+											}
+										}
+								    ]]
+	                			}
+	                		}">
+	                    platformCode
+	                </th>
+	                <th field="expectedDate" width="130" wms:text="${web.label.expecteddate}" data-options="sortable:true">
+	                    expectedDate
+	                </th>
+	                <th field="arrivalDate" width="130" wms:text="${web.label.arrivaldate}" data-options="sortable:true,editor:'datetimebox'">
+	                    arrivalDate
+	                </th>
+	                <th field="carNumber" width="100" wms:text="${web.label.carriercarnumber}" data-options="sortable:true,editor:'text'">
+	                    carNumber
+	                </th>
+	                <th field="carDriver" width="100" wms:text="${web.label.carrierdriver}" data-options="sortable:true,editor:'text'">
+	                    carDriver
+	                </th>
+	                <th field="carDriverPhone" width="100" wms:text="${web.label.driverphone}" data-options="sortable:true,editor:'text'">
+	                    carDriverPhone
+	                </th>
+	                <th field="status" width="100" wms:text="${web.label.status}" data-options="
+								sortable:true,
+								formatter:function(value,row){
+									return getCodelkupValue('APPOINTMENTSTATUS',value);
+								},
+								editor:{
+									type:'combobox',
+									options:{
+										valueField:'code',
+										textField:'descr',
+										data: codelkups['APPOINTMENTSTATUS']
+									}
+								}
+							">status
+	                </th>
+	                <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+	                <th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true">
+	                    createTime
+	                </th>
+	                <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+	                <th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">
+	                    updateTime
+	                </th>
+	            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div id="addDiv" wms:title="${web.label.add}" style="width:600px;height:400px; display: none;">
+    <div style="width: 100%;padding-left: 10px;">
+        <form method="post" id="addForm" th:data-url="@{/services/inner/appointment/add}">
+            <table style="width: 100%;">
+                <tr>
+                    <td>
+                        <input name="appointmentCode" class="easyui-textbox" readonly="readonly"
+                               wms:data-options="label:'${web.label.appointment}',labelPosition:'top'">
+                    </td>
+                    <td colspan="2">
+                        <input class="easyui-combobox" name="type" wms:data-options="
+							required: true,
+							panelHeight: 200,
+							data: codelkups['APPOINTMENTTYPE'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.type}',
+							labelPosition: 'top'
+						" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input name="expectedDate" class="easyui-datetimebox" 
+                               wms:data-options="required: true, label:'${web.label.expecteddate}',labelPosition:'top'">
+                    </td>
+                    <td colspan="2">
+                         <input name="arrivalDate" class="easyui-datetimebox" 
+                               wms:data-options="label:'${web.label.expecteddate}',labelPosition:'top'">
+                    </td>
+                </tr>
+                <tr>
+                	<td>
+                        <input name="sourceBillNumber" class="easyui-textbox"
+                           wms:data-options="required: true, label:'${web.label.sourcebillnumber}',labelPosition:'top'">
+                    </td>
+                    <td>
+                        <input class="easyui-combogrid" name="platformCode"  wms:data-options="
+								required: true,
+								labelPosition: 'top',
+								label: '${web.label.platform}',
+								idField:'platformCode',
+    							textField:'platformCode',
+								url:'../../services/inner/appointment/platForm/findAvailable',
+								queryParams: getBaseData(),
+							    columns:[[
+								    {field:'platformCode',title:'${web.label.platform}',width:80},
+								    {field:'status',title:'${web.label.status}',width:80,formatter:function(value,row){
+											return getCodelkupValue('PLATFORMSTATUS',value);
+										}
+									}
+							    ]],
+							"/>
+                    </td>
+                    <td>
+                    	<input class="easyui-combobox" name="status" wms:data-options="
+							data: codelkups['APPOINTMENTSTATUS'],
+							value: '10',
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.status}',
+							labelPosition: 'top'
+						" />
+                    </td>
+                </tr>
+                <tr>
+                	<td>
+                		<input name="carNumber" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.carriercarnumber}',labelPosition:'top'">
+                	</td>
+                	<td>
+                		<input name="carDriver" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.carrierdriver}',labelPosition:'top'">
+                	</td>
+                	<td>
+                		<input name="carDriverPhone" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.driverphone}',labelPosition:'top'">
+                	</td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="text-align: center;margin-top: 30px;">
+        <a href="#" class="easyui-linkbutton common-confirmadd" data-form="#addForm" data-table="#dataTable"
+           id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
+        </a>
+        <a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');"
+           data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
+        </a>
+    </div>
+</div>
+</div>
+</body>
+<script th:replace="common/js"/>
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=PLATFORMSTATUS,APPOINTMENTSTATUS,APPOINTMENTTYPE}"></script>
+<script type="text/javascript" th:inline="text">
+	function x(){
+		
+	}
+</script>
+</html>

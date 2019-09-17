@@ -18,6 +18,18 @@ public class AppointmentTEntity extends BaseEntity {
 
     private String sourceBillNumber;
 
+    private String carNumber;
+
+    private String carDriver;
+
+    private String carDriverPhone;
+
+    private String containerNumber;
+
+    private Date expectedDate;
+
+    private Date arrivalDate;
+
     private String status;
 
     private String remark;
@@ -86,6 +98,54 @@ public class AppointmentTEntity extends BaseEntity {
 
     public void setSourceBillNumber(String sourceBillNumber) {
         this.sourceBillNumber = sourceBillNumber == null ? null : sourceBillNumber.trim();
+    }
+
+    public String getCarNumber() {
+        return carNumber;
+    }
+
+    public void setCarNumber(String carNumber) {
+        this.carNumber = carNumber == null ? null : carNumber.trim();
+    }
+
+    public String getCarDriver() {
+        return carDriver;
+    }
+
+    public void setCarDriver(String carDriver) {
+        this.carDriver = carDriver == null ? null : carDriver.trim();
+    }
+
+    public String getCarDriverPhone() {
+        return carDriverPhone;
+    }
+
+    public void setCarDriverPhone(String carDriverPhone) {
+        this.carDriverPhone = carDriverPhone == null ? null : carDriverPhone.trim();
+    }
+
+    public String getContainerNumber() {
+        return containerNumber;
+    }
+
+    public void setContainerNumber(String containerNumber) {
+        this.containerNumber = containerNumber == null ? null : containerNumber.trim();
+    }
+
+    public Date getExpectedDate() {
+        return expectedDate;
+    }
+
+    public void setExpectedDate(Date expectedDate) {
+        this.expectedDate = expectedDate;
+    }
+
+    public Date getArrivalDate() {
+        return arrivalDate;
+    }
+
+    public void setArrivalDate(Date arrivalDate) {
+        this.arrivalDate = arrivalDate;
     }
 
     public String getStatus() {
@@ -199,6 +259,12 @@ public class AppointmentTEntity extends BaseEntity {
         sb.append(", platformId=").append(platformId);
         sb.append(", platformCode=").append(platformCode);
         sb.append(", sourceBillNumber=").append(sourceBillNumber);
+        sb.append(", carNumber=").append(carNumber);
+        sb.append(", carDriver=").append(carDriver);
+        sb.append(", carDriverPhone=").append(carDriverPhone);
+        sb.append(", containerNumber=").append(containerNumber);
+        sb.append(", expectedDate=").append(expectedDate);
+        sb.append(", arrivalDate=").append(arrivalDate);
         sb.append(", status=").append(status);
         sb.append(", remark=").append(remark);
         sb.append(", companyId=").append(companyId);
@@ -232,6 +298,12 @@ public class AppointmentTEntity extends BaseEntity {
             && (this.getPlatformId() == null ? other.getPlatformId() == null : this.getPlatformId().equals(other.getPlatformId()))
             && (this.getPlatformCode() == null ? other.getPlatformCode() == null : this.getPlatformCode().equals(other.getPlatformCode()))
             && (this.getSourceBillNumber() == null ? other.getSourceBillNumber() == null : this.getSourceBillNumber().equals(other.getSourceBillNumber()))
+            && (this.getCarNumber() == null ? other.getCarNumber() == null : this.getCarNumber().equals(other.getCarNumber()))
+            && (this.getCarDriver() == null ? other.getCarDriver() == null : this.getCarDriver().equals(other.getCarDriver()))
+            && (this.getCarDriverPhone() == null ? other.getCarDriverPhone() == null : this.getCarDriverPhone().equals(other.getCarDriverPhone()))
+            && (this.getContainerNumber() == null ? other.getContainerNumber() == null : this.getContainerNumber().equals(other.getContainerNumber()))
+            && (this.getExpectedDate() == null ? other.getExpectedDate() == null : this.getExpectedDate().equals(other.getExpectedDate()))
+            && (this.getArrivalDate() == null ? other.getArrivalDate() == null : this.getArrivalDate().equals(other.getArrivalDate()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getRemark() == null ? other.getRemark() == null : this.getRemark().equals(other.getRemark()))
             && (this.getCompanyId() == null ? other.getCompanyId() == null : this.getCompanyId().equals(other.getCompanyId()))
@@ -255,6 +327,12 @@ public class AppointmentTEntity extends BaseEntity {
         result = prime * result + ((getPlatformId() == null) ? 0 : getPlatformId().hashCode());
         result = prime * result + ((getPlatformCode() == null) ? 0 : getPlatformCode().hashCode());
         result = prime * result + ((getSourceBillNumber() == null) ? 0 : getSourceBillNumber().hashCode());
+        result = prime * result + ((getCarNumber() == null) ? 0 : getCarNumber().hashCode());
+        result = prime * result + ((getCarDriver() == null) ? 0 : getCarDriver().hashCode());
+        result = prime * result + ((getCarDriverPhone() == null) ? 0 : getCarDriverPhone().hashCode());
+        result = prime * result + ((getContainerNumber() == null) ? 0 : getContainerNumber().hashCode());
+        result = prime * result + ((getExpectedDate() == null) ? 0 : getExpectedDate().hashCode());
+        result = prime * result + ((getArrivalDate() == null) ? 0 : getArrivalDate().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getRemark() == null) ? 0 : getRemark().hashCode());
         result = prime * result + ((getCompanyId() == null) ? 0 : getCompanyId().hashCode());
@@ -389,6 +467,90 @@ public class AppointmentTEntity extends BaseEntity {
          */
         public Builder sourceBillNumber(String sourceBillNumber) {
             obj.setSourceBillNumber(sourceBillNumber);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column APPOINTMENT_T.CAR_NUMBER
+         *
+         * @param carNumber the value for APPOINTMENT_T.CAR_NUMBER
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder carNumber(String carNumber) {
+            obj.setCarNumber(carNumber);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column APPOINTMENT_T.CAR_DRIVER
+         *
+         * @param carDriver the value for APPOINTMENT_T.CAR_DRIVER
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder carDriver(String carDriver) {
+            obj.setCarDriver(carDriver);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column APPOINTMENT_T.CAR_DRIVER_PHONE
+         *
+         * @param carDriverPhone the value for APPOINTMENT_T.CAR_DRIVER_PHONE
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder carDriverPhone(String carDriverPhone) {
+            obj.setCarDriverPhone(carDriverPhone);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column APPOINTMENT_T.CONTAINER_NUMBER
+         *
+         * @param containerNumber the value for APPOINTMENT_T.CONTAINER_NUMBER
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder containerNumber(String containerNumber) {
+            obj.setContainerNumber(containerNumber);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column APPOINTMENT_T.EXPECTED_DATE
+         *
+         * @param expectedDate the value for APPOINTMENT_T.EXPECTED_DATE
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder expectedDate(Date expectedDate) {
+            obj.setExpectedDate(expectedDate);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column APPOINTMENT_T.ARRIVAL_DATE
+         *
+         * @param arrivalDate the value for APPOINTMENT_T.ARRIVAL_DATE
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder arrivalDate(Date arrivalDate) {
+            obj.setArrivalDate(arrivalDate);
             return this;
         }
 
@@ -647,6 +809,12 @@ public class AppointmentTEntity extends BaseEntity {
         platformId("PLATFORM_ID", "platformId", "DECIMAL", false),
         platformCode("PLATFORM_CODE", "platformCode", "VARCHAR", false),
         sourceBillNumber("SOURCE_BILL_NUMBER", "sourceBillNumber", "VARCHAR", false),
+        carNumber("CAR_NUMBER", "carNumber", "VARCHAR", false),
+        carDriver("CAR_DRIVER", "carDriver", "VARCHAR", false),
+        carDriverPhone("CAR_DRIVER_PHONE", "carDriverPhone", "VARCHAR", false),
+        containerNumber("CONTAINER_NUMBER", "containerNumber", "VARCHAR", false),
+        expectedDate("EXPECTED_DATE", "expectedDate", "TIMESTAMP", false),
+        arrivalDate("ARRIVAL_DATE", "arrivalDate", "TIMESTAMP", false),
         status("STATUS", "status", "VARCHAR", true),
         remark("REMARK", "remark", "VARCHAR", false),
         companyId("COMPANY_ID", "companyId", "DECIMAL", false),

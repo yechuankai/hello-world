@@ -169,7 +169,7 @@ public class InventoryMultiServiceImpl implements IInventoryMultiService{
 	public class StockByContainer implements IExcelService<InventoryMultiCountVo>{
 		@Override
 		public ExcelTemplate<InventoryMultiCountVo> getExcelTemplate() {
-			return new ExcelTemplate<>(ExcelTemplateEnum.StockByContainer.getCode(),InventoryMultiCountVo.class);
+			return new ExcelTemplate<>(ExcelTemplateEnum.InventoryByContainer.getCode(),InventoryMultiCountVo.class);
 		}
 		
 		@Override
@@ -187,7 +187,7 @@ public class InventoryMultiServiceImpl implements IInventoryMultiService{
 	public class StockByLpn implements IExcelService<InventoryMultiCountVo>{
 		@Override
 		public ExcelTemplate<InventoryMultiCountVo> getExcelTemplate() {
-			return new ExcelTemplate<>(ExcelTemplateEnum.StockByLpn.getCode(),InventoryMultiCountVo.class);
+			return new ExcelTemplate<>(ExcelTemplateEnum.InventoryByLpn.getCode(),InventoryMultiCountVo.class);
 		}
 		
 		@Override
@@ -205,7 +205,7 @@ public class InventoryMultiServiceImpl implements IInventoryMultiService{
 	public class StockByLocation implements IExcelService<InventoryMultiCountVo>{
 		@Override
 		public ExcelTemplate<InventoryMultiCountVo> getExcelTemplate() {
-			return new ExcelTemplate<>(ExcelTemplateEnum.StockByLocation.getCode(),InventoryMultiCountVo.class);
+			return new ExcelTemplate<>(ExcelTemplateEnum.InventoryByLocation.getCode(),InventoryMultiCountVo.class);
 		}
 		
 		@Override
@@ -223,7 +223,7 @@ public class InventoryMultiServiceImpl implements IInventoryMultiService{
 	public class StockBySku implements IExcelService<InventoryMultiCountVo>{
 		@Override
 		public ExcelTemplate<InventoryMultiCountVo> getExcelTemplate() {
-			return new ExcelTemplate<>(ExcelTemplateEnum.StockBySku.getCode(),InventoryMultiCountVo.class);
+			return new ExcelTemplate<>(ExcelTemplateEnum.InventoryBySku.getCode(),InventoryMultiCountVo.class);
 		}
 		
 		@Override

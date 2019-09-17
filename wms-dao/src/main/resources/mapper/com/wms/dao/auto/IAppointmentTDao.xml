@@ -8,6 +8,12 @@
     <result column="PLATFORM_ID" jdbcType="DECIMAL" property="platformId" />
     <result column="PLATFORM_CODE" jdbcType="VARCHAR" property="platformCode" />
     <result column="SOURCE_BILL_NUMBER" jdbcType="VARCHAR" property="sourceBillNumber" />
+    <result column="CAR_NUMBER" jdbcType="VARCHAR" property="carNumber" />
+    <result column="CAR_DRIVER" jdbcType="VARCHAR" property="carDriver" />
+    <result column="CAR_DRIVER_PHONE" jdbcType="VARCHAR" property="carDriverPhone" />
+    <result column="CONTAINER_NUMBER" jdbcType="VARCHAR" property="containerNumber" />
+    <result column="EXPECTED_DATE" jdbcType="TIMESTAMP" property="expectedDate" />
+    <result column="ARRIVAL_DATE" jdbcType="TIMESTAMP" property="arrivalDate" />
     <result column="STATUS" jdbcType="VARCHAR" property="status" />
     <result column="REMARK" jdbcType="VARCHAR" property="remark" />
     <result column="COMPANY_ID" jdbcType="DECIMAL" property="companyId" />
@@ -117,6 +123,7 @@
   </sql>
   <sql id="Base_Column_List">
     APPOINTMENT_ID, APPOINTMENT_CODE, TYPE, PLATFORM_ID, PLATFORM_CODE, SOURCE_BILL_NUMBER, 
+    CAR_NUMBER, CAR_DRIVER, CAR_DRIVER_PHONE, CONTAINER_NUMBER, EXPECTED_DATE, ARRIVAL_DATE, 
     STATUS, REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, 
     UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
   </sql>
@@ -143,12 +150,16 @@
   <insert id="insert" parameterType="com.wms.entity.auto.AppointmentTEntity">
     insert into APPOINTMENT_T (APPOINTMENT_ID, APPOINTMENT_CODE, TYPE, 
       PLATFORM_ID, PLATFORM_CODE, SOURCE_BILL_NUMBER, 
+      CAR_NUMBER, CAR_DRIVER, CAR_DRIVER_PHONE, 
+      CONTAINER_NUMBER, EXPECTED_DATE, ARRIVAL_DATE, 
       STATUS, REMARK, COMPANY_ID, 
       WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
       CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
       UPDATE_VERSION, DESCRIPTION)
     values (#{appointmentId,jdbcType=DECIMAL}, #{appointmentCode,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
       #{platformId,jdbcType=DECIMAL}, #{platformCode,jdbcType=VARCHAR}, #{sourceBillNumber,jdbcType=VARCHAR}, 
+      #{carNumber,jdbcType=VARCHAR}, #{carDriver,jdbcType=VARCHAR}, #{carDriverPhone,jdbcType=VARCHAR}, 
+      #{containerNumber,jdbcType=VARCHAR}, #{expectedDate,jdbcType=TIMESTAMP}, #{arrivalDate,jdbcType=TIMESTAMP}, 
       #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, 
       #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
@@ -174,6 +185,24 @@
       </if>
       <if test="sourceBillNumber != null">
         SOURCE_BILL_NUMBER,
+      </if>
+      <if test="carNumber != null">
+        CAR_NUMBER,
+      </if>
+      <if test="carDriver != null">
+        CAR_DRIVER,
+      </if>
+      <if test="carDriverPhone != null">
+        CAR_DRIVER_PHONE,
+      </if>
+      <if test="containerNumber != null">
+        CONTAINER_NUMBER,
+      </if>
+      <if test="expectedDate != null">
+        EXPECTED_DATE,
+      </if>
+      <if test="arrivalDate != null">
+        ARRIVAL_DATE,
       </if>
       <if test="status != null">
         STATUS,
@@ -227,6 +256,24 @@
       </if>
       <if test="sourceBillNumber != null">
         #{sourceBillNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="carNumber != null">
+        #{carNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="carDriver != null">
+        #{carDriver,jdbcType=VARCHAR},
+      </if>
+      <if test="carDriverPhone != null">
+        #{carDriverPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="containerNumber != null">
+        #{containerNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="expectedDate != null">
+        #{expectedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="arrivalDate != null">
+        #{arrivalDate,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null">
         #{status,jdbcType=VARCHAR},
@@ -290,6 +337,24 @@
       <if test="record.sourceBillNumber != null">
         SOURCE_BILL_NUMBER = #{record.sourceBillNumber,jdbcType=VARCHAR},
       </if>
+      <if test="record.carNumber != null">
+        CAR_NUMBER = #{record.carNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carDriver != null">
+        CAR_DRIVER = #{record.carDriver,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carDriverPhone != null">
+        CAR_DRIVER_PHONE = #{record.carDriverPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.containerNumber != null">
+        CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.expectedDate != null">
+        EXPECTED_DATE = #{record.expectedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.arrivalDate != null">
+        ARRIVAL_DATE = #{record.arrivalDate,jdbcType=TIMESTAMP},
+      </if>
       <if test="record.status != null">
         STATUS = #{record.status,jdbcType=VARCHAR},
       </if>
@@ -336,6 +401,12 @@
       PLATFORM_ID = #{record.platformId,jdbcType=DECIMAL},
       PLATFORM_CODE = #{record.platformCode,jdbcType=VARCHAR},
       SOURCE_BILL_NUMBER = #{record.sourceBillNumber,jdbcType=VARCHAR},
+      CAR_NUMBER = #{record.carNumber,jdbcType=VARCHAR},
+      CAR_DRIVER = #{record.carDriver,jdbcType=VARCHAR},
+      CAR_DRIVER_PHONE = #{record.carDriverPhone,jdbcType=VARCHAR},
+      CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR},
+      EXPECTED_DATE = #{record.expectedDate,jdbcType=TIMESTAMP},
+      ARRIVAL_DATE = #{record.arrivalDate,jdbcType=TIMESTAMP},
       STATUS = #{record.status,jdbcType=VARCHAR},
       REMARK = #{record.remark,jdbcType=VARCHAR},
       COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
@@ -455,6 +526,12 @@
     PLATFORM_ID = #{record.platformId,jdbcType=DECIMAL}, 
     PLATFORM_CODE = #{record.platformCode,jdbcType=VARCHAR}, 
     SOURCE_BILL_NUMBER = #{record.sourceBillNumber,jdbcType=VARCHAR}, 
+    CAR_NUMBER = #{record.carNumber,jdbcType=VARCHAR}, 
+    CAR_DRIVER = #{record.carDriver,jdbcType=VARCHAR}, 
+    CAR_DRIVER_PHONE = #{record.carDriverPhone,jdbcType=VARCHAR}, 
+    CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR}, 
+    EXPECTED_DATE = #{record.expectedDate,jdbcType=TIMESTAMP}, 
+    ARRIVAL_DATE = #{record.arrivalDate,jdbcType=TIMESTAMP}, 
     STATUS = #{record.status,jdbcType=VARCHAR}, 
     REMARK = #{record.remark,jdbcType=VARCHAR}, 
     COMPANY_ID = #{record.companyId,jdbcType=DECIMAL}, 
@@ -496,6 +573,24 @@
         </if>
         <if test="record.sourceBillNumber != null">
           SOURCE_BILL_NUMBER = #{record.sourceBillNumber,jdbcType=VARCHAR},
+        </if>
+        <if test="record.carNumber != null">
+          CAR_NUMBER = #{record.carNumber,jdbcType=VARCHAR},
+        </if>
+        <if test="record.carDriver != null">
+          CAR_DRIVER = #{record.carDriver,jdbcType=VARCHAR},
+        </if>
+        <if test="record.carDriverPhone != null">
+          CAR_DRIVER_PHONE = #{record.carDriverPhone,jdbcType=VARCHAR},
+        </if>
+        <if test="record.containerNumber != null">
+          CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR},
+        </if>
+        <if test="record.expectedDate != null">
+          EXPECTED_DATE = #{record.expectedDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.arrivalDate != null">
+          ARRIVAL_DATE = #{record.arrivalDate,jdbcType=TIMESTAMP},
         </if>
         <if test="record.status != null">
           STATUS = #{record.status,jdbcType=VARCHAR},

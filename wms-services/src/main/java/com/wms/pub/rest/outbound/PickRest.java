@@ -231,6 +231,11 @@ public class PickRest extends BaseController {
 	        	List<InventoryOnhandVO> inventoryList = allocateQueryDao.availabelInventory(onhandSelect);
 	        	if (CollectionUtils.isEmpty(inventoryList))
 	        		throw new BusinessServiceException("PickRest", "pick.no.inventory" , new Object[] {selectAll.getLpnNumber(), allocate.getLpnNumber()});
+	        	
+	        	//输入的LPN为空，再次进行筛选
+	        	if (StringUtils.isEmpty(allocate.getLpnNumber()))
+	        		inventoryList.stream().filter(v -> StringUtils.isEmpty(v.getLpnNumber())).collect(Collectors.toList());
+	        	
 	        	if (inventoryList.size() > 1)
 	        		throw new BusinessServiceException("PickRest", "pick.inventory.not.only.one" , new Object[] {selectAll.getLpnNumber(), allocate.getLpnNumber()});
 	        	
@@ -278,6 +283,7 @@ public class PickRest extends BaseController {
 	        	vo.setLotNumber(al.getLotNumber());
 	        	vo.setProcessTaskFlag(al.getProcessTaskFlag());
 	        	vo.setShortFlag(al.getShortFlag());
+	        	vo.setAllocateShort(al.getAllocateShort());
 	        	vo.setQuantityPick(al.getQuantityPick());
 	        	vo.setLoadLpnNumber(al.getLoadLpnNumber());
 	        	vo.setTransactionCategory(al.getTransactionCategory());

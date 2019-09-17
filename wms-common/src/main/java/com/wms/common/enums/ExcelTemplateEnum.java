@@ -9,11 +9,11 @@ public enum ExcelTemplateEnum {
 	Outbound("OUTBOUND","出库单"),
 	Allocate("ALLOCATE","分配明细"),
     Transaction("TRANSACTION","交易"),
-    Onhand("ONHAND","库存"),
-	StockByContainer("stockGroupByContainer","根据容器分组库存"),
-	StockByLpn("stockGroupByLpn","根据LPN分组库存"),
-	StockByLocation("stockGroupByLocation","根据库位分组库存"),
-	StockBySku("stockGroupBySku","根据货品分组库存");
+    InventoryOnhand("ONHAND","库存"),
+	InventoryByContainer("STOCKGROUPBYCONTAINER","根据容器分组库存"),
+	InventoryByLpn("STOCKGROUPBYLPN","根据LPN分组库存"),
+	InventoryByLocation("STOCKGROUPBYLOCATION","根据库位分组库存"),
+	InventoryBySku("STOCKGROUPBYSKU","根据货品分组库存");
 	
 	private final String code;
 	private final String desc;

@@ -18,7 +18,7 @@
 						data: codelkups['ZONETYPE'],
 						valueField: 'code',
 						textField: 'descr',
-						label: '${web.label.zone.type}',
+						label: '${web.label.type}',
 						labelPosition: 'top'
 						">
                 </div>
@@ -70,7 +70,7 @@
                 <th field="zoneCode" width="130" wms:text="${web.label.zonecode}" data-options="sortable:true">
                     zoneCode
                 </th>
-                <th field="type" width="150" wms:text="${web.label.zone.type}" data-options="
+                <th field="type" width="150" wms:text="${web.label.type}" data-options="
                             sortable:true,
                             formatter:function(value,row){
 								return getCodelkupValue('ZONETYPE',value);
@@ -167,12 +167,12 @@
                 <tr>
                     <td>
                         <input class="easyui-combobox" name="type" style="width: 100px;" wms:data-options="
-							required:true,
-							data: codelkups['ZONETYPE'],
-							valueField: 'code',
-							textField: 'descr',
-							label: '${web.label.type}',
-							labelPosition: 'top'
+								required:true,
+								data: codelkups['ZONETYPE'],
+								valueField: 'code',
+								textField: 'descr',
+								label: '${web.label.type}',
+								labelPosition: 'top'
 							"/>
                     </td>
                 </tr>
@@ -213,7 +213,6 @@
                                     selectRow = row;
                                 }
 							" />
-                    </td>
                     </td>
                 </tr>
                 <tr>

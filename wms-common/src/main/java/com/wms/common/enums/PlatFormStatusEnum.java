@@ -9,9 +9,8 @@ public enum PlatFormStatusEnum {
 	Idle("10", "空闲"), 
 	Appointment("20", "已预约"), 
 	Arrived("30", "已到达"),
-	WaitLeave("30", "待离开"),
-	Leave("40", "已离开"),
-	Cancel("50", "禁用");
+	WaitLeave("40", "待离开"),
+	Cancel("50", "已禁用");
 	
 	private final String code;
 	private final String desc;

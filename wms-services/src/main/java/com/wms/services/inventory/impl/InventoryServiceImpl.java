@@ -453,7 +453,7 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 
     @Override
     public ExcelTemplate getExcelTemplate() {
-        return new ExcelTemplate<InventoryOnhandImportVO>(ExcelTemplateEnum.Onhand.getCode(), InventoryOnhandImportVO.class);
+        return new ExcelTemplate<InventoryOnhandImportVO>(ExcelTemplateEnum.InventoryOnhand.getCode(), InventoryOnhandImportVO.class);
     }
 
     @Override

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${wms.platform.title}">月台</title>
+    <head th:replace="common/head"/>
+</head>
+<body class="easyui-layout">
+<div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
+    <div id="searchDiv">
+        <div style="margin-left: 10px;">
+            <form id="searchForm" data-table="#dataTable">
+                <div style="margin-bottom:10px">
+                    <input name="platformCode" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.platform}',labelPosition:'top'">
+                </div>
+                <!--  
+                <div style="margin-bottom:10px">
+                    <input name="platformType" class="easyui-textbox"
+                           wms:data-options="label:'${web.label.type}',labelPosition:'top'">
+                </div>
+                -->
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combobox" name="status" wms:data-options="
+						data: codelkups['PLATFORMSTATUS'],
+						valueField: 'code',
+						textField: 'descr',
+						label: '${web.label.status}',
+						labelPosition: 'top'
+						">
+                </div>
+            </form>
+        </div>
+        <div style="text-align: center;">
+            <a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-search'">
+                <span wms:text="${web.label.search}">Search</span>
+            </a>
+            <a href="#" class="easyui-linkbutton common-search-clear" data-form="#searchForm" style="width:80px;"
+               data-options="iconCls:'icon-clear'">
+                <span wms:text="${web.label.clear}">Clear</span>
+            </a>
+        </div>
+    </div>
+</div>
+<div data-options="region:'center',border:false">
+    <div id="dataTableToolbar" style="padding-left: 20px;">
+        <a href="#" class="easyui-linkbutton common-add" data-addpanel="#addDiv">
+            <span wms:text="${web.label.add}">Add</span>
+        </a>
+        <a href="#" class="easyui-linkbutton common-rowsave" data-table="#dataTable"
+           th:data-url="@{/services/inner/appointment/platForm/save}">
+            <span wms:text="${web.label.save}">Save</span>
+        </a>
+        <a href="#" class="easyui-linkbutton common-rowdel" data-table="#dataTable"
+           th:data-url="@{/services/inner/appointment/platForm/delete}">
+            <span wms:text="${web.label.delete}">Delete</span>
+        </a>
+    </div>
+    <div>
+        <table id="dataTable" wms:title="${web.label.zone.title}" class="easyui-datagrid"
+               th:data-delayUrl="@{/services/inner/appointment/platForm/find}">
+            <thead data-options="frozen:true">
+            	<tr>
+            		<th field="platformId" data-options="checkbox:true"></th>
+            	</tr>
+            </thead>
+            <thead>
+	            <tr>
+	                <th field="platformCode" width="130" wms:text="${web.label.platform}" data-options="sortable:true">
+	                    platformCode
+	                </th>
+	                <!--  
+	                <th field="type" width="150" wms:text="${web.label.type}" data-options="
+	                            sortable:true,
+	                            formatter:function(value,row){
+									return getCodelkupValue('PLATFORMTYPE',value);
+								},
+	                            editor:{
+									type:'combobox',
+									options:{
+										valueField:'code',
+										textField:'descr',
+										data: codelkups['PLATFORMTYPE']
+									}
+								}
+	                        ">type
+	                </th>
+	                -->
+	                <th field="carNumber" width="130" wms:text="${web.label.carriercarnumber}" data-options="sortable:true,editor:'text'">
+	                    carNumber
+	                </th>
+	                <th field="carDriver" width="130" wms:text="${web.label.carrierdriver}" data-options="sortable:true,editor:'text'">
+	                    carDriver
+	                </th>
+	                <th field="carDriverPhone" width="130" wms:text="${web.label.driverphone}" data-options="sortable:true,editor:'text'">
+	                    carDriverPhone
+	                </th>
+	                <th field="status" width="100" wms:text="${web.label.status}" data-options="
+								sortable:true,
+								formatter:function(value,row){
+									return getCodelkupValue('PLATFORMSTATUS',value);
+								},
+								editor:{
+									type:'combobox',
+									options:{
+										valueField:'code',
+										textField:'descr',
+										data: codelkups['PLATFORMSTATUS']
+									}
+								}
+							">status
+	                </th>
+	                <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
+	                <th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true">
+	                    createTime
+	                </th>
+	                <th field="updateBy" width="80" wms:text="${web.label.updateby}">updateBy</th>
+	                <th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">
+	                    updateTime
+	                </th>
+	            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div id="addDiv" wms:title="${web.label.add}" style="width:300px;height:300px; display: none;">
+    <div style="width: 100%;padding-left: 50px;">
+        <form method="post" id="addForm" th:data-url="@{/services/inner/appointment/platForm/add}">
+            <table style="width: 100%;">
+                <tr>
+                    <td>
+                        <input name="platformCode" class="easyui-textbox"
+                               wms:data-options="required:true,label:'${web.label.platform}',labelPosition:'top'">
+                    </td>
+                </tr>
+                <!--  
+                <tr>
+                    <td>
+                        <input class="easyui-combobox" name="type" style="width: 100px;" wms:data-options="
+							required:true,
+							data: codelkups['PLATFORMTYPE'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.type}',
+							labelPosition: 'top'
+							"/>
+                    </td>
+                </tr>
+                -->
+                <tr>
+                    <td>
+                        <input class="easyui-combobox" name="status" style="width: 100px;" wms:data-options="
+							required:true,
+							value: '10',
+							data: codelkups['PLATFORMSTATUS'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.status}',
+							labelPosition: 'top'
+							"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="text-align: center;margin-top: 30px;">
+        <a href="#" class="easyui-linkbutton common-confirmadd" data-form="#addForm" data-table="#dataTable"
+           id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
+        </a>
+        <a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');"
+           data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
+        </a>
+    </div>
+</div>
+</div>
+</body>
+<script th:replace="common/js"/>
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=PLATFORMSTATUS,PLATFORMTYPE}"></script>
+<script type="text/javascript" th:inline="text">
+
+</script>
+</html>

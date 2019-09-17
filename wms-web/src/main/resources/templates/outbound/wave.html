@@ -56,8 +56,7 @@
                 </div>
                 <a href="#" class="easyui-menubutton" data-options="menu:'#reportMenuButton',plain:false" wms:text="${web.label.report}">Report</a>
                 <div id="reportMenuButton">
-                    <div  wms:text="${wms.label.pickreport}" onclick="exportPDFReport('PICKLIST')">Allocate</div>
-                    <div  wms:text="${web.label.shiplabel}" onclick="exportPDFShipLabel()">Ship Label</div>
+                    <div  wms:text="${wms.label.pickreport}" onclick="exportPDFReport('WAVEPICKLIST')">Pick List</div>
                 </div>
                 <a href="#" class="easyui-linkbutton common-rowdel" data-table="#dataTable"
                    th:data-url="@{/services/inner/outbound/wave/delete}">
@@ -171,7 +170,7 @@
 		exportReport({
 			fileType: "pdf",
 			reportType: type,
-			id: rowData.inventoryCountHeaderId
+			waveNumber: rowData.waveNumber
 		});
 	}
 </script>
