@@ -1179,4 +1179,22 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 		List<OutboundDetailTEntity> outboundDetailList = outboundDetailDao.selectByExample(TExample);
 		return outboundDetailList;
 	}
+
+	@Override
+	public Long findMaxLine(OutboundDetailTEntity outbound) throws BusinessServiceException {
+		List<OutboundDetailTEntity> allDetail = findByHeaderId(outbound);
+		if (CollectionUtils.isEmpty(allDetail))
+			return DefaultConstants.LINE_INCREMENT;
+		
+		OutboundDetailTEntity maxLine = allDetail.stream().max(new Comparator<OutboundDetailTEntity>() {
+			@Override
+			public int compare(OutboundDetailTEntity o1, OutboundDetailTEntity o2) {
+				return o1.getLineNumber().compareTo(o2.getLineNumber());
+			}
+		}).get();
+		
+		long maxLineNumber = maxLine.getLineNumber() + DefaultConstants.LINE_INCREMENT;
+		
+		return maxLineNumber;
+	}
 }

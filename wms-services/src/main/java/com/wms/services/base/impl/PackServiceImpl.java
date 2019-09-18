@@ -345,14 +345,14 @@ public class PackServiceImpl implements IPackService {
 		if (StringUtils.isEmpty(pack.getUom()))
 			throw new BusinessServiceException("PackServiceImpl", "uom.isnull" , null); 
 
-		if(BigDecimal.ZERO.compareTo(pack.getQty()) == 0)
+		if(pack.getQty() == null || BigDecimal.ZERO.compareTo(pack.getQty()) == 0)
 			throw new BusinessServiceException("PackServiceImpl", "pack.uom.qty.zero" , null); 
 		
 		Set<String> uomSet = Sets.newHashSet();
 		uomSet.add(pack.getUom());
 		
 		if (StringUtils.isNotEmpty(pack.getUomInner())) {
-			if(BigDecimal.ZERO.compareTo(pack.getQtyInner()) == 0)
+			if(pack.getQtyInner() == null || BigDecimal.ZERO.compareTo(pack.getQtyInner()) == 0)
 				throw new BusinessServiceException("PackServiceImpl", "pack.inneruom.qty.zero" , null); 
 			
 			if (pack.getQtyInner().compareTo(pack.getQty()) < 0)
@@ -365,10 +365,10 @@ public class PackServiceImpl implements IPackService {
 		}
 		
 		if (StringUtils.isNotEmpty(pack.getUomCase())) {
-			if(BigDecimal.ZERO.compareTo(pack.getQtyCase()) == 0)
+			if(pack.getQtyCase() == null || BigDecimal.ZERO.compareTo(pack.getQtyCase()) == 0)
 				throw new BusinessServiceException("PackServiceImpl", "pack.caseuom.qty.zero" , null); 
 			
-			if (pack.getQtyCase().compareTo(pack.getQtyInner()) < 0)
+			if (pack.getQtyCase().compareTo(pack.getQtyInner()) < 0 && pack.getQtyInner() != null)
 				throw new BusinessServiceException("PackServiceImpl", "pack.caseqty.lessthan.innerqty" , null); 
 			
 			if (uomSet.contains(pack.getUomCase()))
@@ -376,10 +376,12 @@ public class PackServiceImpl implements IPackService {
 		}
 		
 		//验证毛重不能小于净重
-		if (pack.getWeightGrossInner().compareTo(pack.getWeightNetInner()) < 0) 
+		if (pack.getWeightGrossInner() != null && pack.getWeightNetInner() != null
+				&& pack.getWeightGrossInner().compareTo(pack.getWeightNetInner()) < 0) 
 			throw new BusinessServiceException("PackServiceImpl", "inner.weight.gross.morethen.net" , new Object[] {pack.getPackCode()}); 
 		
-		if (pack.getWeightGrossCase().compareTo(pack.getWeightNetCase()) < 0) 
+		if (pack.getWeightGrossCase() != null && pack.getWeightNetCase() != null
+				&& pack.getWeightGrossCase().compareTo(pack.getWeightNetCase()) < 0) 
 			throw new BusinessServiceException("PackServiceImpl", "case.weight.gross.morethen.net" , new Object[] {pack.getPackCode()}); 
 		
 		return Boolean.TRUE;

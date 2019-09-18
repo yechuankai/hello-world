@@ -57,8 +57,9 @@
 						<th field="view" data-options="
 											formatter:function(value,row){
 												if (row.fileType == 'IMPORT'){
-													var data = JSON.stringify(row);
-													var detail = '<span title = \'detail\' onclick=\'view('+data+')\' class=\'icon-detail\'>&nbsp;</span>';
+													var obj = {id: row.description};
+													obj = JSON.stringify(obj);
+													var detail = '<span title = \'查看\' onclick=\'viewDetail('+obj+')\' class=\'icon-find\'>&nbsp;</span>';
 													return detail;
 												}
 												return '';
@@ -99,6 +100,9 @@
 			</table>
 		</div>
 	</div>
+	<div id="detailDiv" wms:title="${web.label.viewdetail}" style="width:500px;height:500px; display: none;">
+		<textarea readonly="readonly" id="showJson" style="width:100%;height:99%"></textarea>
+	</div>
 </body>
 <script th:replace="common/js" />
 <script type="text/javascript" th:src="@{/js/codelkupList?listName=FILETYPE,FILESTATUS,TEMPLATE}"></script>
@@ -110,5 +114,30 @@ function download(obj){
 function importFile(){
 	importExcel();
 }
+
+function viewDetail(obj){
+	var data = getBaseData(obj);
+	loading();
+	$.post({
+		url: '../../services/inner/file/view',
+		data:data,
+		success: function(data){
+			data = returnData(data);
+			closeLoading();
+			if (data.code == '0') {
+				showError(data.msg);
+				return;
+			}
+			var json = eval('('+data.data.message+')');
+			$('#showJson').val(JSON.stringify(json, null, '\t'));
+			$('#detailDiv').dialog({
+			    closed: true,
+			    modal: true,
+			    fix: true
+			}).dialog('open');
+		}
+	});
+}
+
 </script>
 </html>

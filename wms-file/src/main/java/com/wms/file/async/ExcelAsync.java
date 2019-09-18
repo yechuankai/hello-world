@@ -18,8 +18,8 @@ import com.wms.async.manager.AsyncManager;
 import com.wms.async.manager.factory.AsyncFactory;
 import com.wms.common.core.domain.ExcelTemplate;
 import com.wms.common.core.domain.IExcelModel;
+import com.wms.common.core.domain.mongodb.ImportMessageVO;
 import com.wms.common.core.domain.request.AjaxRequest;
-import com.wms.common.enums.ExcelTypeEnum;
 import com.wms.common.enums.FileStatusEnum;
 import com.wms.common.enums.LogBusinessTypeEnum;
 import com.wms.common.enums.OperatorTypeEnum;
@@ -32,7 +32,6 @@ import com.wms.common.utils.mongodb.MongoUtils;
 import com.wms.common.utils.spring.SpringUtils;
 import com.wms.entity.auto.SysFileTEntity;
 import com.wms.file.vo.FileVO;
-import com.wms.file.vo.ImportMessageVO;
 import com.wms.services.sys.ISysFileService;
 import com.wms.vo.OperLogVO;
 
@@ -115,7 +114,8 @@ public class ExcelAsync {
 					imp.setMessage(e.getMessage());
 				} 
 				
-				MongoUtils.insert(imp);
+				String mongoId = MongoUtils.insert(imp);
+				updateFile.setDescription(mongoId);
 				
 				OperLogVO oper = null;
 				

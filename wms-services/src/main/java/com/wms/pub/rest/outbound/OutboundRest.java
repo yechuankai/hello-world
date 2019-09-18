@@ -106,20 +106,8 @@ public class OutboundRest extends BaseController {
             if(null == outboundVO){
                 throw new BusinessServiceException("no update data.");
             }
-            switch (operatorType){
-                case "add":
-                    outboundVO.setOperatorType(OperatorTypeEnum.Add);
-                    break;
-                case "modify":
-                    outboundVO.setOperatorType(OperatorTypeEnum.Modify);
-                    break;
-                case "submit":
-                    outboundVO.setOperatorType(OperatorTypeEnum.Submit);
-                    break;
-                case "review":
-                    outboundVO.setOperatorType(OperatorTypeEnum.Review);
-                    break;
-            }
+            OperatorTypeEnum operatorEnum = OperatorTypeEnum.get(operatorType);
+            outboundVO.setOperatorType(operatorEnum);
             outboundHeaderService.saveFromOms(request);
 
             return success(outboundVO);

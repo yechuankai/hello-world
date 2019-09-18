@@ -251,9 +251,10 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 			inbound.setCarrierCode(carrier.getCarrierCode());
 		}
 		
-		if (StringUtils.isEmpty(inbound.getInboundNumber())) {
+		if (StringUtils.isEmpty(inbound.getInboundNumber()))
 			inbound.setInboundNumber(KeyUtils.getOrderNumber(inbound.getCompanyId(), inbound.getWarehouseId(), OrderNumberTypeEnum.Inbound));
-		} else if(inbound.getOperatorType() == OperatorTypeEnum.Add){
+		
+		try {
 			//新增判断重复
 			InboundHeaderTEntity header = find(InboundHeaderTEntity.builder()
 					.warehouseId(inbound.getWarehouseId())
@@ -262,7 +263,8 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 					.build());
 			if (header != null)
 				throw new BusinessServiceException("InboundHeaderServiceImpl", "inbound.number.exists" , new Object[] {inbound.getInboundNumber()});
-		}
+		} catch (BusinessServiceException e) {}
+		
 		return Boolean.TRUE;
 	}
 
@@ -562,7 +564,6 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 		inboundVO.setUpdateBy(request.getUserName());
 		inboundVO.setUpdateTime(new Date());
 
-
 		StatusHistoryTEntity statusHistory = StatusHistoryTEntity.builder()
 				.companyId(request.getCompanyId())
 				.createBy(request.getUserName())
@@ -580,6 +581,13 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 				add(inboundVO);
 				break;
 			case Modify:
+				modify(inboundVO);
+				break;
+			case Reject:
+				statusHistory.setOldStatus(inboundVO.getStatus());
+				statusHistory.setNewStatus(InboundStatusEnum.Draft.getCode());
+				statusHistory.setRemark(inboundVO.getDescription());
+				inboundVO.setStatus(InboundStatusEnum.Draft.getCode());
 				modify(inboundVO);
 				break;
 			case Submit:
@@ -819,8 +827,10 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 						.supplierCode(inbound.getSupplierCode())
 						.build();
 				List<SupplierTEntity> suppliers = Lists.newArrayList();
-				entSupplier = enterpriseService.findSupplier(entSupplier);
-				BeanUtils.copyBeanProp(supplier, entSupplier, Boolean.FALSE);
+				EntSupplierTEntity selectEntSupplier = enterpriseService.findSupplier(entSupplier);
+				if (selectEntSupplier != null) {
+					BeanUtils.copyBeanProp(supplier, selectEntSupplier, Boolean.FALSE);
+				}
 				supplier.setWarehouseId(inbound.getToWarehouseId());
 				supplier.setCompanyId(inbound.getCompanyId());
 				supplier.setUpdateBy(inbound.getUpdateBy());

@@ -3820,3 +3820,26 @@ comment on column outbound_header_t.driver_phone is '司机电话 ';
 alter table allocate_short_t add (SOURCE_WAVE_NUMBER varchar2(100));
 comment on column allocate_short_t.SOURCE_WAVE_NUMBER is '来源波次号';
 
+--字段重命名
+alter table sys_order_number_t rename column DATA_FORMAT to DATE_FORMAT;
+
+
+--增加唯一索引
+alter table owner_t add constraint uk_owner_t primary key (company_id, warehouse_id, owner_code);
+alter table customer_t add constraint uk_customer_t primary key (company_id, warehouse_id, customer_code);
+alter table carrier_t add constraint uk_carrier_t primary key (company_id, warehouse_id, carrier_code);
+alter table supplier_t add constraint uk_supplier_t primary key (company_id, warehouse_id, supplier_code);
+alter table sku_t add constraint uk_sku_t primary key (company_id, warehouse_id, sku_code);
+alter table pack_t add constraint uk_pack_t primary key (company_id, warehouse_id, pack_code);
+alter table area_t add constraint uk_area_t primary key (company_id, warehouse_id, area_code);
+alter table zone_t add constraint uk_zone_t primary key (company_id, warehouse_id, zone_code);
+alter table location_t add constraint uk_location_t primary key (company_id, warehouse_id, location_code);
+alter table LOT_VALIDATE_t add constraint uk_lot_validate_t primary key (company_id, warehouse_id, LOT_VALIDATE_CODE);
+alter table putaway_strategy_t add constraint uk_putaway_strategy_t primary key (company_id, warehouse_id, PUTAWAY_STRATEGY_CODE);
+alter table allocate_strategy_t add constraint uk_ALLOCATE_STRATEGY_t primary key (company_id, warehouse_id, ALLOCATE_STRATEGY_CODE);
+
+
+
+
+
+

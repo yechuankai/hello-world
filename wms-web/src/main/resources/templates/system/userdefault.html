@@ -61,7 +61,7 @@
 					<tr>
 						<th field="defaultId" data-options="checkbox:true"></th>
 						<th field="loginName" width="100" wms:text="${web.label.user.loginname}" data-options="sortable:true">userName</th>
-						<th field="warehouseCode" width="100"  wms:text="${web.label.warehouse.code}"  wms:data-options="
+						<th field="warehouseCode" width="100"  wms:text="${web.label.warehouse}"  wms:data-options="
 							sortable:true,
 							editor:{
 								type:'combogrid',
@@ -116,7 +116,7 @@
 						<td>
 							<input name="warehouseCode" class="easyui-combogrid"  wms:data-options="
 								required:true,
-								label:'${web.label.warehouse.code}',
+								label:'${web.label.warehouse}',
 								labelPosition:'top',
 								idField:'code',
     							textField:'descr',

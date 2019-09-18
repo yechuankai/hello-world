@@ -628,6 +628,14 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 				modify(outboundVO);
 				addList.add(outboundVO);
 				break;
+			case Reject:
+				statusHistory.setOldStatus(outboundVO.getStatus());
+				statusHistory.setNewStatus(OutboundStatusEnum.Draft.getCode());
+				statusHistory.setRemark(outboundVO.getDescription());
+				outboundVO.setStatus(InboundStatusEnum.Draft.getCode());
+				modify(outboundVO);
+				addList.add(outboundVO);
+				break;
 			case Submit:
 				if(null == outboundVO.getOutboundHeaderId()){
 					addList = deal(outboundVO);
@@ -843,7 +851,10 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 
 		if (StringUtils.isEmpty(outboundVO.getOutboundNumber())) {
 			outboundVO.setOutboundNumber(KeyUtils.getOrderNumber(outboundVO.getCompanyId(), outboundVO.getWarehouseId(), OrderNumberTypeEnum.Outbound));
-		} else {
+		} 
+		
+		try {
+			//新增判断重复
 			OutboundHeaderTEntity header = find(OutboundHeaderTEntity.builder()
 					.warehouseId(outboundVO.getWarehouseId())
 					.companyId(outboundVO.getCompanyId())
@@ -852,8 +863,8 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 			if (header != null) {
 				throw new BusinessServiceException("OutboundHeaderServiceImpl", "outbound.number.exists", new Object[]{outboundVO.getOutboundNumber()});
 			}
-		}
-
+		} catch (BusinessServiceException e) {}
+		
 		return Boolean.TRUE;
 	}
 

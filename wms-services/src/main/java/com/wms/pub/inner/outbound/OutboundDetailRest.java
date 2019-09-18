@@ -10,6 +10,7 @@ import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.core.domain.response.AjaxResult;
 import com.wms.common.core.domain.response.PageResult;
 import com.wms.common.enums.OperatorTypeEnum;
+import com.wms.entity.auto.InboundDetailTEntity;
 import com.wms.entity.auto.OutboundDetailTEntity;
 import com.wms.entity.auto.OutboundHeaderTEntity;
 import com.wms.services.outbound.IOutboundDetailService;
@@ -60,6 +61,19 @@ public class OutboundDetailRest extends BaseController {
         }
        
     }
+    
+    @RequestMapping(value = "/maxLineNumber")
+	public AjaxResult<Long> maxLineNumber(@RequestBody String req) {
+		try {
+			AjaxRequest<OutboundDetailTEntity> request = ajaxRequest(req, new TypeReference<AjaxRequest<OutboundDetailTEntity>>() {});
+			request.getData().setWarehouseId(request.getWarehouseId());
+			request.getData().setCompanyId(request.getCompanyId());
+			long maxLine = outboundDetailService.findMaxLine(request.getData());
+			return success(maxLine);
+		} catch (Exception e) {
+			return fail(e.getMessage());
+		}
+	}
 
     @RequestMapping(value = "/save")
     public AjaxResult<OutboundVO> save(@RequestBody String req) {

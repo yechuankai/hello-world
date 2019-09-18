@@ -10,7 +10,7 @@
         <div style="margin-left: 10px;">
             <form id="searchForm" data-table="#dataTable" >
                 <div style="margin-bottom:10px">
-                    <input name="locationCode" class="easyui-textbox" wms:data-options="label:'${web.label.locationcode}',labelPosition:'top'">
+                    <input name="locationCode" class="easyui-textbox" wms:data-options="label:'${web.label.location}',labelPosition:'top'">
                 </div>
                 <div style="margin-bottom:10px">
                     <input class="easyui-combobox" name="locationType" wms:data-options="
@@ -22,7 +22,7 @@
 						">
                 </div>
                 <div style="margin-bottom:10px">
-                    <input name="zoneCode" class="easyui-textbox" wms:data-options="label:'${web.label.zonecode}',labelPosition:'top'">
+                    <input name="zoneCode" class="easyui-textbox" wms:data-options="label:'${web.label.zone}',labelPosition:'top'">
                 </div>
                 <div style="margin-bottom:10px">
                     <input class="easyui-combobox" name="skuMix" wms:data-options="
@@ -83,7 +83,7 @@
             <thead>
             <tr>
                 <th field="locationId" data-options="checkbox:true"></th>
-                <th field="locationCode" width="130" wms:text="${web.label.locationcode}" data-options="
+                <th field="locationCode" width="130" wms:text="${web.label.location}" data-options="
                             sortable:true">locationCode</th>
                 <th field="locationType" width="150" wms:text="${web.label.location.locationType}" data-options="
                             sortable:true,
@@ -100,7 +100,7 @@
 							}
                         ">locationType</th>
                 <th field="locationLogical" width="150" wms:text="${web.label.location.locationLogical}" data-options="sortable:true,editor:'text'">locationLogical</th>
-                <th field="zoneCode" width="150" wms:text="${web.label.zonecode}" wms:data-options="
+                <th field="zoneCode" width="150" wms:text="${web.label.zone}" wms:data-options="
 							sortable:true,
 							editor:{
 								type:'combogrid',
@@ -177,7 +177,7 @@
             <table style="width: 100%;">
                 <tr>
                     <td >
-                        <input id="locationCode" name="locationCode" class="easyui-textbox" wms:data-options="required:true,label:'${web.label.locationcode}',labelPosition:'top'">
+                        <input id="locationCode" name="locationCode" class="easyui-textbox" wms:data-options="required:true,label:'${web.label.location}',labelPosition:'top'">
                     </td>
                     <td >
                         <input class="easyui-combobox" name="locationType"  style="width: 100px;"  wms:data-options="

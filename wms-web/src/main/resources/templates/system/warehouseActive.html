@@ -10,7 +10,7 @@
 			<div style="margin-left: 10px;">
 				<form id="searchForm" data-table="#dataTable" >
 					<div style="margin-bottom:10px">
-						<input name="warehouseCode" class="easyui-textbox" wms:data-options="label:'${web.label.warehouse.code}',labelPosition:'top'">
+						<input name="warehouseCode" class="easyui-textbox" wms:data-options="label:'${web.label.warehouse}',labelPosition:'top'">
 					</div>
 					<div style="margin-bottom:10px">
 						<input name="warehouseDescr" class="easyui-textbox" wms:data-options="label:'${web.label.warehouse.descr}',labelPosition:'top'">
@@ -57,7 +57,7 @@
 						<th field="updateVersion" data-options="hidden:true"></th>
 						<th field="warehouseId" data-options="hidden:true"></th>
 						<th field="companyId" width="80" data-options="hidden:true">companyId</th>
-						<th field="warehouseCode" width="150" wms:text="${web.label.warehouse.code}" data-options="sortable:true">code</th>
+						<th field="warehouseCode" width="150" wms:text="${web.label.warehouse}" data-options="sortable:true">code</th>
 						<th field="warehouseDescr" width="200" wms:text="${web.label.warehouse.descr}" data-options="sortable:true">descr</th>
 						<th field="companyDescr" width="200" wms:text="${web.label.company.descr}" data-options="sortable:true">companyDescr</th>
 						<th field="active" width="150" wms:text="${web.label.active}" data-options="

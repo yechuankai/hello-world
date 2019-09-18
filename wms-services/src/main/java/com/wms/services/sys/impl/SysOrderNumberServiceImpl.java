@@ -46,7 +46,7 @@ public class SysOrderNumberServiceImpl implements ISysOrderNumberService {
         if (CollectionUtils.isEmpty(request.getData())) {
             throw new BusinessServiceException("no record update.");
         }
-        List<SysOrderNumberTEntity> list =request.getData();
+        List<SysOrderNumberTEntity> list = request.getData();
 
         for(SysOrderNumberTEntity orderNumber : list){
             SysOrderNumberTEntity update = SysOrderNumberTEntity.builder()
@@ -55,7 +55,7 @@ public class SysOrderNumberServiceImpl implements ISysOrderNumberService {
                     .descr(orderNumber.getDescr())
                     .prefix(orderNumber.getPrefix())
                     .length(orderNumber.getLength())
-                    .dataFormat(orderNumber.getDataFormat())
+                    .dateFormat(orderNumber.getDateFormat())
                     .sequence(orderNumber.getSequence())
                     .sequenceCache(orderNumber.getSequenceCache())
                     .sequenceIncrement(orderNumber.getSequenceIncrement())

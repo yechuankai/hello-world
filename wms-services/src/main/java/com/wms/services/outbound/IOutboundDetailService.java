@@ -4,6 +4,7 @@ import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.enums.OutboundStatusEnum;
 import com.wms.common.exception.BusinessServiceException;
+import com.wms.entity.auto.InboundDetailTEntity;
 import com.wms.entity.auto.OutboundDetailTEntity;
 import com.wms.entity.auto.OutboundHeaderTEntity;
 import com.wms.vo.outbound.OutboundDetailVO;
@@ -19,6 +20,8 @@ public interface IOutboundDetailService {
 	List<OutboundDetailTEntity> findByHeaderId(OutboundDetailTEntity outbound) throws BusinessServiceException;
 	
 	List<OutboundDetailTEntity> findByHeaderIds(OutboundDetailTEntity outbound, Set<Long> ids) throws BusinessServiceException;
+	
+	Long findMaxLine(OutboundDetailTEntity outbound) throws BusinessServiceException;
 	
 	OutboundDetailTEntity find(OutboundDetailTEntity outbound) throws BusinessServiceException;
 

@@ -111,7 +111,7 @@ user:
   maxRetryCount: 5
   
 wms:
- addressEnabled: true
+ addressEnabled: false
  locale: en_US
  
 #本地强制指定输出目录

@@ -18,6 +18,8 @@ public interface IInboundDetailService {
 		
 	List<InboundDetailTEntity> findByHeaderId(InboundDetailTEntity inbound) throws BusinessServiceException;
 	
+	Long findMaxLine(InboundDetailTEntity inbound) throws BusinessServiceException;
+	
 	List<InboundDetailVO> findExpected(InboundDetailTEntity inbound) throws BusinessServiceException;
 	
 	InboundDetailTEntity find(InboundDetailTEntity inbound) throws BusinessServiceException;

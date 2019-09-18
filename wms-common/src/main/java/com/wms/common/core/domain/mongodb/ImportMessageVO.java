@@ -1,4 +1,4 @@
-package com.wms.file.vo;
+package com.wms.common.core.domain.mongodb;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 

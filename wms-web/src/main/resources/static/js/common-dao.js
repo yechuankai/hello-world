@@ -195,10 +195,16 @@ $(function(){
 	//公共显示新增框-------------------------START
 	$('.common-add').click(function(){
 		var panel = $(this).attr('data-addpanel');
+		var table 
 		$(panel).dialog({
 			closed: true,
 			modal: true,
-			fix: true
+			fix: true, 
+			onClose: function(){
+				if ($('.common-search').length > 0){
+					$('.common-search').trigger('click');
+				}
+			}
 		}).dialog('open');
 		$(panel).find('form').form('reset');
 		lazyLoadView(panel);
@@ -244,4 +250,25 @@ $(function(){
 	//公共显示新增框-------------------------END
 });
 
+//获取最大行号
+function getMaxLine(url, data){
+	var lineNumber = 0;
+	data = getBaseData(data);
+	loading();
+	$.post({
+		url: url,
+		data:data,
+		async: false,
+		success: function(data){
+			data = returnData(data);
+			closeLoading();
+			if (data.code == '0') {
+				showError(data.msg);
+				return;
+			}
+			lineNumber = data.data;
+		}
+	});
+	return lineNumber;
+}
 

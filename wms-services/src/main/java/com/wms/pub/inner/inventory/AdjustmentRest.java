@@ -11,6 +11,7 @@ import com.wms.common.core.domain.response.AjaxResult;
 import com.wms.common.core.domain.response.PageResult;
 import com.wms.entity.auto.InventoryAdjustmentDetailTEntity;
 import com.wms.entity.auto.InventoryAdjustmentHeaderTEntity;
+import com.wms.entity.auto.OutboundDetailTEntity;
 import com.wms.services.inventory.IAdjustmentDetailService;
 import com.wms.services.inventory.IAdjustmentService;
 import com.wms.vo.adjustment.AdjustmentDetailVO;
@@ -91,6 +92,19 @@ public class AdjustmentRest extends BaseController {
             return pageFail(e.getMessage());
         }
     }
+    
+    @RequestMapping(value = "/maxLineNumber")
+	public AjaxResult<Long> maxLineNumber(@RequestBody String req) {
+		try {
+			AjaxRequest<InventoryAdjustmentDetailTEntity> request = ajaxRequest(req, new TypeReference<AjaxRequest<InventoryAdjustmentDetailTEntity>>() {});
+			request.getData().setWarehouseId(request.getWarehouseId());
+			request.getData().setCompanyId(request.getCompanyId());
+			long maxLine = adjustmentDetailService.findMaxLine(request.getData());
+			return success(maxLine);
+		} catch (Exception e) {
+			return fail(e.getMessage());
+		}
+	}
 
     @RequestMapping(value = "/deleteHeader")
     public AjaxResult deleteHeader(@RequestBody String req) {

@@ -1,6 +1,7 @@
 package com.wms.services.inventory.impl;
 
 import com.google.common.collect.Lists;
+import com.wms.common.constants.DefaultConstants;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.enums.AdjustmentStatusEnum;
@@ -30,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -356,6 +358,37 @@ public class AdjustmentDetailServiceImpl implements IAdjustmentDetailService {
 		return Boolean.TRUE;
 	}
 
+	@Override
+	public Long findMaxLine(InventoryAdjustmentDetailTEntity detail) throws BusinessServiceException {
+		List<InventoryAdjustmentDetailTEntity> allDetail = findByHeaderId(detail);
+		if (CollectionUtils.isEmpty(allDetail))
+			return DefaultConstants.LINE_INCREMENT;
+		
+		InventoryAdjustmentDetailTEntity maxLine = allDetail.stream().max(new Comparator<InventoryAdjustmentDetailTEntity>() {
+			@Override
+			public int compare(InventoryAdjustmentDetailTEntity o1, InventoryAdjustmentDetailTEntity o2) {
+				return o1.getLineNumber().compareTo(o2.getLineNumber());
+			}
+		}).get();
+		
+		long maxLineNumber = maxLine.getLineNumber() + DefaultConstants.LINE_INCREMENT;
+		
+		return maxLineNumber;
+	}
 
+	@Override
+	public List<InventoryAdjustmentDetailTEntity> findByHeaderId(InventoryAdjustmentDetailTEntity detail)
+			throws BusinessServiceException {
+		InventoryAdjustmentDetailTExample TExample = new InventoryAdjustmentDetailTExample();
+		InventoryAdjustmentDetailTExample.Criteria criteria = TExample.createCriteria();
+		criteria.andDelFlagEqualTo(YesNoEnum.No.getCode())
+		.andWarehouseIdEqualTo(detail.getWarehouseId())
+		.andCompanyIdEqualTo(detail.getCompanyId())
+		.andInventoryAdjustmentIdEqualTo(detail.getInventoryAdjustmentId());
+		
+		List<InventoryAdjustmentDetailTEntity> adjustmentDetail = adjustmentDetailDao.selectByExample(TExample);
+		
+		return  adjustmentDetail;
+	}
 
 }

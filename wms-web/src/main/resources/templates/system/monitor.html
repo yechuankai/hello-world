@@ -102,7 +102,7 @@
 						">request</th>
 						<th field="response" width="50" wms:text="${web.label.response}" data-options="
 							formatter:function(value,row){
-								var obj = {id: value, type: 'REQUEST'};
+								var obj = {id: value, type: 'RESPONSE'};
 								obj = JSON.stringify(obj);
 								var detail = '<span title = \'查看\' onclick=\'viewDetail('+obj+')\' class=\'icon-find\'>&nbsp;</span>';
 								return detail;
@@ -110,7 +110,7 @@
 						">response</th>
 						<th field="error" width="50" wms:text="${web.label.error}" data-options="
 							formatter:function(value,row){
-								var obj = {id: value, type: 'REQUEST'};
+								var obj = {id: value, type: 'ERROR'};
 								obj = JSON.stringify(obj);
 								var detail = '<span title = \'查看\' onclick=\'viewDetail('+obj+')\' class=\'icon-find\'>&nbsp;</span>';
 								return detail;
@@ -123,9 +123,7 @@
 		</div>
 	</div>
 	<div id="detailDiv" wms:title="${web.label.viewdetail}" style="width:500px;height:500px; display: none;">
-		<pre id="showJson">
-			
-		</pre>
+		<textarea readonly="readonly" id="showJson" style="width:100%;height:99%"></textarea>
 	</div>
 </body>
 <script th:replace="common/js" />
@@ -145,10 +143,10 @@
 					return;
 				}
 				if(obj.type == 'ERROR'){
-					$('#showJson').html(data.data.content);
+					$('#showJson').val(data.data.content);
 				}else{
 					var json = eval('('+data.data.content+')');
-					$('#showJson').html(JSON.stringify(json, null, '\t'));
+					$('#showJson').val(JSON.stringify(json, null, '\t'));
 				}
 				$('#detailDiv').dialog({
 				    closed: true,

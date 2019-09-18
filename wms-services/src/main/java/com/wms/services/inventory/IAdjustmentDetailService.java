@@ -13,6 +13,10 @@ public interface IAdjustmentDetailService {
 
 	List<AdjustmentDetailVO> find(PageRequest request) throws BusinessServiceException;
 	
+	List<InventoryAdjustmentDetailTEntity> findByHeaderId(InventoryAdjustmentDetailTEntity detail) throws BusinessServiceException;
+	
+	Long findMaxLine(InventoryAdjustmentDetailTEntity detail) throws BusinessServiceException;
+	
 	InventoryAdjustmentDetailTEntity find(InventoryAdjustmentDetailTEntity adjustment) throws BusinessServiceException;
 	
 	AdjustmentVO save(AjaxRequest<AdjustmentVO> request) throws BusinessServiceException;

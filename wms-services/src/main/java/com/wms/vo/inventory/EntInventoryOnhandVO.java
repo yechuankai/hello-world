@@ -12,30 +12,43 @@ import java.math.BigDecimal;
  **/
 
 public class EntInventoryOnhandVO extends EntInventoryOnhandTEntity {
-    private BigDecimal quantityExpected;
+	private BigDecimal quantityExpected;
 
-    private String warehouseCode;
+	private BigDecimal quantityAvailable;
 
-    public String getWarehouseCode() {
-        return warehouseCode;
-    }
+	private String warehouseCode;
 
-    public void setWarehouseCode(String warehouseCode) {
-        this.warehouseCode = warehouseCode;
-    }
+	public String getWarehouseCode() {
+		return warehouseCode;
+	}
 
-    public EntInventoryOnhandVO() {
-    }
-    public EntInventoryOnhandVO(EntInventoryOnhandTEntity entInventoryOnhandTEntity) {
+	public void setWarehouseCode(String warehouseCode) {
+		this.warehouseCode = warehouseCode;
+	}
 
-            BeanUtils.copyBeanProp(this, entInventoryOnhandTEntity);
-    }
+	public BigDecimal getQuantityAvailable() {
+		return quantityAvailable;
+	}
 
-    public BigDecimal getQuantityExpected() {
-        return quantityExpected;
-    }
+	public void setQuantityAvailable(BigDecimal quantityAvailable) {
+		this.quantityAvailable = quantityAvailable;
+	}
 
-    public void setQuantityExpected(BigDecimal quantityExpected) {
-        this.quantityExpected = quantityExpected;
-    }
+	public EntInventoryOnhandVO() {
+	}
+
+	public EntInventoryOnhandVO(EntInventoryOnhandTEntity entInventoryOnhandTEntity) {
+		BeanUtils.copyBeanProp(this, entInventoryOnhandTEntity);
+		long quantityAvailable = entInventoryOnhandTEntity.getQuantityOnhand()
+				- entInventoryOnhandTEntity.getQuantityAllocated() - entInventoryOnhandTEntity.getQuantityLocked();
+		this.quantityAvailable = new BigDecimal(quantityAvailable);
+	}
+
+	public BigDecimal getQuantityExpected() {
+		return quantityExpected;
+	}
+
+	public void setQuantityExpected(BigDecimal quantityExpected) {
+		this.quantityExpected = quantityExpected;
+	}
 }

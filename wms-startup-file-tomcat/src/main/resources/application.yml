@@ -63,7 +63,7 @@ xss:
  urlPatterns: /system/*,/monitor/*,/tool/*
   
 wms:
- addressEnabled: true
+ addressEnabled: false
  locale: en_US
  
  

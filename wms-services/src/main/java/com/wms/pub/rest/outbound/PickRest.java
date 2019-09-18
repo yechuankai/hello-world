@@ -177,7 +177,13 @@ public class PickRest extends BaseController {
 				@Override
 				public int compare(AllocateVO o1, AllocateVO o2) {
 					String loc1 = o1.getLoc().getLocationLogical();
+					if (StringUtils.isEmpty(loc1))
+						return -1;
+					
 					String loc2 = o1.getLoc().getLocationLogical();
+					if (StringUtils.isEmpty(loc2))
+						return 1; 
+					
 					return loc1.compareTo(loc2);
 				}
 			});

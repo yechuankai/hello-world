@@ -7,7 +7,7 @@
     <result column="DESCR" jdbcType="VARCHAR" property="descr" />
     <result column="PREFIX" jdbcType="VARCHAR" property="prefix" />
     <result column="LENGTH" jdbcType="DECIMAL" property="length" />
-    <result column="DATA_FORMAT" jdbcType="VARCHAR" property="dataFormat" />
+    <result column="DATE_FORMAT" jdbcType="VARCHAR" property="dateFormat" />
     <result column="SEQUENCE" jdbcType="DECIMAL" property="sequence" />
     <result column="SEQUENCE_CACHE" jdbcType="DECIMAL" property="sequenceCache" />
     <result column="SEQUENCE_INCREMENT" jdbcType="DECIMAL" property="sequenceIncrement" />
@@ -117,7 +117,7 @@
     </where >
   </sql>
   <sql id="Base_Column_List">
-    ORDER_NUMBER_ID, CODE, DESCR, PREFIX, LENGTH, DATA_FORMAT, SEQUENCE, SEQUENCE_CACHE, 
+    ORDER_NUMBER_ID, CODE, DESCR, PREFIX, LENGTH, DATE_FORMAT, SEQUENCE, SEQUENCE_CACHE, 
     SEQUENCE_INCREMENT, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, 
     UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
   </sql>
@@ -143,14 +143,14 @@
   </delete>
   <insert id="insert" parameterType="com.wms.entity.auto.SysOrderNumberTEntity">
     insert into SYS_ORDER_NUMBER_T (ORDER_NUMBER_ID, CODE, DESCR, 
-      PREFIX, LENGTH, DATA_FORMAT, 
+      PREFIX, LENGTH, DATE_FORMAT, 
       SEQUENCE, SEQUENCE_CACHE, SEQUENCE_INCREMENT, 
       COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, 
       CREATE_BY, CREATE_TIME, UPDATE_BY, 
       UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
       )
     values (#{orderNumberId,jdbcType=DECIMAL}, #{code,jdbcType=VARCHAR}, #{descr,jdbcType=VARCHAR}, 
-      #{prefix,jdbcType=VARCHAR}, #{length,jdbcType=DECIMAL}, #{dataFormat,jdbcType=VARCHAR}, 
+      #{prefix,jdbcType=VARCHAR}, #{length,jdbcType=DECIMAL}, #{dateFormat,jdbcType=VARCHAR}, 
       #{sequence,jdbcType=DECIMAL}, #{sequenceCache,jdbcType=DECIMAL}, #{sequenceIncrement,jdbcType=DECIMAL}, 
       #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, 
       #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
@@ -175,8 +175,8 @@
       <if test="length != null">
         LENGTH,
       </if>
-      <if test="dataFormat != null">
-        DATA_FORMAT,
+      <if test="dateFormat != null">
+        DATE_FORMAT,
       </if>
       <if test="sequence != null">
         SEQUENCE,
@@ -231,8 +231,8 @@
       <if test="length != null">
         #{length,jdbcType=DECIMAL},
       </if>
-      <if test="dataFormat != null">
-        #{dataFormat,jdbcType=VARCHAR},
+      <if test="dateFormat != null">
+        #{dateFormat,jdbcType=VARCHAR},
       </if>
       <if test="sequence != null">
         #{sequence,jdbcType=DECIMAL},
@@ -296,8 +296,8 @@
       <if test="record.length != null">
         LENGTH = #{record.length,jdbcType=DECIMAL},
       </if>
-      <if test="record.dataFormat != null">
-        DATA_FORMAT = #{record.dataFormat,jdbcType=VARCHAR},
+      <if test="record.dateFormat != null">
+        DATE_FORMAT = #{record.dateFormat,jdbcType=VARCHAR},
       </if>
       <if test="record.sequence != null">
         SEQUENCE = #{record.sequence,jdbcType=DECIMAL},
@@ -347,7 +347,7 @@
       DESCR = #{record.descr,jdbcType=VARCHAR},
       PREFIX = #{record.prefix,jdbcType=VARCHAR},
       LENGTH = #{record.length,jdbcType=DECIMAL},
-      DATA_FORMAT = #{record.dataFormat,jdbcType=VARCHAR},
+      DATE_FORMAT = #{record.dateFormat,jdbcType=VARCHAR},
       SEQUENCE = #{record.sequence,jdbcType=DECIMAL},
       SEQUENCE_CACHE = #{record.sequenceCache,jdbcType=DECIMAL},
       SEQUENCE_INCREMENT = #{record.sequenceIncrement,jdbcType=DECIMAL},
@@ -467,7 +467,7 @@
     DESCR = #{record.descr,jdbcType=VARCHAR}, 
     PREFIX = #{record.prefix,jdbcType=VARCHAR}, 
     LENGTH = #{record.length,jdbcType=DECIMAL}, 
-    DATA_FORMAT = #{record.dataFormat,jdbcType=VARCHAR}, 
+    DATE_FORMAT = #{record.dateFormat,jdbcType=VARCHAR}, 
     SEQUENCE = #{record.sequence,jdbcType=DECIMAL}, 
     SEQUENCE_CACHE = #{record.sequenceCache,jdbcType=DECIMAL}, 
     SEQUENCE_INCREMENT = #{record.sequenceIncrement,jdbcType=DECIMAL}, 
@@ -508,8 +508,8 @@
         <if test="record.length != null">
           LENGTH = #{record.length,jdbcType=DECIMAL},
         </if>
-        <if test="record.dataFormat != null">
-          DATA_FORMAT = #{record.dataFormat,jdbcType=VARCHAR},
+        <if test="record.dateFormat != null">
+          DATE_FORMAT = #{record.dateFormat,jdbcType=VARCHAR},
         </if>
         <if test="record.sequence != null">
           SEQUENCE = #{record.sequence,jdbcType=DECIMAL},

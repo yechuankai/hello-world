@@ -48,7 +48,7 @@
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="locationCode" class="easyui-textbox"
-                           wms:data-options="label:'${web.label.locationcode}',labelPosition:'top'"/>
+                           wms:data-options="label:'${web.label.location}',labelPosition:'top'"/>
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="lpnNumber" class="easyui-textbox"
@@ -60,7 +60,7 @@
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="sourceNumber" class="easyui-textbox"
-                           wms:data-options="label:'${web.label.sourcenumber}',labelPosition:'top'"/>
+                           wms:data-options="label:'${web.label.sourcebillnumber}',labelPosition:'top'"/>
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="sourceLineNumber" class="easyui-textbox"
@@ -76,7 +76,7 @@
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="fromSkuCode" class="easyui-textbox"
-                           wms:data-options="label:'${web.label.fromSkuCode}',labelPosition:'top'"/>
+                           wms:data-options="label:'${web.label.fromskucode}',labelPosition:'top'"/>
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="fromSkuAlias" class="easyui-textbox"
@@ -88,7 +88,7 @@
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="fromLpnNumber" class="easyui-textbox"
-                           wms:data-options="label:'${web.label.fromLpnNumber}',labelPosition:'top'"/>
+                           wms:data-options="label:'${web.label.fromlpnnumber}',labelPosition:'top'"/>
                 </div>
                 <div style="margin-bottom:60px">
                     <input name="fromLotNumber" class="easyui-textbox"
@@ -150,20 +150,20 @@
                     <th field="quantity" width="100" wms:text="${web.label.quantity}" data-options="sortable:true">
                         quantity
                     </th>
-                    <th field="locationCode" width="100" wms:text="${web.label.locationcode}">locationCode</th>
+                    <th field="locationCode" width="100" wms:text="${web.label.location}">locationCode</th>
                     <th field="lpnNumber" width="100" wms:text="${web.label.lpnnumber}">lpnNumber</th>
                     <th field="lotNumber" width="100" wms:text="${web.label.lotnumber}">lotNumber</th>
                     <!--  
-                    <th field="sourceNumber" width="100" wms:text="${web.label.sourcenumber}">sourceNumber</th>
+                    <th field="sourceNumber" width="100" wms:text="${web.label.sourcebillnumber}">sourceNumber</th>
                     -->
                     <th field="sourceBillNumber" width="100" wms:text="${web.label.sourcebillnumber}">sourceBillNumber</th>
                     <th field="sourceLineNumber" width="100" wms:text="${web.label.sourcelinenumber}">sourceLineNumber</th>
                     <th field="fromOwnerCode" width="100" wms:text="${web.label.fromOwnerCode}">fromOwnerCode</th>
-                    <th field="fromSkuCode" width="100" wms:text="${web.label.fromSkuCode}">fromSkuCode</th>
+                    <th field="fromSkuCode" width="100" wms:text="${web.label.fromskucode}">fromSkuCode</th>
                     <th field="fromSkuAlias" width="100" wms:text="${web.label.fromSkuAlias}">fromSkuAlias</th>
                     <th field="fromLocationCode" width="100" wms:text="${web.label.fromlocationcode}">fromLocationCode
                     </th>
-                    <th field="fromLpnNumber" width="100" wms:text="${web.label.fromLpnNumber}">fromLpnNumber</th>
+                    <th field="fromLpnNumber" width="100" wms:text="${web.label.fromlpnnumber}">fromLpnNumber</th>
                     <th field="fromLotNumber" width="100" wms:text="${web.label.fromLotNumber}">fromLotNumber</th>
                     <th field="createBy" width="80" wms:text="${web.label.createby}">createBy</th>
                     <th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true">
@@ -175,7 +175,7 @@
                     </th>
 
                     <!--
-                    <th field="warehouseId" width="100" wms:text="${web.label.warehouse.code}">warehouseId</th>
+                    <th field="warehouseId" width="100" wms:text="${web.label.warehouse}">warehouseId</th>
                     <th field="ownerId" width="100" wms:text="${web.label.ownerId}" data-options="sortable:true">ownerId</th>
                     <th field="skuId" width="100" wms:text="${web.label.skuId}" data-options="sortable:true" >skuId</th>
                     <th field="updateVersion" width="80" wms:text="${web.label.updateVersion}" >updateVersion</th>
@@ -185,8 +185,8 @@
                             return getCodelkupValue('YESNO',value);
                         }
                     ">delFlag</th>
-                    <th field="companyId" width="100" wms:text="${web.label.company.code}" data-options="sortable:true" >companyId</th>
-                    <th field="warehouseId" width="100" wms:text="${web.label.warehouse.code}">warehouseId</th>
+                    <th field="companyId" width="100" wms:text="${web.label.company}" data-options="sortable:true" >companyId</th>
+                    <th field="warehouseId" width="100" wms:text="${web.label.warehouse}">warehouseId</th>
                     -->
                 </tr>
                 </thead>

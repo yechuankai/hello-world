@@ -56,6 +56,19 @@ public class InboundDetailRest extends BaseController{
 			return pageFail(e.getMessage());
 		}
 	}
+	
+	@RequestMapping(value = "/maxLineNumber")
+	public AjaxResult<Long> maxLineNumber(@RequestBody String req) {
+		try {
+			AjaxRequest<InboundDetailTEntity> request = ajaxRequest(req, new TypeReference<AjaxRequest<InboundDetailTEntity>>() {});
+			request.getData().setWarehouseId(request.getWarehouseId());
+			request.getData().setCompanyId(request.getCompanyId());
+			long maxLine = inboundDetailService.findMaxLine(request.getData());
+			return success(maxLine);
+		} catch (Exception e) {
+			return fail(e.getMessage());
+		}
+	}
 
 	@RequestMapping(value = "/save")
 	public AjaxResult<InboundVO> save(@RequestBody String req) {

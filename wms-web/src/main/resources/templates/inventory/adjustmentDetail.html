@@ -139,7 +139,7 @@
 								}">
 	                    quantityAdjustment
 	                </th>
-	                <th field="targetQuantity" width="80" wms:text="${web.label.targetquantity}"></th>
+	                <th field="targetQuantity" width="80" wms:text="${web.label.toquantity}"></th>
 	            </tr>
             </thead>
         </table>
@@ -175,6 +175,8 @@
                 fix: true
             }).dialog('open');
           refreshAddDetail();
+          $('#reason').combobox('setValue','');
+          $('#remark').textbox('setValue','');
         });
 
         $('#addDetailData').datagrid({
@@ -215,15 +217,17 @@
             var inventoryAdjustmentId =$('#inventoryAdjustmentId').val();
             var reason =$('#reason').val();
             var remark =$('#remark').val();
-            var total = $("#detailTable").datagrid('getData').total;
             var linenumber_increment = 10;
-            var rowcount = 0;
+         	//获取最大行号
+    		var maxNumber = getMaxLine(getServiceUrl() + '/services/inner/inventory/adjustment/maxLineNumber', {inventoryAdjustmentId: inventoryAdjustmentId});
+    		maxNumber = Number(maxNumber);
+         	var rowcount = 0;
             for(var j in rows) {
                 if(rows[j].quantityAdjustment == 0 || undefined == rows[j].quantityAdjustment || null == rows[j].quantityAdjustment || ""==rows[j].quantityAdjustment){
                     //调整数量为空或为0时不传入后台
                     continue;
                 }
-               var lineNumber= (Number(total)+Number(j)+1)*linenumber_increment;
+               var lineNumber= (Number(j))*linenumber_increment + maxNumber;
                 headerData.detail.push({
                     inventoryAdjustmentId : inventoryAdjustmentId,
                     inventoryOnhandId : rows[j].inventoryOnhandId,

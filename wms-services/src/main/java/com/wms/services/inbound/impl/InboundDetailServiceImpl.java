@@ -11,6 +11,7 @@ import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.core.services.IExcelService;
 import com.wms.common.enums.*;
 import com.wms.common.exception.BusinessServiceException;
+import com.wms.common.utils.DateUtils;
 import com.wms.common.utils.ExampleUtils;
 import com.wms.common.utils.MessageUtils;
 import com.wms.common.utils.StringUtils;
@@ -382,6 +383,14 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 		}
 		
 		
+		//默认设置批属性10为入库单号、批属性11为入库日期
+		if (BigDecimal.ZERO.compareTo(detail.getQuantityReceive()) < 0) {
+			if (StringUtils.isEmpty(detail.getLotAttribute10()))
+				detail.setLotAttribute10(inbound.getInboundNumber());
+			if (detail.getLotAttribute11() == null)
+				detail.setLotAttribute11(DateUtils.parseDate(DateUtils.getDate()));
+		}
+		
 		if (inbound.getOperatorType() == OperatorTypeEnum.Modify) {
 			return Boolean.TRUE;
 		}
@@ -437,6 +446,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 			if (selectDetail != null)
 				throw new BusinessServiceException("InboundDetailServiceImpl", "inbound.linenumber.exists" , new Object[] {inbound.getInboundNumber(), detail.getLineNumber()});
 		}
+		
 		return Boolean.TRUE;
 	}
 
@@ -1419,6 +1429,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 				InboundDetailVO detailVo = new InboundDetailVO(d);
 				BeanUtils.copyBeanProp(vo, h);
 				BeanUtils.copyBeanProp(vo, detailVo);
+				vo.setInboundNumber(h.getInboundNumber());
 				returnList.add(vo);
 			});
 		});
@@ -1507,17 +1518,16 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 					.companyId(detail.getCompanyId())
 					.warehouseId(inbound.getToWarehouseId())
 					.skuCode(detail.getSkuCode().toUpperCase())
-					.ownerCode(detail.getOwnerCode())
-					.active(YesNoEnum.Yes.getCode())
+					.ownerCode(inbound.getOwnerCode())
 					.build();
 			Set<String> codes = Sets.newHashSet();
 			codes.add(detail.getSkuCode().toUpperCase());
 			List<SkuTEntity> skus = skuService.findBySkuCodes(sku, codes);
 			if (CollectionUtils.isEmpty(skus)) {
 				//货品不存在新增
-				sku.setUpdateBy(detail.getUpdateBy());
-				sku.setOwnerId(detail.getOwnerId());
-				sku.setOwnerCode(detail.getOwnerCode());
+				sku.setUpdateBy(inbound.getUpdateBy());
+				sku.setOwnerId(inbound.getOwnerId());
+				sku.setOwnerCode(inbound.getOwnerCode());
 				sku.setSkuDescr(detail.getSkuDescr());
 
 				PackTEntity pack = packService.find(PackTEntity.builder()
@@ -1555,6 +1565,24 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 				skuService.add(skus);
 			}
 		}
+	}
+
+	@Override
+	public Long findMaxLine(InboundDetailTEntity inbound) throws BusinessServiceException {
+		List<InboundDetailTEntity> allDetail = findByHeaderId(inbound);
+		if (CollectionUtils.isEmpty(allDetail))
+			return DefaultConstants.LINE_INCREMENT;
+		
+		InboundDetailTEntity maxLine = allDetail.stream().max(new Comparator<InboundDetailTEntity>() {
+			@Override
+			public int compare(InboundDetailTEntity o1, InboundDetailTEntity o2) {
+				return o1.getLineNumber().compareTo(o2.getLineNumber());
+			}
+		}).get();
+		
+		long maxLineNumber = maxLine.getLineNumber() + DefaultConstants.LINE_INCREMENT;
+		
+		return maxLineNumber;
 	}
 }
 

@@ -1,5 +1,6 @@
 package com.wms.services.sys.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.wms.common.core.domain.OrderNumberVO;
 import com.wms.common.enums.YesNoEnum;
 import com.wms.common.exception.BusinessServiceException;
+import com.wms.common.utils.StringUtils;
 import com.wms.dao.auto.ISysOrderNumberTDao;
 import com.wms.dao.example.SysOrderNumberTExample;
 import com.wms.entity.auto.SysOrderNumberTEntity;
@@ -42,11 +44,24 @@ public class KeyGeneratorServiceImpl extends com.wms.common.core.services.impl.K
 		vo.setCode(orderNumber.getCode());
 		vo.setPrefix(orderNumber.getPrefix());
 		vo.setLength(orderNumber.getLength());
-		vo.setDateFormat(orderNumber.getDataFormat());
+		vo.setDateFormat(orderNumber.getDateFormat());
 		vo.setIncrement(orderNumber.getSequenceIncrement());
 		vo.setCacheSequence(orderNumber.getSequenceCache());
 		vo.setCurrentSequence(orderNumber.getSequence());
 		vo.setSequence(orderNumber.getSequence());
+		
+		String dateStr = null;
+		//如果设置了日期，日期不一样则需要重新设置序列
+		if (StringUtils.isNotEmpty(vo.getDateFormat())) {
+			dateStr = new SimpleDateFormat(orderNumber.getDateFormat()).format(new Date());
+			String lastDateStr = orderNumber.getDescription();
+			//重置序列
+			if (!dateStr.equals(lastDateStr)) {
+				vo.setSequence(0L);
+			}
+		}
+		
+		long seq = vo.getSequence() + vo.getCacheSequence();
 		
 		example.getOredCriteria().clear();
 		example.createCriteria()
@@ -56,8 +71,9 @@ public class KeyGeneratorServiceImpl extends com.wms.common.core.services.impl.K
 		
 		SysOrderNumberTEntity update = SysOrderNumberTEntity.builder()
 				.updateTime(new Date())
-				.sequence(orderNumber.getSequence() + orderNumber.getSequenceCache())
+				.sequence(seq)
 				.orderNumberId(orderNumber.getOrderNumberId())
+				.description(dateStr) //记录日期字符
 				.build();
 		int row = orderNumberDao.updateWithVersionByExampleSelective(orderNumber.getUpdateVersion(), update, example);
 		if (row == 0) {

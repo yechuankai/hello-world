@@ -11,7 +11,7 @@
             <form id="searchForm" data-table="#dataTable">
                 <div style="margin-bottom:10px">
                     <input name="zoneCode" class="easyui-textbox"
-                           wms:data-options="label:'${web.label.zonecode}',labelPosition:'top'">
+                           wms:data-options="label:'${web.label.zone}',labelPosition:'top'">
                 </div>
                 <div style="margin-bottom:10px">
                     <input class="easyui-combobox" name="type" wms:data-options="
@@ -67,7 +67,7 @@
             <thead>
             <tr>
                 <th field="zoneId" data-options="checkbox:true"></th>
-                <th field="zoneCode" width="130" wms:text="${web.label.zonecode}" data-options="sortable:true">
+                <th field="zoneCode" width="130" wms:text="${web.label.zone}" data-options="sortable:true">
                     zoneCode
                 </th>
                 <th field="type" width="150" wms:text="${web.label.type}" data-options="
@@ -161,7 +161,7 @@
                 <tr>
                     <td>
                         <input name="zoneCode" class="easyui-textbox"
-                               wms:data-options="required:true,label:'${web.label.zonecode}',labelPosition:'top'">
+                               wms:data-options="required:true,label:'${web.label.zone}',labelPosition:'top'">
                     </td>
                 </tr>
                 <tr>

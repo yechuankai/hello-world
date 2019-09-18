@@ -49,6 +49,6 @@ spring:
   enabled: false
   
 wms:
- addressEnabled: true
+ addressEnabled: false
  locale: zh_CN
   

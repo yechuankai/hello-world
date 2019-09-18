@@ -10,7 +10,7 @@
 			<div style="margin-left: 10px;">
 				<form id="searchForm" data-table="#packData" >
 					<div style="margin-bottom:10px">
-						<input name="packCode" class="easyui-textbox" wms:data-options="label:'${web.label.packcode}',labelPosition:'top'">
+						<input name="packCode" class="easyui-textbox" wms:data-options="label:'${web.label.pack}',labelPosition:'top'">
 					</div>
 					<div style="margin-bottom:10px">
 						<input name="packDescr" class="easyui-textbox" wms:data-options="label:'${web.label.descr}',labelPosition:'top'">
@@ -65,7 +65,7 @@
 				</thead>
 				<thead>
 					<tr>
-						<th field="packCode" width="80" wms:text="${web.label.packcode}" data-options="sortable:true">packCode</th>
+						<th field="packCode" width="80" wms:text="${web.label.pack}" data-options="sortable:true">packCode</th>
 						<th field="packDescr" width="150" wms:text="${web.label.descr}" data-options="sortable:false,editor:{
 																													type: 'validatebox',
 																													options: {
@@ -86,7 +86,7 @@
 								}
 							}
 						" >uom</th>
-						<th field="qty" width="80" wms:text="${web.label.qty.least}" data-options="sortable:true,editor:{
+						<th field="qty" width="80" wms:text="${web.label.quantity}" data-options="sortable:true,editor:{
 																													type: 'numberbox',
 																													options: {
 																														required: true
@@ -168,7 +168,7 @@
 					<table style="width: 100%;padding-left: 60px;">
 						<tr>
 							<td>
-								<input name="packCode" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="required:true,label:'${web.label.packcode}',labelPosition:'top'">
+								<input name="packCode" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="required:true,label:'${web.label.pack}',labelPosition:'top'">
 							</td>
 							<td>
 								<input name="packDescr" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="required:true,label:'${web.label.descr}',labelPosition:'top'">
@@ -186,7 +186,7 @@
 								" />
 							</td>
 							<td>
-								<input name="qty" class="lazy-load" lazy-load="easyui-numberbox" value="1"  wms:data-options="required:true,label:'${web.label.qty.least}',labelPosition:'top'">
+								<input name="qty" class="lazy-load" lazy-load="easyui-numberbox" value="1"  wms:data-options="required:true,label:'${web.label.quantity}',labelPosition:'top'">
 							</td>
 						</tr>
 						<tr>

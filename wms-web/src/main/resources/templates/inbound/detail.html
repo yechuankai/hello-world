@@ -125,7 +125,7 @@
 							<input name="lineNumber" id="lineNumber" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.linenumber}',labelPosition:'top',required:true" />
 						</td>
 						<td width="200px">
-							<input id="sourceLineNumber" name="sourceLineNumber" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.label.souceline}',labelPosition:'top'" />
+							<input id="sourceLineNumber" name="sourceLineNumber" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.label.sourcelinenumber}',labelPosition:'top'" />
 						</td>
 						<td width="200px">
 							<input id="putawayStrategyCode" name="allocateStrategyCode" th:replace="lov/putawayStrategy"/>
@@ -393,15 +393,8 @@
 		}
 		$('#inboundDetailForm').form('reset');
 		lazyLoadView('#inboundDetailForm');
-		var grid = $("#inboundDetailData").datagrid('getData');
-		//var maxNumber = grid.total * 10;
-		var maxNumber = 0;
-		grid.rows.forEach(function(e){
-			if(e.lineNumber != null && parseInt(e.lineNumber) > maxNumber){
-				maxNumber = parseInt(e.lineNumber);
-			}
-		});
-		maxNumber = maxNumber + 10;
+		//获取最大行号
+		var maxNumber = getMaxLine(getServiceUrl() + '/services/inner/inboundDetail/maxLineNumber', {inboundHeaderId: headerData.inboundHeaderId});
 		$("#lineNumber").textbox('setValue', maxNumber);
 		
 		var owner = getOwnerId();

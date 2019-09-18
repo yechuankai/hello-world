@@ -58,7 +58,7 @@
 							}
 							">Expected Quantity
 		        </th>
-		        <th field="uomQuantityOrder" width="80" wms:text="${web.label.uomquantityorder}" data-options="
+		        <th field="uomQuantityOrder" width="80" wms:text="${web.label.quantityorder}" data-options="
 							">Order Quantity
 		        </th>
 		
@@ -116,7 +116,7 @@
                         <td width="200px">
                             <input id="sourceLineNumber" name="sourceLineNumber" class="lazy-load"
                                    lazy-load="easyui-textbox"
-                                   wms:data-options="label:'${web.label.souceline}',labelPosition:'top'"/>
+                                   wms:data-options="label:'${web.label.sourcelinenumber}',labelPosition:'top'"/>
                         </td>
                         <td width="200px">
                             <input id="allocateStrategyCode" name="allocateStrategyCode" th:replace="lov/allocateStrategy"/>
@@ -341,13 +341,8 @@
         $('#outboundDetailForm').form('reset');
         lazyLoadView('#outboundDetailForm');
         var grid = $("#outboundDetailData").datagrid('getData');
-        var maxNumber = 0;
-		grid.rows.forEach(function(e){
-			if(e.lineNumber != null && parseInt(e.lineNumber) > maxNumber){
-				maxNumber = parseInt(e.lineNumber);
-			}
-		});
-		maxNumber = maxNumber + 10;
+      	//获取最大行号
+		var maxNumber = getMaxLine(getServiceUrl() + '/services/inner/outboundDetail/maxLineNumber', {outboundHeaderId: headerData.outboundHeaderId});
 		$("#lineNumber").textbox('setValue', maxNumber);
         var owner = getOwnerId();
         if (owner == '-1') {

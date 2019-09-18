@@ -27,7 +27,7 @@
 							"/>
                     </td>
                     <td valign="bottom">
-                    	 <a href="#" class="easyui-linkbutton" onclick="downloadTemplate()" id="downloadTemplate" wms:text="${web.label.template.download}">Download</a>
+                    	 <a href="#" class="easyui-linkbutton" onclick="downloadTemplate()" id="downloadTemplate" wms:text="${web.label.download}">Download</a>
                     </td>
                 </tr>
                 <tr>
@@ -60,8 +60,11 @@ function downloadTemplate(){
 		showError($.locale.selectTemplate);
 		return;
 	}
-	var url = getFileUrl() + '/template/download/import';
-	window.location.href=url + '?template='+template;
+	var url = getFileUrl() + '/template/download/import?template='+template;
+	$('body').append('<iframe style="display:none;" src="'+url+'"></iframe>');
+	setTimeout(() => {
+		$('iframe').remove();
+	}, 1000);
 }
 
 function clean(){

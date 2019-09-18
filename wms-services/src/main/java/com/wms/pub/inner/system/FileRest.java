@@ -3,6 +3,7 @@ package com.wms.pub.inner.system;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,10 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.TypeReference;
 import com.github.pagehelper.PageHelper;
 import com.wms.common.core.controller.BaseController;
+import com.wms.common.core.domain.mongodb.ImportMessageVO;
+import com.wms.common.core.domain.mongodb.RestContent;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.core.domain.response.AjaxResult;
 import com.wms.common.core.domain.response.PageResult;
+import com.wms.common.utils.mongodb.MongoUtils;
 import com.wms.entity.auto.SysFileTEntity;
 import com.wms.services.sys.ISysFileService;
 import com.wms.shiro.utils.ShiroUtils;
@@ -72,6 +76,25 @@ public class FileRest extends BaseController{
 			return fail(e.getMessage());
 		}
 		return fail();
+	}
+	
+	@RequestMapping(value = "/view")
+	public AjaxResult<ImportMessageVO> view(@RequestBody String req) {
+		ImportMessageVO response = null;
+		try {
+			AjaxRequest<ImportMessageVO> request = ajaxRequest(req, new TypeReference<AjaxRequest<ImportMessageVO>>() {});
+			ImportMessageVO content = request.getData();
+			if (content == null)
+				return fail("no data");
+			
+			response = MongoUtils.findById(new ObjectId(content.getId()), ImportMessageVO.class);
+			if (response == null)
+				return fail("no data");
+			
+			return success(response);
+		} catch (Exception e) {
+			return pageFail(e.getMessage());
+		}
 	}
 
 	

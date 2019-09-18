@@ -26,6 +26,20 @@ public class InboundDetailVO extends InboundDetailTEntity {
     private LotValidateTEntity lotv;
 	private String inboundNumber;
 	private OperatorTypeEnum operatorType;
+	
+	void initZero(){
+		if (getWeightGross() == null)
+			setWeightGross(BigDecimal.ZERO);
+		
+		if (getWeightNet() == null)
+			setWeightNet(BigDecimal.ZERO);
+		
+		if (getWeightTare() == null)
+			setWeightTare(BigDecimal.ZERO);
+		
+		if (getVolume() == null)
+			setVolume(BigDecimal.ZERO);
+	}
 
 	public OperatorTypeEnum getOperatorType() {
 		return operatorType;
@@ -43,7 +57,9 @@ public class InboundDetailVO extends InboundDetailTEntity {
 		this.skuDescr = skuDescr;
 	}
 	
-	public InboundDetailVO(){}
+	public InboundDetailVO(){
+		initZero();
+	}
 	
 	public InboundDetailVO(InboundDetailTEntity inboundDetail){
 		BeanUtils.copyBeanProp(this, inboundDetail, Boolean.TRUE);
@@ -52,6 +68,7 @@ public class InboundDetailVO extends InboundDetailTEntity {
 			this.setUomQuantityExpected(this.getQuantityExpected().divide(this.getUomQuantity(),5,ROUND_FLOOR));
 			this.setUomQuantityReceive(this.getQuantityReceive().divide(this.getUomQuantity(),5,ROUND_FLOOR));
 		}
+		initZero();
 	}
 	
 	public BigDecimal getUomQuantityExpected() {
