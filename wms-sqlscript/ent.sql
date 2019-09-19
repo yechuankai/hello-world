@@ -192,7 +192,7 @@ select DISTINCT 0 SKU_ID,
 -- ----------------------------
 -- 企业包装
 -- ----------------------------
-create or replace view ent_pack_v as
+create or replace view wms.ent_pack_v as
 (
 select DISTINCT 0 PACK_ID,
        PACK_CODE,
@@ -203,6 +203,14 @@ select DISTINCT 0 PACK_ID,
        QTY_INNER,
        UOM_CASE,
        QTY_CASE,
+       volume_inner,
+       weight_gross_inner,
+       weight_net_inner,
+       weight_tare_inner,
+       volume_case,
+       weight_gross_case,
+       weight_net_case,
+       weight_tare_case,
        'Y' ACTIVE,
        '' REMARK,
        COMPANY_ID,

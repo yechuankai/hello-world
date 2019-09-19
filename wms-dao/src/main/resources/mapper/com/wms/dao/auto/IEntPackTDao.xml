@@ -11,6 +11,14 @@
     <result column="QTY_INNER" jdbcType="DECIMAL" property="qtyInner" />
     <result column="UOM_CASE" jdbcType="VARCHAR" property="uomCase" />
     <result column="QTY_CASE" jdbcType="DECIMAL" property="qtyCase" />
+    <result column="VOLUME_INNER" jdbcType="DECIMAL" property="volumeInner" />
+    <result column="WEIGHT_GROSS_INNER" jdbcType="DECIMAL" property="weightGrossInner" />
+    <result column="WEIGHT_NET_INNER" jdbcType="DECIMAL" property="weightNetInner" />
+    <result column="WEIGHT_TARE_INNER" jdbcType="DECIMAL" property="weightTareInner" />
+    <result column="VOLUME_CASE" jdbcType="DECIMAL" property="volumeCase" />
+    <result column="WEIGHT_GROSS_CASE" jdbcType="DECIMAL" property="weightGrossCase" />
+    <result column="WEIGHT_NET_CASE" jdbcType="DECIMAL" property="weightNetCase" />
+    <result column="WEIGHT_TARE_CASE" jdbcType="DECIMAL" property="weightTareCase" />
     <result column="ACTIVE" jdbcType="CHAR" property="active" />
     <result column="REMARK" jdbcType="CHAR" property="remark" />
     <result column="COMPANY_ID" jdbcType="DECIMAL" property="companyId" />
@@ -120,8 +128,10 @@
   </sql>
   <sql id="Base_Column_List">
     PACK_ID, PACK_CODE, PACK_DESCR, UOM, QTY, UOM_INNER, QTY_INNER, UOM_CASE, QTY_CASE, 
-    ACTIVE, REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, 
-    UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
+    VOLUME_INNER, WEIGHT_GROSS_INNER, WEIGHT_NET_INNER, WEIGHT_TARE_INNER, VOLUME_CASE, 
+    WEIGHT_GROSS_CASE, WEIGHT_NET_CASE, WEIGHT_TARE_CASE, ACTIVE, REMARK, COMPANY_ID, 
+    WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, 
+    DESCRIPTION
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.EntPackTExample" resultMap="BaseResultMap">
     select
@@ -147,17 +157,23 @@
     insert into ENT_PACK_V (PACK_ID, PACK_CODE, PACK_DESCR, 
       UOM, QTY, UOM_INNER, 
       QTY_INNER, UOM_CASE, QTY_CASE, 
-      ACTIVE, REMARK, COMPANY_ID, 
-      WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
-      CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
-      UPDATE_VERSION, DESCRIPTION)
+      VOLUME_INNER, WEIGHT_GROSS_INNER, WEIGHT_NET_INNER, 
+      WEIGHT_TARE_INNER, VOLUME_CASE, WEIGHT_GROSS_CASE, 
+      WEIGHT_NET_CASE, WEIGHT_TARE_CASE, ACTIVE, 
+      REMARK, COMPANY_ID, WAREHOUSE_ID, 
+      DEL_FLAG, CREATE_BY, CREATE_TIME, 
+      UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, 
+      DESCRIPTION)
     values (#{packId,jdbcType=DECIMAL}, #{packCode,jdbcType=VARCHAR}, #{packDescr,jdbcType=VARCHAR}, 
       #{uom,jdbcType=VARCHAR}, #{qty,jdbcType=DECIMAL}, #{uomInner,jdbcType=VARCHAR}, 
       #{qtyInner,jdbcType=DECIMAL}, #{uomCase,jdbcType=VARCHAR}, #{qtyCase,jdbcType=DECIMAL}, 
-      #{active,jdbcType=CHAR}, #{remark,jdbcType=CHAR}, #{companyId,jdbcType=DECIMAL}, 
-      #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=CHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=CHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=CHAR})
+      #{volumeInner,jdbcType=DECIMAL}, #{weightGrossInner,jdbcType=DECIMAL}, #{weightNetInner,jdbcType=DECIMAL}, 
+      #{weightTareInner,jdbcType=DECIMAL}, #{volumeCase,jdbcType=DECIMAL}, #{weightGrossCase,jdbcType=DECIMAL}, 
+      #{weightNetCase,jdbcType=DECIMAL}, #{weightTareCase,jdbcType=DECIMAL}, #{active,jdbcType=CHAR}, 
+      #{remark,jdbcType=CHAR}, #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, 
+      #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=CHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, 
+      #{description,jdbcType=CHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.EntPackTEntity">
     insert into ENT_PACK_V
@@ -188,6 +204,30 @@
       </if>
       <if test="qtyCase != null">
         QTY_CASE,
+      </if>
+      <if test="volumeInner != null">
+        VOLUME_INNER,
+      </if>
+      <if test="weightGrossInner != null">
+        WEIGHT_GROSS_INNER,
+      </if>
+      <if test="weightNetInner != null">
+        WEIGHT_NET_INNER,
+      </if>
+      <if test="weightTareInner != null">
+        WEIGHT_TARE_INNER,
+      </if>
+      <if test="volumeCase != null">
+        VOLUME_CASE,
+      </if>
+      <if test="weightGrossCase != null">
+        WEIGHT_GROSS_CASE,
+      </if>
+      <if test="weightNetCase != null">
+        WEIGHT_NET_CASE,
+      </if>
+      <if test="weightTareCase != null">
+        WEIGHT_TARE_CASE,
       </if>
       <if test="active != null">
         ACTIVE,
@@ -250,6 +290,30 @@
       </if>
       <if test="qtyCase != null">
         #{qtyCase,jdbcType=DECIMAL},
+      </if>
+      <if test="volumeInner != null">
+        #{volumeInner,jdbcType=DECIMAL},
+      </if>
+      <if test="weightGrossInner != null">
+        #{weightGrossInner,jdbcType=DECIMAL},
+      </if>
+      <if test="weightNetInner != null">
+        #{weightNetInner,jdbcType=DECIMAL},
+      </if>
+      <if test="weightTareInner != null">
+        #{weightTareInner,jdbcType=DECIMAL},
+      </if>
+      <if test="volumeCase != null">
+        #{volumeCase,jdbcType=DECIMAL},
+      </if>
+      <if test="weightGrossCase != null">
+        #{weightGrossCase,jdbcType=DECIMAL},
+      </if>
+      <if test="weightNetCase != null">
+        #{weightNetCase,jdbcType=DECIMAL},
+      </if>
+      <if test="weightTareCase != null">
+        #{weightTareCase,jdbcType=DECIMAL},
       </if>
       <if test="active != null">
         #{active,jdbcType=CHAR},
@@ -322,6 +386,30 @@
       <if test="record.qtyCase != null">
         QTY_CASE = #{record.qtyCase,jdbcType=DECIMAL},
       </if>
+      <if test="record.volumeInner != null">
+        VOLUME_INNER = #{record.volumeInner,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightGrossInner != null">
+        WEIGHT_GROSS_INNER = #{record.weightGrossInner,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightNetInner != null">
+        WEIGHT_NET_INNER = #{record.weightNetInner,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightTareInner != null">
+        WEIGHT_TARE_INNER = #{record.weightTareInner,jdbcType=DECIMAL},
+      </if>
+      <if test="record.volumeCase != null">
+        VOLUME_CASE = #{record.volumeCase,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightGrossCase != null">
+        WEIGHT_GROSS_CASE = #{record.weightGrossCase,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightNetCase != null">
+        WEIGHT_NET_CASE = #{record.weightNetCase,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightTareCase != null">
+        WEIGHT_TARE_CASE = #{record.weightTareCase,jdbcType=DECIMAL},
+      </if>
       <if test="record.active != null">
         ACTIVE = #{record.active,jdbcType=CHAR},
       </if>
@@ -371,6 +459,14 @@
       QTY_INNER = #{record.qtyInner,jdbcType=DECIMAL},
       UOM_CASE = #{record.uomCase,jdbcType=VARCHAR},
       QTY_CASE = #{record.qtyCase,jdbcType=DECIMAL},
+      VOLUME_INNER = #{record.volumeInner,jdbcType=DECIMAL},
+      WEIGHT_GROSS_INNER = #{record.weightGrossInner,jdbcType=DECIMAL},
+      WEIGHT_NET_INNER = #{record.weightNetInner,jdbcType=DECIMAL},
+      WEIGHT_TARE_INNER = #{record.weightTareInner,jdbcType=DECIMAL},
+      VOLUME_CASE = #{record.volumeCase,jdbcType=DECIMAL},
+      WEIGHT_GROSS_CASE = #{record.weightGrossCase,jdbcType=DECIMAL},
+      WEIGHT_NET_CASE = #{record.weightNetCase,jdbcType=DECIMAL},
+      WEIGHT_TARE_CASE = #{record.weightTareCase,jdbcType=DECIMAL},
       ACTIVE = #{record.active,jdbcType=CHAR},
       REMARK = #{record.remark,jdbcType=CHAR},
       COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
@@ -453,6 +549,14 @@
     QTY_INNER = #{record.qtyInner,jdbcType=DECIMAL}, 
     UOM_CASE = #{record.uomCase,jdbcType=VARCHAR}, 
     QTY_CASE = #{record.qtyCase,jdbcType=DECIMAL}, 
+    VOLUME_INNER = #{record.volumeInner,jdbcType=DECIMAL}, 
+    WEIGHT_GROSS_INNER = #{record.weightGrossInner,jdbcType=DECIMAL}, 
+    WEIGHT_NET_INNER = #{record.weightNetInner,jdbcType=DECIMAL}, 
+    WEIGHT_TARE_INNER = #{record.weightTareInner,jdbcType=DECIMAL}, 
+    VOLUME_CASE = #{record.volumeCase,jdbcType=DECIMAL}, 
+    WEIGHT_GROSS_CASE = #{record.weightGrossCase,jdbcType=DECIMAL}, 
+    WEIGHT_NET_CASE = #{record.weightNetCase,jdbcType=DECIMAL}, 
+    WEIGHT_TARE_CASE = #{record.weightTareCase,jdbcType=DECIMAL}, 
     ACTIVE = #{record.active,jdbcType=CHAR}, 
     REMARK = #{record.remark,jdbcType=CHAR}, 
     COMPANY_ID = #{record.companyId,jdbcType=DECIMAL}, 
@@ -503,6 +607,30 @@
         </if>
         <if test="record.qtyCase != null">
           QTY_CASE = #{record.qtyCase,jdbcType=DECIMAL},
+        </if>
+        <if test="record.volumeInner != null">
+          VOLUME_INNER = #{record.volumeInner,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightGrossInner != null">
+          WEIGHT_GROSS_INNER = #{record.weightGrossInner,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightNetInner != null">
+          WEIGHT_NET_INNER = #{record.weightNetInner,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightTareInner != null">
+          WEIGHT_TARE_INNER = #{record.weightTareInner,jdbcType=DECIMAL},
+        </if>
+        <if test="record.volumeCase != null">
+          VOLUME_CASE = #{record.volumeCase,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightGrossCase != null">
+          WEIGHT_GROSS_CASE = #{record.weightGrossCase,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightNetCase != null">
+          WEIGHT_NET_CASE = #{record.weightNetCase,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightTareCase != null">
+          WEIGHT_TARE_CASE = #{record.weightTareCase,jdbcType=DECIMAL},
         </if>
         <if test="record.active != null">
           ACTIVE = #{record.active,jdbcType=CHAR},

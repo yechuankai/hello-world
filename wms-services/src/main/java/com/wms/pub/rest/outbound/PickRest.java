@@ -7,6 +7,7 @@ import com.wms.common.core.controller.BaseController;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.response.AjaxResult;
 import com.wms.common.enums.InboundStatusEnum;
+import com.wms.common.enums.OutboundStatusEnum;
 import com.wms.common.enums.allocate.AllocateStatusEnum;
 import com.wms.common.enums.allocate.AllocateStrategyTypeEnum;
 import com.wms.common.exception.BusinessServiceException;
@@ -72,7 +73,7 @@ public class PickRest extends BaseController {
 			outbound.setWarehouseId(request.getWarehouseId());
 			outbound.setCompanyId(request.getCompanyId());
 			OutboundVO header = outboundHeaderService.find(outbound);
-			if (InboundStatusEnum.Cancel.getCode().equals(header.getStatus()))
+			if (OutboundStatusEnum.Cancel.getCode().equals(header.getStatus()))
 				throw new BusinessServiceException("PickRest", "outbound.status.not.process" , new Object[] {header.getOutboundNumber()});
 			return success(header);
 		} catch (Exception e) {

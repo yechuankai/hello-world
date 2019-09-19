@@ -25,6 +25,22 @@ public class EntPackTEntity extends BaseEntity {
 
     private BigDecimal qtyCase;
 
+    private BigDecimal volumeInner;
+
+    private BigDecimal weightGrossInner;
+
+    private BigDecimal weightNetInner;
+
+    private BigDecimal weightTareInner;
+
+    private BigDecimal volumeCase;
+
+    private BigDecimal weightGrossCase;
+
+    private BigDecimal weightNetCase;
+
+    private BigDecimal weightTareCase;
+
     private String active;
 
     private String remark;
@@ -117,6 +133,70 @@ public class EntPackTEntity extends BaseEntity {
 
     public void setQtyCase(BigDecimal qtyCase) {
         this.qtyCase = qtyCase;
+    }
+
+    public BigDecimal getVolumeInner() {
+        return volumeInner;
+    }
+
+    public void setVolumeInner(BigDecimal volumeInner) {
+        this.volumeInner = volumeInner;
+    }
+
+    public BigDecimal getWeightGrossInner() {
+        return weightGrossInner;
+    }
+
+    public void setWeightGrossInner(BigDecimal weightGrossInner) {
+        this.weightGrossInner = weightGrossInner;
+    }
+
+    public BigDecimal getWeightNetInner() {
+        return weightNetInner;
+    }
+
+    public void setWeightNetInner(BigDecimal weightNetInner) {
+        this.weightNetInner = weightNetInner;
+    }
+
+    public BigDecimal getWeightTareInner() {
+        return weightTareInner;
+    }
+
+    public void setWeightTareInner(BigDecimal weightTareInner) {
+        this.weightTareInner = weightTareInner;
+    }
+
+    public BigDecimal getVolumeCase() {
+        return volumeCase;
+    }
+
+    public void setVolumeCase(BigDecimal volumeCase) {
+        this.volumeCase = volumeCase;
+    }
+
+    public BigDecimal getWeightGrossCase() {
+        return weightGrossCase;
+    }
+
+    public void setWeightGrossCase(BigDecimal weightGrossCase) {
+        this.weightGrossCase = weightGrossCase;
+    }
+
+    public BigDecimal getWeightNetCase() {
+        return weightNetCase;
+    }
+
+    public void setWeightNetCase(BigDecimal weightNetCase) {
+        this.weightNetCase = weightNetCase;
+    }
+
+    public BigDecimal getWeightTareCase() {
+        return weightTareCase;
+    }
+
+    public void setWeightTareCase(BigDecimal weightTareCase) {
+        this.weightTareCase = weightTareCase;
     }
 
     public String getActive() {
@@ -233,6 +313,14 @@ public class EntPackTEntity extends BaseEntity {
         sb.append(", qtyInner=").append(qtyInner);
         sb.append(", uomCase=").append(uomCase);
         sb.append(", qtyCase=").append(qtyCase);
+        sb.append(", volumeInner=").append(volumeInner);
+        sb.append(", weightGrossInner=").append(weightGrossInner);
+        sb.append(", weightNetInner=").append(weightNetInner);
+        sb.append(", weightTareInner=").append(weightTareInner);
+        sb.append(", volumeCase=").append(volumeCase);
+        sb.append(", weightGrossCase=").append(weightGrossCase);
+        sb.append(", weightNetCase=").append(weightNetCase);
+        sb.append(", weightTareCase=").append(weightTareCase);
         sb.append(", active=").append(active);
         sb.append(", remark=").append(remark);
         sb.append(", companyId=").append(companyId);
@@ -269,6 +357,14 @@ public class EntPackTEntity extends BaseEntity {
             && (this.getQtyInner() == null ? other.getQtyInner() == null : this.getQtyInner().equals(other.getQtyInner()))
             && (this.getUomCase() == null ? other.getUomCase() == null : this.getUomCase().equals(other.getUomCase()))
             && (this.getQtyCase() == null ? other.getQtyCase() == null : this.getQtyCase().equals(other.getQtyCase()))
+            && (this.getVolumeInner() == null ? other.getVolumeInner() == null : this.getVolumeInner().equals(other.getVolumeInner()))
+            && (this.getWeightGrossInner() == null ? other.getWeightGrossInner() == null : this.getWeightGrossInner().equals(other.getWeightGrossInner()))
+            && (this.getWeightNetInner() == null ? other.getWeightNetInner() == null : this.getWeightNetInner().equals(other.getWeightNetInner()))
+            && (this.getWeightTareInner() == null ? other.getWeightTareInner() == null : this.getWeightTareInner().equals(other.getWeightTareInner()))
+            && (this.getVolumeCase() == null ? other.getVolumeCase() == null : this.getVolumeCase().equals(other.getVolumeCase()))
+            && (this.getWeightGrossCase() == null ? other.getWeightGrossCase() == null : this.getWeightGrossCase().equals(other.getWeightGrossCase()))
+            && (this.getWeightNetCase() == null ? other.getWeightNetCase() == null : this.getWeightNetCase().equals(other.getWeightNetCase()))
+            && (this.getWeightTareCase() == null ? other.getWeightTareCase() == null : this.getWeightTareCase().equals(other.getWeightTareCase()))
             && (this.getActive() == null ? other.getActive() == null : this.getActive().equals(other.getActive()))
             && (this.getRemark() == null ? other.getRemark() == null : this.getRemark().equals(other.getRemark()))
             && (this.getCompanyId() == null ? other.getCompanyId() == null : this.getCompanyId().equals(other.getCompanyId()))
@@ -295,6 +391,14 @@ public class EntPackTEntity extends BaseEntity {
         result = prime * result + ((getQtyInner() == null) ? 0 : getQtyInner().hashCode());
         result = prime * result + ((getUomCase() == null) ? 0 : getUomCase().hashCode());
         result = prime * result + ((getQtyCase() == null) ? 0 : getQtyCase().hashCode());
+        result = prime * result + ((getVolumeInner() == null) ? 0 : getVolumeInner().hashCode());
+        result = prime * result + ((getWeightGrossInner() == null) ? 0 : getWeightGrossInner().hashCode());
+        result = prime * result + ((getWeightNetInner() == null) ? 0 : getWeightNetInner().hashCode());
+        result = prime * result + ((getWeightTareInner() == null) ? 0 : getWeightTareInner().hashCode());
+        result = prime * result + ((getVolumeCase() == null) ? 0 : getVolumeCase().hashCode());
+        result = prime * result + ((getWeightGrossCase() == null) ? 0 : getWeightGrossCase().hashCode());
+        result = prime * result + ((getWeightNetCase() == null) ? 0 : getWeightNetCase().hashCode());
+        result = prime * result + ((getWeightTareCase() == null) ? 0 : getWeightTareCase().hashCode());
         result = prime * result + ((getActive() == null) ? 0 : getActive().hashCode());
         result = prime * result + ((getRemark() == null) ? 0 : getRemark().hashCode());
         result = prime * result + ((getCompanyId() == null) ? 0 : getCompanyId().hashCode());
@@ -471,6 +575,118 @@ public class EntPackTEntity extends BaseEntity {
          */
         public Builder qtyInner(BigDecimal qtyInner) {
             obj.setQtyInner(qtyInner);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column ENT_PACK_V.VOLUME_INNER
+         *
+         * @param volumeInner the value for ENT_PACK_V.VOLUME_INNER
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder volumeInner(BigDecimal volumeInner) {
+            obj.setVolumeInner(volumeInner);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column ENT_PACK_V.WEIGHT_GROSS_INNER
+         *
+         * @param weightGrossInner the value for ENT_PACK_V.WEIGHT_GROSS_INNER
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder weightGrossInner(BigDecimal weightGrossInner) {
+            obj.setWeightGrossInner(weightGrossInner);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column ENT_PACK_V.WEIGHT_NET_INNER
+         *
+         * @param weightNetInner the value for ENT_PACK_V.WEIGHT_NET_INNER
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder weightNetInner(BigDecimal weightNetInner) {
+            obj.setWeightNetInner(weightNetInner);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column ENT_PACK_V.WEIGHT_TARE_INNER
+         *
+         * @param weightTareInner the value for ENT_PACK_V.WEIGHT_TARE_INNER
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder weightTareInner(BigDecimal weightTareInner) {
+            obj.setWeightTareInner(weightTareInner);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column ENT_PACK_V.VOLUME_CASE
+         *
+         * @param volumeCase the value for ENT_PACK_V.VOLUME_CASE
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder volumeCase(BigDecimal volumeCase) {
+            obj.setVolumeCase(volumeCase);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column ENT_PACK_V.WEIGHT_GROSS_CASE
+         *
+         * @param weightGrossCase the value for ENT_PACK_V.WEIGHT_GROSS_CASE
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder weightGrossCase(BigDecimal weightGrossCase) {
+            obj.setWeightGrossCase(weightGrossCase);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column ENT_PACK_V.WEIGHT_NET_CASE
+         *
+         * @param weightNetCase the value for ENT_PACK_V.WEIGHT_NET_CASE
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder weightNetCase(BigDecimal weightNetCase) {
+            obj.setWeightNetCase(weightNetCase);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column ENT_PACK_V.WEIGHT_TARE_CASE
+         *
+         * @param weightTareCase the value for ENT_PACK_V.WEIGHT_TARE_CASE
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder weightTareCase(BigDecimal weightTareCase) {
+            obj.setWeightTareCase(weightTareCase);
             return this;
         }
 
@@ -732,6 +948,14 @@ public class EntPackTEntity extends BaseEntity {
         qtyInner("QTY_INNER", "qtyInner", "DECIMAL", false),
         uomCase("UOM_CASE", "uomCase", "VARCHAR", false),
         qtyCase("QTY_CASE", "qtyCase", "DECIMAL", false),
+        volumeInner("VOLUME_INNER", "volumeInner", "DECIMAL", false),
+        weightGrossInner("WEIGHT_GROSS_INNER", "weightGrossInner", "DECIMAL", false),
+        weightNetInner("WEIGHT_NET_INNER", "weightNetInner", "DECIMAL", false),
+        weightTareInner("WEIGHT_TARE_INNER", "weightTareInner", "DECIMAL", false),
+        volumeCase("VOLUME_CASE", "volumeCase", "DECIMAL", false),
+        weightGrossCase("WEIGHT_GROSS_CASE", "weightGrossCase", "DECIMAL", false),
+        weightNetCase("WEIGHT_NET_CASE", "weightNetCase", "DECIMAL", false),
+        weightTareCase("WEIGHT_TARE_CASE", "weightTareCase", "DECIMAL", false),
         active("ACTIVE", "active", "CHAR", false),
         remark("REMARK", "remark", "CHAR", false),
         companyId("COMPANY_ID", "companyId", "DECIMAL", false),
