@@ -264,6 +264,7 @@ function getMaxLine(url, data){
 			closeLoading();
 			if (data.code == '0') {
 				showError(data.msg);
+				lineNumber = -1;
 				return;
 			}
 			lineNumber = data.data;

@@ -146,13 +146,13 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 		}
 		
 		if(BigDecimal.ZERO.compareTo(updateOnhandQty) > 0)
-			throw new BusinessServiceException("InventoryServiceImpl", "inventory.quantity.onhand.not.lessthan.zero" , new Object[] {selectInventory.getInventoryOnhandId(), updateOnhandQty});
+			throw new BusinessServiceException("InventoryServiceImpl", "inventory.quantity.onhand.not.lessthan.zero" , new Object[] {selectInventory.getSkuCode(), updateOnhandQty, selectInventory.getInventoryOnhandId()});
 		
 		if(BigDecimal.ZERO.compareTo(updateAllocateQty) > 0)
-			throw new BusinessServiceException("InventoryServiceImpl", "inventory.quantity.allocate.not.lessthan.zero" , new Object[] {selectInventory.getInventoryOnhandId(), updateAllocateQty});
+			throw new BusinessServiceException("InventoryServiceImpl", "inventory.quantity.allocate.not.lessthan.zero" , new Object[] {selectInventory.getSkuCode(), updateAllocateQty, selectInventory.getInventoryOnhandId()});
 		
 		if(BigDecimal.ZERO.compareTo(updateLockQty) > 0)
-			throw new BusinessServiceException("InventoryServiceImpl", "inventory.quantity.lock.not.lessthan.zero" , new Object[] {selectInventory.getInventoryOnhandId(), updateLockQty});
+			throw new BusinessServiceException("InventoryServiceImpl", "inventory.quantity.lock.not.lessthan.zero" , new Object[] {selectInventory.getSkuCode(), updateLockQty, selectInventory.getInventoryOnhandId()});
 		
 		BigDecimal availableQty = selectInventory.getQuantityOnhand()
 									.subtract(selectInventory.getQuantityAllocated())
@@ -164,7 +164,7 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 		
 		if (newAvailableQty.compareTo(BigDecimal.ZERO) < 0)
 			throw new BusinessServiceException("InventoryServiceImpl", "inventory.quantity.available.error" 
-						, new Object[] { selectInventory.getInventoryOnhandId(), availableQty, newAvailableQty });
+						, new Object[] { selectInventory.getSkuCode(), availableQty, newAvailableQty , selectInventory.getInventoryOnhandId()});
 		
 		InventoryOnhandTEntity updateInventory = InventoryOnhandTEntity.builder()
 				.updateBy(inventory.getUpdateBy())

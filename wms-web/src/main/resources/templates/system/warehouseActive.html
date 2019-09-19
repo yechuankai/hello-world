@@ -57,16 +57,16 @@
 						<th field="updateVersion" data-options="hidden:true"></th>
 						<th field="warehouseId" data-options="hidden:true"></th>
 						<th field="companyId" width="80" data-options="hidden:true">companyId</th>
-						<th field="warehouseCode" width="150" wms:text="${web.label.warehouse}" data-options="sortable:true">code</th>
-						<th field="warehouseDescr" width="200" wms:text="${web.label.warehouse.descr}" data-options="sortable:true">descr</th>
-						<th field="companyDescr" width="200" wms:text="${web.label.company.descr}" data-options="sortable:true">companyDescr</th>
+						<th field="warehouseCode" width="150" wms:text="${web.label.warehouse}">code</th>
+						<th field="warehouseDescr" width="200" wms:text="${web.label.warehouse.descr}">descr</th>
+						<th field="companyDescr" width="200" wms:text="${web.label.company.descr}">companyDescr</th>
 						<th field="active" width="150" wms:text="${web.label.active}" data-options="
 							sortable:true,
 							formatter:function(value,row){
 								return getCodelkupValue('YESNO',value);
 							}
 						" >Active</th>
-						<th field="updateBy" width="80" wms:text="${web.label.updateby}" >updateBy</th>
+						<th field="updateBy" width="80" wms:text="${web.label.updateby}" data-options="sortable:true" >updateBy</th>
 						<th field="updateTime" width="150" wms:text="${web.label.updatetime}" data-options="sortable:true">updateTime</th>
 					</tr>
 				</thead>

@@ -304,15 +304,9 @@
         refreshOutboundDetail(headerData);
     }
     
-    function refreshOutbound(data){
+    function refreshOutboundHeader(data){
         var outboundData = '#outboundData';
-        var checkedRows = $(outboundData).datagrid('getEditingRowIndexs');
-        if (checkedRows.length == 1) {
-            $(outboundData).datagrid('updateRow', {
-                index: checkedRows[0],
-                row: data
-            });
-        }
+        $(outboundData).datagrid('reload');
     }
 
     function toEditHeader(data) {

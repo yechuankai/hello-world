@@ -9,7 +9,10 @@ function test(async){
 			url: '../services/web/test',
 			async: async,
 			success: function(data){
-				data = returnData(data);
+				if (typeof(data) == 'string'){
+					data = JSON.parse(data);
+				}
+				//data = returnData(data);
 				if (data.code == '5' || data.code == '0') {
 					nologin = true;
 					/*showError(data.msg, function(){

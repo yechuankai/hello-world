@@ -6,6 +6,7 @@ import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.enums.*;
 import com.wms.common.exception.BusinessServiceException;
+import com.wms.common.utils.DateUtils;
 import com.wms.common.utils.ExampleUtils;
 import com.wms.common.utils.StringUtils;
 import com.wms.common.utils.bean.BeanUtils;
@@ -21,6 +22,7 @@ import com.wms.services.base.IOwnerService;
 import com.wms.services.base.ISupplierService;
 import com.wms.services.inbound.IInboundDetailService;
 import com.wms.services.inbound.IInboundHeaderService;
+import com.wms.services.inventory.ITaskService;
 import com.wms.services.sys.IStatusHistoryService;
 import com.wms.vo.inbound.InboundDetailVO;
 import com.wms.vo.inbound.InboundVO;
@@ -53,7 +55,9 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 	@Autowired
 	private IStatusHistoryService statusHistoryService;
 	@Autowired
-	IEnterpriseService enterpriseService;
+	private IEnterpriseService enterpriseService;
+	@Autowired
+	private ITaskService taskService;
 	
 	@Override
 	public List<InboundHeaderTEntity> find(PageRequest request) throws BusinessServiceException {
@@ -98,6 +102,8 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 			inboundVO.setCreateBy(request.getUserName());
 			inboundVO.setCreateTime(new Date());
 			add(inboundVO);
+			//产生卸车任务
+			unLoadTask(inboundVO, OperatorTypeEnum.Add);
 			break;
 		case Modify:
 			modify(inboundVO);
@@ -214,6 +220,10 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 		
 		//if (StringUtils.isEmpty(inbound.getStatus()))
 		//	throw new BusinessServiceException("InboundHeaderServiceImpl", "inbound.status.isnull" , new Object[] {inbound.getInboundNumber()}); 
+		
+		if (inbound.getExpectedInboundDate() != null
+				&& inbound.getExpectedInboundDate().compareTo(DateUtils.parseDate(DateUtils.getDate())) < 0)
+			throw new BusinessServiceException("InboundHeaderServiceImpl", "inbound.expected.date.less.now" , new Object[] {inbound.getInboundNumber()}); 
 		
 		if (inbound.getOperatorType() == OperatorTypeEnum.Modify) {
 			return Boolean.TRUE;
@@ -365,7 +375,7 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 					.andInboundHeaderIdEqualTo(header.getInboundHeaderId());
 			if(0L != request.getWarehouseId()){
 				header.setWarehouseId(request.getWarehouseId());
-				header =find(header);
+				header = find(header);
 				boolean statusFlag = notProcess(header);
 				if (statusFlag) {
 					InboundStatusEnum status = inboundStatus(header, Boolean.FALSE);
@@ -375,7 +385,7 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 				}
 				example.createCriteria().andWarehouseIdEqualTo(header.getWarehouseId());
 			}else {//不存在仓库id，外部系统新建订单
-				header =find(header);
+				header = find(header);
 				if(!StringUtils.equals(InboundStatusEnum.Draft.getCode(),header.getStatus())){
 					throw new BusinessServiceException("InboundHeaderServiceImpl", "inbound.status.not.process" , new Object[] {header.getInboundNumber()});
 				}
@@ -389,12 +399,16 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 					.delFlag(YesNoEnum.Yes.getCode())
 					.build();
 
-
-
 			int rowcount = inboundHeaderDao.updateWithVersionByExampleSelective(header.getUpdateVersion(), update, example);
 			if (rowcount == 0) {
 				throw new BusinessServiceException("record delete error.");
 			}
+			
+			if (0L != request.getWarehouseId()) {
+				//取消卸车任务
+				unLoadTask(header, OperatorTypeEnum.Cancel);
+			}
+			
 		});
 		
 		return Boolean.TRUE;
@@ -497,6 +511,9 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 			d.setUpdateBy(request.getUserName());
 			d.setStatus(InboundStatusEnum.Cancel.getCode());
             modify(d);
+            
+			//取消卸车任务
+			unLoadTask(d, OperatorTypeEnum.Cancel);
 		});
 
 		return Boolean.TRUE;
@@ -540,6 +557,9 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 			d.setUpdateBy(request.getUserName());
 			d.setClosedDate(new Date());
 			modify(d);
+			
+			//完成卸车任务
+			unLoadTask(d, OperatorTypeEnum.Complate);
 		});
         return Boolean.TRUE;
     }
@@ -616,6 +636,8 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 				modify(inboundVO);
 				statusHistory.setOldStatus(InboundStatusEnum.New.getCode());
 				statusHistory.setNewStatus(InboundStatusEnum.WaitingDeclaration.getCode());
+				//产生卸车任务
+				unLoadTask(inboundVO, OperatorTypeEnum.Add);
 				break;
 			default:
 				throw new BusinessServiceException("InboundHeaderServiceImpl", "opertiontype.not.exists" , null );
@@ -841,5 +863,67 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 			}
 
 		}
+	}
+	
+	/**
+	 * 卸车任务
+	 * @param header
+	 * @param operator
+	 * @return
+	 */
+	private Boolean unLoadTask(InboundHeaderTEntity header, OperatorTypeEnum operator) {
+		switch (operator) {
+		//单据创建时增加任务
+		case Add:
+			TaskDetailTEntity task = TaskDetailTEntity.builder()
+			.warehouseId(header.getWarehouseId())
+			.companyId(header.getCompanyId())
+			.createBy(header.getUpdateBy())
+			.createTime(new Date())
+			.updateBy(header.getUpdateBy())
+			.updateTime(new Date())
+			.taskType(TaskTypeEnum.Unload.getCode())
+			.sourceBillNumber(header.getInboundNumber())
+			.ownerCode(header.getOwnerCode())
+			.releaseTime(new Date())
+			.build();
+			taskService.add(task);
+			break;
+		//单据取消/删除时取消任务
+		case Cancel:
+			List<TaskDetailTEntity> cancelTasks = taskService.findBySourceBillNumber(TaskDetailTEntity.builder()
+													.warehouseId(header.getWarehouseId())
+													.companyId(header.getCompanyId())
+													.sourceBillNumber(header.getInboundNumber())
+													.build());
+			cancelTasks = cancelTasks.stream().filter(v->TaskStatusEnum.New.getCode().equals(v.getStatus())).collect(Collectors.toList());
+			AjaxRequest<List<TaskDetailTEntity>> cancelRequest = new AjaxRequest<List<TaskDetailTEntity>>(cancelTasks);
+			cancelRequest.setWarehouseId(header.getWarehouseId());
+			cancelRequest.setCompanyId(header.getCompanyId());
+			cancelRequest.setUserName(header.getUpdateBy());
+			taskService.cancel(cancelRequest);
+			break;
+		//单据关闭时完成任务
+		case Complate: 
+			List<TaskDetailTEntity> tasks = taskService.findBySourceBillNumber(TaskDetailTEntity.builder()
+					.warehouseId(header.getWarehouseId())
+					.companyId(header.getCompanyId())
+					.sourceBillNumber(header.getInboundNumber())
+					.build());
+			tasks = tasks.stream().filter(v->TaskStatusEnum.New.getCode().equals(v.getStatus())).collect(Collectors.toList());
+			tasks.forEach(t -> {
+				t.setStatus(TaskStatusEnum.Completed.getCode());
+			});
+			AjaxRequest<List<TaskDetailTEntity>> request = new AjaxRequest<List<TaskDetailTEntity>>(tasks);
+			request.setWarehouseId(header.getWarehouseId());
+			request.setCompanyId(header.getCompanyId());
+			request.setUserName(header.getUpdateBy());
+			taskService.modify(request);
+			break;
+		default:
+			break;
+		}
+		
+		return Boolean.TRUE;
 	}
 }

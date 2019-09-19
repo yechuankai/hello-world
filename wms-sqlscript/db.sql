@@ -3823,23 +3823,25 @@ comment on column allocate_short_t.SOURCE_WAVE_NUMBER is '来源波次号';
 --字段重命名
 alter table sys_order_number_t rename column DATA_FORMAT to DATE_FORMAT;
 
+--更新长度
+ALTER TABLE TASK_DETAIL_T MODIFY (TASK_TYPE VARCHAR2(10));
 
---增加唯一索引
-alter table owner_t add constraint uk_owner_t primary key (company_id, warehouse_id, owner_code);
-alter table customer_t add constraint uk_customer_t primary key (company_id, warehouse_id, customer_code);
-alter table carrier_t add constraint uk_carrier_t primary key (company_id, warehouse_id, carrier_code);
-alter table supplier_t add constraint uk_supplier_t primary key (company_id, warehouse_id, supplier_code);
-alter table sku_t add constraint uk_sku_t primary key (company_id, warehouse_id, sku_code);
-alter table pack_t add constraint uk_pack_t primary key (company_id, warehouse_id, pack_code);
-alter table area_t add constraint uk_area_t primary key (company_id, warehouse_id, area_code);
-alter table zone_t add constraint uk_zone_t primary key (company_id, warehouse_id, zone_code);
-alter table location_t add constraint uk_location_t primary key (company_id, warehouse_id, location_code);
-alter table LOT_VALIDATE_t add constraint uk_lot_validate_t primary key (company_id, warehouse_id, LOT_VALIDATE_CODE);
-alter table putaway_strategy_t add constraint uk_putaway_strategy_t primary key (company_id, warehouse_id, PUTAWAY_STRATEGY_CODE);
-alter table allocate_strategy_t add constraint uk_ALLOCATE_STRATEGY_t primary key (company_id, warehouse_id, ALLOCATE_STRATEGY_CODE);
-
-
-
-
+--增加索引
+create index i_owner_t on owner_t(owner_code);
+create index i_customer_t on customer_t(customer_code);
+create index i_carrier_t on carrier_t(carrier_code);
+create index i_supplier_t on supplier_t(supplier_code);
+create index i_sku_t on sku_t(sku_code);
+create index i_pack_t on pack_t(pack_code);
+create index i_area_t on area_t(area_code);
+create index i_zone_t on zone_t(zone_code);
+create index i_location_t on location_t(location_code);
+create index i_lot_validate_t on LOT_VALIDATE_t(LOT_VALIDATE_CODE);
+create index i_putaway_strategy_t on putaway_strategy_t(PUTAWAY_STRATEGY_CODE);
+create index i_ALLOCATE_STRATEGY_t on allocate_strategy_t(ALLOCATE_STRATEGY_CODE);
+create index i_inbound_header_t on inbound_header_t(inbound_number);
+create index i_inbound_detail_t on inbound_detail_t(inbound_header_id,line_number);
+create index i_outbound_header_t on outbound_header_t(outbound_number);
+create index i_outbound_detail_t on outbound_detail_t(outbound_header_id,line_number);
 
 

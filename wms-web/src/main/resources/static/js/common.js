@@ -131,6 +131,7 @@ function returnData(data){
 	}
 	if (data.code == '5') { //no login
 		//弹出登录框 to do
+		data.code = '0';
 	}
 	return data;
 }
@@ -330,6 +331,18 @@ function exportReport(options){
 $(function(){
 	$('body').css({'opacity':'1'});
 	$('.icon-loading').remove();
+});
+
+
+//判断是否为父窗口，如果不是父窗口则调整到父窗口
+function checkParentWindow(){
+	if (window.self == window.top){
+		window.location.href = getServiceUrl();
+	}
+}
+$(function(){
+	//全局加载完成后调用
+	checkParentWindow();
 });
 
 

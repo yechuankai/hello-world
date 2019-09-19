@@ -652,5 +652,5 @@ values (1333, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '预约', '预约', to_date('19-
 alter table wms.sys_order_number_t rename column DATA_FORMAT to DATE_FORMAT;
 
 
-
+ALTER TABLE TASK_DETAIL_T MODIFY (TASK_TYPE VARCHAR2(10));
 

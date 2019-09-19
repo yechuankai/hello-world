@@ -10,7 +10,9 @@ public enum OperatorTypeEnum {
 	Reject("REJECT","拒绝"),
 	Confirm("CONFIRM","确认"),
 	Delete("DELETE","删除"), 
-	Modify("MOIDFY", "修改"),
+	Modify("MODIFY", "修改"),
+	Cancel("CANCEL","取消"), 
+	Complate("COMPLATE","完成"), 
 	Other("OTHER", "其它");
 
 	private final String code;

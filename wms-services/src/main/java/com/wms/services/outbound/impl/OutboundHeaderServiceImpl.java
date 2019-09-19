@@ -1,19 +1,57 @@
 package com.wms.services.outbound.impl;
 
+import java.math.BigDecimal;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
-import com.wms.common.enums.*;
+import com.wms.common.enums.InboundStatusEnum;
+import com.wms.common.enums.OperatorTypeEnum;
+import com.wms.common.enums.OrderNumberTypeEnum;
+import com.wms.common.enums.OutboundProcessStatusEnum;
+import com.wms.common.enums.OutboundStatusEnum;
+import com.wms.common.enums.TaskStatusEnum;
+import com.wms.common.enums.TaskTypeEnum;
+import com.wms.common.enums.YesNoEnum;
 import com.wms.common.exception.BusinessServiceException;
+import com.wms.common.utils.DateUtils;
 import com.wms.common.utils.ExampleUtils;
 import com.wms.common.utils.StringUtils;
 import com.wms.common.utils.bean.BeanUtils;
 import com.wms.common.utils.key.KeyUtils;
 import com.wms.dao.auto.IOutboundHeaderTDao;
 import com.wms.dao.example.OutboundHeaderTExample;
-import com.wms.entity.auto.*;
-import com.wms.services.base.*;
+import com.wms.entity.auto.CarrierTEntity;
+import com.wms.entity.auto.CustomerTEntity;
+import com.wms.entity.auto.EntCarrierTEntity;
+import com.wms.entity.auto.EntCustomerTEntity;
+import com.wms.entity.auto.EntInventoryOnhandTEntity;
+import com.wms.entity.auto.OutboundDetailTEntity;
+import com.wms.entity.auto.OutboundHeaderTEntity;
+import com.wms.entity.auto.OwnerTEntity;
+import com.wms.entity.auto.PackTEntity;
+import com.wms.entity.auto.StatusHistoryTEntity;
+import com.wms.entity.auto.SysWarehousesTEntity;
+import com.wms.entity.auto.TaskDetailTEntity;
+import com.wms.entity.auto.WaveBuildDetailTEntity;
+import com.wms.services.base.ICarrierService;
+import com.wms.services.base.ICustomerService;
+import com.wms.services.base.IEnterpriseService;
+import com.wms.services.base.IOwnerService;
+import com.wms.services.base.IPackService;
+import com.wms.services.inventory.ITaskService;
 import com.wms.services.outbound.IOutboundDetailService;
 import com.wms.services.outbound.IOutboundHeaderService;
 import com.wms.services.sys.IStatusHistoryService;
@@ -23,14 +61,6 @@ import com.wms.vo.inventory.EntInventoryOnhandVO;
 import com.wms.vo.outbound.OutboundDetailVO;
 import com.wms.vo.outbound.OutboundVO;
 import com.wms.vo.outbound.WaveBuildVO;
-import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
@@ -51,9 +81,11 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 	@Autowired
 	private ICarrierService carrierService;
 	@Autowired
-	IEnterpriseService enterpriseService;
+	private IEnterpriseService enterpriseService;
 	@Autowired
-	ISysWarehouseService warehouseService;
+	private ISysWarehouseService warehouseService;
+	@Autowired
+	private ITaskService taskService;
 
 	@Override
 	public List<OutboundHeaderTEntity> find(PageRequest request) throws BusinessServiceException {
@@ -211,6 +243,8 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 				outboundVO.setCreateBy(request.getUserName());
 				outboundVO.setCreateTime(new Date());
 				add(outboundVO);
+				//产生装车任务
+				loadTask(outboundVO, OperatorTypeEnum.Add);
 				break;
 			case Modify:
 				modify(outboundVO);
@@ -345,6 +379,9 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 			if (rowcount == 0) {
 				throw new BusinessServiceException("record delete error.");
 			}
+			
+			//取消装车任务
+			loadTask(header, OperatorTypeEnum.Cancel);
 		});
 
 		return Boolean.TRUE;
@@ -520,7 +557,16 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 		List<OutboundDetailVO> detailVO = getOutboundDetail(request);
 		
 		boolean shipFlag = outboundDetailService.ship(detailVO);
-
+		
+		//发运完成更新装车任务为完成
+		list.forEach(h -> {
+			h.setWarehouseId(request.getWarehouseId());
+			h.setCompanyId(request.getCompanyId());
+			OutboundHeaderTEntity header = find(h);
+			if (OutboundStatusEnum.Shiped.getCode().equals(header.getStatus())) {
+				loadTask(header, OperatorTypeEnum.Complate);
+			}
+		});
 		return shipFlag;
 	}
 
@@ -593,6 +639,9 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 			d.setStatus(OutboundStatusEnum.Cancel.getCode());
 			d.setUpdateBy(request.getUserName());
 			modify(d);
+			
+			//取消装车任务
+			loadTask(d, OperatorTypeEnum.Cancel);
 		});
 
 		return Boolean.TRUE;
@@ -658,6 +707,8 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 				addList.add(outboundVO);
 				statusHistory.setOldStatus(OutboundStatusEnum.WaitingReview.getCode());
 				statusHistory.setNewStatus(OutboundStatusEnum.New.getCode());
+				//产生装车任务
+				loadTask(outboundVO, OperatorTypeEnum.Add);
 				break;
 			default:
 				throw new BusinessServiceException("OutboundHeaderServiceImpl", "opertiontype.not.exists" , null );
@@ -825,6 +876,11 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 		if (StringUtils.isEmpty(outboundVO.getStatus())) {
 			throw new BusinessServiceException("OutboundHeaderServiceImpl", "outbound.status.isnull", new Object[]{outboundVO.getOutboundNumber()});
 		}
+		
+		if (outboundVO.getExpectedOutboundDate() != null
+				&& outboundVO.getExpectedOutboundDate().compareTo(DateUtils.parseDate(DateUtils.getDate())) < 0)
+			throw new BusinessServiceException("InboundHeaderServiceImpl", "outbound.expected.date.less.now" , new Object[] {outboundVO.getOutboundDate()}); 
+		
 		if (outboundVO.getOperatorType() == OperatorTypeEnum.Modify) {
 			return Boolean.TRUE;
 		}
@@ -991,6 +1047,69 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 		
 		List<OutboundHeaderTEntity> filter = outbounds.stream().filter(v -> availableHeaderId.contains(v.getOutboundHeaderId())).collect(Collectors.toList());
 		return filter;
+	}
+	
+	
+	/**
+	 * 装车任务
+	 * @param header
+	 * @param operator
+	 * @return
+	 */
+	private Boolean loadTask(OutboundHeaderTEntity header, OperatorTypeEnum operator) {
+		switch (operator) {
+		//单据创建时增加任务
+		case Add:
+			TaskDetailTEntity task = TaskDetailTEntity.builder()
+			.warehouseId(header.getWarehouseId())
+			.companyId(header.getCompanyId())
+			.createBy(header.getUpdateBy())
+			.createTime(new Date())
+			.updateBy(header.getUpdateBy())
+			.updateTime(new Date())
+			.taskType(TaskTypeEnum.Load.getCode())
+			.sourceBillNumber(header.getOutboundNumber())
+			.ownerCode(header.getOwnerCode())
+			.releaseTime(new Date())
+			.build();
+			taskService.add(task);
+			break;
+		//单据取消/删除时取消任务
+		case Cancel:
+			List<TaskDetailTEntity> cancelTasks = taskService.findBySourceBillNumber(TaskDetailTEntity.builder()
+													.warehouseId(header.getWarehouseId())
+													.companyId(header.getCompanyId())
+													.sourceBillNumber(header.getOutboundNumber())
+													.build());
+			cancelTasks = cancelTasks.stream().filter(v->TaskStatusEnum.New.getCode().equals(v.getStatus())).collect(Collectors.toList());
+			AjaxRequest<List<TaskDetailTEntity>> cancelRequest = new AjaxRequest<List<TaskDetailTEntity>>(cancelTasks);
+			cancelRequest.setWarehouseId(header.getWarehouseId());
+			cancelRequest.setCompanyId(header.getCompanyId());
+			cancelRequest.setUserName(header.getUpdateBy());
+			taskService.cancel(cancelRequest);
+			break;
+		//单据关闭时完成任务
+		case Complate: 
+			List<TaskDetailTEntity> tasks = taskService.findBySourceBillNumber(TaskDetailTEntity.builder()
+					.warehouseId(header.getWarehouseId())
+					.companyId(header.getCompanyId())
+					.sourceBillNumber(header.getOutboundNumber())
+					.build());
+			tasks = tasks.stream().filter(v->TaskStatusEnum.New.getCode().equals(v.getStatus())).collect(Collectors.toList());
+			tasks.forEach(t -> {
+				t.setStatus(TaskStatusEnum.Completed.getCode());
+			});
+			AjaxRequest<List<TaskDetailTEntity>> request = new AjaxRequest<List<TaskDetailTEntity>>(tasks);
+			request.setWarehouseId(header.getWarehouseId());
+			request.setCompanyId(header.getCompanyId());
+			request.setUserName(header.getUpdateBy());
+			taskService.modify(request);
+			break;
+		default:
+			break;
+		}
+		
+		return Boolean.TRUE;
 	}
 
 }

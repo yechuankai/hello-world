@@ -220,7 +220,10 @@
             var linenumber_increment = 10;
          	//获取最大行号
     		var maxNumber = getMaxLine(getServiceUrl() + '/services/inner/inventory/adjustment/maxLineNumber', {inventoryAdjustmentId: inventoryAdjustmentId});
-    		maxNumber = Number(maxNumber);
+    		if (maxNumber == -1){
+    			return;
+    		}
+         	maxNumber = Number(maxNumber);
          	var rowcount = 0;
             for(var j in rows) {
                 if(rows[j].quantityAdjustment == 0 || undefined == rows[j].quantityAdjustment || null == rows[j].quantityAdjustment || ""==rows[j].quantityAdjustment){

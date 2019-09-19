@@ -62,7 +62,7 @@ public class AjaxResult<T> {
 	 */
 	public AjaxResult(Type type, String msg) {
 		this.code = type.getCode();
-		this.msg = type.getDesc();
+		this.msg = msg;
 	}
 
 	/**

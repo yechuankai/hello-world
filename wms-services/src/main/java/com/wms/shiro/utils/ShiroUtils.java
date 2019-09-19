@@ -40,6 +40,8 @@ public class ShiroUtils {
 				BeanUtils.copyBeanProp(user, obj, Boolean.FALSE);
 			}else if(obj instanceof String) {
 				user = (UserVO)SecurityUtils.getSubject().getSession().getAttribute(UserConstants.SYS_USER);
+				if (!obj.equals(user.getLoginName()))
+					return null;
 			}else {
 				return null;
 			}

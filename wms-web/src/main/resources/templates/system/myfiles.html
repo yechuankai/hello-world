@@ -9,22 +9,28 @@
 		<input class="easyui-textbox" id="fileNameSearchInput" wms:data-options="buttonText:'${web.label.search}',prompt:'${web.label.filename}',onClickButton:enterSearchValue" style="width:100%;height:32px;">
 	</div>
 	<div>
-		<table id="tableData" class="easyui-datagrid" style="width:99.5%;height: auto;" data-options="
+		<table id="tableData" class="easyui-datagrid" style="width:100%;height: 435px;" data-options="
 					rownumbers:true,
 					remoteSort:false,
 					multiSort:true,
+					nowrap: false,
 					queryParams: getBaseData(),
 					url: '../../services/inner/file/userFind',
 					toolbar:'#filesSearch'">
 			<thead>
 				<tr>
-					<th field="fileId" width="80" data-options="hidden:true">fileId</th>
-					<th field="fileType" width="80" wms:text="${web.label.type}" data-options="
+					<th field="fileId" data-options="hidden:true">fileId</th>
+					<th field="fileType" width="60" wms:text="${web.label.type}" data-options="
 							sortable:true,
 							formatter:function(value,row){
 								return getCodelkupValue('FILETYPE',value);
 							}">FileType</th>
-					<th field="fileName" width="200" wms:text="${web.label.filename}" data-options="sortable:true">fileName</th>
+					<th field="template" width="80" wms:text="${web.label.template}" data-options="
+							sortable:true,
+							formatter:function(value,row){
+								return getCodelkupValue('TEMPLATE',value);
+							}">Template</th>
+					<th field="fileName" width="150" wms:text="${web.label.filename}" data-options="sortable:true">fileName</th>
 					<th field="download" data-options="
 										formatter:function(value,row){
 											var data = JSON.stringify(row);
@@ -33,20 +39,20 @@
 										}
 									"></th>
 					<th field="fileSize" width="70" wms:text="${web.label.filesize}" data-options="sortable:true">fileSize</th>
-					<th field="startTime" width="140" wms:text="${web.label.starttime}" data-options="sortable:true">startTime</th>
-					<th field="endTime" width="140" wms:text="${web.label.endtime}" data-options="sortable:true">endTime</th>
+					<th field="startTime" width="130" wms:text="${web.label.starttime}" data-options="sortable:true">startTime</th>
+					<th field="endTime" width="130" wms:text="${web.label.endtime}" data-options="sortable:true">endTime</th>
 					<th field="status" width="80" wms:text="${web.label.status}" data-options="sortable:true,
 							formatter:function(value,row){
 								return getCodelkupValue('FILESTATUS',value);
 							}">status</th>
-					<th field="remark" width="200" wms:text="${web.label.remark}" >remark</th>
+					<th field="remark" width="200" wms:text="${web.label.remark}">remark</th>
 				</tr>
 			</thead>
 		</table>
 	</div>
 </body>
 <script th:replace="common/js" />
-<script type="text/javascript" th:src="@{/js/codelkupList?listName=FILETYPE,FILESTATUS}"></script>
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=TEMPLATE,FILETYPE,FILESTATUS}"></script>
 <script type="text/javascript">
 
 function enterSearchValue(){

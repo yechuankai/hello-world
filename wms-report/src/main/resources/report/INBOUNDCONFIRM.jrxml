@@ -5,13 +5,13 @@
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
-	<parameter name="web.label.sourceBillumber" class="java.lang.String"/>
+	<parameter name="web.label.sourcebillnumber" class="java.lang.String"/>
 	<parameter name="web.label.sum" class="java.lang.String"/>
 	<parameter name="web.label.type" class="java.lang.String"/>
 	<parameter name="warehouseId" class="java.lang.String"/>
-	<parameter name="web.inventory.weightnet" class="java.lang.String"/>
+	<parameter name="web.label.weightnet" class="java.lang.String"/>
 	<parameter name="web.label.volume" class="java.lang.String"/>
-	<parameter name="web.inventory.weightgross" class="java.lang.String"/>
+	<parameter name="web.label.weightgross" class="java.lang.String"/>
 	<parameter name="web.label.quantityreceive" class="java.lang.String"/>
 	<parameter name="web.label.inbounddate" class="java.lang.String"/>
 	<parameter name="web.label.inboundnumber" class="java.lang.String"/>
@@ -339,7 +339,7 @@ WHERE
 					<textElement verticalAlignment="Middle">
 						<font fontName="pdfFont" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{web.label.sourceBillumber} + ":"]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{web.label.sourcebillnumber} + ":"]]></textFieldExpression>
 				</textField>
 				<line>
 					<reportElement x="10" y="80" width="530" height="1" uuid="cd08ec80-6475-4b97-a257-429ea78e1675">
@@ -508,7 +508,7 @@ WHERE
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="pdfFont" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{web.inventory.weightgross}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{web.label.weightgross}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="440" y="90" width="50" height="20" uuid="1e58efed-e05d-4733-8758-08f56ecc777b">
@@ -526,7 +526,7 @@ WHERE
 					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="pdfFont" size="10"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{web.inventory.weightnet}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{web.label.weightnet}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="490" y="90" width="50" height="20" uuid="60c4d6e0-fecf-4c7c-916d-81fde4e15b34">
@@ -553,7 +553,7 @@ WHERE
 		<band height="70" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField>
-				<reportElement x="190" y="10" width="200" height="30" uuid="8ef188b1-910e-4772-8d22-70846fe345fc">
+				<reportElement x="10" y="10" width="530" height="30" uuid="8ef188b1-910e-4772-8d22-70846fe345fc">
 					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 					<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -561,7 +561,7 @@ WHERE
 					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font fontName="pdfFont" size="20" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{wms.label.receivedsummaryreport}]]></textFieldExpression>

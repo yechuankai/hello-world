@@ -238,9 +238,10 @@
 	
     $(function () {
         $('.outbounddetail-add').click(function () {
-        	
-        	initAdd();
-
+        	var maxNumber = initAdd();
+        	if (maxNumber == -1){
+    			return;
+    		}
             $('#detailAddButton').show();
             $('#detailEditButton').hide();
             var panel = $(this).attr('data-addpanel');
@@ -293,7 +294,6 @@
                         return;
                     }
                     refreshOutboundDetail(data.data);
-                    // refreshOutbound(data.data);
                     refreshOutboundHeader(data.data);
                     $('#addDetailDiv').dialog('close');
                 }
@@ -336,18 +336,21 @@
     	var headerData = getOutboundHeaderData();
     	if (headerData.status == 90) {
 			showError($.locale.statusError);
-			return false;
+			return -1;
 		}
         $('#outboundDetailForm').form('reset');
         lazyLoadView('#outboundDetailForm');
         var grid = $("#outboundDetailData").datagrid('getData');
       	//获取最大行号
 		var maxNumber = getMaxLine(getServiceUrl() + '/services/inner/outboundDetail/maxLineNumber', {outboundHeaderId: headerData.outboundHeaderId});
-		$("#lineNumber").textbox('setValue', maxNumber);
+		if (maxNumber == -1){
+			return -1;
+		}
+      	$("#lineNumber").textbox('setValue', maxNumber);
         var owner = getOwnerId();
         if (owner == '-1') {
             showError($.locale.ownerRequired);
-            return false;
+            return -1;
         }
         loadSkuLov({ownerId: owner}, function (data) {
             loadPackLov({packId: data.packId});
@@ -428,6 +431,9 @@
 		copyData.outboundDetailId = null;
 		copyData.uomQuantityExpected = 0;
 		var maxNumber = initAdd();
+		if (maxNumber == -1){
+			return;
+		}
 		copyData.lineNumber = maxNumber;
 		$('#detailAddButton').show();
 		$('#detailEditButton').hide();

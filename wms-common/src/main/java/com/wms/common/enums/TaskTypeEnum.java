@@ -7,11 +7,14 @@ package com.wms.common.enums;
  **/
 
 public enum TaskTypeEnum {
+	
     Pick("PK", "拣货"),
     Putaway("PA","上架"),
     CycleCount("CC","盘点"),
-    Move("MV","移动");
-
+    Move("MV","移动"),
+    Load("LOAD", "装车"),
+    Unload("UNLOAD", "卸车");
+	
     private final String code;
     private final String desc;
 

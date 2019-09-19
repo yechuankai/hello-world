@@ -1182,6 +1182,9 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 
 	@Override
 	public Long findMaxLine(OutboundDetailTEntity outbound) throws BusinessServiceException {
+		if (outbound.getOutboundHeaderId() == null)
+			return DefaultConstants.LINE_INCREMENT;
+		
 		List<OutboundDetailTEntity> allDetail = findByHeaderId(outbound);
 		if (CollectionUtils.isEmpty(allDetail))
 			return DefaultConstants.LINE_INCREMENT;

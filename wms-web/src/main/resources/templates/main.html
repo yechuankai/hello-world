@@ -60,8 +60,8 @@
 				</div>
 			</div>
 			<!-- user -->
-			<div data-options="region:'east',border:false" style="width:150px;" class="top-content">
-				<a href="#" id="main-user" class="easyui-menubutton" data-options="menu:'#userMenu',iconCls:'icon-man-w'" th:text="${user.userName}">user</a>
+			<div data-options="region:'east',border:false" style="width:200px;text-align: right;" class="top-content">
+				<a href="#" id="main-user" class="easyui-menubutton" data-options="menu:'#userMenu',iconCls:'icon-man-w',menuAlign:'left'" th:text="${user.userName}">user</a>
 				<div id="userMenu" style="width:100px;">
 					<div th:if="${user.loginType == 'NORMAL'}">
 						<span wms:text="${web.label.language}">Language</span>
@@ -295,9 +295,11 @@
 		    closed: true,
 		    modal: true,
 		    fix: true,
-		    content: '<iframe scrolling="no" frameborder="0"  src="system/myfiles" style="width:100%;height:98%;" />'
+		    content: '<iframe frameborder="0"  src="system/myfiles" style="width:100%;height:98%;" />'
 		}).dialog('open');
 	}
+	
+	function checkParentWindow(){}
 
 </script>
 </html>

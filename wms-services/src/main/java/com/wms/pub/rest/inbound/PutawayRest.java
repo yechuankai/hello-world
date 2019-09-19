@@ -118,8 +118,8 @@ public class PutawayRest extends BaseController{
 				lpn.setContainerNumber(lpn.getLpnNumber());
 				List<LpnTEntity> selectLpn = lpnService.findByContainerNumber(lpn);
 				if (CollectionUtils.isNotEmpty(selectLpn)) {
-					lpn.setLpnNumber(null);
 					lpn.setContainerNumber(lpn.getLpnNumber());
+					lpn.setLpnNumber(null);
 					lpnType = LpnTypeEnum.Container;
 				}else {
 					throw new BusinessServiceException("PutawayRest", "lpn.record.not.exists", new Object[] {lpn.getLpnNumber()});
@@ -127,7 +127,7 @@ public class PutawayRest extends BaseController{
 			}
 			PutawayVO putaway = putawayCoreService.lpnPutaway(lpn);
 			//正常推荐库位，保存至任务表
-			if (!PutawayCoreServiceImpl.UNKNOWN.equals(putaway.getLocationCode())) {
+			if (!PutawayCoreServiceImpl.UNKNOWN.equals(putaway.getToLocationCode())) {
 				
 				SkuTEntity sku = skuService.find(SkuTEntity.builder()
 										.warehouseId(request.getWarehouseId())
@@ -244,6 +244,9 @@ public class PutawayRest extends BaseController{
 					.companyId(request.getCompanyId())
 					.fromLpnNumber(fromLpnNumber)
 					.build(), TaskStatusEnum.New, TaskStatusEnum.Processing);
+			if (CollectionUtils.isEmpty(taskList))
+				return success();
+			
 			List<TaskDetailTEntity> updateTask = Lists.newArrayList();
 			taskList.forEach(t -> {
 				TaskDetailTEntity update = TaskDetailTEntity.builder()

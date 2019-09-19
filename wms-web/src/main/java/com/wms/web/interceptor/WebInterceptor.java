@@ -21,13 +21,9 @@ import com.wms.web.constants.AttrConstants;
 @Component
 public class WebInterceptor implements BaseInterceptor {
 	
-	@Value("${shiro.user.unauthorizedUrl}")
-	private String unauthorizedUrl;
-	
-	@Autowired
-	Environment env;
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    	
     	String locale = getLocale(request);
     	LocaleUtils.setLocale(locale); //设置当前语言
     	Map<String, String> lableMap = LocaleUtils.getLocaleLabels(locale);

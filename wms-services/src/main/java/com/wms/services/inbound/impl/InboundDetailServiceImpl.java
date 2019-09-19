@@ -1569,6 +1569,9 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 
 	@Override
 	public Long findMaxLine(InboundDetailTEntity inbound) throws BusinessServiceException {
+		if (inbound.getInboundHeaderId() == null)
+			return DefaultConstants.LINE_INCREMENT;
+		
 		List<InboundDetailTEntity> allDetail = findByHeaderId(inbound);
 		if (CollectionUtils.isEmpty(allDetail))
 			return DefaultConstants.LINE_INCREMENT;

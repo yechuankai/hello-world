@@ -360,6 +360,9 @@ public class AdjustmentDetailServiceImpl implements IAdjustmentDetailService {
 
 	@Override
 	public Long findMaxLine(InventoryAdjustmentDetailTEntity detail) throws BusinessServiceException {
+		if (detail.getInventoryAdjustmentId() == null)
+			return DefaultConstants.LINE_INCREMENT;
+		
 		List<InventoryAdjustmentDetailTEntity> allDetail = findByHeaderId(detail);
 		if (CollectionUtils.isEmpty(allDetail))
 			return DefaultConstants.LINE_INCREMENT;

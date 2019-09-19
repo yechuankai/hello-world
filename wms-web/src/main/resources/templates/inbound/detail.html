@@ -23,7 +23,6 @@
 		   			toolbar: '#detailToolbar',
 		   			onBeforeEdit: function(rowIndex, rowData){
 	   					var receiveColumn = $('#inboundDetailData').datagrid('getColumnOption','uomQuantityReceive');
-	   					debugger;
 	   					if (receiveColumn.editor1 == null) {
 	   						receiveColumn.editor1 = receiveColumn.editor;
 	   					}
@@ -288,7 +287,11 @@
 	
 	$(function(){
 		$('.inbounddetail-add').click(function(){
-			initAdd();
+			var maxNumber = initAdd();
+			debugger;
+			if (maxNumber == -1){
+				return;
+			}
 			$("#locationCode")
 			.combo('setValue', 'STAGE')
 			.combo('setText', 'STAGE');
@@ -312,7 +315,7 @@
 		$('#inboundDetailData').datagrid({
 			onBeginEdit: function (index, row) {
 				var ed = $(this).datagrid('getEditors', index);
-				if('40'== row.status || '50'== row.status){
+				if('40'== row.status || '50' == row.status || '30' == row.status){
 					for (var i = 0 ; i<ed.length ; i++){
 						$(this).datagrid('cancelEdit',index);
 					}
@@ -344,8 +347,8 @@
 						return;
 					}
 					refreshInboundDetail(data.data);
+					debugger;
 					refreshInboundHeader(data.data);
-					// refreshInbound(data.data);
 					$('#addDetailDiv').dialog('close');
 				}
 			});
@@ -376,9 +379,8 @@
 						showError(data.msg);
 						return;
 					}
-					refreshInboundDetail(data.data);
-					refreshInboundHeader(data.data);
-					//refreshInbound(data.data);
+					refreshInboundDetail(headerData);
+					refreshInboundHeader(headerData);
 					$('#addDetailDiv').dialog('close');
 				}
 			});
@@ -389,18 +391,21 @@
 		var headerData = getInboundHeaderData();
 		if(headerData.status == 40 || headerData.status == 50){
 			showError($.locale.statusError);
-			return false;
+			return -1;
 		}
 		$('#inboundDetailForm').form('reset');
 		lazyLoadView('#inboundDetailForm');
 		//获取最大行号
 		var maxNumber = getMaxLine(getServiceUrl() + '/services/inner/inboundDetail/maxLineNumber', {inboundHeaderId: headerData.inboundHeaderId});
+		if (maxNumber == -1){
+			return maxNumber;
+		}
 		$("#lineNumber").textbox('setValue', maxNumber);
 		
 		var owner = getOwnerId();
 		if (owner == '-1'){
 			showError($.locale.ownerRequired);
-			return false;
+			return -1;
 		}
 		loadSkuLov({ownerId:owner}, function(data){
 			setSkuResult(data);
@@ -506,7 +511,7 @@
 						return;
 					}
 					$('#inboundDetailData').datagrid('reload').datagrid('clearChecked');
-					refreshInboundDetail(data.data);
+					refreshInboundHeader(headerData);
 				}
 			});
 		});
@@ -528,6 +533,9 @@
 		copyData.weightTare = 0;
 		copyData.volume = 0;
 		var maxNumber = initAdd();
+		if (maxNumber == -1){
+			return;
+		}
 		copyData.lineNumber = maxNumber;
 		$('#detailAddButton').show();
 		$('#detailEditButton').hide();
@@ -683,8 +691,10 @@
 			lotAttributeEditable(true);
 			if ('30' == status){
 				$('#uomQuantityReceive').numberbox({readonly:true});
+				$('#uomQuantityExpected').numberbox({readonly:true});
 			}else{
 				$('#uomQuantityReceive').numberbox({readonly:false});
+				$('#uomQuantityExpected').numberbox({readonly:false});
 			}
 		}else if('40' == status ||'50' == status){
 			//已关闭、已取消
@@ -723,7 +733,7 @@
 	*/
 	
 	/* must exists 
-	function refreshInbound(){
+	function refreshInboundHeader(){
 		
 	}
 	*/

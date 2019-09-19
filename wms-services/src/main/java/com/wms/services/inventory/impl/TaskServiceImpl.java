@@ -193,19 +193,23 @@ public class TaskServiceImpl implements ITaskService {
 
 		for (TaskDetailTEntity task : list) {
 
-			String locationCode = task.getToLocationCode().toUpperCase();
-
-			LocationTEntity location = locationService.find(LocationTEntity.builder()
-					.locationCode(locationCode)
-					.warehouseId(request.getWarehouseId())
-					.companyId(request.getCompanyId())
-					.build());
+			if (StringUtils.isNotEmpty(task.getToLocationCode())) {
+				String locationCode = task.getToLocationCode().toUpperCase();
+				LocationTEntity location = locationService.find(LocationTEntity.builder()
+						.locationCode(locationCode)
+						.warehouseId(request.getWarehouseId())
+						.companyId(request.getCompanyId())
+						.build());
+				task.setToLocationCode(locationCode);
+				task.setToZoneCode(location.getZoneCode());
+			}
 
 			TaskDetailTEntity update = TaskDetailTEntity.builder()
 					.updateBy(request.getUserName())
 					.updateTime(new Date())
-					.toLocationCode(locationCode)
-					.toZoneCode(location.getZoneCode())
+					.userName(task.getUserName())
+					.toLocationCode(task.getToLocationCode())
+					.toZoneCode(task.getToZoneCode())
 					.startTime(task.getStartTime())
 					.endTime(task.getEndTime())
 					.completeTime(task.getCompleteTime())
@@ -228,6 +232,7 @@ public class TaskServiceImpl implements ITaskService {
 	}
 
 	@Override
+	@Transactional
 	public Boolean cancel(AjaxRequest<List<TaskDetailTEntity>> request) throws BusinessServiceException {
 		if (CollectionUtils.isEmpty(request.getData())) {
 			throw new BusinessServiceException("no record update.");
@@ -310,6 +315,11 @@ public class TaskServiceImpl implements ITaskService {
 						.warehouseId(d.getWarehouseId())
 						.companyId(d.getCompanyId())
 						.build();
+				if (d.getStartTime() != null)
+					update.setStartTime(d.getStartTime());
+				else
+					update.setStartTime(d.getReleaseTime());
+				
 				if (d.getEndTime() != null)
 					update.setEndTime(d.getEndTime());
 				else

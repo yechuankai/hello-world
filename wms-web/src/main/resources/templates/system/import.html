@@ -68,17 +68,19 @@ function downloadTemplate(){
 }
 
 function clean(){
+	$('#file').textbox('setValue', '');	
+	/*
 	$('#addForm').form('clear');
 	var defaultTpl = $('#defaultTpl').val();
 	if (defaultTpl != ''){
 		$('#template').combobox('setValue', defaultTpl);	
 	}
-	
+	*/
 }
 
 function upload(){
-	var template = $('#file').filebox('getValue');
-	if (template == ''){
+	var file = $('#file').filebox('getValue');
+	if (file == ''){
 		showError($.locale.selectFile);
 		return;
 	}

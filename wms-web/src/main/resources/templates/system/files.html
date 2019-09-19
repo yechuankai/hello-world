@@ -50,7 +50,7 @@
 		</div>
 		<div>
 			<table id="tableData"  wms:title="${web.label.files}" class="easyui-datagrid" 
-							th:data-delayUrl="@{/services/inner/file/find}">
+							th:data-delayUrl="@{/services/inner/file/find}" data-options="nowrap: false">
 				<thead>
 					<tr>
 						<th field="fileId" width="80" data-options="hidden:true">fileId</th>

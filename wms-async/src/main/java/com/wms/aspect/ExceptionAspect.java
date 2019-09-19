@@ -16,6 +16,7 @@ import com.wms.common.constants.ConfigConstants;
 import com.wms.common.enums.MonitorStatusEnum;
 import com.wms.common.enums.MonitorTypeEnum;
 import com.wms.common.exception.BusinessServiceException;
+import com.wms.common.exception.SystemException;
 import com.wms.common.utils.IpUtils;
 import com.wms.common.utils.ServletUtils;
 import com.wms.common.utils.cache.ConfigUtils;
@@ -50,7 +51,9 @@ public class ExceptionAspect {
 				throw e;
 			}
 			if (e instanceof BusinessServiceException) {
+				log.warn(((BusinessServiceException)e).getParams().toString());
 				log.warn(e.getMessage(), e);
+				throw e;
 			}else {
 				log.error(e.getMessage(), e);
 				//是否记录日志
@@ -79,8 +82,9 @@ public class ExceptionAspect {
 	            	
 	            	AsyncManager.me().execute(AsyncFactory.recordMonitor(monitor, Boolean.FALSE));
 				}
+				throw new SystemException(e);
 			}
-			throw e;
+			
 		}
     }
     

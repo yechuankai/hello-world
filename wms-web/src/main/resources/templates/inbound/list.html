@@ -318,15 +318,9 @@
 	}
 	
 	//default list
-	function refreshInbound(data){
+	function refreshInboundHeader(data){
 		var inboundData = '#inboundData';
-		var checkedRows = $(inboundData).datagrid('getEditingRowIndexs');
-		if (checkedRows.length == 1) {
-			$(inboundData).datagrid('updateRow', {
-				index: checkedRows[0],
-				row: data
-			});
-		}
+		$(inboundData).datagrid('reload');
 	}
 
 	//default list
