@@ -551,7 +551,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 					lpnNumber = d.getContainerNumber();
 					lpnType = LpnTypeEnum.Container;
 				} else {
-					lpnType = LpnTypeEnum.Pallet;
+					lpnType = LpnTypeEnum.Carton;
 					lpnTEntity.setLpnNumber(d.getLpnNumber());
 					lpnNumber = d.getLpnNumber();
 				}

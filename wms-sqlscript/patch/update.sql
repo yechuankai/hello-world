@@ -602,11 +602,11 @@ values (1323, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '拣选缺量', '拣选缺量', 
 
 
 --新增一级菜单 预约
-delete uums.web_func where func_id = 'wms:appointment';
+delete uums.web_funcmenu where menu_id = 'wms:appointment';
 insert into uums.web_funcmenu (MENU_ID, MENU_NAME, MENU_DESC, SYS_CODE, MENU_ID_SEQ, IS_VALID, INVALID_TIME, INVALID_USER, CREATE_TIME, MENU_IMG_URL, VERSION, FUNCMENU_UNIQUE_ID)
 values ('wms:appointment', '预约', '预约', 'WMS', '1', 'Y', null, null, to_date('05-12-2016 10:46:09', 'dd-mm-yyyy hh24:mi:ss'), null, '0', '1');
 
-delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:outbound:allocate:short';
+delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNCMENU' and table_id = 'wms:appointment';
 insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
 values (1324, 'WEB_FUNCMENU', 'MENU_NAME', 'en_US', 'Appointment', 'Appointment', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:appointment', 'WMS');
 

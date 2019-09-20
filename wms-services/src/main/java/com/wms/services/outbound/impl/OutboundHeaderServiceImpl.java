@@ -350,17 +350,35 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 		List<OutboundHeaderTEntity> list = request.getData();
 
 		list.forEach(h -> {
-			OutboundHeaderTEntity header = find(OutboundHeaderTEntity.builder()
-					.warehouseId(request.getWarehouseId())
-					.companyId(request.getCompanyId())
-					.outboundHeaderId(h.getOutboundHeaderId())
-					.build());
-
-			OutboundStatusEnum status = outboundStatus(header, Boolean.FALSE);
-			if (OutboundStatusEnum.New != status) {
-				throw new BusinessServiceException("OutboundHeaderServiceImpl", "outbound.status.not.process" , new Object[] {header.getOutboundNumber()});
-			}
 			
+			OutboundHeaderTEntity header = OutboundHeaderTEntity.builder()
+			.companyId(request.getCompanyId())
+			.outboundHeaderId(h.getOutboundHeaderId())
+			.build();
+			
+			OutboundHeaderTExample  example = new OutboundHeaderTExample();
+			OutboundHeaderTExample.Criteria criteria = example.createCriteria();
+			criteria.andCompanyIdEqualTo(request.getCompanyId())
+					.andOutboundHeaderIdEqualTo(header.getOutboundHeaderId());
+			
+			if (0L != h.getWarehouseId()) {
+				criteria.andWarehouseIdEqualTo(request.getWarehouseId());
+				header = find(OutboundHeaderTEntity.builder()
+						.warehouseId(request.getWarehouseId())
+						.companyId(request.getCompanyId())
+						.outboundHeaderId(h.getOutboundHeaderId())
+						.build());
+				OutboundStatusEnum status = outboundStatus(header, Boolean.FALSE);
+				if (OutboundStatusEnum.New != status) {
+					throw new BusinessServiceException("OutboundHeaderServiceImpl", "outbound.status.not.process" , new Object[] {header.getOutboundNumber()});
+				}
+			}else {//不存在仓库id，外部系统新建订单
+				header = find(header);
+				if(!StringUtils.equals(InboundStatusEnum.Draft.getCode(),header.getStatus())){
+					throw new BusinessServiceException("OutboundHeaderServiceImpl", "outbound.status.not.process" , new Object[] {header.getOutboundNumber()});
+				}
+			}
+
 			outboundDetailService.delete(header);
 
 			OutboundHeaderTEntity update = OutboundHeaderTEntity.builder()
@@ -368,12 +386,6 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 					.updateTime(new Date())
 					.delFlag(YesNoEnum.Yes.getCode())
 					.build();
-
-			OutboundHeaderTExample  example= new OutboundHeaderTExample();
-			example.createCriteria()
-					.andWarehouseIdEqualTo(header.getWarehouseId())
-					.andCompanyIdEqualTo(header.getCompanyId())
-					.andOutboundHeaderIdEqualTo(header.getOutboundHeaderId());
 
 			int rowcount = outboundHeaderDao.updateWithVersionByExampleSelective(header.getUpdateVersion(), update, example);
 			if (rowcount == 0) {
