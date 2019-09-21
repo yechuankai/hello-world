@@ -659,6 +659,11 @@
 			$('#uomQuantityReceive').numberbox({readonly:false});
 			$('#lpnNumber').textbox({readonly:false});
 			$('#containerNumber').textbox({readonly:false});
+			$('#volume').numberbox({readonly:false});
+			$('#weightGross').numberbox({readonly:false});
+			$('#weightNet').numberbox({readonly:false});
+			$('#weightTare').numberbox({readonly:false});
+			$('#putawayStrategyCode').combogrid({readonly:false});
 			lotAttributeEditable(false);
 		}else if('10' == status){
 			//新建
@@ -674,6 +679,11 @@
 			$('#uomQuantityReceive').numberbox({readonly:false});
 			$('#lpnNumber').textbox({readonly:false});
 			$('#containerNumber').textbox({readonly:false});
+			$('#volume').numberbox({readonly:false});
+			$('#weightGross').numberbox({readonly:false});
+			$('#weightNet').numberbox({readonly:false});
+			$('#weightTare').numberbox({readonly:false});
+			$('#putawayStrategyCode').combogrid({readonly:false});
 			lotAttributeEditable(false);
 		}else if('20' == status ||'30' == status){
 			//收货中、收货完成
@@ -688,6 +698,11 @@
 			$('#uom').combobox({readonly:true});
 			$('#lpnNumber').textbox({readonly:true});
 			$('#containerNumber').textbox({readonly:true});
+			$('#volume').numberbox({readonly:true});
+			$('#weightGross').numberbox({readonly:true});
+			$('#weightNet').numberbox({readonly:true});
+			$('#weightTare').numberbox({readonly:true});
+			$('#putawayStrategyCode').combogrid({readonly:true});
 			lotAttributeEditable(true);
 			if ('30' == status){
 				$('#uomQuantityReceive').numberbox({readonly:true});
@@ -710,6 +725,11 @@
 			$('#uomQuantityReceive').numberbox({readonly:true});
 			$('#lpnNumber').textbox({readonly:true});
 			$('#containerNumber').textbox({readonly:true});
+			$('#volume').numberbox({readonly:true});
+			$('#weightGross').numberbox({readonly:true});
+			$('#weightNet').numberbox({readonly:true});
+			$('#weightTare').numberbox({readonly:true});
+			$('#putawayStrategyCode').combogrid({readonly:true});
 			lotAttributeEditable(true);
 		}
 	}

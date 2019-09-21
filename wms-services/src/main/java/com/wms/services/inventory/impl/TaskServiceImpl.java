@@ -286,7 +286,7 @@ public class TaskServiceImpl implements ITaskService {
 				//容器号
 				lpnTEntity.setContainerNumber(d.getFromLpnNumber());
 				lpns = lpnService.findByContainerNumber(lpnTEntity);
-			}else if(StringUtils.equals(LpnTypeEnum.Pallet.getCode(), d.getFromLpnType())){
+			}else if(StringUtils.equals(LpnTypeEnum.Carton.getCode(), d.getFromLpnType())){
 				//lpn
 				Set<String> lpnNumbers = Sets.newHashSet();
 				lpnNumbers.add(d.getFromLpnNumber());

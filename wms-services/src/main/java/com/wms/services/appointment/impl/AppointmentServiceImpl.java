@@ -19,6 +19,7 @@ import com.wms.common.enums.OutboundStatusEnum;
 import com.wms.common.enums.PlatFormStatusEnum;
 import com.wms.common.enums.YesNoEnum;
 import com.wms.common.exception.BusinessServiceException;
+import com.wms.common.utils.DateUtils;
 import com.wms.common.utils.ExampleUtils;
 import com.wms.common.utils.StringUtils;
 import com.wms.common.utils.key.KeyUtils;
@@ -282,6 +283,10 @@ public class AppointmentServiceImpl implements IAppointmentService {
 		
 		if (appointment.getExpectedDate() == null)
 			throw new BusinessServiceException("AppointmentServiceImpl", "expecteddate.isnull");
+		
+		
+		if(appointment.getExpectedDate().compareTo(DateUtils.parseDate(DateUtils.getDate())) < 0)
+			throw new BusinessServiceException("AppointmentServiceImpl", "expected.date.less.now" , new Object[] {appointment.getAppointmentCode()}); 
 		
 		//到达状态时，到达时间不能为空
 		if (AppointmentStatusEnum.Arrived.getCode().equals(appointment.getStatus())
