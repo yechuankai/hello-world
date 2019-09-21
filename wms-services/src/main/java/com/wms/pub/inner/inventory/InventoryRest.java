@@ -34,12 +34,7 @@ public class InventoryRest extends BaseController {
 		List<InventoryOnhandVO> list = null;
 		try {
 			PageRequest pageRequest = pageRequest(req);
-			Page page = PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
-			list = inventoryService.find(pageRequest);
-			if (list == null)
-				list = Lists.newArrayList();
-			
-			return page(page, list);
+			return inventoryService.find(pageRequest);
 		} catch (Exception e) {
 			return pageFail(e.getMessage());
 		}

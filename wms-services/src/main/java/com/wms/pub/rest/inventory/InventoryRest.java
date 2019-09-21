@@ -50,9 +50,7 @@ public class InventoryRest extends BaseController {
 		List<InventoryOnhandVO> list = null;
 		try {
 			PageRequest pageRequest = pageRequest(req);
-			Page page = PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
-			list = inventoryService.find(pageRequest);
-			return page(page, list);
+			return inventoryService.find(pageRequest);
 		} catch (Exception e) {
 			return pageFail(e.getMessage());
 		}
@@ -64,29 +62,15 @@ public class InventoryRest extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/containerFind")
-	public PageResult<InventoryOnhandTEntity> containerFind(@RequestBody String req) {
-		List<InventoryOnhandTEntity> list = null;
+	public PageResult<InventoryOnhandVO> containerFind(@RequestBody String req) {
+		List<InventoryOnhandVO> list = null;
 		try {
 			PageRequest pageRequest = pageRequest(req);
 			String containerNumber = pageRequest.getString(LpnTEntity.Column.containerNumber.getJavaProperty());
 			if(StringUtils.isEmpty(containerNumber))
-				return pageFail("no container.");
-			
-			List<LpnTEntity> lpns = lpnService.findByContainerNumber(LpnTEntity.builder()
-												.warehouseId(pageRequest.getWarehouseId())
-												.companyId(pageRequest.getCompanyId())
-												.containerNumber(containerNumber)
-												.build());
-			if (CollectionUtils.isEmpty(lpns))
 				return page(Lists.newArrayList());
-			
-			Set<Long> lpnIds = lpns.stream().map(LpnTEntity::getLpnId).collect(Collectors.toSet());
 			Page page = PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
-			list = inventoryService.findByLpnId(InventoryOnhandTEntity.builder()
-												.warehouseId(pageRequest.getWarehouseId())
-												.companyId(pageRequest.getCompanyId())
-												.build(), lpnIds);
-			return page(page, list);
+			return inventoryService.find(pageRequest);
 		} catch (Exception e) {
 			return pageFail(e.getMessage());
 		}

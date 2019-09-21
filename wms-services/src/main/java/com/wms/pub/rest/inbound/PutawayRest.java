@@ -97,8 +97,10 @@ public class PutawayRest extends BaseController{
 				onhand.setLocationCode(task.getFromLocationCode());
 				if(LpnTypeEnum.Container.getCode().equals(task.getFromLpnType())) {
 					onhand.setContainerNumber(task.getFromLpnNumber());
+					putaway.setContainerNumber(task.getFromLpnNumber());
 				}else {
 					onhand.setLpnNumber(task.getFromLpnNumber());
+					putaway.setLpnNumber(task.getFromLpnNumber());
 				}
 				putaway.setInventoryOnhand(onhand);
 				putaway.setLocationCode(task.getFromLocationCode());

@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
+import com.wms.common.core.domain.response.PageResult;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.entity.auto.InventoryOnhandTEntity;
 import com.wms.entity.auto.SkuTEntity;
@@ -16,7 +17,7 @@ public interface IInventoryService {
 	
 	Boolean find(SkuTEntity sku);
 	
-	List<InventoryOnhandVO> find(PageRequest request) throws BusinessServiceException;
+	PageResult<InventoryOnhandVO> find(PageRequest request) throws BusinessServiceException;
 	
 	InventoryOnhandTEntity findByLogicalKey(InventoryOnhandTEntity inventory) throws BusinessServiceException;
 	

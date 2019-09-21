@@ -49,6 +49,7 @@
     <result column="WEIGHT_NET" jdbcType="DECIMAL" property="weightNet" />
     <result column="WEIGHT_TARE" jdbcType="DECIMAL" property="weightTare" />
     <result column="VOLUME" jdbcType="DECIMAL" property="volume" />
+    <result column="SKU_DESCR" jdbcType="VARCHAR" property="skuDescr" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -153,7 +154,7 @@
     LOT_ATTRIBUTE4, LOT_ATTRIBUTE5, LOT_ATTRIBUTE6, LOT_ATTRIBUTE7, LOT_ATTRIBUTE8, LOT_ATTRIBUTE9, 
     LOT_ATTRIBUTE10, LOT_ATTRIBUTE11, LOT_ATTRIBUTE12, REMARK, COMPANY_ID, WAREHOUSE_ID, 
     DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, 
-    WEIGHT_GROSS, WEIGHT_NET, WEIGHT_TARE, VOLUME
+    WEIGHT_GROSS, WEIGHT_NET, WEIGHT_TARE, VOLUME, SKU_DESCR
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.OutboundDetailTExample" resultMap="BaseResultMap">
     select
@@ -191,8 +192,8 @@
       WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
       CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
       UPDATE_VERSION, DESCRIPTION, WEIGHT_GROSS, 
-      WEIGHT_NET, WEIGHT_TARE, VOLUME
-      )
+      WEIGHT_NET, WEIGHT_TARE, VOLUME, 
+      SKU_DESCR)
     values (#{outboundDetailId,jdbcType=DECIMAL}, #{outboundHeaderId,jdbcType=DECIMAL}, 
       #{lineNumber,jdbcType=DECIMAL}, #{sourceLineNumber,jdbcType=DECIMAL}, #{ownerId,jdbcType=DECIMAL}, 
       #{ownerCode,jdbcType=VARCHAR}, #{skuId,jdbcType=DECIMAL}, #{skuCode,jdbcType=VARCHAR}, 
@@ -208,8 +209,8 @@
       #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, #{weightGross,jdbcType=DECIMAL}, 
-      #{weightNet,jdbcType=DECIMAL}, #{weightTare,jdbcType=DECIMAL}, #{volume,jdbcType=DECIMAL}
-      )
+      #{weightNet,jdbcType=DECIMAL}, #{weightTare,jdbcType=DECIMAL}, #{volume,jdbcType=DECIMAL}, 
+      #{skuDescr,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.OutboundDetailTEntity">
     insert into OUTBOUND_DETAIL_T
@@ -355,6 +356,9 @@
       <if test="volume != null">
         VOLUME,
       </if>
+      <if test="skuDescr != null">
+        SKU_DESCR,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="outboundDetailId != null">
@@ -497,6 +501,9 @@
       </if>
       <if test="volume != null">
         #{volume,jdbcType=DECIMAL},
+      </if>
+      <if test="skuDescr != null">
+        #{skuDescr,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -650,6 +657,9 @@
       <if test="record.volume != null">
         VOLUME = #{record.volume,jdbcType=DECIMAL},
       </if>
+      <if test="record.skuDescr != null">
+        SKU_DESCR = #{record.skuDescr,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -703,7 +713,8 @@
       WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL},
       WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL},
       WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL},
-      VOLUME = #{record.volume,jdbcType=DECIMAL}
+      VOLUME = #{record.volume,jdbcType=DECIMAL},
+      SKU_DESCR = #{record.skuDescr,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -851,7 +862,8 @@
     WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL}, 
     WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL}, 
     WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL}, 
-    VOLUME = #{record.volume,jdbcType=DECIMAL}
+    VOLUME = #{record.volume,jdbcType=DECIMAL}, 
+    SKU_DESCR = #{record.skuDescr,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
     </if>
@@ -1003,6 +1015,9 @@
         </if>
         <if test="record.volume != null">
           VOLUME = #{record.volume,jdbcType=DECIMAL},
+        </if>
+        <if test="record.skuDescr != null">
+          SKU_DESCR = #{record.skuDescr,jdbcType=VARCHAR},
         </if>
       </trim>
     </set>

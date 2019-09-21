@@ -116,22 +116,8 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 		List<InboundDetailTEntity> inboundDetailList = inboundDetailDao.selectByExample(TExample);
 		
 		if (CollectionUtils.isEmpty(inboundDetailList)) 
-			return null;
+			return Lists.newArrayList();
 
-		Set<Long> skuids = inboundDetailList.stream().filter(a -> null != a.getSkuId()).map(InboundDetailTEntity::getSkuId).collect(Collectors.toSet());
-		List<SkuTEntity> skuList=Lists.newArrayList();
-		if(CollectionUtils.isNotEmpty(skuids)){
-			SkuTEntity selectSku = SkuTEntity.builder()
-					.warehouseId(request.getWarehouseId())
-					.companyId(request.getCompanyId())
-					.build();
-			skuList = skuService.findByIds(selectSku, skuids);
-		}
-
-		Map<Long, SkuTEntity> skuMaps = skuList.stream().collect(
-			      Collectors.toMap(SkuTEntity::getSkuId, (s) -> s));
-		
-		
 		Set<Long> headerIds = inboundDetailList.stream().map(InboundDetailTEntity::getInboundHeaderId).collect(Collectors.toSet());
 		List<InboundHeaderTEntity> headerList = Lists.newArrayList();
 		if(CollectionUtils.isNotEmpty(headerIds)){
@@ -149,10 +135,6 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 		inboundDetailList.forEach(d -> {
 			
 			InboundDetailVO inboundDetailVO = new InboundDetailVO(d);
-
-			SkuTEntity sku = skuMaps.get(d.getSkuId());
-			if (sku != null)
-				inboundDetailVO.setSkuDescr(sku.getSkuDescr());
 			
 			InboundHeaderTEntity header = headerIdMap.get(d.getInboundHeaderId());
 			if (header != null)
@@ -551,7 +533,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 					lpnNumber = d.getContainerNumber();
 					lpnType = LpnTypeEnum.Container;
 				} else {
-					lpnType = LpnTypeEnum.Pallet;
+					lpnType = LpnTypeEnum.Carton;
 					lpnTEntity.setLpnNumber(d.getLpnNumber());
 					lpnNumber = d.getLpnNumber();
 				}

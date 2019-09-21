@@ -86,18 +86,7 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 		List<OutboundDetailTEntity> outboundDetailList = outboundDetailDao.selectByExample(TExample);
 
 		if (CollectionUtils.isEmpty(outboundDetailList))
-			return null;
-
-		Set<Long> skuids = outboundDetailList.stream().map(OutboundDetailTEntity::getSkuId).collect(Collectors.toSet());
-
-		SkuTEntity selectSku = SkuTEntity.builder()
-				.warehouseId(request.getWarehouseId())
-				.companyId(request.getCompanyId())
-				.build();
-
-		List<SkuTEntity> skuList = skuService.findByIds(selectSku, skuids);
-		Map<Long, SkuTEntity> skuMaps = skuList.stream().collect(
-				Collectors.toMap(SkuTEntity::getSkuId, (s) -> s));
+			return Lists.newArrayList();
 		
 		Set<Long> headerIds = outboundDetailList.stream().map(OutboundDetailTEntity::getOutboundHeaderId).collect(Collectors.toSet());
 		List<OutboundHeaderTEntity> headerList = Lists.newArrayList();
@@ -113,13 +102,7 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 
 		List<OutboundDetailVO> returnList = Lists.newArrayList();
 		outboundDetailList.forEach(d -> {
-
 			OutboundDetailVO outboundDetailVO = new OutboundDetailVO(d);
-
-			SkuTEntity sku = skuMaps.get(d.getSkuId());
-			if (sku != null) {
-				outboundDetailVO.setSkuDescr(sku.getSkuDescr());
-			}
 			
 			OutboundHeaderTEntity header = headerIdMap.get(d.getOutboundHeaderId());
 			if (header != null)
