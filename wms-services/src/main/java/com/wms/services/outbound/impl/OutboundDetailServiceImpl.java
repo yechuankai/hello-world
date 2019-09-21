@@ -350,9 +350,11 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 	}
 
 	private Boolean delete(OutboundDetailTEntity detail) throws BusinessServiceException {
-		OutboundStatusEnum status = outboundDetailStatus(detail, Boolean.FALSE);
-		if (OutboundStatusEnum.New != status) {
-			throw new BusinessServiceException("OutboundDetailServiceImpl", "outbound.line.status.not.process" , new Object[] {detail.getLineNumber()});
+		if(0L != detail.getWarehouseId()){
+			OutboundStatusEnum status = outboundDetailStatus(detail, Boolean.FALSE);
+			if (OutboundStatusEnum.New != status) {
+				throw new BusinessServiceException("OutboundDetailServiceImpl", "outbound.line.status.not.process" , new Object[] {detail.getLineNumber()});
+			}
 		}
 
 		OutboundDetailTEntity updateDetail = OutboundDetailTEntity.builder()
@@ -721,12 +723,106 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 		}
 		return releaseFlag;
 	}
+	
+	/**
+	 * 处理明细 修改，删除
+	 * @param type
+	 * @param newDetail
+	 * @param oriDetail
+	 * @return
+	 */
+	private Boolean processOMSOutboundDetail(OperatorTypeEnum type, List<OutboundDetailVO> newDetail, List<OutboundDetailTEntity> oriDetail) {
+		//没有原始行，默认原类型
+		if (CollectionUtils.isEmpty(oriDetail) && CollectionUtils.isNotEmpty(newDetail)) {
+			newDetail.forEach(d -> {
+				d.setOperatorType(type);
+			});
+		}
+		//没有新行，将原始行都删除
+		if (CollectionUtils.isEmpty(newDetail)) {
+			oriDetail.forEach(d -> {
+				OutboundDetailVO delObj = new OutboundDetailVO(d);
+				delObj.setOperatorType(OperatorTypeEnum.Delete);
+				newDetail.add(delObj);
+			});
+		} 
+		//默认为修改
+		newDetail.stream().forEach(add -> {
+			add.setOperatorType(OperatorTypeEnum.Modify);
+		});
+		
+		//计算新增，明细ID为空则认为新增
+		List<OutboundDetailVO> addDetail = newDetail.stream().filter(v -> v.getOutboundDetailId() == null).collect(Collectors.toList());
+		if (CollectionUtils.isNotEmpty(addDetail)) {
+			long maxLine = 0L;
+			if (CollectionUtils.isNotEmpty(oriDetail)) {
+				//获取最大行号
+				OutboundDetailTEntity max = oriDetail.stream().max(new Comparator<OutboundDetailTEntity>() {
+					@Override
+					public int compare(OutboundDetailTEntity o1, OutboundDetailTEntity o2) {
+						return o1.getLineNumber().compareTo(o2.getLineNumber());
+					}
+				}).get();
+				
+				if (max != null)
+					maxLine = max.getLineNumber();
+			}
+			for (int i = 0; i < addDetail.size(); i++) {
+				OutboundDetailVO addObj = addDetail.get(i);
+				addObj.setLineNumber((i + 1) * DefaultConstants.LINE_INCREMENT + maxLine);
+				//查询货品默认包装
+				SkuTEntity sku = skuService.find(SkuTEntity.builder()
+								.companyId(addObj.getCompanyId())
+								.warehouseId(addObj.getWarehouseId())
+								.skuCode(addObj.getSkuCode())
+								.build());
+				
+				addObj.setPackCode(sku.getPackCode());
+				addObj.setUom(sku.getUom());
+				addObj.setAllocateStrategyCode(sku.getAllocateStrategyCode());
+				addObj.setAllocateStrategyCode(sku.getAllocateStrategyCode());
+				addObj.setOperatorType(OperatorTypeEnum.Add);
+			}
+		} 
+		Map<Long, OutboundDetailVO> newMap = newDetail.stream().filter(v -> v.getOutboundDetailId() != null).collect(Collectors.toMap(OutboundDetailVO::getOutboundDetailId, v->v));
+		//计算删除
+		oriDetail.forEach(od -> {
+			OutboundDetailVO newObj = newMap.get(od.getOutboundDetailId());
+			if (newObj == null) {
+				OutboundDetailVO delObj = new OutboundDetailVO(od);
+				delObj.setOperatorType(OperatorTypeEnum.Delete);
+				newDetail.add(delObj);
+			}else {
+				newObj.setLineNumber(od.getLineNumber());
+				newObj.setPackCode(od.getPackCode());
+				newObj.setUom(od.getUom());
+				newObj.setAllocateStrategyCode(od.getAllocateStrategyCode());
+			}
+		});
+		
+		return Boolean.TRUE;
+	}
 
 	@Override
 	@Transactional
 	public Boolean saveFromOms(OutboundVO outboundVO) throws BusinessServiceException {
 		OutboundVO outbound = outboundHeaderService.find(outboundVO);
 		outbound.setOperatorType(outboundVO.getOperatorType());
+		outboundVO.getDetail().forEach(d -> {
+			d.setOperatorType(outboundVO.getOperatorType());
+		});
+		if(outboundVO.getOperatorType() == OperatorTypeEnum.Modify) {
+			//需要计算明细新增/删除/修改
+			//1.获取所有明细
+			List<OutboundDetailTEntity> detail = findByHeaderId(outbound.getOutboundHeaderId());
+			if (CollectionUtils.isNotEmpty(detail)) {
+				processOMSOutboundDetail(outboundVO.getOperatorType(), outboundVO.getDetail(), detail);
+			}else {
+				outboundVO.getDetail().forEach(d -> {
+					d.setOperatorType(OperatorTypeEnum.Add);
+				});
+			}
+		}
 
 		outboundVO.getDetail().forEach(d->{
 			d.setOutboundHeaderId(outbound.getOutboundHeaderId());
@@ -742,8 +838,9 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 					.updateTime(new Date())
 					.operTime(new Date())
 					.build();
+			outbound.setOperatorType(d.getOperatorType());
 			validate(outbound,d);
-			switch (outboundVO.getOperatorType()) {
+			switch (d.getOperatorType()) {
 				case Add:
 					d.setCreateBy(outboundVO.getUpdateBy());
 					d.setStatus(OutboundStatusEnum.Draft.getCode());
@@ -751,7 +848,11 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 					break;
 				case Modify:
 					d.setStatus(OutboundStatusEnum.Draft.getCode());
+					//判断是否为新增或修改
 					modify(d,Boolean.TRUE);
+					break;
+				case Delete:
+					delete(d);
 					break;
 				case Submit:
 					d.setStatus(OutboundStatusEnum.WaitingReview.getCode());
@@ -827,30 +928,34 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 
 		if (detail.getUomQuantityExpected() != null && detail.getUomQuantityExpected().compareTo(BigDecimal.ZERO) > 0) {
 			detail.setQuantityExpected(detail.getUomQuantityExpected().multiply(uomQuantity));
-		}else {
+		}
+		if (detail.getQuantityExpected() == null) {
 			detail.setQuantityExpected(BigDecimal.ZERO);
 		}
 
 		if (detail.getUomQuantityOrder() != null && detail.getUomQuantityOrder().compareTo(BigDecimal.ZERO) > 0) {
 			detail.setQuantityOrder(detail.getUomQuantityOrder().multiply(uomQuantity));
-		}else {
+		}
+		if (detail.getQuantityOrder() == null) {
 			detail.setQuantityOrder(BigDecimal.ZERO);
 		}
 
 		if (detail.getUomQuantityAllocated() != null && detail.getUomQuantityAllocated().compareTo(BigDecimal.ZERO) > 0) {
 			detail.setQuantityAllocated(detail.getUomQuantityAllocated().multiply(uomQuantity));
-		}else {
+		}
+		if (detail.getQuantityAllocated() == null) {
 			detail.setQuantityAllocated(BigDecimal.ZERO);
 		}
-
 		if (detail.getUomQuantityPicked() != null && detail.getUomQuantityPicked().compareTo(BigDecimal.ZERO) > 0) {
 			detail.setQuantityPicked(detail.getUomQuantityPicked().multiply(uomQuantity));
-		}else {
+		}
+		if (detail.getQuantityPicked() == null) {
 			detail.setQuantityPicked(BigDecimal.ZERO);
 		}
 		if (detail.getUomQuantityShiped() != null && detail.getUomQuantityShiped().compareTo(BigDecimal.ZERO) > 0) {
 			detail.setQuantityShiped(detail.getUomQuantityShiped().multiply(uomQuantity));
-		}else {
+		}
+		if (detail.getQuantityShiped() == null) {
 			detail.setQuantityShiped(BigDecimal.ZERO);
 		}
 		if(detail.getAllocateStrategyId() != null || StringUtils.isNotEmpty(detail.getAllocateStrategyCode())){
@@ -863,7 +968,8 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 			detail.setAllocateStrategyCode(allocateStrategy.getAllocateStrategyCode());
 			detail.setAllocateStrategyId(allocateStrategy.getAllocateStrategyId());
 		}
-		if (outboundVO.getOperatorType() != OperatorTypeEnum.Add&&outboundVO.getOperatorType() != OperatorTypeEnum.Submit) {
+		if (outboundVO.getOperatorType() != OperatorTypeEnum.Add 
+				&& outboundVO.getOperatorType() != OperatorTypeEnum.Submit) {
 			return Boolean.TRUE;
 		}
 
@@ -893,7 +999,8 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 		detail.setSkuId(sku.getSkuId());
 		detail.setSkuAlias(sku.getSkuAlias());
 		detail.setSkuCode(sku.getSkuCode());
-
+		detail.setSkuDescr(sku.getSkuDescr());
+		
 		OutboundDetailTEntity selectDetail = null;
 		try {
 			selectDetail = find(detail);

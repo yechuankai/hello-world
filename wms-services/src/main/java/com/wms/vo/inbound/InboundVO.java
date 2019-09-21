@@ -2,6 +2,7 @@ package com.wms.vo.inbound;
 
 import java.util.List;
 
+import com.google.common.collect.Lists;
 import com.wms.common.enums.OperatorTypeEnum;
 import com.wms.common.utils.bean.BeanUtils;
 import com.wms.entity.auto.InboundHeaderTEntity;
@@ -9,7 +10,7 @@ import com.wms.entity.auto.InboundHeaderTEntity;
 public class InboundVO extends InboundHeaderTEntity{
 
 	private OperatorTypeEnum operatorType;
-	private List<InboundDetailVO> detail;
+	private List<InboundDetailVO> detail = Lists.newArrayList();
 	
 	public void setDetail(List<InboundDetailVO> detail) {
 		this.detail = detail;

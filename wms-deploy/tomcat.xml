@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>  
 <project name="deploy" default="deploy" basedir="." >  
     <description>deploy to tomcat</description>  
-	<path id="tomcat-deploy-ant.classpath">
-		<fileset dir="${basedir}/lib">
-            <include name="catalina-ant.jar"/>
-			<include name="catalina.jar"/>
-        </fileset>
-	</path>
+	<path id="tomcat-deploy-ant.classpath" path="${basedir}/lib/catalina-ant.jar" />  
 	<typedef resource="org/apache/catalina/ant/antlib.xml"  
 			   classpathref="tomcat-deploy-ant.classpath" />  
     <echo>init tomcat deoploy finished..</echo>  
   
     <!--定义外部属性文件和目录-->  
-    <property file="wms.properties" />  
+    <property file="tomcat.properties" />  
 	
 	<target name="wms-service-undeploy" description="Remove web application">
 		<undeploy url="${server.wms-service.host}" username="${server.wms-service.username}" password="${server.wms-service.password}" path="${server.wms-service.path}"/>

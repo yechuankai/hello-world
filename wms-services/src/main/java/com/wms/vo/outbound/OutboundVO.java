@@ -1,5 +1,6 @@
 package com.wms.vo.outbound;
 
+import com.google.common.collect.Lists;
 import com.wms.common.enums.OperatorTypeEnum;
 import com.wms.common.utils.bean.BeanUtils;
 import com.wms.entity.auto.AllocateTEntity;
@@ -11,9 +12,8 @@ import java.util.List;
 public class OutboundVO extends OutboundHeaderTEntity{
 
 	private OperatorTypeEnum operatorType;
-	private List<OutboundDetailVO> detail;
+	private List<OutboundDetailVO> detail = Lists.newArrayList();
 	private List<AllocateTEntity> allocateList;
-	private List<EntInventoryOnhandVO> entInventoryOnhandList;
 	private String warehouseCode;
 
 	public String getWarehouseCode() {
@@ -22,14 +22,6 @@ public class OutboundVO extends OutboundHeaderTEntity{
 
 	public void setWarehouseCode(String warehouseCode) {
 		this.warehouseCode = warehouseCode;
-	}
-
-	public List<EntInventoryOnhandVO> getEntInventoryOnhandList() {
-		return entInventoryOnhandList;
-	}
-
-	public void setEntInventoryOnhandList(List<EntInventoryOnhandVO> entInventoryOnhandList) {
-		this.entInventoryOnhandList = entInventoryOnhandList;
 	}
 
 	public void setDetail(List<OutboundDetailVO> detail) {

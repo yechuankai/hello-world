@@ -37,6 +37,8 @@ import com.wms.vo.adjustment.AdjustmentVO;
 import com.wms.vo.excel.InboundDetailImportVO;
 import com.wms.vo.inbound.InboundDetailVO;
 import com.wms.vo.inbound.InboundVO;
+import com.wms.vo.outbound.OutboundDetailVO;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -155,6 +157,16 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 		.andWarehouseIdEqualTo(inbound.getWarehouseId())
 		.andCompanyIdEqualTo(inbound.getCompanyId())
 		.andInboundHeaderIdEqualTo(inbound.getInboundHeaderId());
+		List<InboundDetailTEntity> inboundDetailList = inboundDetailDao.selectByExample(TExample);
+		return inboundDetailList;
+	}
+	
+	@Override
+	public List<InboundDetailTEntity> findByHeaderId(Long headerId) throws BusinessServiceException {
+		InboundDetailTExample TExample = new InboundDetailTExample();
+		TExample.createCriteria()
+		.andDelFlagEqualTo(YesNoEnum.No.getCode())
+		.andInboundHeaderIdEqualTo(headerId);
 		List<InboundDetailTEntity> inboundDetailList = inboundDetailDao.selectByExample(TExample);
 		return inboundDetailList;
 	}
@@ -1101,12 +1113,93 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
         }
         return Boolean.TRUE;
     }
+	
+	
+	/**
+	 * 处理明细 修改，删除
+	 * @param type
+	 * @param newDetail
+	 * @param oriDetail
+	 * @return
+	 */
+	private Boolean processOMSinboundDetail(OperatorTypeEnum type, List<InboundDetailVO> newDetail, List<InboundDetailTEntity> oriDetail) {
+		//没有原始行，默认原类型
+		if (CollectionUtils.isEmpty(oriDetail) && CollectionUtils.isNotEmpty(newDetail)) {
+			newDetail.forEach(d -> {
+				d.setOperatorType(type);
+			});
+		}
+		//没有新行，将原始行都删除
+		if (CollectionUtils.isEmpty(newDetail)) {
+			oriDetail.forEach(d -> {
+				InboundDetailVO delObj = new InboundDetailVO(d);
+				delObj.setOperatorType(OperatorTypeEnum.Delete);
+				newDetail.add(delObj);
+			});
+		} 
+		//默认为修改
+		newDetail.stream().forEach(add -> {
+			add.setOperatorType(OperatorTypeEnum.Modify);
+			if (add.getInboundHeaderId() != null) {
+				add.setLineNumber(null); //清空行号数据
+			}
+		});
+		
+		//计算新增，明细ID为空则认为新增
+		List<InboundDetailVO> addDetail = newDetail.stream().filter(v -> v.getInboundDetailId() == null).collect(Collectors.toList());
+		if (CollectionUtils.isNotEmpty(addDetail)) {
+			long maxLine = 0L;
+			if (CollectionUtils.isNotEmpty(oriDetail)) {
+				//获取最大行号
+				InboundDetailTEntity max = oriDetail.stream().max(new Comparator<InboundDetailTEntity>() {
+					@Override
+					public int compare(InboundDetailTEntity o1, InboundDetailTEntity o2) {
+						return o1.getLineNumber().compareTo(o2.getLineNumber());
+					}
+				}).get();
+				
+				if (max != null)
+					maxLine = max.getLineNumber();
+			}
+			for (int i = 0; i < addDetail.size(); i++) {
+				InboundDetailVO addObj = addDetail.get(i);
+				addObj.setLineNumber((i + 1) * DefaultConstants.LINE_INCREMENT + maxLine);
+				addObj.setOperatorType(OperatorTypeEnum.Add);
+			}
+		} 
+		
+		Set<Long> newIds = newDetail.stream().filter(v -> v.getInboundDetailId() != null).map(InboundDetailVO::getInboundDetailId).collect(Collectors.toSet());
+		//计算删除
+		oriDetail.forEach(od -> {
+			if (!newIds.contains(od.getInboundDetailId())) {
+				InboundDetailVO delObj = new InboundDetailVO(od);
+				delObj.setOperatorType(OperatorTypeEnum.Delete);
+				newDetail.add(delObj);
+			}
+		});
+		
+		return Boolean.TRUE;
+	}
 
 	@Override
 	@Transactional
 	public Boolean saveFromOms(AjaxRequest<InboundVO> request) throws BusinessServiceException {
 		InboundVO inboundVO = request.getData();
 		InboundVO inbound=inboundHeaderService.findById(inboundVO);
+		
+		inboundVO.getDetail().forEach(d -> {
+			d.setOperatorType(inboundVO.getOperatorType());
+		});
+		
+		if (inboundVO.getOperatorType() == OperatorTypeEnum.Add) {
+			processOMSinboundDetail(OperatorTypeEnum.Add, inboundVO.getDetail(), Lists.newArrayList());
+		}else if (inboundVO.getOperatorType() == OperatorTypeEnum.Modify ) {
+			//1.获取所有明细
+			List<InboundDetailTEntity> detail = findByHeaderId(inbound.getInboundHeaderId());
+			processOMSinboundDetail(OperatorTypeEnum.Add, inboundVO.getDetail(), detail);
+		}
+		
+			
 
 		inboundVO.getDetail().forEach(d -> {
 			d.setCompanyId(request.getCompanyId());
@@ -1121,7 +1214,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 					.updateTime(new Date())
 					.operTime(new Date())
 					.build();
-
+			inboundVO.setOperatorType(d.getOperatorType());
 			switch (inboundVO.getOperatorType()) {
 				case Add:
 					d.setCreateBy(request.getUserName());
@@ -1131,6 +1224,9 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 					break;
                 case Modify:
                     modify(d);
+                    break;
+                case Delete:
+                    delete(d);
                     break;
 				case Submit:
 					d.setStatus(InboundStatusEnum.WaitingReview.getCode());

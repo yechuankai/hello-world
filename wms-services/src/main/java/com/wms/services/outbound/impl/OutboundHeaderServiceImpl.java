@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.wms.common.constants.DefaultConstants;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.enums.InboundStatusEnum;
@@ -42,6 +43,7 @@ import com.wms.entity.auto.OutboundDetailTEntity;
 import com.wms.entity.auto.OutboundHeaderTEntity;
 import com.wms.entity.auto.OwnerTEntity;
 import com.wms.entity.auto.PackTEntity;
+import com.wms.entity.auto.SkuTEntity;
 import com.wms.entity.auto.StatusHistoryTEntity;
 import com.wms.entity.auto.SysWarehousesTEntity;
 import com.wms.entity.auto.TaskDetailTEntity;
@@ -51,6 +53,8 @@ import com.wms.services.base.ICustomerService;
 import com.wms.services.base.IEnterpriseService;
 import com.wms.services.base.IOwnerService;
 import com.wms.services.base.IPackService;
+import com.wms.services.base.ISkuService;
+import com.wms.services.base.impl.SkuServiceImpl;
 import com.wms.services.inventory.ITaskService;
 import com.wms.services.outbound.IOutboundDetailService;
 import com.wms.services.outbound.IOutboundHeaderService;
@@ -78,6 +82,8 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 	IStatusHistoryService statusHistoryService;
 	@Autowired
 	private IPackService packService;
+	@Autowired
+	private ISkuService skuService;
 	@Autowired
 	private ICarrierService carrierService;
 	@Autowired
@@ -187,8 +193,11 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 		OutboundHeaderTExample.Criteria criteria = TExample.createCriteria();
 		
 		criteria.andDelFlagEqualTo(YesNoEnum.No.getCode())
-		.andWarehouseIdEqualTo(outbound.getWarehouseId())
 		.andCompanyIdEqualTo(outbound.getCompanyId());
+		
+		if(null != outbound.getWarehouseId()){
+			criteria.andWarehouseIdEqualTo(outbound.getWarehouseId());
+		}
 		
 		int conditionCount = 0;
 		if (StringUtils.isNotEmpty(outbound.getOutboundNumber())) {
@@ -361,7 +370,7 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 			criteria.andCompanyIdEqualTo(request.getCompanyId())
 					.andOutboundHeaderIdEqualTo(header.getOutboundHeaderId());
 			
-			if (0L != h.getWarehouseId()) {
+			if (h.getWarehouseId() != null && 0L != h.getWarehouseId()) {
 				criteria.andWarehouseIdEqualTo(request.getWarehouseId());
 				header = find(OutboundHeaderTEntity.builder()
 						.warehouseId(request.getWarehouseId())
@@ -392,8 +401,11 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 				throw new BusinessServiceException("record delete error.");
 			}
 			
-			//取消装车任务
-			loadTask(header, OperatorTypeEnum.Cancel);
+			if (0L != request.getWarehouseId()) {
+				//取消装车任务
+				loadTask(header, OperatorTypeEnum.Cancel);
+			}
+			
 		});
 
 		return Boolean.TRUE;
@@ -759,11 +771,10 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 	private List<OutboundVO> deal(OutboundVO outbound){
 
 		List<OutboundVO> returnList = Lists.newArrayList();
-		List<EntInventoryOnhandVO> inventoryOnhandList = outbound.getEntInventoryOnhandList();
+		List<OutboundDetailVO> inventoryOnhandList = outbound.getDetail();
 		//根据仓库Id和货主分组
-		Map<Long, Map<String,List<EntInventoryOnhandVO>>> headerMap = inventoryOnhandList.stream().filter(v -> null != v && null != v.getWarehouseId()).collect(Collectors.groupingBy(EntInventoryOnhandTEntity::getWarehouseId,Collectors.groupingBy(EntInventoryOnhandTEntity::getOwnerCode)));
+		Map<Long, Map<String,List<OutboundDetailVO>>> headerMap = inventoryOnhandList.stream().filter(v -> null != v && null != v.getWarehouseId()).collect(Collectors.groupingBy(OutboundDetailVO::getWarehouseId,Collectors.groupingBy(OutboundDetailVO::getOwnerCode)));
 		headerMap.forEach((k, v) -> {
-			List<OutboundDetailVO> detailList = Lists.newArrayList();
 			v.forEach((ownerCode, d) ->{
 				OutboundVO outboundVO = new OutboundVO(outbound);
 				outboundVO.setWarehouseId(k);
@@ -772,32 +783,28 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 				outboundVO.setOwnerCode(ownerCode);
 				for (int i = 0; i < d.size(); i++){
 					//生成明细
-					EntInventoryOnhandVO inventoryOnhand =d.get(i);
-
-					OutboundDetailVO outboundDetailVO = new OutboundDetailVO();
-					BeanUtils.copyBeanProp(outboundDetailVO,inventoryOnhand,Boolean.FALSE);
+					OutboundDetailVO outboundDetailVO = d.get(i);
 					//把不需要的属性设为空
 					outboundDetailVO.setSkuId(null);
 					outboundDetailVO.setOwnerId(null);
-
+					outboundDetailVO.setPackId(null);
+					//设置具体的仓库
 					outboundDetailVO.setWarehouseId(k);
 					outboundDetailVO.setCompanyId(outbound.getCompanyId());
-					outboundDetailVO.setLineNumber((i+1)*10L);
+					//查询货品默认包装
+					SkuTEntity sku = skuService.find(SkuTEntity.builder()
+									.companyId(outbound.getCompanyId())
+									.warehouseId(k)
+									.skuCode(outboundDetailVO.getSkuCode())
+									.build());
+					
+					outboundDetailVO.setPackCode(sku.getPackCode());
+					outboundDetailVO.setUom(sku.getUom());
+					outboundDetailVO.setAllocateStrategyCode(sku.getAllocateStrategyCode());
+					outboundDetailVO.setLineNumber((i+1) * DefaultConstants.LINE_INCREMENT);
 					outboundDetailVO.setUpdateBy(outbound.getUpdateBy());
-					PackTEntity pack = packService.find(PackTEntity.builder()
-							.warehouseId(k)
-							.companyId(outbound.getCompanyId())
-							.packCode(inventoryOnhand.getPackCode())
-							.build());
-					outboundDetailVO.setPackCode(pack.getPackCode());
-					outboundDetailVO.setPackId(pack.getPackId());
-					outboundDetailVO.setUom(pack.getUomCase());
-					outboundDetailVO.setUomQuantityExpected(inventoryOnhand.getQuantityExpected());
-					outboundDetailVO.setUomQuantityOrder(inventoryOnhand.getQuantityExpected());
-
-					detailList.add(outboundDetailVO);
 				}
-				outboundVO.setDetail(detailList);
+				outboundVO.setDetail(d);
 
 				if(StringUtils.isNotBlank(outboundVO.getCarrierCode())){
 					//承运人新增判断

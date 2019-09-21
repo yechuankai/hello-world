@@ -1,5 +1,6 @@
 package com.wms.vo.outbound;
 
+import com.wms.common.enums.OperatorTypeEnum;
 import com.wms.common.utils.bean.BeanUtils;
 import com.wms.entity.auto.OutboundDetailTEntity;
 
@@ -9,6 +10,7 @@ import static java.math.BigDecimal.ROUND_FLOOR;
 
 public class OutboundDetailVO extends OutboundDetailTEntity {
 
+	private OperatorTypeEnum operatorType;
 	private String outboundNumber;
 	private BigDecimal uomQuantityExpected = BigDecimal.ZERO;
 	private BigDecimal uomQuantityOrder = BigDecimal.ZERO;
@@ -86,4 +88,13 @@ public class OutboundDetailVO extends OutboundDetailTEntity {
 		this.outboundNumber = outboundNumber;
 	}
 
+	public OperatorTypeEnum getOperatorType() {
+		return operatorType;
+	}
+
+	public void setOperatorType(OperatorTypeEnum operatorType) {
+		this.operatorType = operatorType;
+	}
+
+	
 }
