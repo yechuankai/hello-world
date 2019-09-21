@@ -1,9 +1,12 @@
 package com.wms.services.inventory.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.wms.common.core.domain.ExcelTemplate;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
+import com.wms.common.core.domain.response.PageResult;
 import com.wms.common.core.services.IExcelService;
 import com.wms.common.enums.*;
 import com.wms.common.exception.BusinessServiceException;
@@ -256,7 +259,7 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 	}
 
 	@Override
-	public List<InventoryOnhandVO> find(PageRequest request) throws BusinessServiceException {
+	public PageResult<InventoryOnhandVO> find(PageRequest request) throws BusinessServiceException {
 		InventoryOnhandTExample TExample = new InventoryOnhandTExample();
 		InventoryOnhandTExample.Criteria TExampleCriteria = TExample.createCriteria();
 		
@@ -293,13 +296,27 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 		    eu.and(condition, BigDecimal.ZERO );
 		    
 		}
+		String container = request.getString(LpnTEntity.Column.containerNumber.getJavaProperty());
+		if (StringUtils.isNotEmpty(container)) {
+			List<LpnTEntity> lpns = lpnService.findByContainerNumber(LpnTEntity.builder()
+					.warehouseId(request.getWarehouseId())
+					.companyId(request.getCompanyId())
+					.containerNumber(container)
+					.build());
+			if (CollectionUtils.isEmpty(lpns))
+				return PageResult.create(Lists.newArrayList());
+			
+			Set<Long> lpnIds = lpns.stream().map(LpnTEntity::getLpnId).collect(Collectors.toSet());
+			TExampleCriteria.andLpnIdIn(Lists.newArrayList(lpnIds));
+		}
 		
 		TExampleCriteria.andDelFlagEqualTo(YesNoEnum.No.getCode());
 		
+		Page page = PageHelper.startPage( request.getPageStart(),  request.getPageSize());
         List<InventoryOnhandTEntity> inventoryOnhandDetailList = inventoryDao.selectByExample(TExample);
 		
 		if (CollectionUtils.isEmpty(inventoryOnhandDetailList)) 
-			return null;
+			return PageResult.create(Lists.newArrayList());
 		
 		//查询容器号
 		Set<Long> lpnIds = inventoryOnhandDetailList.stream().filter(v -> v.getLpnId() != null).map(InventoryOnhandTEntity::getLpnId).collect(Collectors.toSet());
@@ -315,7 +332,8 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 			}
 			returnList.add(inventoryOnhandVO);
 		});
-		return returnList;
+		
+		return PageResult.create(page, returnList);
 	 }
 
 	@Override
@@ -459,7 +477,8 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
     @Override
     public List<InventoryOnhandImportVO> exportData(PageRequest request) throws BusinessServiceException {
         List<InventoryOnhandImportVO> returnList = Lists.newArrayList();
-        List<InventoryOnhandVO> onhands = find(request);
+        PageResult page = find(request);
+        List<InventoryOnhandVO> onhands = page.getRows();
         if (CollectionUtils.isEmpty(onhands)) {
             return returnList;
         }

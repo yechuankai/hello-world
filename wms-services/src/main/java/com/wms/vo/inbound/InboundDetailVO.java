@@ -14,7 +14,6 @@ import static java.math.BigDecimal.ROUND_FLOOR;
 
 public class InboundDetailVO extends InboundDetailTEntity {
 
-	private String skuDescr;
 	private String transactionCategory;
 	private BigDecimal uomQuantityExpected = BigDecimal.ZERO;
     private BigDecimal uomQuantityReceive = BigDecimal.ZERO;
@@ -49,14 +48,6 @@ public class InboundDetailVO extends InboundDetailTEntity {
 		this.operatorType = operatorType;
 	}
 
-	public String getSkuDescr() {
-		return skuDescr;
-	}
-
-	public void setSkuDescr(String skuDescr) {
-		this.skuDescr = skuDescr;
-	}
-	
 	public InboundDetailVO(){
 		initZero();
 	}

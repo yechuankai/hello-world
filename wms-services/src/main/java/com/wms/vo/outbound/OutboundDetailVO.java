@@ -10,7 +10,6 @@ import static java.math.BigDecimal.ROUND_FLOOR;
 public class OutboundDetailVO extends OutboundDetailTEntity {
 
 	private String outboundNumber;
-	private String skuDescr;
 	private BigDecimal uomQuantityExpected = BigDecimal.ZERO;
 	private BigDecimal uomQuantityOrder = BigDecimal.ZERO;
 	private BigDecimal uomQuantityAllocated = BigDecimal.ZERO;
@@ -24,14 +23,6 @@ public class OutboundDetailVO extends OutboundDetailTEntity {
 
 	public void setWarehouseCode(String warehouseCode) {
 		this.warehouseCode = warehouseCode;
-	}
-	
-	public String getSkuDescr() {
-		return skuDescr;
-	}
-
-	public void setSkuDescr(String skuDescr) {
-		this.skuDescr = skuDescr;
 	}
 	
 	public OutboundDetailVO(){}

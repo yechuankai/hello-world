@@ -3844,4 +3844,7 @@ create index i_inbound_detail_t on inbound_detail_t(inbound_header_id,line_numbe
 create index i_outbound_header_t on outbound_header_t(outbound_number);
 create index i_outbound_detail_t on outbound_detail_t(outbound_header_id,line_number);
 
+--订单系统出库增加货品描述
+alter table OUTBOUND_DETAIL_T ADD SKU_DESCR varchar2(200);
+comment on column OUTBOUND_DETAIL_T.SKU_DESCR   is '货品描述';
 

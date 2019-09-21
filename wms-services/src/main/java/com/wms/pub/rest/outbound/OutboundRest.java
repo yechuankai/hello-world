@@ -1,5 +1,13 @@
 package com.wms.pub.rest.outbound;
 
+import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.alibaba.fastjson.TypeReference;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -12,19 +20,13 @@ import com.wms.common.core.domain.response.PageResult;
 import com.wms.common.enums.OperatorTypeEnum;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.entity.auto.OutboundDetailTEntity;
+import com.wms.entity.auto.OutboundHeaderTEntity;
 import com.wms.services.base.IEnterpriseService;
 import com.wms.services.outbound.IOutboundDetailService;
 import com.wms.services.outbound.IOutboundHeaderService;
 import com.wms.vo.inventory.EntInventoryOnhandVO;
 import com.wms.vo.outbound.OutboundDetailVO;
 import com.wms.vo.outbound.OutboundVO;
-import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * @description: 出库单对外Rest
@@ -114,5 +116,22 @@ public class OutboundRest extends BaseController {
         } catch (Exception e) {
             return fail(e.getMessage());
         }
+    }
+    
+    @RequestMapping(value = "/delete")
+    public AjaxResult delete(@RequestBody String req) {
+        try {
+            AjaxRequest<List<OutboundHeaderTEntity>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<OutboundHeaderTEntity>>>() {});
+            if (CollectionUtils.isEmpty(request.getData())) {
+                return fail("no record delete.");
+            }
+            boolean flag = outboundHeaderService.delete(request);
+            if (flag) {
+                return success();
+            }
+        } catch (Exception e) {
+            return fail(e.getMessage());
+        }
+        return fail();
     }
 }
