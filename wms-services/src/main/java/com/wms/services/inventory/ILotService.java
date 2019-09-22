@@ -17,7 +17,7 @@ public interface ILotService {
 	
 	List<LotAttributeTEntity> findByIds(LotAttributeTEntity lpn, Set<Long> ids) throws BusinessServiceException;
 	
-	List<LotAttributeTEntity> findBylotNumbers(LotAttributeTEntity lpn, Set<String> lotNumbers) throws BusinessServiceException;
+	List<LotAttributeTEntity> findBylotNumbers(LotAttributeTEntity lot, Set<String> lotNumbers) throws BusinessServiceException;
 	
 	Boolean add(LotAttributeTEntity lot) throws BusinessServiceException;
 	

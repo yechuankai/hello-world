@@ -187,6 +187,21 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 	}
 	
 	@Override
+	public List<InboundDetailTEntity> findByLotNumbers(InboundDetailTEntity inbound, Set<String> ids) throws BusinessServiceException {
+		if (CollectionUtils.isEmpty(ids))
+			return null;
+		
+		InboundDetailTExample TExample = new InboundDetailTExample();
+		TExample.createCriteria()
+		.andDelFlagEqualTo(YesNoEnum.No.getCode())
+		.andWarehouseIdEqualTo(inbound.getWarehouseId())
+		.andCompanyIdEqualTo(inbound.getCompanyId())
+		.andLotNumberIn(Lists.newArrayList(ids));
+		List<InboundDetailTEntity> inboundDetailList = inboundDetailDao.selectByExample(TExample);
+		return inboundDetailList;
+	}
+	
+	@Override
 	public List<InboundDetailVO> findExpected(InboundDetailTEntity inbound) throws BusinessServiceException {
 		InboundDetailTExample TExample = new InboundDetailTExample();
 		InboundDetailTExample.Criteria criteria = TExample.createCriteria();

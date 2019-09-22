@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wms.dao.auto.IOwnerTDao">
-  <resultMap id="BaseResultMap" type="com.wms.entity.auto.OwnerTEntity">
-    <id column="OWNER_ID" jdbcType="DECIMAL" property="ownerId" />
+<mapper namespace="com.wms.dao.auto.IBillingLeaseTDao">
+  <resultMap id="BaseResultMap" type="com.wms.entity.auto.BillingLeaseTEntity">
+    <id column="BILLING_LEASE_ID" jdbcType="DECIMAL" property="billingLeaseId" />
+    <result column="BILLING_DATE" jdbcType="TIMESTAMP" property="billingDate" />
+    <result column="BILLING_MONTH" jdbcType="VARCHAR" property="billingMonth" />
+    <result column="BILLING_LEASE_CODE" jdbcType="VARCHAR" property="billingLeaseCode" />
+    <result column="OWNER_ID" jdbcType="DECIMAL" property="ownerId" />
     <result column="OWNER_CODE" jdbcType="VARCHAR" property="ownerCode" />
-    <result column="OWNER_DESCR" jdbcType="VARCHAR" property="ownerDescr" />
-    <result column="CONTACT1" jdbcType="VARCHAR" property="contact1" />
-    <result column="CONTACT2" jdbcType="VARCHAR" property="contact2" />
-    <result column="PHONE1" jdbcType="VARCHAR" property="phone1" />
-    <result column="PHONE2" jdbcType="VARCHAR" property="phone2" />
-    <result column="ADDRESS1" jdbcType="VARCHAR" property="address1" />
-    <result column="ADDRESS2" jdbcType="VARCHAR" property="address2" />
-    <result column="FAX" jdbcType="VARCHAR" property="fax" />
-    <result column="EMAIL1" jdbcType="VARCHAR" property="email1" />
-    <result column="BARCODE_PREFIX" jdbcType="VARCHAR" property="barcodePrefix" />
-    <result column="BARCODE_LENGTH" jdbcType="DECIMAL" property="barcodeLength" />
-    <result column="BARCODE_START" jdbcType="DECIMAL" property="barcodeStart" />
-    <result column="ACTIVE" jdbcType="CHAR" property="active" />
+    <result column="SOURCE_BILL_NUMBER" jdbcType="VARCHAR" property="sourceBillNumber" />
+    <result column="SKU_ID" jdbcType="DECIMAL" property="skuId" />
+    <result column="SKU_CODE" jdbcType="VARCHAR" property="skuCode" />
+    <result column="PACK_ID" jdbcType="DECIMAL" property="packId" />
+    <result column="PACK_CODE" jdbcType="VARCHAR" property="packCode" />
+    <result column="UOM" jdbcType="VARCHAR" property="uom" />
+    <result column="LOT_ID" jdbcType="DECIMAL" property="lotId" />
+    <result column="LOT_NUMBER" jdbcType="VARCHAR" property="lotNumber" />
+    <result column="INBOUND_DATE" jdbcType="TIMESTAMP" property="inboundDate" />
+    <result column="QUANTITY_RECEIVED" jdbcType="DECIMAL" property="quantityReceived" />
+    <result column="OUTBOUND_DATE" jdbcType="TIMESTAMP" property="outboundDate" />
+    <result column="QUANTITY_SHIPED" jdbcType="DECIMAL" property="quantityShiped" />
+    <result column="DAYS" jdbcType="DECIMAL" property="days" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
     <result column="REMARK" jdbcType="VARCHAR" property="remark" />
     <result column="COMPANY_ID" jdbcType="DECIMAL" property="companyId" />
     <result column="WAREHOUSE_ID" jdbcType="DECIMAL" property="warehouseId" />
@@ -27,9 +32,6 @@
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="UPDATE_VERSION" jdbcType="DECIMAL" property="updateVersion" />
     <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
-    <result column="WEB_SITE" jdbcType="VARCHAR" property="webSite" />
-    <result column="EMAIL2" jdbcType="VARCHAR" property="email2" />
-    <result column="BILLING_LEASE_DATE" jdbcType="TIMESTAMP" property="billingLeaseDate" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -127,18 +129,19 @@
     </where >
   </sql>
   <sql id="Base_Column_List">
-    OWNER_ID, OWNER_CODE, OWNER_DESCR, CONTACT1, CONTACT2, PHONE1, PHONE2, ADDRESS1, 
-    ADDRESS2, FAX, EMAIL1, BARCODE_PREFIX, BARCODE_LENGTH, BARCODE_START, ACTIVE, REMARK, 
+    BILLING_LEASE_ID, BILLING_DATE, BILLING_MONTH, BILLING_LEASE_CODE, OWNER_ID, OWNER_CODE, 
+    SOURCE_BILL_NUMBER, SKU_ID, SKU_CODE, PACK_ID, PACK_CODE, UOM, LOT_ID, LOT_NUMBER, 
+    INBOUND_DATE, QUANTITY_RECEIVED, OUTBOUND_DATE, QUANTITY_SHIPED, DAYS, STATUS, REMARK, 
     COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
-    UPDATE_VERSION, DESCRIPTION, WEB_SITE, EMAIL2, BILLING_LEASE_DATE
+    UPDATE_VERSION, DESCRIPTION
   </sql>
-  <select id="selectByExample" parameterType="com.wms.dao.example.OwnerTExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.wms.dao.example.BillingLeaseTExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from OWNER_T
+    from BILLING_LEASE_T
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -146,81 +149,98 @@
       order by ${orderByClause}
     </if>
   </select>
-  <delete id="deleteByExample" parameterType="com.wms.dao.example.OwnerTExample">
-    delete from OWNER_T
+  <delete id="deleteByExample" parameterType="com.wms.dao.example.BillingLeaseTExample">
+    delete from BILLING_LEASE_T
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.wms.entity.auto.OwnerTEntity">
-    insert into OWNER_T (OWNER_ID, OWNER_CODE, OWNER_DESCR, 
-      CONTACT1, CONTACT2, PHONE1, 
-      PHONE2, ADDRESS1, ADDRESS2, 
-      FAX, EMAIL1, BARCODE_PREFIX, 
-      BARCODE_LENGTH, BARCODE_START, ACTIVE, 
-      REMARK, COMPANY_ID, WAREHOUSE_ID, 
-      DEL_FLAG, CREATE_BY, CREATE_TIME, 
-      UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, 
-      DESCRIPTION, WEB_SITE, EMAIL2, 
-      BILLING_LEASE_DATE)
-    values (#{ownerId,jdbcType=DECIMAL}, #{ownerCode,jdbcType=VARCHAR}, #{ownerDescr,jdbcType=VARCHAR}, 
-      #{contact1,jdbcType=VARCHAR}, #{contact2,jdbcType=VARCHAR}, #{phone1,jdbcType=VARCHAR}, 
-      #{phone2,jdbcType=VARCHAR}, #{address1,jdbcType=VARCHAR}, #{address2,jdbcType=VARCHAR}, 
-      #{fax,jdbcType=VARCHAR}, #{email1,jdbcType=VARCHAR}, #{barcodePrefix,jdbcType=VARCHAR}, 
-      #{barcodeLength,jdbcType=DECIMAL}, #{barcodeStart,jdbcType=DECIMAL}, #{active,jdbcType=CHAR}, 
-      #{remark,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, 
-      #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, 
-      #{description,jdbcType=VARCHAR}, #{webSite,jdbcType=VARCHAR}, #{email2,jdbcType=VARCHAR}, 
-      #{billingLeaseDate,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.wms.entity.auto.BillingLeaseTEntity">
+    insert into BILLING_LEASE_T (BILLING_LEASE_ID, BILLING_DATE, BILLING_MONTH, 
+      BILLING_LEASE_CODE, OWNER_ID, OWNER_CODE, 
+      SOURCE_BILL_NUMBER, SKU_ID, SKU_CODE, 
+      PACK_ID, PACK_CODE, UOM, 
+      LOT_ID, LOT_NUMBER, INBOUND_DATE, 
+      QUANTITY_RECEIVED, OUTBOUND_DATE, QUANTITY_SHIPED, 
+      DAYS, STATUS, REMARK, 
+      COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, 
+      CREATE_BY, CREATE_TIME, UPDATE_BY, 
+      UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
+      )
+    values (#{billingLeaseId,jdbcType=DECIMAL}, #{billingDate,jdbcType=TIMESTAMP}, #{billingMonth,jdbcType=VARCHAR}, 
+      #{billingLeaseCode,jdbcType=VARCHAR}, #{ownerId,jdbcType=DECIMAL}, #{ownerCode,jdbcType=VARCHAR}, 
+      #{sourceBillNumber,jdbcType=VARCHAR}, #{skuId,jdbcType=DECIMAL}, #{skuCode,jdbcType=VARCHAR}, 
+      #{packId,jdbcType=DECIMAL}, #{packCode,jdbcType=VARCHAR}, #{uom,jdbcType=VARCHAR}, 
+      #{lotId,jdbcType=DECIMAL}, #{lotNumber,jdbcType=VARCHAR}, #{inboundDate,jdbcType=TIMESTAMP}, 
+      #{quantityReceived,jdbcType=DECIMAL}, #{outboundDate,jdbcType=TIMESTAMP}, #{quantityShiped,jdbcType=DECIMAL}, 
+      #{days,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.wms.entity.auto.OwnerTEntity">
-    insert into OWNER_T
+  <insert id="insertSelective" parameterType="com.wms.entity.auto.BillingLeaseTEntity">
+    insert into BILLING_LEASE_T
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="billingLeaseId != null">
+        BILLING_LEASE_ID,
+      </if>
+      <if test="billingDate != null">
+        BILLING_DATE,
+      </if>
+      <if test="billingMonth != null">
+        BILLING_MONTH,
+      </if>
+      <if test="billingLeaseCode != null">
+        BILLING_LEASE_CODE,
+      </if>
       <if test="ownerId != null">
         OWNER_ID,
       </if>
       <if test="ownerCode != null">
         OWNER_CODE,
       </if>
-      <if test="ownerDescr != null">
-        OWNER_DESCR,
+      <if test="sourceBillNumber != null">
+        SOURCE_BILL_NUMBER,
       </if>
-      <if test="contact1 != null">
-        CONTACT1,
+      <if test="skuId != null">
+        SKU_ID,
       </if>
-      <if test="contact2 != null">
-        CONTACT2,
+      <if test="skuCode != null">
+        SKU_CODE,
       </if>
-      <if test="phone1 != null">
-        PHONE1,
+      <if test="packId != null">
+        PACK_ID,
       </if>
-      <if test="phone2 != null">
-        PHONE2,
+      <if test="packCode != null">
+        PACK_CODE,
       </if>
-      <if test="address1 != null">
-        ADDRESS1,
+      <if test="uom != null">
+        UOM,
       </if>
-      <if test="address2 != null">
-        ADDRESS2,
+      <if test="lotId != null">
+        LOT_ID,
       </if>
-      <if test="fax != null">
-        FAX,
+      <if test="lotNumber != null">
+        LOT_NUMBER,
       </if>
-      <if test="email1 != null">
-        EMAIL1,
+      <if test="inboundDate != null">
+        INBOUND_DATE,
       </if>
-      <if test="barcodePrefix != null">
-        BARCODE_PREFIX,
+      <if test="quantityReceived != null">
+        QUANTITY_RECEIVED,
       </if>
-      <if test="barcodeLength != null">
-        BARCODE_LENGTH,
+      <if test="outboundDate != null">
+        OUTBOUND_DATE,
       </if>
-      <if test="barcodeStart != null">
-        BARCODE_START,
+      <if test="quantityShiped != null">
+        QUANTITY_SHIPED,
       </if>
-      <if test="active != null">
-        ACTIVE,
+      <if test="days != null">
+        DAYS,
+      </if>
+      <if test="status != null">
+        STATUS,
       </if>
       <if test="remark != null">
         REMARK,
@@ -252,61 +272,67 @@
       <if test="description != null">
         DESCRIPTION,
       </if>
-      <if test="webSite != null">
-        WEB_SITE,
-      </if>
-      <if test="email2 != null">
-        EMAIL2,
-      </if>
-      <if test="billingLeaseDate != null">
-        BILLING_LEASE_DATE,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="billingLeaseId != null">
+        #{billingLeaseId,jdbcType=DECIMAL},
+      </if>
+      <if test="billingDate != null">
+        #{billingDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="billingMonth != null">
+        #{billingMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="billingLeaseCode != null">
+        #{billingLeaseCode,jdbcType=VARCHAR},
+      </if>
       <if test="ownerId != null">
         #{ownerId,jdbcType=DECIMAL},
       </if>
       <if test="ownerCode != null">
         #{ownerCode,jdbcType=VARCHAR},
       </if>
-      <if test="ownerDescr != null">
-        #{ownerDescr,jdbcType=VARCHAR},
+      <if test="sourceBillNumber != null">
+        #{sourceBillNumber,jdbcType=VARCHAR},
       </if>
-      <if test="contact1 != null">
-        #{contact1,jdbcType=VARCHAR},
+      <if test="skuId != null">
+        #{skuId,jdbcType=DECIMAL},
       </if>
-      <if test="contact2 != null">
-        #{contact2,jdbcType=VARCHAR},
+      <if test="skuCode != null">
+        #{skuCode,jdbcType=VARCHAR},
       </if>
-      <if test="phone1 != null">
-        #{phone1,jdbcType=VARCHAR},
+      <if test="packId != null">
+        #{packId,jdbcType=DECIMAL},
       </if>
-      <if test="phone2 != null">
-        #{phone2,jdbcType=VARCHAR},
+      <if test="packCode != null">
+        #{packCode,jdbcType=VARCHAR},
       </if>
-      <if test="address1 != null">
-        #{address1,jdbcType=VARCHAR},
+      <if test="uom != null">
+        #{uom,jdbcType=VARCHAR},
       </if>
-      <if test="address2 != null">
-        #{address2,jdbcType=VARCHAR},
+      <if test="lotId != null">
+        #{lotId,jdbcType=DECIMAL},
       </if>
-      <if test="fax != null">
-        #{fax,jdbcType=VARCHAR},
+      <if test="lotNumber != null">
+        #{lotNumber,jdbcType=VARCHAR},
       </if>
-      <if test="email1 != null">
-        #{email1,jdbcType=VARCHAR},
+      <if test="inboundDate != null">
+        #{inboundDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="barcodePrefix != null">
-        #{barcodePrefix,jdbcType=VARCHAR},
+      <if test="quantityReceived != null">
+        #{quantityReceived,jdbcType=DECIMAL},
       </if>
-      <if test="barcodeLength != null">
-        #{barcodeLength,jdbcType=DECIMAL},
+      <if test="outboundDate != null">
+        #{outboundDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="barcodeStart != null">
-        #{barcodeStart,jdbcType=DECIMAL},
+      <if test="quantityShiped != null">
+        #{quantityShiped,jdbcType=DECIMAL},
       </if>
-      <if test="active != null">
-        #{active,jdbcType=CHAR},
+      <if test="days != null">
+        #{days,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
       </if>
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
@@ -338,70 +364,76 @@
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
       </if>
-      <if test="webSite != null">
-        #{webSite,jdbcType=VARCHAR},
-      </if>
-      <if test="email2 != null">
-        #{email2,jdbcType=VARCHAR},
-      </if>
-      <if test="billingLeaseDate != null">
-        #{billingLeaseDate,jdbcType=TIMESTAMP},
-      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.wms.dao.example.OwnerTExample" resultType="java.lang.Long">
-    select count(*) from OWNER_T
+  <select id="countByExample" parameterType="com.wms.dao.example.BillingLeaseTExample" resultType="java.lang.Long">
+    select count(*) from BILLING_LEASE_T
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update OWNER_T
+    update BILLING_LEASE_T
     <set>
+      <if test="record.billingLeaseId != null">
+        BILLING_LEASE_ID = #{record.billingLeaseId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.billingDate != null">
+        BILLING_DATE = #{record.billingDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.billingMonth != null">
+        BILLING_MONTH = #{record.billingMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="record.billingLeaseCode != null">
+        BILLING_LEASE_CODE = #{record.billingLeaseCode,jdbcType=VARCHAR},
+      </if>
       <if test="record.ownerId != null">
         OWNER_ID = #{record.ownerId,jdbcType=DECIMAL},
       </if>
       <if test="record.ownerCode != null">
         OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR},
       </if>
-      <if test="record.ownerDescr != null">
-        OWNER_DESCR = #{record.ownerDescr,jdbcType=VARCHAR},
+      <if test="record.sourceBillNumber != null">
+        SOURCE_BILL_NUMBER = #{record.sourceBillNumber,jdbcType=VARCHAR},
       </if>
-      <if test="record.contact1 != null">
-        CONTACT1 = #{record.contact1,jdbcType=VARCHAR},
+      <if test="record.skuId != null">
+        SKU_ID = #{record.skuId,jdbcType=DECIMAL},
       </if>
-      <if test="record.contact2 != null">
-        CONTACT2 = #{record.contact2,jdbcType=VARCHAR},
+      <if test="record.skuCode != null">
+        SKU_CODE = #{record.skuCode,jdbcType=VARCHAR},
       </if>
-      <if test="record.phone1 != null">
-        PHONE1 = #{record.phone1,jdbcType=VARCHAR},
+      <if test="record.packId != null">
+        PACK_ID = #{record.packId,jdbcType=DECIMAL},
       </if>
-      <if test="record.phone2 != null">
-        PHONE2 = #{record.phone2,jdbcType=VARCHAR},
+      <if test="record.packCode != null">
+        PACK_CODE = #{record.packCode,jdbcType=VARCHAR},
       </if>
-      <if test="record.address1 != null">
-        ADDRESS1 = #{record.address1,jdbcType=VARCHAR},
+      <if test="record.uom != null">
+        UOM = #{record.uom,jdbcType=VARCHAR},
       </if>
-      <if test="record.address2 != null">
-        ADDRESS2 = #{record.address2,jdbcType=VARCHAR},
+      <if test="record.lotId != null">
+        LOT_ID = #{record.lotId,jdbcType=DECIMAL},
       </if>
-      <if test="record.fax != null">
-        FAX = #{record.fax,jdbcType=VARCHAR},
+      <if test="record.lotNumber != null">
+        LOT_NUMBER = #{record.lotNumber,jdbcType=VARCHAR},
       </if>
-      <if test="record.email1 != null">
-        EMAIL1 = #{record.email1,jdbcType=VARCHAR},
+      <if test="record.inboundDate != null">
+        INBOUND_DATE = #{record.inboundDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.barcodePrefix != null">
-        BARCODE_PREFIX = #{record.barcodePrefix,jdbcType=VARCHAR},
+      <if test="record.quantityReceived != null">
+        QUANTITY_RECEIVED = #{record.quantityReceived,jdbcType=DECIMAL},
       </if>
-      <if test="record.barcodeLength != null">
-        BARCODE_LENGTH = #{record.barcodeLength,jdbcType=DECIMAL},
+      <if test="record.outboundDate != null">
+        OUTBOUND_DATE = #{record.outboundDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.barcodeStart != null">
-        BARCODE_START = #{record.barcodeStart,jdbcType=DECIMAL},
+      <if test="record.quantityShiped != null">
+        QUANTITY_SHIPED = #{record.quantityShiped,jdbcType=DECIMAL},
       </if>
-      <if test="record.active != null">
-        ACTIVE = #{record.active,jdbcType=CHAR},
+      <if test="record.days != null">
+        DAYS = #{record.days,jdbcType=DECIMAL},
+      </if>
+      <if test="record.status != null">
+        STATUS = #{record.status,jdbcType=VARCHAR},
       </if>
       <if test="record.remark != null">
         REMARK = #{record.remark,jdbcType=VARCHAR},
@@ -433,37 +465,33 @@
       <if test="record.description != null">
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       </if>
-      <if test="record.webSite != null">
-        WEB_SITE = #{record.webSite,jdbcType=VARCHAR},
-      </if>
-      <if test="record.email2 != null">
-        EMAIL2 = #{record.email2,jdbcType=VARCHAR},
-      </if>
-      <if test="record.billingLeaseDate != null">
-        BILLING_LEASE_DATE = #{record.billingLeaseDate,jdbcType=TIMESTAMP},
-      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update OWNER_T
-    set OWNER_ID = #{record.ownerId,jdbcType=DECIMAL},
+    update BILLING_LEASE_T
+    set BILLING_LEASE_ID = #{record.billingLeaseId,jdbcType=DECIMAL},
+      BILLING_DATE = #{record.billingDate,jdbcType=TIMESTAMP},
+      BILLING_MONTH = #{record.billingMonth,jdbcType=VARCHAR},
+      BILLING_LEASE_CODE = #{record.billingLeaseCode,jdbcType=VARCHAR},
+      OWNER_ID = #{record.ownerId,jdbcType=DECIMAL},
       OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR},
-      OWNER_DESCR = #{record.ownerDescr,jdbcType=VARCHAR},
-      CONTACT1 = #{record.contact1,jdbcType=VARCHAR},
-      CONTACT2 = #{record.contact2,jdbcType=VARCHAR},
-      PHONE1 = #{record.phone1,jdbcType=VARCHAR},
-      PHONE2 = #{record.phone2,jdbcType=VARCHAR},
-      ADDRESS1 = #{record.address1,jdbcType=VARCHAR},
-      ADDRESS2 = #{record.address2,jdbcType=VARCHAR},
-      FAX = #{record.fax,jdbcType=VARCHAR},
-      EMAIL1 = #{record.email1,jdbcType=VARCHAR},
-      BARCODE_PREFIX = #{record.barcodePrefix,jdbcType=VARCHAR},
-      BARCODE_LENGTH = #{record.barcodeLength,jdbcType=DECIMAL},
-      BARCODE_START = #{record.barcodeStart,jdbcType=DECIMAL},
-      ACTIVE = #{record.active,jdbcType=CHAR},
+      SOURCE_BILL_NUMBER = #{record.sourceBillNumber,jdbcType=VARCHAR},
+      SKU_ID = #{record.skuId,jdbcType=DECIMAL},
+      SKU_CODE = #{record.skuCode,jdbcType=VARCHAR},
+      PACK_ID = #{record.packId,jdbcType=DECIMAL},
+      PACK_CODE = #{record.packCode,jdbcType=VARCHAR},
+      UOM = #{record.uom,jdbcType=VARCHAR},
+      LOT_ID = #{record.lotId,jdbcType=DECIMAL},
+      LOT_NUMBER = #{record.lotNumber,jdbcType=VARCHAR},
+      INBOUND_DATE = #{record.inboundDate,jdbcType=TIMESTAMP},
+      QUANTITY_RECEIVED = #{record.quantityReceived,jdbcType=DECIMAL},
+      OUTBOUND_DATE = #{record.outboundDate,jdbcType=TIMESTAMP},
+      QUANTITY_SHIPED = #{record.quantityShiped,jdbcType=DECIMAL},
+      DAYS = #{record.days,jdbcType=DECIMAL},
+      STATUS = #{record.status,jdbcType=VARCHAR},
       REMARK = #{record.remark,jdbcType=VARCHAR},
       COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
       WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL},
@@ -473,15 +501,12 @@
       UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
       UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
       UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
-      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-      WEB_SITE = #{record.webSite,jdbcType=VARCHAR},
-      EMAIL2 = #{record.email2,jdbcType=VARCHAR},
-      BILLING_LEASE_DATE = #{record.billingLeaseDate,jdbcType=TIMESTAMP}
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <select id="selectOneByExample" parameterType="com.wms.dao.example.OwnerTExample" resultMap="BaseResultMap">
+  <select id="selectOneByExample" parameterType="com.wms.dao.example.BillingLeaseTExample" resultMap="BaseResultMap">
     <!--
       WARNING - @mbg.generated
       This element is automatically generated by MyBatis Generator, do not modify.
@@ -489,7 +514,7 @@
     -->
     select
     <include refid="Base_Column_List" />
-    from OWNER_T
+    from BILLING_LEASE_T
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -503,7 +528,7 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    update OWNER_T set DEL_FLAG = 'Y'
+    update BILLING_LEASE_T set DEL_FLAG = 'Y'
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -514,7 +539,7 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    update OWNER_T
+    update BILLING_LEASE_T
     set UPDATE_VERSION = UPDATE_VERSION + 1,DEL_FLAG = 'Y'
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
@@ -526,8 +551,8 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    update OWNER_T set DEL_FLAG = 'Y'
-    where OWNER_ID = #{ownerId,jdbcType=DECIMAL}
+    update BILLING_LEASE_T set DEL_FLAG = 'Y'
+    where BILLING_LEASE_ID = #{billingLeaseId,jdbcType=DECIMAL}
   </update>
   <update id="logicalDeleteWithVersionByPrimaryKey" parameterType="map">
     <!--
@@ -535,10 +560,10 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    update OWNER_T
+    update BILLING_LEASE_T
     set UPDATE_VERSION = UPDATE_VERSION + 1,DEL_FLAG = 'Y'
     where UPDATE_VERSION = #{version,jdbcType=DECIMAL}
-      and OWNER_ID = #{key,jdbcType=DECIMAL}
+      and BILLING_LEASE_ID = #{key,jdbcType=DECIMAL}
   </update>
   <select id="selectByPrimaryKeyWithLogicalDelete" parameterType="map" resultMap="BaseResultMap">
     <!--
@@ -548,8 +573,8 @@
     -->
     select 
     <include refid="Base_Column_List" />
-    from OWNER_T
-    where OWNER_ID = #{ownerId,jdbcType=DECIMAL}
+    from BILLING_LEASE_T
+    where BILLING_LEASE_ID = #{billingLeaseId,jdbcType=DECIMAL}
       and DEL_FLAG = 
     <choose>
       <when test="andLogicalDeleted">
@@ -566,7 +591,7 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    delete from OWNER_T
+    delete from BILLING_LEASE_T
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
     </if>
@@ -577,23 +602,28 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    update OWNER_T
+    update BILLING_LEASE_T
     set UPDATE_VERSION = UPDATE_VERSION + 1,
+    BILLING_LEASE_ID = #{record.billingLeaseId,jdbcType=DECIMAL}, 
+    BILLING_DATE = #{record.billingDate,jdbcType=TIMESTAMP}, 
+    BILLING_MONTH = #{record.billingMonth,jdbcType=VARCHAR}, 
+    BILLING_LEASE_CODE = #{record.billingLeaseCode,jdbcType=VARCHAR}, 
     OWNER_ID = #{record.ownerId,jdbcType=DECIMAL}, 
     OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR}, 
-    OWNER_DESCR = #{record.ownerDescr,jdbcType=VARCHAR}, 
-    CONTACT1 = #{record.contact1,jdbcType=VARCHAR}, 
-    CONTACT2 = #{record.contact2,jdbcType=VARCHAR}, 
-    PHONE1 = #{record.phone1,jdbcType=VARCHAR}, 
-    PHONE2 = #{record.phone2,jdbcType=VARCHAR}, 
-    ADDRESS1 = #{record.address1,jdbcType=VARCHAR}, 
-    ADDRESS2 = #{record.address2,jdbcType=VARCHAR}, 
-    FAX = #{record.fax,jdbcType=VARCHAR}, 
-    EMAIL1 = #{record.email1,jdbcType=VARCHAR}, 
-    BARCODE_PREFIX = #{record.barcodePrefix,jdbcType=VARCHAR}, 
-    BARCODE_LENGTH = #{record.barcodeLength,jdbcType=DECIMAL}, 
-    BARCODE_START = #{record.barcodeStart,jdbcType=DECIMAL}, 
-    ACTIVE = #{record.active,jdbcType=CHAR}, 
+    SOURCE_BILL_NUMBER = #{record.sourceBillNumber,jdbcType=VARCHAR}, 
+    SKU_ID = #{record.skuId,jdbcType=DECIMAL}, 
+    SKU_CODE = #{record.skuCode,jdbcType=VARCHAR}, 
+    PACK_ID = #{record.packId,jdbcType=DECIMAL}, 
+    PACK_CODE = #{record.packCode,jdbcType=VARCHAR}, 
+    UOM = #{record.uom,jdbcType=VARCHAR}, 
+    LOT_ID = #{record.lotId,jdbcType=DECIMAL}, 
+    LOT_NUMBER = #{record.lotNumber,jdbcType=VARCHAR}, 
+    INBOUND_DATE = #{record.inboundDate,jdbcType=TIMESTAMP}, 
+    QUANTITY_RECEIVED = #{record.quantityReceived,jdbcType=DECIMAL}, 
+    OUTBOUND_DATE = #{record.outboundDate,jdbcType=TIMESTAMP}, 
+    QUANTITY_SHIPED = #{record.quantityShiped,jdbcType=DECIMAL}, 
+    DAYS = #{record.days,jdbcType=DECIMAL}, 
+    STATUS = #{record.status,jdbcType=VARCHAR}, 
     REMARK = #{record.remark,jdbcType=VARCHAR}, 
     COMPANY_ID = #{record.companyId,jdbcType=DECIMAL}, 
     WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL}, 
@@ -602,10 +632,7 @@
     CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP}, 
     UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR}, 
     UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
-    DESCRIPTION = #{record.description,jdbcType=VARCHAR}, 
-    WEB_SITE = #{record.webSite,jdbcType=VARCHAR}, 
-    EMAIL2 = #{record.email2,jdbcType=VARCHAR}, 
-    BILLING_LEASE_DATE = #{record.billingLeaseDate,jdbcType=TIMESTAMP}
+    DESCRIPTION = #{record.description,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
     </if>
@@ -616,54 +643,69 @@
       This element is automatically generated by MyBatis Generator, do not modify.
       @project https://github.com/itfsw/mybatis-generator-plugin
     -->
-    update OWNER_T
+    update BILLING_LEASE_T
     <set>
       <trim suffixOverrides=",">
         UPDATE_VERSION = UPDATE_VERSION + 1,
+        <if test="record.billingLeaseId != null">
+          BILLING_LEASE_ID = #{record.billingLeaseId,jdbcType=DECIMAL},
+        </if>
+        <if test="record.billingDate != null">
+          BILLING_DATE = #{record.billingDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.billingMonth != null">
+          BILLING_MONTH = #{record.billingMonth,jdbcType=VARCHAR},
+        </if>
+        <if test="record.billingLeaseCode != null">
+          BILLING_LEASE_CODE = #{record.billingLeaseCode,jdbcType=VARCHAR},
+        </if>
         <if test="record.ownerId != null">
           OWNER_ID = #{record.ownerId,jdbcType=DECIMAL},
         </if>
         <if test="record.ownerCode != null">
           OWNER_CODE = #{record.ownerCode,jdbcType=VARCHAR},
         </if>
-        <if test="record.ownerDescr != null">
-          OWNER_DESCR = #{record.ownerDescr,jdbcType=VARCHAR},
+        <if test="record.sourceBillNumber != null">
+          SOURCE_BILL_NUMBER = #{record.sourceBillNumber,jdbcType=VARCHAR},
         </if>
-        <if test="record.contact1 != null">
-          CONTACT1 = #{record.contact1,jdbcType=VARCHAR},
+        <if test="record.skuId != null">
+          SKU_ID = #{record.skuId,jdbcType=DECIMAL},
         </if>
-        <if test="record.contact2 != null">
-          CONTACT2 = #{record.contact2,jdbcType=VARCHAR},
+        <if test="record.skuCode != null">
+          SKU_CODE = #{record.skuCode,jdbcType=VARCHAR},
         </if>
-        <if test="record.phone1 != null">
-          PHONE1 = #{record.phone1,jdbcType=VARCHAR},
+        <if test="record.packId != null">
+          PACK_ID = #{record.packId,jdbcType=DECIMAL},
         </if>
-        <if test="record.phone2 != null">
-          PHONE2 = #{record.phone2,jdbcType=VARCHAR},
+        <if test="record.packCode != null">
+          PACK_CODE = #{record.packCode,jdbcType=VARCHAR},
         </if>
-        <if test="record.address1 != null">
-          ADDRESS1 = #{record.address1,jdbcType=VARCHAR},
+        <if test="record.uom != null">
+          UOM = #{record.uom,jdbcType=VARCHAR},
         </if>
-        <if test="record.address2 != null">
-          ADDRESS2 = #{record.address2,jdbcType=VARCHAR},
+        <if test="record.lotId != null">
+          LOT_ID = #{record.lotId,jdbcType=DECIMAL},
         </if>
-        <if test="record.fax != null">
-          FAX = #{record.fax,jdbcType=VARCHAR},
+        <if test="record.lotNumber != null">
+          LOT_NUMBER = #{record.lotNumber,jdbcType=VARCHAR},
         </if>
-        <if test="record.email1 != null">
-          EMAIL1 = #{record.email1,jdbcType=VARCHAR},
+        <if test="record.inboundDate != null">
+          INBOUND_DATE = #{record.inboundDate,jdbcType=TIMESTAMP},
         </if>
-        <if test="record.barcodePrefix != null">
-          BARCODE_PREFIX = #{record.barcodePrefix,jdbcType=VARCHAR},
+        <if test="record.quantityReceived != null">
+          QUANTITY_RECEIVED = #{record.quantityReceived,jdbcType=DECIMAL},
         </if>
-        <if test="record.barcodeLength != null">
-          BARCODE_LENGTH = #{record.barcodeLength,jdbcType=DECIMAL},
+        <if test="record.outboundDate != null">
+          OUTBOUND_DATE = #{record.outboundDate,jdbcType=TIMESTAMP},
         </if>
-        <if test="record.barcodeStart != null">
-          BARCODE_START = #{record.barcodeStart,jdbcType=DECIMAL},
+        <if test="record.quantityShiped != null">
+          QUANTITY_SHIPED = #{record.quantityShiped,jdbcType=DECIMAL},
         </if>
-        <if test="record.active != null">
-          ACTIVE = #{record.active,jdbcType=CHAR},
+        <if test="record.days != null">
+          DAYS = #{record.days,jdbcType=DECIMAL},
+        </if>
+        <if test="record.status != null">
+          STATUS = #{record.status,jdbcType=VARCHAR},
         </if>
         <if test="record.remark != null">
           REMARK = #{record.remark,jdbcType=VARCHAR},
@@ -691,15 +733,6 @@
         </if>
         <if test="record.description != null">
           DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-        </if>
-        <if test="record.webSite != null">
-          WEB_SITE = #{record.webSite,jdbcType=VARCHAR},
-        </if>
-        <if test="record.email2 != null">
-          EMAIL2 = #{record.email2,jdbcType=VARCHAR},
-        </if>
-        <if test="record.billingLeaseDate != null">
-          BILLING_LEASE_DATE = #{record.billingLeaseDate,jdbcType=TIMESTAMP},
         </if>
       </trim>
     </set>

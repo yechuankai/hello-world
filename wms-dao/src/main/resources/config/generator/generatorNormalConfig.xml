@@ -332,5 +332,8 @@
 		<table tableName="appointment_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
 		 	<property name="versionColumn" value="UPDATE_VERSION"/>
 		</table>
+		<table tableName="billing_lease_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
 	</context>
 </generatorConfiguration>

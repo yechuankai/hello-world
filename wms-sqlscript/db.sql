@@ -3615,6 +3615,79 @@ comment on column appointment_t.update_version   is '更新时间';
 comment on column appointment_t.description   is '数据描述';
 
 
+-- ----------------------------
+-- 仓租计费
+-- ----------------------------
+drop table billing_lease_t cascade constraints;
+create table billing_lease_t (
+billing_lease_id number,
+billing_date date,
+billing_month varchar2(50),
+billing_lease_code varchar2(50),
+owner_id number,
+owner_code varchar2(50),
+source_bill_number varchar2(50),
+sku_id number,
+sku_code varchar2(50),
+pack_id number,
+pack_code varchar2(50),
+uom varchar2(200),
+lot_id number,
+lot_number varchar2(50),
+inbound_date date,
+quantity_received number(20,5),
+outbound_date date,
+quantity_shiped number(20,5),
+days number,
+status varchar2(50),
+remark varchar2(500),
+  company_id         number        default '0',
+  warehouse_id       number        default '0',
+  del_flag                char(1)         default 'N',
+  create_by               varchar2(64)    default '',
+  create_time             date            default sysdate,
+  update_by               varchar2(64)    default '',
+  update_time             date            default sysdate,
+  update_version          number          default '1',
+  description             varchar2(500)   default null
+);
+
+alter table billing_lease_t add constraint pk_billing_lease_t primary key (billing_lease_id);
+comment on table billing_lease_t is '仓租计费';
+comment on column billing_lease_t.billing_lease_id is 'ID';
+comment on column billing_lease_t.billing_date is '计费日期';
+comment on column billing_lease_t.billing_month is '计费月';
+comment on column billing_lease_t.billing_lease_code is '计费代码';
+comment on column billing_lease_t.owner_id is '货主ID';
+comment on column billing_lease_t.owner_code is '货主代码';
+comment on column billing_lease_t.source_bill_number is '来源单号';
+comment on column billing_lease_t.sku_id is '货品ID';
+comment on column billing_lease_t.sku_code is '货品代码';
+comment on column billing_lease_t.pack_id is '包装ID';
+comment on column billing_lease_t.pack_code is '包装代码';
+comment on column billing_lease_t.uom is '单位';
+comment on column billing_lease_t.lot_id is '批次ID';
+comment on column billing_lease_t.lot_number is '批次编号';
+comment on column billing_lease_t.inbound_date is '入库日期';
+comment on column billing_lease_t.quantity_received is '入库数量';
+comment on column billing_lease_t.outbound_date is '出库日期';
+comment on column billing_lease_t.quantity_shiped is '出库数量';
+comment on column billing_lease_t.days is '仓租天数';
+comment on column billing_lease_t.status is '状态';
+comment on column billing_lease_t.remark is '备注';
+comment on column billing_lease_t.company_id      is '公司ID';
+comment on column billing_lease_t.warehouse_id    is '仓库ID';
+comment on column billing_lease_t.del_flag    is '删除标志（N代表存在 Y代表删除）';
+comment on column billing_lease_t.create_by     is '创建者';
+comment on column billing_lease_t.create_time   is '创建时间';
+comment on column billing_lease_t.update_by     is '更新者';
+comment on column billing_lease_t.update_time   is '更新时间';
+comment on column billing_lease_t.update_version   is '更新时间';
+comment on column billing_lease_t.description   is '数据描述';
+
+
+
+
 
 
 alter table ALLOCATE_T modify STATUS default '10';
@@ -3847,4 +3920,10 @@ create index i_outbound_detail_t on outbound_detail_t(outbound_header_id,line_nu
 --订单系统出库增加货品描述
 alter table OUTBOUND_DETAIL_T ADD SKU_DESCR varchar2(200);
 comment on column OUTBOUND_DETAIL_T.SKU_DESCR   is '货品描述';
+
+
+--对货主增加仓租计费日期
+alter table OWNER_T ADD BILLING_LEASE_DATE date;
+comment on column OWNER_T.BILLING_LEASE_DATE   is '仓租计费日期';
+
 

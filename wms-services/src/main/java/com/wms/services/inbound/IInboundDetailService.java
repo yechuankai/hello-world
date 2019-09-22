@@ -28,6 +28,8 @@ public interface IInboundDetailService {
 
 	List<InboundDetailTEntity> findByHeaderIds(InboundDetailTEntity inbound, Set<Long> ids) throws BusinessServiceException;
 	
+	List<InboundDetailTEntity> findByLotNumbers(InboundDetailTEntity inbound, Set<String> ids) throws BusinessServiceException;
+	
 	Boolean save(AjaxRequest<InboundVO> request) throws BusinessServiceException;
 	
 	Boolean modify(InboundDetailVO inbound) throws BusinessServiceException;

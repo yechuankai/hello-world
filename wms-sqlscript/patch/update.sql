@@ -694,5 +694,20 @@ values (1339, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '装车任务', '装车任务', 
 alter table uums.web_log modify (LOGIN_IP varchar2(50) );
 
 
+--新增"计费报表"的子菜单
+delete uums.WEB_FUNC where func_id = 'wms:report:billing:lease';
+insert into uums.WEB_FUNC (FUNC_ID, FUNC_NAME, MENU_ID, FUNC_DESC, FUNC_URL, FUNC_ID_SEQ, SYS_CODE, IS_VALID, SYS_URL, REAL_SYS_CODE, INVALID_TIME, INVALID_USER, CREATE_TIME, VERSION, FUNC_UNIQUE_ID)
+values ('wms:report:billing:lease', '仓租计费', 'wms:report', '仓租计费', 'report/billinglease', 10, 'WMS', 'Y', null, null, null, null, to_date('21-08-2019 14:08:28', 'dd-mm-yyyy hh24:mi:ss'), '0', 1173880490653638703);
+
+delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:report:billing:lease';
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1337, 'WEB_FUNC', 'FUNC_NAME', 'en_US', 'Billing lease', 'Billing lease', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:report:billing:lease', 'WMS');
+
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1338, 'WEB_FUNC', 'FUNC_NAME', 'fr_FR', 'Facturation facturation', 'Facturation facturation', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:report:billing:lease', 'WMS');
+
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1339, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '仓租计费', '仓租计费', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:report:billing:lease', 'WMS');
+
 
 

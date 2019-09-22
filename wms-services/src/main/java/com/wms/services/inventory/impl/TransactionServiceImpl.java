@@ -8,6 +8,7 @@ import com.wms.common.enums.ExcelTemplateEnum;
 import com.wms.common.enums.YesNoEnum;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.common.utils.ExampleUtils;
+import com.wms.common.utils.StringUtils;
 import com.wms.common.utils.bean.BeanUtils;
 import com.wms.common.utils.key.KeyUtils;
 import com.wms.dao.auto.IInventoryTransactionTDao;
@@ -74,5 +75,27 @@ public class TransactionServiceImpl implements ITransactionService, IExcelServic
 			returnList.add(transaction);
 		});
 		return returnList;
+	}
+
+	@Override
+	public List<InventoryTransactionTEntity> findGreaterThanDate(InventoryTransactionTEntity tran) {
+		InventoryTransactionTExample TExample = new InventoryTransactionTExample();
+		InventoryTransactionTExample.Criteria TExampleCriteria = TExample.createCriteria();
+		TExampleCriteria
+		.andDelFlagEqualTo(YesNoEnum.No.getCode())
+		.andCompanyIdEqualTo(tran.getCompanyId())
+		.andWarehouseIdEqualTo(tran.getWarehouseId())
+		.andTransactionDateGreaterThan(tran.getTransactionDate());
+		
+		if (StringUtils.isNotEmpty(tran.getOwnerCode()))
+			TExampleCriteria.andOwnerCodeEqualTo(tran.getOwnerCode());
+		
+		if (StringUtils.isNotEmpty(tran.getSkuCode()))
+			TExampleCriteria.andSkuCodeEqualTo(tran.getSkuCode());
+		
+		if (StringUtils.isNotEmpty(tran.getTransactionType()))
+			TExampleCriteria.andTransactionTypeEqualTo(tran.getTransactionType());
+		
+		return tranDao.selectByExample(TExample);
 	}
 }

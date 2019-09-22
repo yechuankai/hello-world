@@ -54,34 +54,45 @@ public class OwnerServiceImpl implements IOwnerService {
 
 	@Override
 	public OwnerTEntity find(OwnerTEntity owner) throws BusinessServiceException {
+		OwnerTExample example = new OwnerTExample();
+		OwnerTExample.Criteria criteria = example.createCriteria();
 
-		    OwnerTExample example = new OwnerTExample();
-		    OwnerTExample.Criteria criteria = example.createCriteria();
+		criteria.andDelFlagEqualTo(YesNoEnum.No.getCode()).andWarehouseIdEqualTo(owner.getWarehouseId())
+				.andCompanyIdEqualTo(owner.getCompanyId());
 
-	        criteria
-	                .andDelFlagEqualTo(YesNoEnum.No.getCode())
-	                .andWarehouseIdEqualTo(owner.getWarehouseId())
-	                .andCompanyIdEqualTo(owner.getCompanyId());
+		int conditionCount = 0;
+		if (owner.getOwnerId() != null) {
+			criteria.andOwnerIdEqualTo(owner.getOwnerId());
+			conditionCount++;
+		}
+		if (StringUtils.isNotEmpty(owner.getOwnerCode())) {
+			criteria.andOwnerCodeEqualTo(owner.getOwnerCode());
+			conditionCount++;
+		}
+		if (conditionCount == 0) {
+			return null;
+		}
 
-	        int conditionCount = 0;
-	        if (owner.getOwnerId() != null) {
-	            criteria.andOwnerIdEqualTo(owner.getOwnerId());
-	            conditionCount++;
-	        }
-	        if (StringUtils.isNotEmpty(owner.getOwnerCode())) {
-	            criteria.andOwnerCodeEqualTo(owner.getOwnerCode());
-	            conditionCount++;
-	        }
-	        if (conditionCount == 0){
-	            return null;
-	        }
+		OwnerTEntity selectOwner = ownerDao.selectOneByExample(example);
+		if (selectOwner == null) {
+			throw new BusinessServiceException("OwnerServiceImpl", "owner.record.not.exists",
+					new Object[] { owner.getOwnerId() == null ? owner.getOwnerCode() : owner.getOwnerId() });
+		}
+		return selectOwner;
+	}
+	
+	@Override
+	public List<OwnerTEntity> findAll(OwnerTEntity owner) throws BusinessServiceException {
 
-	        OwnerTEntity selectOwner = ownerDao.selectOneByExample(example);
-	        if (selectOwner == null){
-	            throw new BusinessServiceException("OwnerServiceImpl", "owner.record.not.exists", new Object[]{owner.getOwnerId() == null ? owner.getOwnerCode() : owner.getOwnerId()});
-	        }
+		OwnerTExample example = new OwnerTExample();
+		OwnerTExample.Criteria criteria = example.createCriteria();
 
-	        return selectOwner;
+		criteria.andDelFlagEqualTo(YesNoEnum.No.getCode()).andActiveEqualTo(YesNoEnum.Yes.getCode())
+				.andWarehouseIdEqualTo(owner.getWarehouseId()).andCompanyIdEqualTo(owner.getCompanyId());
+
+		List<OwnerTEntity> selectOwner = ownerDao.selectByExample(example);
+
+		return selectOwner;
 
 	}
 
@@ -109,41 +120,26 @@ public class OwnerServiceImpl implements IOwnerService {
 		if (CollectionUtils.isEmpty(request.getData())) {
 			throw new BusinessServiceException("no record update.");
 		}
-
 		List<OwnerTEntity> list = request.getData();
-
 		for (OwnerTEntity o : list) {
-			OwnerTEntity update = OwnerTEntity.builder()
-					.ownerDescr(o.getOwnerDescr())
-					.contact1(o.getContact1())
-					.contact2(o.getContact2())
-					.phone1(o.getPhone1())
-					.phone2(o.getPhone2())
-					.address1(o.getAddress1())
-					.address2(o.getAddress2())
-					.fax(o.getFax())
-					.webSite(o.getWebSite())
-					.email1(o.getEmail1())
-					.email2(o.getEmail2())
-					.active(o.getActive())
-					.barcodeLength(o.getBarcodeLength())
-					.barcodePrefix(o.getBarcodePrefix())
-					.barcodeStart(o.getBarcodeStart())
-					.remark(o.getRemark())
-					.updateBy(request.getUserName())
-					.updateTime(new Date())
-					.build();
-
-			OwnerTExample example = new OwnerTExample();
-			example.createCriteria()
-			.andWarehouseIdEqualTo(o.getWarehouseId())
-            .andCompanyIdEqualTo(o.getCompanyId())
-            .andOwnerIdEqualTo(o.getOwnerId());
-
-			int row = ownerDao.updateWithVersionByExampleSelective(o.getUpdateVersion(), update, example);
-			if (row == 0) {
-				throw new BusinessServiceException("record update error.");
-			}
+			o.setWarehouseId(o.getWarehouseId());
+			o.setCompanyId(o.getCompanyId());
+			o.setUpdateTime(new Date());
+			o.setUpdateBy(request.getUserName());
+			modify(o);
+		}
+		return Boolean.TRUE;
+	}
+	
+	public Boolean modify(OwnerTEntity owner) throws BusinessServiceException {
+		OwnerTExample example = new OwnerTExample();
+		example.createCriteria()
+		.andWarehouseIdEqualTo(owner.getWarehouseId())
+        .andCompanyIdEqualTo(owner.getCompanyId())
+        .andOwnerIdEqualTo(owner.getOwnerId());
+		int row = ownerDao.updateWithVersionByExampleSelective(owner.getUpdateVersion(), owner, example);
+		if (row == 0) {
+			throw new BusinessServiceException("record update error.");
 		}
 		return Boolean.TRUE;
 	}

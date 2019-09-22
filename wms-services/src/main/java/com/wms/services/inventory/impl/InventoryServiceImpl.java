@@ -372,7 +372,6 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 	@Override
 	public List<InventoryOnhandTEntity> findByLpnId(InventoryOnhandTEntity inventory, Set<Long> lpns)
 			throws BusinessServiceException {
-		
 		 Iterator<Long> ids = lpns.iterator();
 		 while(ids.hasNext()) {
 			 Long id = ids.next();
@@ -500,4 +499,26 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
         });
         return returnList;
     }
+
+	@Override
+	public List<InventoryOnhandTEntity> findByOwner(InventoryOnhandTEntity inventory) throws BusinessServiceException {
+		InventoryOnhandTExample example = new InventoryOnhandTExample();
+		InventoryOnhandTExample.Criteria criteria = example.createCriteria();
+		criteria
+		.andDelFlagEqualTo(YesNoEnum.No.getCode())
+		.andWarehouseIdEqualTo(inventory.getWarehouseId())
+		.andCompanyIdEqualTo(inventory.getCompanyId())
+		.andQuantityOnhandGreaterThan(BigDecimal.ZERO);
+		
+		if (inventory.getOwnerId() == null && StringUtils.isEmpty(inventory.getOwnerCode()))
+			return Lists.newArrayList();
+		
+		if (inventory.getOwnerId() != null)
+			criteria.andOwnerIdEqualTo(inventory.getOwnerId());
+		else
+			criteria.andOwnerCodeEqualTo(inventory.getOwnerCode());
+		
+		List<InventoryOnhandTEntity> selectInventory = inventoryDao.selectByExample(example);
+		return selectInventory;
+	}
 }

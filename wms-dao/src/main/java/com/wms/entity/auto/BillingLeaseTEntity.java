@@ -1,40 +1,51 @@
 package com.wms.entity.auto;
 
 import com.wms.entity.BaseEntity;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
-public class OwnerTEntity extends BaseEntity {
+public class BillingLeaseTEntity extends BaseEntity {
+    private Long billingLeaseId;
+
+    private Date billingDate;
+
+    private String billingMonth;
+
+    private String billingLeaseCode;
+
     private Long ownerId;
 
     private String ownerCode;
 
-    private String ownerDescr;
+    private String sourceBillNumber;
 
-    private String contact1;
+    private Long skuId;
 
-    private String contact2;
+    private String skuCode;
 
-    private String phone1;
+    private Long packId;
 
-    private String phone2;
+    private String packCode;
 
-    private String address1;
+    private String uom;
 
-    private String address2;
+    private Long lotId;
 
-    private String fax;
+    private String lotNumber;
 
-    private String email1;
+    private Date inboundDate;
 
-    private String barcodePrefix;
+    private BigDecimal quantityReceived;
 
-    private Long barcodeLength;
+    private Date outboundDate;
 
-    private Long barcodeStart;
+    private BigDecimal quantityShiped;
 
-    private String active;
+    private Long days;
+
+    private String status;
 
     private String remark;
 
@@ -56,11 +67,37 @@ public class OwnerTEntity extends BaseEntity {
 
     private String description;
 
-    private String webSite;
+    public Long getBillingLeaseId() {
+        return billingLeaseId;
+    }
 
-    private String email2;
+    public void setBillingLeaseId(Long billingLeaseId) {
+        this.billingLeaseId = billingLeaseId;
+    }
 
-    private Date billingLeaseDate;
+    public Date getBillingDate() {
+        return billingDate;
+    }
+
+    public void setBillingDate(Date billingDate) {
+        this.billingDate = billingDate;
+    }
+
+    public String getBillingMonth() {
+        return billingMonth;
+    }
+
+    public void setBillingMonth(String billingMonth) {
+        this.billingMonth = billingMonth == null ? null : billingMonth.trim();
+    }
+
+    public String getBillingLeaseCode() {
+        return billingLeaseCode;
+    }
+
+    public void setBillingLeaseCode(String billingLeaseCode) {
+        this.billingLeaseCode = billingLeaseCode == null ? null : billingLeaseCode.trim();
+    }
 
     public Long getOwnerId() {
         return ownerId;
@@ -78,108 +115,116 @@ public class OwnerTEntity extends BaseEntity {
         this.ownerCode = ownerCode == null ? null : ownerCode.trim();
     }
 
-    public String getOwnerDescr() {
-        return ownerDescr;
+    public String getSourceBillNumber() {
+        return sourceBillNumber;
     }
 
-    public void setOwnerDescr(String ownerDescr) {
-        this.ownerDescr = ownerDescr == null ? null : ownerDescr.trim();
+    public void setSourceBillNumber(String sourceBillNumber) {
+        this.sourceBillNumber = sourceBillNumber == null ? null : sourceBillNumber.trim();
     }
 
-    public String getContact1() {
-        return contact1;
+    public Long getSkuId() {
+        return skuId;
     }
 
-    public void setContact1(String contact1) {
-        this.contact1 = contact1 == null ? null : contact1.trim();
+    public void setSkuId(Long skuId) {
+        this.skuId = skuId;
     }
 
-    public String getContact2() {
-        return contact2;
+    public String getSkuCode() {
+        return skuCode;
     }
 
-    public void setContact2(String contact2) {
-        this.contact2 = contact2 == null ? null : contact2.trim();
+    public void setSkuCode(String skuCode) {
+        this.skuCode = skuCode == null ? null : skuCode.trim();
     }
 
-    public String getPhone1() {
-        return phone1;
+    public Long getPackId() {
+        return packId;
     }
 
-    public void setPhone1(String phone1) {
-        this.phone1 = phone1 == null ? null : phone1.trim();
+    public void setPackId(Long packId) {
+        this.packId = packId;
     }
 
-    public String getPhone2() {
-        return phone2;
+    public String getPackCode() {
+        return packCode;
     }
 
-    public void setPhone2(String phone2) {
-        this.phone2 = phone2 == null ? null : phone2.trim();
+    public void setPackCode(String packCode) {
+        this.packCode = packCode == null ? null : packCode.trim();
     }
 
-    public String getAddress1() {
-        return address1;
+    public String getUom() {
+        return uom;
     }
 
-    public void setAddress1(String address1) {
-        this.address1 = address1 == null ? null : address1.trim();
+    public void setUom(String uom) {
+        this.uom = uom == null ? null : uom.trim();
     }
 
-    public String getAddress2() {
-        return address2;
+    public Long getLotId() {
+        return lotId;
     }
 
-    public void setAddress2(String address2) {
-        this.address2 = address2 == null ? null : address2.trim();
+    public void setLotId(Long lotId) {
+        this.lotId = lotId;
     }
 
-    public String getFax() {
-        return fax;
+    public String getLotNumber() {
+        return lotNumber;
     }
 
-    public void setFax(String fax) {
-        this.fax = fax == null ? null : fax.trim();
+    public void setLotNumber(String lotNumber) {
+        this.lotNumber = lotNumber == null ? null : lotNumber.trim();
     }
 
-    public String getEmail1() {
-        return email1;
+    public Date getInboundDate() {
+        return inboundDate;
     }
 
-    public void setEmail1(String email1) {
-        this.email1 = email1 == null ? null : email1.trim();
+    public void setInboundDate(Date inboundDate) {
+        this.inboundDate = inboundDate;
     }
 
-    public String getBarcodePrefix() {
-        return barcodePrefix;
+    public BigDecimal getQuantityReceived() {
+        return quantityReceived;
     }
 
-    public void setBarcodePrefix(String barcodePrefix) {
-        this.barcodePrefix = barcodePrefix == null ? null : barcodePrefix.trim();
+    public void setQuantityReceived(BigDecimal quantityReceived) {
+        this.quantityReceived = quantityReceived;
     }
 
-    public Long getBarcodeLength() {
-        return barcodeLength;
+    public Date getOutboundDate() {
+        return outboundDate;
     }
 
-    public void setBarcodeLength(Long barcodeLength) {
-        this.barcodeLength = barcodeLength;
+    public void setOutboundDate(Date outboundDate) {
+        this.outboundDate = outboundDate;
     }
 
-    public Long getBarcodeStart() {
-        return barcodeStart;
+    public BigDecimal getQuantityShiped() {
+        return quantityShiped;
     }
 
-    public void setBarcodeStart(Long barcodeStart) {
-        this.barcodeStart = barcodeStart;
+    public void setQuantityShiped(BigDecimal quantityShiped) {
+        this.quantityShiped = quantityShiped;
     }
 
-    public String getActive() {
-        return active;
+    public Long getDays() {
+        return days;
     }
 
-    public void setActive(String active) {
-        this.active = active == null ? null : active.trim();
+    public void setDays(Long days) {
+        this.days = days;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
     }
 
     public String getRemark() {
@@ -208,7 +253,7 @@ public class OwnerTEntity extends BaseEntity {
 
     /**
      * This method was generated by MyBatis Generator.
-     * This method corresponds to the database table OWNER_T
+     * This method corresponds to the database table BILLING_LEASE_T
      *
      * @mbg.generated
      * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -273,51 +318,32 @@ public class OwnerTEntity extends BaseEntity {
         this.description = description == null ? null : description.trim();
     }
 
-    public String getWebSite() {
-        return webSite;
-    }
-
-    public void setWebSite(String webSite) {
-        this.webSite = webSite == null ? null : webSite.trim();
-    }
-
-    public String getEmail2() {
-        return email2;
-    }
-
-    public void setEmail2(String email2) {
-        this.email2 = email2 == null ? null : email2.trim();
-    }
-
-    public Date getBillingLeaseDate() {
-        return billingLeaseDate;
-    }
-
-    public void setBillingLeaseDate(Date billingLeaseDate) {
-        this.billingLeaseDate = billingLeaseDate;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
+        sb.append(", billingLeaseId=").append(billingLeaseId);
+        sb.append(", billingDate=").append(billingDate);
+        sb.append(", billingMonth=").append(billingMonth);
+        sb.append(", billingLeaseCode=").append(billingLeaseCode);
         sb.append(", ownerId=").append(ownerId);
         sb.append(", ownerCode=").append(ownerCode);
-        sb.append(", ownerDescr=").append(ownerDescr);
-        sb.append(", contact1=").append(contact1);
-        sb.append(", contact2=").append(contact2);
-        sb.append(", phone1=").append(phone1);
-        sb.append(", phone2=").append(phone2);
-        sb.append(", address1=").append(address1);
-        sb.append(", address2=").append(address2);
-        sb.append(", fax=").append(fax);
-        sb.append(", email1=").append(email1);
-        sb.append(", barcodePrefix=").append(barcodePrefix);
-        sb.append(", barcodeLength=").append(barcodeLength);
-        sb.append(", barcodeStart=").append(barcodeStart);
-        sb.append(", active=").append(active);
+        sb.append(", sourceBillNumber=").append(sourceBillNumber);
+        sb.append(", skuId=").append(skuId);
+        sb.append(", skuCode=").append(skuCode);
+        sb.append(", packId=").append(packId);
+        sb.append(", packCode=").append(packCode);
+        sb.append(", uom=").append(uom);
+        sb.append(", lotId=").append(lotId);
+        sb.append(", lotNumber=").append(lotNumber);
+        sb.append(", inboundDate=").append(inboundDate);
+        sb.append(", quantityReceived=").append(quantityReceived);
+        sb.append(", outboundDate=").append(outboundDate);
+        sb.append(", quantityShiped=").append(quantityShiped);
+        sb.append(", days=").append(days);
+        sb.append(", status=").append(status);
         sb.append(", remark=").append(remark);
         sb.append(", companyId=").append(companyId);
         sb.append(", warehouseId=").append(warehouseId);
@@ -328,9 +354,6 @@ public class OwnerTEntity extends BaseEntity {
         sb.append(", updateTime=").append(updateTime);
         sb.append(", updateVersion=").append(updateVersion);
         sb.append(", description=").append(description);
-        sb.append(", webSite=").append(webSite);
-        sb.append(", email2=").append(email2);
-        sb.append(", billingLeaseDate=").append(billingLeaseDate);
         sb.append("]");
         return sb.toString();
     }
@@ -346,22 +369,27 @@ public class OwnerTEntity extends BaseEntity {
         if (getClass() != that.getClass()) {
             return false;
         }
-        OwnerTEntity other = (OwnerTEntity) that;
-        return (this.getOwnerId() == null ? other.getOwnerId() == null : this.getOwnerId().equals(other.getOwnerId()))
+        BillingLeaseTEntity other = (BillingLeaseTEntity) that;
+        return (this.getBillingLeaseId() == null ? other.getBillingLeaseId() == null : this.getBillingLeaseId().equals(other.getBillingLeaseId()))
+            && (this.getBillingDate() == null ? other.getBillingDate() == null : this.getBillingDate().equals(other.getBillingDate()))
+            && (this.getBillingMonth() == null ? other.getBillingMonth() == null : this.getBillingMonth().equals(other.getBillingMonth()))
+            && (this.getBillingLeaseCode() == null ? other.getBillingLeaseCode() == null : this.getBillingLeaseCode().equals(other.getBillingLeaseCode()))
+            && (this.getOwnerId() == null ? other.getOwnerId() == null : this.getOwnerId().equals(other.getOwnerId()))
             && (this.getOwnerCode() == null ? other.getOwnerCode() == null : this.getOwnerCode().equals(other.getOwnerCode()))
-            && (this.getOwnerDescr() == null ? other.getOwnerDescr() == null : this.getOwnerDescr().equals(other.getOwnerDescr()))
-            && (this.getContact1() == null ? other.getContact1() == null : this.getContact1().equals(other.getContact1()))
-            && (this.getContact2() == null ? other.getContact2() == null : this.getContact2().equals(other.getContact2()))
-            && (this.getPhone1() == null ? other.getPhone1() == null : this.getPhone1().equals(other.getPhone1()))
-            && (this.getPhone2() == null ? other.getPhone2() == null : this.getPhone2().equals(other.getPhone2()))
-            && (this.getAddress1() == null ? other.getAddress1() == null : this.getAddress1().equals(other.getAddress1()))
-            && (this.getAddress2() == null ? other.getAddress2() == null : this.getAddress2().equals(other.getAddress2()))
-            && (this.getFax() == null ? other.getFax() == null : this.getFax().equals(other.getFax()))
-            && (this.getEmail1() == null ? other.getEmail1() == null : this.getEmail1().equals(other.getEmail1()))
-            && (this.getBarcodePrefix() == null ? other.getBarcodePrefix() == null : this.getBarcodePrefix().equals(other.getBarcodePrefix()))
-            && (this.getBarcodeLength() == null ? other.getBarcodeLength() == null : this.getBarcodeLength().equals(other.getBarcodeLength()))
-            && (this.getBarcodeStart() == null ? other.getBarcodeStart() == null : this.getBarcodeStart().equals(other.getBarcodeStart()))
-            && (this.getActive() == null ? other.getActive() == null : this.getActive().equals(other.getActive()))
+            && (this.getSourceBillNumber() == null ? other.getSourceBillNumber() == null : this.getSourceBillNumber().equals(other.getSourceBillNumber()))
+            && (this.getSkuId() == null ? other.getSkuId() == null : this.getSkuId().equals(other.getSkuId()))
+            && (this.getSkuCode() == null ? other.getSkuCode() == null : this.getSkuCode().equals(other.getSkuCode()))
+            && (this.getPackId() == null ? other.getPackId() == null : this.getPackId().equals(other.getPackId()))
+            && (this.getPackCode() == null ? other.getPackCode() == null : this.getPackCode().equals(other.getPackCode()))
+            && (this.getUom() == null ? other.getUom() == null : this.getUom().equals(other.getUom()))
+            && (this.getLotId() == null ? other.getLotId() == null : this.getLotId().equals(other.getLotId()))
+            && (this.getLotNumber() == null ? other.getLotNumber() == null : this.getLotNumber().equals(other.getLotNumber()))
+            && (this.getInboundDate() == null ? other.getInboundDate() == null : this.getInboundDate().equals(other.getInboundDate()))
+            && (this.getQuantityReceived() == null ? other.getQuantityReceived() == null : this.getQuantityReceived().equals(other.getQuantityReceived()))
+            && (this.getOutboundDate() == null ? other.getOutboundDate() == null : this.getOutboundDate().equals(other.getOutboundDate()))
+            && (this.getQuantityShiped() == null ? other.getQuantityShiped() == null : this.getQuantityShiped().equals(other.getQuantityShiped()))
+            && (this.getDays() == null ? other.getDays() == null : this.getDays().equals(other.getDays()))
+            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getRemark() == null ? other.getRemark() == null : this.getRemark().equals(other.getRemark()))
             && (this.getCompanyId() == null ? other.getCompanyId() == null : this.getCompanyId().equals(other.getCompanyId()))
             && (this.getWarehouseId() == null ? other.getWarehouseId() == null : this.getWarehouseId().equals(other.getWarehouseId()))
@@ -371,31 +399,33 @@ public class OwnerTEntity extends BaseEntity {
             && (this.getUpdateBy() == null ? other.getUpdateBy() == null : this.getUpdateBy().equals(other.getUpdateBy()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
             && (this.getUpdateVersion() == null ? other.getUpdateVersion() == null : this.getUpdateVersion().equals(other.getUpdateVersion()))
-            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
-            && (this.getWebSite() == null ? other.getWebSite() == null : this.getWebSite().equals(other.getWebSite()))
-            && (this.getEmail2() == null ? other.getEmail2() == null : this.getEmail2().equals(other.getEmail2()))
-            && (this.getBillingLeaseDate() == null ? other.getBillingLeaseDate() == null : this.getBillingLeaseDate().equals(other.getBillingLeaseDate()));
+            && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()));
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((getBillingLeaseId() == null) ? 0 : getBillingLeaseId().hashCode());
+        result = prime * result + ((getBillingDate() == null) ? 0 : getBillingDate().hashCode());
+        result = prime * result + ((getBillingMonth() == null) ? 0 : getBillingMonth().hashCode());
+        result = prime * result + ((getBillingLeaseCode() == null) ? 0 : getBillingLeaseCode().hashCode());
         result = prime * result + ((getOwnerId() == null) ? 0 : getOwnerId().hashCode());
         result = prime * result + ((getOwnerCode() == null) ? 0 : getOwnerCode().hashCode());
-        result = prime * result + ((getOwnerDescr() == null) ? 0 : getOwnerDescr().hashCode());
-        result = prime * result + ((getContact1() == null) ? 0 : getContact1().hashCode());
-        result = prime * result + ((getContact2() == null) ? 0 : getContact2().hashCode());
-        result = prime * result + ((getPhone1() == null) ? 0 : getPhone1().hashCode());
-        result = prime * result + ((getPhone2() == null) ? 0 : getPhone2().hashCode());
-        result = prime * result + ((getAddress1() == null) ? 0 : getAddress1().hashCode());
-        result = prime * result + ((getAddress2() == null) ? 0 : getAddress2().hashCode());
-        result = prime * result + ((getFax() == null) ? 0 : getFax().hashCode());
-        result = prime * result + ((getEmail1() == null) ? 0 : getEmail1().hashCode());
-        result = prime * result + ((getBarcodePrefix() == null) ? 0 : getBarcodePrefix().hashCode());
-        result = prime * result + ((getBarcodeLength() == null) ? 0 : getBarcodeLength().hashCode());
-        result = prime * result + ((getBarcodeStart() == null) ? 0 : getBarcodeStart().hashCode());
-        result = prime * result + ((getActive() == null) ? 0 : getActive().hashCode());
+        result = prime * result + ((getSourceBillNumber() == null) ? 0 : getSourceBillNumber().hashCode());
+        result = prime * result + ((getSkuId() == null) ? 0 : getSkuId().hashCode());
+        result = prime * result + ((getSkuCode() == null) ? 0 : getSkuCode().hashCode());
+        result = prime * result + ((getPackId() == null) ? 0 : getPackId().hashCode());
+        result = prime * result + ((getPackCode() == null) ? 0 : getPackCode().hashCode());
+        result = prime * result + ((getUom() == null) ? 0 : getUom().hashCode());
+        result = prime * result + ((getLotId() == null) ? 0 : getLotId().hashCode());
+        result = prime * result + ((getLotNumber() == null) ? 0 : getLotNumber().hashCode());
+        result = prime * result + ((getInboundDate() == null) ? 0 : getInboundDate().hashCode());
+        result = prime * result + ((getQuantityReceived() == null) ? 0 : getQuantityReceived().hashCode());
+        result = prime * result + ((getOutboundDate() == null) ? 0 : getOutboundDate().hashCode());
+        result = prime * result + ((getQuantityShiped() == null) ? 0 : getQuantityShiped().hashCode());
+        result = prime * result + ((getDays() == null) ? 0 : getDays().hashCode());
+        result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getRemark() == null) ? 0 : getRemark().hashCode());
         result = prime * result + ((getCompanyId() == null) ? 0 : getCompanyId().hashCode());
         result = prime * result + ((getWarehouseId() == null) ? 0 : getWarehouseId().hashCode());
@@ -406,26 +436,23 @@ public class OwnerTEntity extends BaseEntity {
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getUpdateVersion() == null) ? 0 : getUpdateVersion().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
-        result = prime * result + ((getWebSite() == null) ? 0 : getWebSite().hashCode());
-        result = prime * result + ((getEmail2() == null) ? 0 : getEmail2().hashCode());
-        result = prime * result + ((getBillingLeaseDate() == null) ? 0 : getBillingLeaseDate().hashCode());
         return result;
     }
 
     /**
      * This method was generated by MyBatis Generator.
-     * This method corresponds to the database table OWNER_T
+     * This method corresponds to the database table BILLING_LEASE_T
      *
      * @mbg.generated
      * @project https://github.com/itfsw/mybatis-generator-plugin
      */
-    public static OwnerTEntity.Builder builder() {
-        return new OwnerTEntity.Builder();
+    public static BillingLeaseTEntity.Builder builder() {
+        return new BillingLeaseTEntity.Builder();
     }
 
     /**
      * This class was generated by MyBatis Generator.
-     * This class corresponds to the database table OWNER_T
+     * This class corresponds to the database table BILLING_LEASE_T
      *
      * @mbg.generated
      * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -433,29 +460,85 @@ public class OwnerTEntity extends BaseEntity {
     public static class Builder {
         /**
          * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table OWNER_T
+         * This field corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        private OwnerTEntity obj;
+        private BillingLeaseTEntity obj;
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table OWNER_T
+         * This method corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
         public Builder() {
-            this.obj = new OwnerTEntity();
+            this.obj = new BillingLeaseTEntity();
         }
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.OWNER_ID
+         * This method sets the value of the database column BILLING_LEASE_T.BILLING_LEASE_ID
          *
-         * @param ownerId the value for OWNER_T.OWNER_ID
+         * @param billingLeaseId the value for BILLING_LEASE_T.BILLING_LEASE_ID
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder billingLeaseId(Long billingLeaseId) {
+            obj.setBillingLeaseId(billingLeaseId);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column BILLING_LEASE_T.BILLING_DATE
+         *
+         * @param billingDate the value for BILLING_LEASE_T.BILLING_DATE
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder billingDate(Date billingDate) {
+            obj.setBillingDate(billingDate);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column BILLING_LEASE_T.BILLING_MONTH
+         *
+         * @param billingMonth the value for BILLING_LEASE_T.BILLING_MONTH
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder billingMonth(String billingMonth) {
+            obj.setBillingMonth(billingMonth);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column BILLING_LEASE_T.BILLING_LEASE_CODE
+         *
+         * @param billingLeaseCode the value for BILLING_LEASE_T.BILLING_LEASE_CODE
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder billingLeaseCode(String billingLeaseCode) {
+            obj.setBillingLeaseCode(billingLeaseCode);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column BILLING_LEASE_T.OWNER_ID
+         *
+         * @param ownerId the value for BILLING_LEASE_T.OWNER_ID
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -467,9 +550,9 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.OWNER_CODE
+         * This method sets the value of the database column BILLING_LEASE_T.OWNER_CODE
          *
-         * @param ownerCode the value for OWNER_T.OWNER_CODE
+         * @param ownerCode the value for BILLING_LEASE_T.OWNER_CODE
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -481,191 +564,205 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.OWNER_DESCR
+         * This method sets the value of the database column BILLING_LEASE_T.SOURCE_BILL_NUMBER
          *
-         * @param ownerDescr the value for OWNER_T.OWNER_DESCR
+         * @param sourceBillNumber the value for BILLING_LEASE_T.SOURCE_BILL_NUMBER
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder ownerDescr(String ownerDescr) {
-            obj.setOwnerDescr(ownerDescr);
+        public Builder sourceBillNumber(String sourceBillNumber) {
+            obj.setSourceBillNumber(sourceBillNumber);
             return this;
         }
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.CONTACT1
+         * This method sets the value of the database column BILLING_LEASE_T.SKU_ID
          *
-         * @param contact1 the value for OWNER_T.CONTACT1
+         * @param skuId the value for BILLING_LEASE_T.SKU_ID
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder contact1(String contact1) {
-            obj.setContact1(contact1);
+        public Builder skuId(Long skuId) {
+            obj.setSkuId(skuId);
             return this;
         }
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.CONTACT2
+         * This method sets the value of the database column BILLING_LEASE_T.SKU_CODE
          *
-         * @param contact2 the value for OWNER_T.CONTACT2
+         * @param skuCode the value for BILLING_LEASE_T.SKU_CODE
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder contact2(String contact2) {
-            obj.setContact2(contact2);
+        public Builder skuCode(String skuCode) {
+            obj.setSkuCode(skuCode);
             return this;
         }
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.PHONE1
+         * This method sets the value of the database column BILLING_LEASE_T.PACK_ID
          *
-         * @param phone1 the value for OWNER_T.PHONE1
+         * @param packId the value for BILLING_LEASE_T.PACK_ID
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder phone1(String phone1) {
-            obj.setPhone1(phone1);
+        public Builder packId(Long packId) {
+            obj.setPackId(packId);
             return this;
         }
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.PHONE2
+         * This method sets the value of the database column BILLING_LEASE_T.PACK_CODE
          *
-         * @param phone2 the value for OWNER_T.PHONE2
+         * @param packCode the value for BILLING_LEASE_T.PACK_CODE
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder phone2(String phone2) {
-            obj.setPhone2(phone2);
+        public Builder packCode(String packCode) {
+            obj.setPackCode(packCode);
             return this;
         }
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.ADDRESS1
+         * This method sets the value of the database column BILLING_LEASE_T.UOM
          *
-         * @param address1 the value for OWNER_T.ADDRESS1
+         * @param uom the value for BILLING_LEASE_T.UOM
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder address1(String address1) {
-            obj.setAddress1(address1);
+        public Builder uom(String uom) {
+            obj.setUom(uom);
             return this;
         }
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.ADDRESS2
+         * This method sets the value of the database column BILLING_LEASE_T.LOT_ID
          *
-         * @param address2 the value for OWNER_T.ADDRESS2
+         * @param lotId the value for BILLING_LEASE_T.LOT_ID
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder address2(String address2) {
-            obj.setAddress2(address2);
+        public Builder lotId(Long lotId) {
+            obj.setLotId(lotId);
             return this;
         }
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.FAX
+         * This method sets the value of the database column BILLING_LEASE_T.LOT_NUMBER
          *
-         * @param fax the value for OWNER_T.FAX
+         * @param lotNumber the value for BILLING_LEASE_T.LOT_NUMBER
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder fax(String fax) {
-            obj.setFax(fax);
+        public Builder lotNumber(String lotNumber) {
+            obj.setLotNumber(lotNumber);
             return this;
         }
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.EMAIL1
+         * This method sets the value of the database column BILLING_LEASE_T.INBOUND_DATE
          *
-         * @param email1 the value for OWNER_T.EMAIL1
+         * @param inboundDate the value for BILLING_LEASE_T.INBOUND_DATE
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder email1(String email1) {
-            obj.setEmail1(email1);
+        public Builder inboundDate(Date inboundDate) {
+            obj.setInboundDate(inboundDate);
             return this;
         }
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.BARCODE_PREFIX
+         * This method sets the value of the database column BILLING_LEASE_T.QUANTITY_RECEIVED
          *
-         * @param barcodePrefix the value for OWNER_T.BARCODE_PREFIX
+         * @param quantityReceived the value for BILLING_LEASE_T.QUANTITY_RECEIVED
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder barcodePrefix(String barcodePrefix) {
-            obj.setBarcodePrefix(barcodePrefix);
+        public Builder quantityReceived(BigDecimal quantityReceived) {
+            obj.setQuantityReceived(quantityReceived);
             return this;
         }
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.BARCODE_LENGTH
+         * This method sets the value of the database column BILLING_LEASE_T.OUTBOUND_DATE
          *
-         * @param barcodeLength the value for OWNER_T.BARCODE_LENGTH
+         * @param outboundDate the value for BILLING_LEASE_T.OUTBOUND_DATE
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder barcodeLength(Long barcodeLength) {
-            obj.setBarcodeLength(barcodeLength);
+        public Builder outboundDate(Date outboundDate) {
+            obj.setOutboundDate(outboundDate);
             return this;
         }
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.BARCODE_START
+         * This method sets the value of the database column BILLING_LEASE_T.QUANTITY_SHIPED
          *
-         * @param barcodeStart the value for OWNER_T.BARCODE_START
+         * @param quantityShiped the value for BILLING_LEASE_T.QUANTITY_SHIPED
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder barcodeStart(Long barcodeStart) {
-            obj.setBarcodeStart(barcodeStart);
+        public Builder quantityShiped(BigDecimal quantityShiped) {
+            obj.setQuantityShiped(quantityShiped);
             return this;
         }
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.ACTIVE
+         * This method sets the value of the database column BILLING_LEASE_T.DAYS
          *
-         * @param active the value for OWNER_T.ACTIVE
+         * @param days the value for BILLING_LEASE_T.DAYS
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder active(String active) {
-            obj.setActive(active);
+        public Builder days(Long days) {
+            obj.setDays(days);
             return this;
         }
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.REMARK
+         * This method sets the value of the database column BILLING_LEASE_T.STATUS
          *
-         * @param remark the value for OWNER_T.REMARK
+         * @param status the value for BILLING_LEASE_T.STATUS
+         *
+         * @mbg.generated
+         * @project https://github.com/itfsw/mybatis-generator-plugin
+         */
+        public Builder status(String status) {
+            obj.setStatus(status);
+            return this;
+        }
+
+        /**
+         * This method was generated by MyBatis Generator.
+         * This method sets the value of the database column BILLING_LEASE_T.REMARK
+         *
+         * @param remark the value for BILLING_LEASE_T.REMARK
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -677,9 +774,9 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.COMPANY_ID
+         * This method sets the value of the database column BILLING_LEASE_T.COMPANY_ID
          *
-         * @param companyId the value for OWNER_T.COMPANY_ID
+         * @param companyId the value for BILLING_LEASE_T.COMPANY_ID
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -691,9 +788,9 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.WAREHOUSE_ID
+         * This method sets the value of the database column BILLING_LEASE_T.WAREHOUSE_ID
          *
-         * @param warehouseId the value for OWNER_T.WAREHOUSE_ID
+         * @param warehouseId the value for BILLING_LEASE_T.WAREHOUSE_ID
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -705,9 +802,9 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.DEL_FLAG
+         * This method sets the value of the database column BILLING_LEASE_T.DEL_FLAG
          *
-         * @param delFlag the value for OWNER_T.DEL_FLAG
+         * @param delFlag the value for BILLING_LEASE_T.DEL_FLAG
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -719,9 +816,9 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.CREATE_BY
+         * This method sets the value of the database column BILLING_LEASE_T.CREATE_BY
          *
-         * @param createBy the value for OWNER_T.CREATE_BY
+         * @param createBy the value for BILLING_LEASE_T.CREATE_BY
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -733,9 +830,9 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.CREATE_TIME
+         * This method sets the value of the database column BILLING_LEASE_T.CREATE_TIME
          *
-         * @param createTime the value for OWNER_T.CREATE_TIME
+         * @param createTime the value for BILLING_LEASE_T.CREATE_TIME
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -747,9 +844,9 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.UPDATE_BY
+         * This method sets the value of the database column BILLING_LEASE_T.UPDATE_BY
          *
-         * @param updateBy the value for OWNER_T.UPDATE_BY
+         * @param updateBy the value for BILLING_LEASE_T.UPDATE_BY
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -761,9 +858,9 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.UPDATE_TIME
+         * This method sets the value of the database column BILLING_LEASE_T.UPDATE_TIME
          *
-         * @param updateTime the value for OWNER_T.UPDATE_TIME
+         * @param updateTime the value for BILLING_LEASE_T.UPDATE_TIME
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -775,9 +872,9 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.UPDATE_VERSION
+         * This method sets the value of the database column BILLING_LEASE_T.UPDATE_VERSION
          *
-         * @param updateVersion the value for OWNER_T.UPDATE_VERSION
+         * @param updateVersion the value for BILLING_LEASE_T.UPDATE_VERSION
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -789,9 +886,9 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.DESCRIPTION
+         * This method sets the value of the database column BILLING_LEASE_T.DESCRIPTION
          *
-         * @param description the value for OWNER_T.DESCRIPTION
+         * @param description the value for BILLING_LEASE_T.DESCRIPTION
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -803,61 +900,19 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.WEB_SITE
-         *
-         * @param webSite the value for OWNER_T.WEB_SITE
+         * This method corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder webSite(String webSite) {
-            obj.setWebSite(webSite);
-            return this;
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.EMAIL2
-         *
-         * @param email2 the value for OWNER_T.EMAIL2
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        public Builder email2(String email2) {
-            obj.setEmail2(email2);
-            return this;
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method sets the value of the database column OWNER_T.BILLING_LEASE_DATE
-         *
-         * @param billingLeaseDate the value for OWNER_T.BILLING_LEASE_DATE
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        public Builder billingLeaseDate(Date billingLeaseDate) {
-            obj.setBillingLeaseDate(billingLeaseDate);
-            return this;
-        }
-
-        /**
-         * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table OWNER_T
-         *
-         * @mbg.generated
-         * @project https://github.com/itfsw/mybatis-generator-plugin
-         */
-        public OwnerTEntity build() {
+        public BillingLeaseTEntity build() {
             return this.obj;
         }
     }
 
     /**
      * This enum was generated by MyBatis Generator.
-     * This enum corresponds to the database table OWNER_T
+     * This enum corresponds to the database table BILLING_LEASE_T
      *
      * @mbg.generated
      * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -868,7 +923,7 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table OWNER_T
+         * This field corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -877,7 +932,7 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table OWNER_T
+         * This field corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -886,7 +941,7 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table OWNER_T
+         * This method corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -898,7 +953,7 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table OWNER_T
+         * This method corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -909,7 +964,7 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table OWNER_T
+         * This method corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -920,7 +975,7 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table OWNER_T
+         * This method corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -932,27 +987,32 @@ public class OwnerTEntity extends BaseEntity {
 
     /**
      * This enum was generated by MyBatis Generator.
-     * This enum corresponds to the database table OWNER_T
+     * This enum corresponds to the database table BILLING_LEASE_T
      *
      * @mbg.generated
      * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     public enum Column {
+        billingLeaseId("BILLING_LEASE_ID", "billingLeaseId", "DECIMAL", false),
+        billingDate("BILLING_DATE", "billingDate", "TIMESTAMP", false),
+        billingMonth("BILLING_MONTH", "billingMonth", "VARCHAR", false),
+        billingLeaseCode("BILLING_LEASE_CODE", "billingLeaseCode", "VARCHAR", false),
         ownerId("OWNER_ID", "ownerId", "DECIMAL", false),
         ownerCode("OWNER_CODE", "ownerCode", "VARCHAR", false),
-        ownerDescr("OWNER_DESCR", "ownerDescr", "VARCHAR", false),
-        contact1("CONTACT1", "contact1", "VARCHAR", false),
-        contact2("CONTACT2", "contact2", "VARCHAR", false),
-        phone1("PHONE1", "phone1", "VARCHAR", false),
-        phone2("PHONE2", "phone2", "VARCHAR", false),
-        address1("ADDRESS1", "address1", "VARCHAR", false),
-        address2("ADDRESS2", "address2", "VARCHAR", false),
-        fax("FAX", "fax", "VARCHAR", false),
-        email1("EMAIL1", "email1", "VARCHAR", false),
-        barcodePrefix("BARCODE_PREFIX", "barcodePrefix", "VARCHAR", false),
-        barcodeLength("BARCODE_LENGTH", "barcodeLength", "DECIMAL", false),
-        barcodeStart("BARCODE_START", "barcodeStart", "DECIMAL", false),
-        active("ACTIVE", "active", "CHAR", false),
+        sourceBillNumber("SOURCE_BILL_NUMBER", "sourceBillNumber", "VARCHAR", false),
+        skuId("SKU_ID", "skuId", "DECIMAL", false),
+        skuCode("SKU_CODE", "skuCode", "VARCHAR", false),
+        packId("PACK_ID", "packId", "DECIMAL", false),
+        packCode("PACK_CODE", "packCode", "VARCHAR", false),
+        uom("UOM", "uom", "VARCHAR", false),
+        lotId("LOT_ID", "lotId", "DECIMAL", false),
+        lotNumber("LOT_NUMBER", "lotNumber", "VARCHAR", false),
+        inboundDate("INBOUND_DATE", "inboundDate", "TIMESTAMP", false),
+        quantityReceived("QUANTITY_RECEIVED", "quantityReceived", "DECIMAL", false),
+        outboundDate("OUTBOUND_DATE", "outboundDate", "TIMESTAMP", false),
+        quantityShiped("QUANTITY_SHIPED", "quantityShiped", "DECIMAL", false),
+        days("DAYS", "days", "DECIMAL", true),
+        status("STATUS", "status", "VARCHAR", true),
         remark("REMARK", "remark", "VARCHAR", false),
         companyId("COMPANY_ID", "companyId", "DECIMAL", false),
         warehouseId("WAREHOUSE_ID", "warehouseId", "DECIMAL", false),
@@ -962,14 +1022,11 @@ public class OwnerTEntity extends BaseEntity {
         updateBy("UPDATE_BY", "updateBy", "VARCHAR", false),
         updateTime("UPDATE_TIME", "updateTime", "TIMESTAMP", false),
         updateVersion("UPDATE_VERSION", "updateVersion", "DECIMAL", false),
-        description("DESCRIPTION", "description", "VARCHAR", false),
-        webSite("WEB_SITE", "webSite", "VARCHAR", false),
-        email2("EMAIL2", "email2", "VARCHAR", false),
-        billingLeaseDate("BILLING_LEASE_DATE", "billingLeaseDate", "TIMESTAMP", false);
+        description("DESCRIPTION", "description", "VARCHAR", false);
 
         /**
          * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table OWNER_T
+         * This field corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -978,7 +1035,7 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table OWNER_T
+         * This field corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -987,7 +1044,7 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table OWNER_T
+         * This field corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -996,7 +1053,7 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table OWNER_T
+         * This field corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -1005,7 +1062,7 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table OWNER_T
+         * This field corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -1014,7 +1071,7 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table OWNER_T
+         * This field corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -1023,7 +1080,7 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table OWNER_T
+         * This method corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -1034,7 +1091,7 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table OWNER_T
+         * This method corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -1045,7 +1102,7 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table OWNER_T
+         * This method corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -1056,7 +1113,7 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table OWNER_T
+         * This method corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -1067,7 +1124,7 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table OWNER_T
+         * This method corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -1081,7 +1138,7 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table OWNER_T
+         * This method corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -1092,7 +1149,7 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table OWNER_T
+         * This method corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -1103,7 +1160,7 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table OWNER_T
+         * This method corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -1118,7 +1175,7 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table OWNER_T
+         * This method corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -1133,7 +1190,7 @@ public class OwnerTEntity extends BaseEntity {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table OWNER_T
+         * This method corresponds to the database table BILLING_LEASE_T
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin

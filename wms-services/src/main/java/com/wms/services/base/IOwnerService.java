@@ -14,9 +14,13 @@ public interface IOwnerService {
 	
 	OwnerTEntity find(OwnerTEntity owner)  throws BusinessServiceException;
 	
+	List<OwnerTEntity> findAll(OwnerTEntity owner)  throws BusinessServiceException;
+	
 	List<OwnerTEntity> findByOwnerCodes(OwnerTEntity owner, Set<String> codes)  throws BusinessServiceException;
 
     Boolean modify(AjaxRequest<List<OwnerTEntity>> request) throws BusinessServiceException;
+    
+    Boolean modify(OwnerTEntity owner) throws BusinessServiceException;
 	
 	Boolean add(AjaxRequest<List<OwnerTEntity>> request) throws BusinessServiceException;
 

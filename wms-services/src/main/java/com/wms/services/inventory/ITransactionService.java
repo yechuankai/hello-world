@@ -10,4 +10,11 @@ public interface ITransactionService {
 	Boolean add(InventoryTransactionTEntity tran) throws BusinessServiceException;
 
 	List<InventoryTransactionTEntity> find(PageRequest pageRequest);
+	
+	/**
+	 * 按大于某个交易日期查询
+	 * @param tran
+	 * @return
+	 */
+	List<InventoryTransactionTEntity> findGreaterThanDate(InventoryTransactionTEntity tran);
 }
