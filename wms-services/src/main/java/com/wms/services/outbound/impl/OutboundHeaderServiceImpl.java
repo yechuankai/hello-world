@@ -48,6 +48,7 @@ import com.wms.entity.auto.StatusHistoryTEntity;
 import com.wms.entity.auto.SysWarehousesTEntity;
 import com.wms.entity.auto.TaskDetailTEntity;
 import com.wms.entity.auto.WaveBuildDetailTEntity;
+import com.wms.services.appointment.impl.AppointmentServiceImpl;
 import com.wms.services.base.ICarrierService;
 import com.wms.services.base.ICustomerService;
 import com.wms.services.base.IEnterpriseService;
@@ -118,10 +119,15 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 			exampleCriteria.andStatusNotIn(excludeStatus);
 		}
 		
+		//查询不在波次中的订单
 		if (YesNoEnum.Yes.getCode().equals(request.getString(NO_WAVE))) {
 			exampleCriteria.andSourceWaveNumberIsNull();
 		}
 		
+		//仅查询可预约单据
+		if (YesNoEnum.Yes.getCode().equals(request.getString(AppointmentServiceImpl.APPOINTMENT_AVAILABLE))) {
+			exampleCriteria.andStatusNotIn(Lists.newArrayList(OutboundStatusEnum.PartShiped.getCode(), OutboundStatusEnum.Shiped.getCode(), OutboundStatusEnum.Cancel.getCode()));
+		}
 		
 		exampleCriteria.andDelFlagEqualTo(YesNoEnum.No.getCode());
 

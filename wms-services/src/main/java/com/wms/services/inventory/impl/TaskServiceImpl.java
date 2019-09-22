@@ -192,7 +192,7 @@ public class TaskServiceImpl implements ITaskService {
 		List<TaskDetailTEntity> list = request.getData();
 
 		for (TaskDetailTEntity task : list) {
-
+			
 			if (StringUtils.isNotEmpty(task.getToLocationCode())) {
 				String locationCode = task.getToLocationCode().toUpperCase();
 				LocationTEntity location = locationService.find(LocationTEntity.builder()
@@ -202,6 +202,16 @@ public class TaskServiceImpl implements ITaskService {
 						.build());
 				task.setToLocationCode(locationCode);
 				task.setToZoneCode(location.getZoneCode());
+			}
+			
+			if (TaskStatusEnum.Completed.getCode().equals(task.getStatus())) {
+				if (task.getCompleteTime() == null 
+						&& task.getEndTime() != null)
+					task.setCompleteTime(task.getEndTime());
+				
+				if (task.getEndTime() == null 
+						&& task.getCompleteTime() != null)
+					task.setEndTime(task.getCompleteTime());
 			}
 
 			TaskDetailTEntity update = TaskDetailTEntity.builder()

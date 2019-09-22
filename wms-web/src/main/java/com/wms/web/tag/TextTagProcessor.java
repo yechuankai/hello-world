@@ -38,7 +38,6 @@ public class TextTagProcessor extends AbstractAttributeTagProcessor {
 		 * 获取应用程序的上下文参数
 		 */
 		WebEngineContext ctx = (WebEngineContext) context;
-		
 		String text = ParserUtils.fillAttributeValue(ctx, attributeValue);
 		
 		structureHandler.setBody(text, false);

@@ -44,6 +44,8 @@ import com.wms.services.outbound.impl.OutboundHeaderServiceImpl;
  */
 @Service
 public class AppointmentServiceImpl implements IAppointmentService {
+	
+	public static final String APPOINTMENT_AVAILABLE = "appointmentAvalable";
 
     @Autowired
     private IAppointmentTDao appointDao;

@@ -16,6 +16,7 @@ import com.wms.dao.auto.IInboundHeaderTDao;
 import com.wms.dao.example.InboundDetailTExample;
 import com.wms.dao.example.InboundHeaderTExample;
 import com.wms.entity.auto.*;
+import com.wms.services.appointment.impl.AppointmentServiceImpl;
 import com.wms.services.base.ICarrierService;
 import com.wms.services.base.IEnterpriseService;
 import com.wms.services.base.IOwnerService;
@@ -39,7 +40,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class InboundHeaderServiceImpl implements IInboundHeaderService {
-
+	
 	@Autowired
 	private IInboundHeaderTDao inboundHeaderDao;
 	@Autowired
@@ -65,6 +66,7 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 		InboundHeaderTExample TExample = new InboundHeaderTExample();
 		InboundHeaderTExample.Criteria TExampleCriteria  = TExample.createCriteria();
 		
+		TExampleCriteria.andDelFlagEqualTo(YesNoEnum.No.getCode());
 		//转换查询方法
 		ExampleUtils.create(InboundHeaderTEntity.Column.class, InboundHeaderTExample.Criterion.class)
 				.criteria(TExampleCriteria)
@@ -76,8 +78,10 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 				.build(request)
 				.orderby(TExample);
 		
-		TExampleCriteria.andDelFlagEqualTo(YesNoEnum.No.getCode());
-
+		//仅查询可预约单据
+		if (YesNoEnum.Yes.getCode().equals(request.getString(AppointmentServiceImpl.APPOINTMENT_AVAILABLE))) {
+			TExampleCriteria.andStatusEqualTo(InboundStatusEnum.New.getCode());
+		}
 		
 		List<InboundHeaderTEntity> inboundList = inboundHeaderDao.selectByExample(TExample);
 		

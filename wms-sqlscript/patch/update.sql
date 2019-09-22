@@ -658,3 +658,41 @@ ALTER TABLE wms.TASK_DETAIL_T MODIFY (TASK_TYPE VARCHAR2(10));
 alter table wms.OUTBOUND_DETAIL_T ADD SKU_DESCR varchar2(200);
 comment on column wms.OUTBOUND_DETAIL_T.SKU_DESCR   is '货品描述';
 
+
+--新增"卸车任务列表"的子菜单
+delete uums.WEB_FUNC where func_id = 'wms:inbound:unloadtask';
+insert into uums.WEB_FUNC (FUNC_ID, FUNC_NAME, MENU_ID, FUNC_DESC, FUNC_URL, FUNC_ID_SEQ, SYS_CODE, IS_VALID, SYS_URL, REAL_SYS_CODE, INVALID_TIME, INVALID_USER, CREATE_TIME, VERSION, FUNC_UNIQUE_ID)
+values ('wms:inbound:unloadtask', '卸车任务', 'wms:inbound', '卸车任务', 'inbound/unloadtask', 10, 'WMS', 'Y', null, null, null, null, to_date('21-08-2019 14:08:28', 'dd-mm-yyyy hh24:mi:ss'), '0', 1173880490653638703);
+
+delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:inbound:unloadtask';
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1334, 'WEB_FUNC', 'FUNC_NAME', 'en_US', 'UnLoad', 'UnLoad', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:inbound:unloadtask', 'WMS');
+
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1335, 'WEB_FUNC', 'FUNC_NAME', 'fr_FR', 'Décharger', 'Décharger', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:inbound:unloadtask', 'WMS');
+
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1336, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '卸车任务', '卸车任务', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:inbound:unloadtask', 'WMS');
+
+
+--新增"装车任务列表"的子菜单
+delete uums.WEB_FUNC where func_id = 'wms:outbound:loadtask';
+insert into uums.WEB_FUNC (FUNC_ID, FUNC_NAME, MENU_ID, FUNC_DESC, FUNC_URL, FUNC_ID_SEQ, SYS_CODE, IS_VALID, SYS_URL, REAL_SYS_CODE, INVALID_TIME, INVALID_USER, CREATE_TIME, VERSION, FUNC_UNIQUE_ID)
+values ('wms:outbound:loadtask', '装车任务', 'wms:outbound', '装车任务', 'outbound/loadtask', 50, 'WMS', 'Y', null, null, null, null, to_date('21-08-2019 14:08:28', 'dd-mm-yyyy hh24:mi:ss'), '0', 1173880490653638703);
+
+delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:outbound:loadtask';
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1337, 'WEB_FUNC', 'FUNC_NAME', 'en_US', 'Load', 'Load', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:loadtask', 'WMS');
+
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1338, 'WEB_FUNC', 'FUNC_NAME', 'fr_FR', 'Charge', 'Charge', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:loadtask', 'WMS');
+
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1339, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '装车任务', '装车任务', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:outbound:loadtask', 'WMS');
+
+
+alter table uums.web_log modify (LOGIN_IP varchar2(50) );
+
+
+
+

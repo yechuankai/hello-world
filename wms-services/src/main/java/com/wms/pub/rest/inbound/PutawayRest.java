@@ -100,7 +100,7 @@ public class PutawayRest extends BaseController{
 					putaway.setContainerNumber(task.getFromLpnNumber());
 				}else {
 					onhand.setLpnNumber(task.getFromLpnNumber());
-					putaway.setContainerNumber(task.getFromLpnNumber());
+					putaway.setLpnNumber(task.getFromLpnNumber());
 				}
 				putaway.setInventoryOnhand(onhand);
 				putaway.setLocationCode(task.getFromLocationCode());
@@ -256,6 +256,7 @@ public class PutawayRest extends BaseController{
 											.companyId(request.getCompanyId())
 											.toLocationCode(putaway.getLocationCode())
 											.status(TaskStatusEnum.Completed.getCode())
+											.startTime(t.getReleaseTime())
 											.endTime(new Date())
 											.completeTime(new Date())
 											.userName(request.getUserName())

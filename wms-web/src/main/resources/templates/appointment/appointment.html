@@ -92,7 +92,7 @@
         </a>
     </div>
     <div>
-        <table id="dataTable" wms:title="${web.label.zone.title}" class="easyui-datagrid"
+        <table id="dataTable" wms:title="${web.label.appointmentlist}" class="easyui-datagrid"
                th:data-delayUrl="@{/services/inner/appointment/find}">
             <thead data-options="frozen:true">
             	<tr>
@@ -108,14 +108,6 @@
 	                            sortable:true,
 	                            formatter:function(value,row){
 									return getCodelkupValue('APPOINTMENTTYPE',value);
-								},
-	                            editor:{
-									type:'combobox',
-									options:{
-										valueField:'code',
-										textField:'descr',
-										data: codelkups['APPOINTMENTTYPE']
-									}
 								}
 	                        ">type
 	                </th>
@@ -194,32 +186,66 @@
                         <input name="appointmentCode" class="easyui-textbox" readonly="readonly"
                                wms:data-options="label:'${web.label.appointment}',labelPosition:'top'">
                     </td>
-                    <td colspan="2">
-                        <input class="easyui-combobox" name="type" wms:data-options="
+                    <td>
+                        <input class="easyui-combobox" id="type" name="type" wms:data-options="
 							required: true,
 							panelHeight: 200,
 							data: codelkups['APPOINTMENTTYPE'],
 							valueField: 'code',
 							textField: 'descr',
 							label: '${web.label.type}',
+							labelPosition: 'top',
+							onChange: function(newValue, oldValue){
+								var params = getBaseData();
+								$.extend(params, {type: newValue});
+								$('#sourceBillNumber').combogrid({
+									queryParams: params,
+								});
+							}
+						" />
+                    </td>
+                    <td>
+                    	<input class="easyui-combobox" name="status" wms:data-options="
+							data: codelkups['APPOINTMENTSTATUS'],
+							value: '10',
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.status}',
 							labelPosition: 'top'
 						" />
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <input name="expectedDate" class="easyui-datetimebox" 
-                               wms:data-options="required: true, label:'${web.label.expecteddate}',labelPosition:'top'">
-                    </td>
-                    <td colspan="2">
-                         <input name="arrivalDate" class="easyui-datetimebox" 
-                               wms:data-options="label:'${web.label.arrivaldate}',labelPosition:'top'">
-                    </td>
-                </tr>
-                <tr>
                 	<td>
-                        <input name="sourceBillNumber" class="easyui-textbox"
-                           wms:data-options="required: true, label:'${web.label.sourcebillnumber}',labelPosition:'top'">
+                        <input id="sourceBillNumber" name="sourceBillNumber" class="easyui-combogrid"
+                           wms:data-options="
+                           		required: true, 
+                           		label:'${web.label.sourcebillnumber}',
+                           		labelPosition:'top',
+                           		idField:'sourceBillNumber',
+								textField:'sourceBillNumber',
+								panelWidth: 500,
+								url: getServiceUrl() + '/services/inner/appointment/findOrder',
+								queryParams: getBaseData(),
+							    columns:[[
+								    {field:'sourceBillNumber',title:'${web.label.sourcebillnumber}',width:80},
+								    {field:'sourceBillNumber2',title:'${web.label.referencenumber}',width:80},
+								    {field:'owner',title:'${web.label.owner}',width:80},
+								    {field:'expectedDate',title:'${web.label.expecteddate}',width:80},
+								    {field:'status',title:'${web.label.status}',width:80,formatter:function(value,row){
+											var type = $('#type').val();
+											if (type == 'IN'){
+												return getCodelkupValue('INBOUNDSTATUS',value);
+											}else{
+												return getCodelkupValue('OUTBOUNDSTATUS',value);
+											}
+										}
+									}
+							    ]],
+							    onClickRow: function(rowIndex, rowData){
+					                $('#expectedDate').datetimebox('setValue', rowData.expectedDate);
+					            }
+                           		">
                     </td>
                     <td>
                         <input class="easyui-combogrid" name="platformCode"  wms:data-options="
@@ -240,14 +266,17 @@
 							"/>
                     </td>
                     <td>
-                    	<input class="easyui-combobox" name="status" wms:data-options="
-							data: codelkups['APPOINTMENTSTATUS'],
-							value: '10',
-							valueField: 'code',
-							textField: 'descr',
-							label: '${web.label.status}',
-							labelPosition: 'top'
-						" />
+                    	&nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="expectedDate" name="expectedDate" class="easyui-datetimebox" 
+                               wms:data-options="required: true, label:'${web.label.expecteddate}',labelPosition:'top'">
+                    </td>
+                    <td colspan="2">
+                         <input name="arrivalDate" class="easyui-datetimebox" 
+                               wms:data-options="label:'${web.label.arrivaldate}',labelPosition:'top'">
                     </td>
                 </tr>
                 <tr>
@@ -281,10 +310,8 @@
 </div>
 </body>
 <script th:replace="common/js"/>
-<script type="text/javascript" th:src="@{/js/codelkupList?listName=PLATFORMSTATUS,APPOINTMENTSTATUS,APPOINTMENTTYPE}"></script>
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=INBOUNDSTATUS,OUTBOUNDSTATUS,PLATFORMSTATUS,APPOINTMENTSTATUS,APPOINTMENTTYPE}"></script>
 <script type="text/javascript" th:inline="text">
-	function x(){
-		
-	}
+	
 </script>
 </html>

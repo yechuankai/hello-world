@@ -16,7 +16,8 @@ public enum OrderNumberTypeEnum {
 	CountNumber("COUNT", "盘点单号"),
 	WaveTemplate("WAVETEMPLATE", "波次模板编号"),
 	Wave("WAVE", "波次单号"),
-	Appointment("APPOINTMENT", "预约单号");
+	Appointment("APPOINTMENT", "预约单号"),
+	Billing("BILLING", "计费");
 
 	private final String code;
 	private final String desc;

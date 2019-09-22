@@ -17,7 +17,9 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -302,24 +304,24 @@ public class EnterpriseServiceImpl implements IEnterpriseService {
                 .orderby(example);
 
         exampleCriteria.andDelFlagEqualTo(YesNoEnum.No.getCode());
-
+        exampleCriteria.andQuantityOnhandGreaterThan(0L);
         List<EntInventoryOnhandTEntity> list = inventoryOnhandDao.selectByExample(example);
         List<EntInventoryOnhandVO> returnList = Lists.newArrayList();
-        if(CollectionUtils.isNotEmpty(list)){
-            //补全仓库code
-            Set<Long> ids = Sets.newHashSet(list.stream().map(EntInventoryOnhandTEntity::getWarehouseId).collect(Collectors.toSet()));
-            List<SysWarehousesTEntity> selectList =warehouseService.findByIds(ids);
-            list.forEach(d ->{
-                EntInventoryOnhandVO inventoryOnhandVO = new EntInventoryOnhandVO(d);
-                selectList.forEach(v ->{
-                    if(d.getWarehouseId().longValue()==v.getWarehouseId().longValue()){
-                        inventoryOnhandVO.setWarehouseCode(v.getCode());
-                        returnList.add(inventoryOnhandVO);
-                    }
-                });
-            });
-
-        }
+        if(CollectionUtils.isEmpty(list))
+        	return Lists.newArrayList();
+        
+        //补全仓库code
+        Set<Long> ids = Sets.newHashSet(list.stream().map(EntInventoryOnhandTEntity::getWarehouseId).collect(Collectors.toSet()));
+        List<SysWarehousesTEntity> selectList = warehouseService.findByIds(ids);
+        Map<Long, SysWarehousesTEntity> warehouseMap = selectList.stream().collect(Collectors.toMap(SysWarehousesTEntity::getWarehouseId, v -> v));
+        list.forEach(d ->{
+            EntInventoryOnhandVO inventoryOnhandVO = new EntInventoryOnhandVO(d);
+            SysWarehousesTEntity wareObj = warehouseMap.get(d.getWarehouseId());
+            if (wareObj != null) {
+            	inventoryOnhandVO.setWarehouseCode(wareObj.getCode());
+            }
+            returnList.add(inventoryOnhandVO);
+        });
 
         return returnList;
     }

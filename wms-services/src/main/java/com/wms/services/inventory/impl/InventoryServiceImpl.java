@@ -46,6 +46,7 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 	private ILpnService lpnService;
 	
 	private static final String QUANTITY_AVAILABLE_MORE_THAN_ZERO = "quantityAvailableMoreThanZero";
+	public static final String QUANTITY_ONHAND_MORE_THAN_ZERO = "quantityOnhandMoreThanZero";
 	private static final String CLEAR = "CLEAR";
 	
 	/**
@@ -273,7 +274,7 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 				.build(request)
 				.orderby(TExample);
 		
-		//增加条件判断,查询条件库存是否大于0
+		//增加条件判断,查询条件可用库存是否大于0
 		if (YesNoEnum.Yes.getCode().equals(quantityAvailableMoreThanZero)) {
 			String condition = StringUtils.join( "(", 
 					InventoryOnhandTEntity.Column.quantityOnhand.getValue() , 
@@ -294,8 +295,13 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 				") <= ");
 		
 		    eu.and(condition, BigDecimal.ZERO );
-		    
 		}
+		
+		//增加条件判断,查询条件库存是否大于0
+		if (YesNoEnum.Yes.getCode().equals(request.getString(QUANTITY_ONHAND_MORE_THAN_ZERO))) {
+			TExampleCriteria.andQuantityOnhandGreaterThan(BigDecimal.ZERO);
+		}
+		
 		String container = request.getString(LpnTEntity.Column.containerNumber.getJavaProperty());
 		if (StringUtils.isNotEmpty(container)) {
 			List<LpnTEntity> lpns = lpnService.findByContainerNumber(LpnTEntity.builder()
@@ -424,11 +430,11 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 			toDetail.setLocationCode(d.getToLocationCode());
 			
 			//目标LPN为空，并且移动的数量相等时，整LPN移动
-			if (StringUtils.isEmpty(d.getToLpnNumber())
-					&& d.getQuantityOnhand().compareTo(d.getToQuantity()) == 0) {
-				toDetail.setLpnNumber(d.getLpnNumber());
-			}else if (CLEAR.equalsIgnoreCase(d.getToLpnNumber())) {
+			if (CLEAR.equalsIgnoreCase(d.getToLpnNumber())) {
 				toDetail.setLpnNumber(null);
+			}else if (StringUtils.isEmpty(d.getToLpnNumber())
+				&& d.getQuantityOnhand().compareTo(d.getToQuantity()) == 0) {
+				toDetail.setLpnNumber(d.getLpnNumber());
 			}else {
 				toDetail.setLpnNumber(d.getToLpnNumber());
 			}
@@ -437,6 +443,11 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 				LpnTEntity lpn = new LpnTEntity();
 				lpn.setLpnNumber(toDetail.getLpnNumber());
 				lpn.setContainerNumber(d.getToContainerNumber());
+				toDetail.setLpn(lpn);
+			}else {
+				LpnTEntity lpn = new LpnTEntity();
+				lpn.setLpnNumber(toDetail.getLpnNumber());
+				lpn.setContainerNumber("");
 				toDetail.setLpn(lpn);
 			}
 			

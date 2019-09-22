@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +19,7 @@ import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.core.domain.response.AjaxResult;
 import com.wms.common.core.domain.response.PageResult;
+import com.wms.common.enums.YesNoEnum;
 import com.wms.common.utils.StringUtils;
 import com.wms.entity.auto.InventoryOnhandTEntity;
 import com.wms.entity.auto.LocationTEntity;
@@ -27,8 +27,8 @@ import com.wms.entity.auto.LpnTEntity;
 import com.wms.services.base.ILocationService;
 import com.wms.services.inventory.IInventoryService;
 import com.wms.services.inventory.ILpnService;
+import com.wms.services.inventory.impl.InventoryServiceImpl;
 import com.wms.vo.InventoryOnhandVO;
-import com.wms.vo.PutawayVO;
 
 @RestController("publicInventoryRest")
 @RequestMapping("/services/public/inventory")
@@ -50,6 +50,7 @@ public class InventoryRest extends BaseController {
 		List<InventoryOnhandVO> list = null;
 		try {
 			PageRequest pageRequest = pageRequest(req);
+			pageRequest.put(InventoryServiceImpl.QUANTITY_ONHAND_MORE_THAN_ZERO, YesNoEnum.Yes.getCode());
 			return inventoryService.find(pageRequest);
 		} catch (Exception e) {
 			return pageFail(e.getMessage());
@@ -70,6 +71,7 @@ public class InventoryRest extends BaseController {
 			if(StringUtils.isEmpty(containerNumber))
 				return page(Lists.newArrayList());
 			Page page = PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
+			pageRequest.put(InventoryServiceImpl.QUANTITY_ONHAND_MORE_THAN_ZERO, YesNoEnum.Yes.getCode());
 			return inventoryService.find(pageRequest);
 		} catch (Exception e) {
 			return pageFail(e.getMessage());
@@ -109,6 +111,7 @@ public class InventoryRest extends BaseController {
 				InventoryOnhandVO vo = new InventoryOnhandVO(v);
 				vo.setToQuantity(v.getQuantityOnhand());
 				vo.setToLocationCode(moveOnhand.getToLocationCode());
+				vo.setLpnNumber(moveOnhand.getToLpnNumber());
 				vo.setContainerNumber(moveOnhand.getToContainerNumber());
 				inventoryOnhandVOs.add(vo);
 			});

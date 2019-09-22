@@ -31,6 +31,7 @@ public class Putaway50ServiceImpl extends CommonPutawayServiceImpl {
 		if (StringUtils.isEmpty(sku.getPutawayZoneCode()))
 			return putaway;
 		
+		putaway.getStrategy().setToZoneCode(sku.getPutawayZoneCode());
 		LocationTEntity emptyLoc = findEmptyLocByZone(putaway.getStrategy());
 		if (emptyLoc == null)
 			return putaway;

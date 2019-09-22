@@ -15,6 +15,7 @@ import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.core.domain.response.AjaxResult;
 import com.wms.common.core.domain.response.PageResult;
+import com.wms.common.enums.TaskStatusEnum;
 import com.wms.common.utils.StringUtils;
 import com.wms.entity.auto.TaskDetailTEntity;
 import com.wms.services.inventory.ITaskService;
@@ -88,6 +89,26 @@ public class TaskRest extends BaseController {
         }
         return fail();
 	}
+    
+    @RequestMapping(value = "/complate")
+    public AjaxResult complate(@RequestBody String req) {
+        try {
+            AjaxRequest<List<TaskDetailTEntity>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<TaskDetailTEntity>>>() {});
+            if (CollectionUtils.isEmpty(request.getData())) {
+                return fail("no record update.");
+            }
+            request.getData().forEach(t -> {
+            	t.setStatus(TaskStatusEnum.Completed.getCode());
+            });
+            boolean flag = taskService.modify(request);
+            if (flag) {
+                return success();
+            }
+        } catch (Exception e) {
+            return fail(e.getMessage());
+        }
+        return fail();
+    }
 
     @RequestMapping(value = "/cancel")
     public AjaxResult cancel(@RequestBody String req) {
