@@ -1,6 +1,7 @@
 package com.wms.entity.auto;
 
 import com.wms.entity.BaseEntity;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -44,21 +45,21 @@ public class EntInventoryOnhandTEntity extends BaseEntity {
 
     private Date lotAttribute12;
 
-    private Long quantityOnhand;
+    private BigDecimal quantityOnhand;
 
-    private Long quantityAllocated;
+    private BigDecimal quantityAllocated;
 
-    private Long quantityLocked;
+    private BigDecimal quantityLocked;
 
-    private Long qtyCase;
+    private BigDecimal qtyCase;
 
-    private Long volume;
+    private BigDecimal volume;
 
-    private Long weightGross;
+    private BigDecimal weightGross;
 
-    private Long weightNet;
+    private BigDecimal weightNet;
 
-    private Long weightTare;
+    private BigDecimal weightTare;
 
     private Long locationId;
 
@@ -242,67 +243,67 @@ public class EntInventoryOnhandTEntity extends BaseEntity {
         this.lotAttribute12 = lotAttribute12;
     }
 
-    public Long getQuantityOnhand() {
+    public BigDecimal getQuantityOnhand() {
         return quantityOnhand;
     }
 
-    public void setQuantityOnhand(Long quantityOnhand) {
+    public void setQuantityOnhand(BigDecimal quantityOnhand) {
         this.quantityOnhand = quantityOnhand;
     }
 
-    public Long getQuantityAllocated() {
+    public BigDecimal getQuantityAllocated() {
         return quantityAllocated;
     }
 
-    public void setQuantityAllocated(Long quantityAllocated) {
+    public void setQuantityAllocated(BigDecimal quantityAllocated) {
         this.quantityAllocated = quantityAllocated;
     }
 
-    public Long getQuantityLocked() {
+    public BigDecimal getQuantityLocked() {
         return quantityLocked;
     }
 
-    public void setQuantityLocked(Long quantityLocked) {
+    public void setQuantityLocked(BigDecimal quantityLocked) {
         this.quantityLocked = quantityLocked;
     }
 
-    public Long getQtyCase() {
+    public BigDecimal getQtyCase() {
         return qtyCase;
     }
 
-    public void setQtyCase(Long qtyCase) {
+    public void setQtyCase(BigDecimal qtyCase) {
         this.qtyCase = qtyCase;
     }
 
-    public Long getVolume() {
+    public BigDecimal getVolume() {
         return volume;
     }
 
-    public void setVolume(Long volume) {
+    public void setVolume(BigDecimal volume) {
         this.volume = volume;
     }
 
-    public Long getWeightGross() {
+    public BigDecimal getWeightGross() {
         return weightGross;
     }
 
-    public void setWeightGross(Long weightGross) {
+    public void setWeightGross(BigDecimal weightGross) {
         this.weightGross = weightGross;
     }
 
-    public Long getWeightNet() {
+    public BigDecimal getWeightNet() {
         return weightNet;
     }
 
-    public void setWeightNet(Long weightNet) {
+    public void setWeightNet(BigDecimal weightNet) {
         this.weightNet = weightNet;
     }
 
-    public Long getWeightTare() {
+    public BigDecimal getWeightTare() {
         return weightTare;
     }
 
-    public void setWeightTare(Long weightTare) {
+    public void setWeightTare(BigDecimal weightTare) {
         this.weightTare = weightTare;
     }
 
@@ -908,7 +909,7 @@ public class EntInventoryOnhandTEntity extends BaseEntity {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder quantityOnhand(Long quantityOnhand) {
+        public Builder quantityOnhand(BigDecimal quantityOnhand) {
             obj.setQuantityOnhand(quantityOnhand);
             return this;
         }
@@ -922,7 +923,7 @@ public class EntInventoryOnhandTEntity extends BaseEntity {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder quantityAllocated(Long quantityAllocated) {
+        public Builder quantityAllocated(BigDecimal quantityAllocated) {
             obj.setQuantityAllocated(quantityAllocated);
             return this;
         }
@@ -936,7 +937,7 @@ public class EntInventoryOnhandTEntity extends BaseEntity {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder quantityLocked(Long quantityLocked) {
+        public Builder quantityLocked(BigDecimal quantityLocked) {
             obj.setQuantityLocked(quantityLocked);
             return this;
         }
@@ -950,7 +951,7 @@ public class EntInventoryOnhandTEntity extends BaseEntity {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder qtyCase(Long qtyCase) {
+        public Builder qtyCase(BigDecimal qtyCase) {
             obj.setQtyCase(qtyCase);
             return this;
         }
@@ -964,7 +965,7 @@ public class EntInventoryOnhandTEntity extends BaseEntity {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder volume(Long volume) {
+        public Builder volume(BigDecimal volume) {
             obj.setVolume(volume);
             return this;
         }
@@ -978,7 +979,7 @@ public class EntInventoryOnhandTEntity extends BaseEntity {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder weightGross(Long weightGross) {
+        public Builder weightGross(BigDecimal weightGross) {
             obj.setWeightGross(weightGross);
             return this;
         }
@@ -992,7 +993,7 @@ public class EntInventoryOnhandTEntity extends BaseEntity {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder weightNet(Long weightNet) {
+        public Builder weightNet(BigDecimal weightNet) {
             obj.setWeightNet(weightNet);
             return this;
         }
@@ -1006,7 +1007,7 @@ public class EntInventoryOnhandTEntity extends BaseEntity {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder weightTare(Long weightTare) {
+        public Builder weightTare(BigDecimal weightTare) {
             obj.setWeightTare(weightTare);
             return this;
         }

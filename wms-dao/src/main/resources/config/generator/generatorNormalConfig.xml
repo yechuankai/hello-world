@@ -322,6 +322,14 @@
 		</table>
 		<table tableName="ent_invetnroy_onhand_v" domainObjectName="EntInventoryOnhandT" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
 		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		 	<columnOverride column="QUANTITY_ONHAND" javaType="java.math.BigDecimal" />
+		 	<columnOverride column="QUANTITY_ALLOCATED" javaType="java.math.BigDecimal" />
+		 	<columnOverride column="QUANTITY_LOCKED" javaType="java.math.BigDecimal" />
+		 	<columnOverride column="QTY_CASE" javaType="java.math.BigDecimal" />
+		 	<columnOverride column="VOLUME" javaType="java.math.BigDecimal" />
+		 	<columnOverride column="WEIGHT_GROSS" javaType="java.math.BigDecimal" />
+		 	<columnOverride column="WEIGHT_NET" javaType="java.math.BigDecimal" />
+		 	<columnOverride column="WEIGHT_TARE" javaType="java.math.BigDecimal" />
 		</table>
 		<table tableName="warehouse_active_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
 		 	<property name="versionColumn" value="UPDATE_VERSION"/>

@@ -1,6 +1,7 @@
 package com.wms.entity.auto;
 
 import com.wms.entity.BaseEntity;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -28,19 +29,19 @@ public class EntSkuTEntity extends BaseEntity {
 
     private String uom;
 
-    private Long volume;
+    private BigDecimal volume;
 
-    private Long length;
+    private BigDecimal length;
 
-    private Long width;
+    private BigDecimal width;
 
-    private Long height;
+    private BigDecimal height;
 
-    private Long weightGross;
+    private BigDecimal weightGross;
 
-    private Long weightNet;
+    private BigDecimal weightNet;
 
-    private Long weightTare;
+    private BigDecimal weightTare;
 
     private Long lotValidateId;
 
@@ -192,59 +193,59 @@ public class EntSkuTEntity extends BaseEntity {
         this.uom = uom == null ? null : uom.trim();
     }
 
-    public Long getVolume() {
+    public BigDecimal getVolume() {
         return volume;
     }
 
-    public void setVolume(Long volume) {
+    public void setVolume(BigDecimal volume) {
         this.volume = volume;
     }
 
-    public Long getLength() {
+    public BigDecimal getLength() {
         return length;
     }
 
-    public void setLength(Long length) {
+    public void setLength(BigDecimal length) {
         this.length = length;
     }
 
-    public Long getWidth() {
+    public BigDecimal getWidth() {
         return width;
     }
 
-    public void setWidth(Long width) {
+    public void setWidth(BigDecimal width) {
         this.width = width;
     }
 
-    public Long getHeight() {
+    public BigDecimal getHeight() {
         return height;
     }
 
-    public void setHeight(Long height) {
+    public void setHeight(BigDecimal height) {
         this.height = height;
     }
 
-    public Long getWeightGross() {
+    public BigDecimal getWeightGross() {
         return weightGross;
     }
 
-    public void setWeightGross(Long weightGross) {
+    public void setWeightGross(BigDecimal weightGross) {
         this.weightGross = weightGross;
     }
 
-    public Long getWeightNet() {
+    public BigDecimal getWeightNet() {
         return weightNet;
     }
 
-    public void setWeightNet(Long weightNet) {
+    public void setWeightNet(BigDecimal weightNet) {
         this.weightNet = weightNet;
     }
 
-    public Long getWeightTare() {
+    public BigDecimal getWeightTare() {
         return weightTare;
     }
 
-    public void setWeightTare(Long weightTare) {
+    public void setWeightTare(BigDecimal weightTare) {
         this.weightTare = weightTare;
     }
 
@@ -887,7 +888,7 @@ public class EntSkuTEntity extends BaseEntity {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder volume(Long volume) {
+        public Builder volume(BigDecimal volume) {
             obj.setVolume(volume);
             return this;
         }
@@ -901,7 +902,7 @@ public class EntSkuTEntity extends BaseEntity {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder length(Long length) {
+        public Builder length(BigDecimal length) {
             obj.setLength(length);
             return this;
         }
@@ -915,7 +916,7 @@ public class EntSkuTEntity extends BaseEntity {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder width(Long width) {
+        public Builder width(BigDecimal width) {
             obj.setWidth(width);
             return this;
         }
@@ -929,7 +930,7 @@ public class EntSkuTEntity extends BaseEntity {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder height(Long height) {
+        public Builder height(BigDecimal height) {
             obj.setHeight(height);
             return this;
         }
@@ -943,7 +944,7 @@ public class EntSkuTEntity extends BaseEntity {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder weightGross(Long weightGross) {
+        public Builder weightGross(BigDecimal weightGross) {
             obj.setWeightGross(weightGross);
             return this;
         }
@@ -957,7 +958,7 @@ public class EntSkuTEntity extends BaseEntity {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder weightNet(Long weightNet) {
+        public Builder weightNet(BigDecimal weightNet) {
             obj.setWeightNet(weightNet);
             return this;
         }
@@ -971,7 +972,7 @@ public class EntSkuTEntity extends BaseEntity {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder weightTare(Long weightTare) {
+        public Builder weightTare(BigDecimal weightTare) {
             obj.setWeightTare(weightTare);
             return this;
         }

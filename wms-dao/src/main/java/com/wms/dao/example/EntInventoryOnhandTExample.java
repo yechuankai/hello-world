@@ -1,6 +1,7 @@
 package com.wms.dao.example;
 
 import com.wms.entity.auto.EntInventoryOnhandTEntity;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -2817,7 +2818,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuantityOnhandEqualTo(Long value) {
+        public Criteria andQuantityOnhandEqualTo(BigDecimal value) {
             addCriterion("QUANTITY_ONHAND =", value, "quantityOnhand");
             return (Criteria) this;
         }
@@ -2834,7 +2835,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuantityOnhandNotEqualTo(Long value) {
+        public Criteria andQuantityOnhandNotEqualTo(BigDecimal value) {
             addCriterion("QUANTITY_ONHAND <>", value, "quantityOnhand");
             return (Criteria) this;
         }
@@ -2851,7 +2852,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuantityOnhandGreaterThan(Long value) {
+        public Criteria andQuantityOnhandGreaterThan(BigDecimal value) {
             addCriterion("QUANTITY_ONHAND >", value, "quantityOnhand");
             return (Criteria) this;
         }
@@ -2868,7 +2869,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuantityOnhandGreaterThanOrEqualTo(Long value) {
+        public Criteria andQuantityOnhandGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("QUANTITY_ONHAND >=", value, "quantityOnhand");
             return (Criteria) this;
         }
@@ -2885,7 +2886,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuantityOnhandLessThan(Long value) {
+        public Criteria andQuantityOnhandLessThan(BigDecimal value) {
             addCriterion("QUANTITY_ONHAND <", value, "quantityOnhand");
             return (Criteria) this;
         }
@@ -2902,7 +2903,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuantityOnhandLessThanOrEqualTo(Long value) {
+        public Criteria andQuantityOnhandLessThanOrEqualTo(BigDecimal value) {
             addCriterion("QUANTITY_ONHAND <=", value, "quantityOnhand");
             return (Criteria) this;
         }
@@ -2919,22 +2920,22 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuantityOnhandIn(List<Long> values) {
+        public Criteria andQuantityOnhandIn(List<BigDecimal> values) {
             addCriterion("QUANTITY_ONHAND in", values, "quantityOnhand");
             return (Criteria) this;
         }
 
-        public Criteria andQuantityOnhandNotIn(List<Long> values) {
+        public Criteria andQuantityOnhandNotIn(List<BigDecimal> values) {
             addCriterion("QUANTITY_ONHAND not in", values, "quantityOnhand");
             return (Criteria) this;
         }
 
-        public Criteria andQuantityOnhandBetween(Long value1, Long value2) {
+        public Criteria andQuantityOnhandBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("QUANTITY_ONHAND between", value1, value2, "quantityOnhand");
             return (Criteria) this;
         }
 
-        public Criteria andQuantityOnhandNotBetween(Long value1, Long value2) {
+        public Criteria andQuantityOnhandNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("QUANTITY_ONHAND not between", value1, value2, "quantityOnhand");
             return (Criteria) this;
         }
@@ -2949,7 +2950,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuantityAllocatedEqualTo(Long value) {
+        public Criteria andQuantityAllocatedEqualTo(BigDecimal value) {
             addCriterion("QUANTITY_ALLOCATED =", value, "quantityAllocated");
             return (Criteria) this;
         }
@@ -2966,7 +2967,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuantityAllocatedNotEqualTo(Long value) {
+        public Criteria andQuantityAllocatedNotEqualTo(BigDecimal value) {
             addCriterion("QUANTITY_ALLOCATED <>", value, "quantityAllocated");
             return (Criteria) this;
         }
@@ -2983,7 +2984,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuantityAllocatedGreaterThan(Long value) {
+        public Criteria andQuantityAllocatedGreaterThan(BigDecimal value) {
             addCriterion("QUANTITY_ALLOCATED >", value, "quantityAllocated");
             return (Criteria) this;
         }
@@ -3000,7 +3001,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuantityAllocatedGreaterThanOrEqualTo(Long value) {
+        public Criteria andQuantityAllocatedGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("QUANTITY_ALLOCATED >=", value, "quantityAllocated");
             return (Criteria) this;
         }
@@ -3017,7 +3018,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuantityAllocatedLessThan(Long value) {
+        public Criteria andQuantityAllocatedLessThan(BigDecimal value) {
             addCriterion("QUANTITY_ALLOCATED <", value, "quantityAllocated");
             return (Criteria) this;
         }
@@ -3034,7 +3035,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuantityAllocatedLessThanOrEqualTo(Long value) {
+        public Criteria andQuantityAllocatedLessThanOrEqualTo(BigDecimal value) {
             addCriterion("QUANTITY_ALLOCATED <=", value, "quantityAllocated");
             return (Criteria) this;
         }
@@ -3051,22 +3052,22 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuantityAllocatedIn(List<Long> values) {
+        public Criteria andQuantityAllocatedIn(List<BigDecimal> values) {
             addCriterion("QUANTITY_ALLOCATED in", values, "quantityAllocated");
             return (Criteria) this;
         }
 
-        public Criteria andQuantityAllocatedNotIn(List<Long> values) {
+        public Criteria andQuantityAllocatedNotIn(List<BigDecimal> values) {
             addCriterion("QUANTITY_ALLOCATED not in", values, "quantityAllocated");
             return (Criteria) this;
         }
 
-        public Criteria andQuantityAllocatedBetween(Long value1, Long value2) {
+        public Criteria andQuantityAllocatedBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("QUANTITY_ALLOCATED between", value1, value2, "quantityAllocated");
             return (Criteria) this;
         }
 
-        public Criteria andQuantityAllocatedNotBetween(Long value1, Long value2) {
+        public Criteria andQuantityAllocatedNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("QUANTITY_ALLOCATED not between", value1, value2, "quantityAllocated");
             return (Criteria) this;
         }
@@ -3081,7 +3082,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuantityLockedEqualTo(Long value) {
+        public Criteria andQuantityLockedEqualTo(BigDecimal value) {
             addCriterion("QUANTITY_LOCKED =", value, "quantityLocked");
             return (Criteria) this;
         }
@@ -3098,7 +3099,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuantityLockedNotEqualTo(Long value) {
+        public Criteria andQuantityLockedNotEqualTo(BigDecimal value) {
             addCriterion("QUANTITY_LOCKED <>", value, "quantityLocked");
             return (Criteria) this;
         }
@@ -3115,7 +3116,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuantityLockedGreaterThan(Long value) {
+        public Criteria andQuantityLockedGreaterThan(BigDecimal value) {
             addCriterion("QUANTITY_LOCKED >", value, "quantityLocked");
             return (Criteria) this;
         }
@@ -3132,7 +3133,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuantityLockedGreaterThanOrEqualTo(Long value) {
+        public Criteria andQuantityLockedGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("QUANTITY_LOCKED >=", value, "quantityLocked");
             return (Criteria) this;
         }
@@ -3149,7 +3150,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuantityLockedLessThan(Long value) {
+        public Criteria andQuantityLockedLessThan(BigDecimal value) {
             addCriterion("QUANTITY_LOCKED <", value, "quantityLocked");
             return (Criteria) this;
         }
@@ -3166,7 +3167,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuantityLockedLessThanOrEqualTo(Long value) {
+        public Criteria andQuantityLockedLessThanOrEqualTo(BigDecimal value) {
             addCriterion("QUANTITY_LOCKED <=", value, "quantityLocked");
             return (Criteria) this;
         }
@@ -3183,22 +3184,22 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQuantityLockedIn(List<Long> values) {
+        public Criteria andQuantityLockedIn(List<BigDecimal> values) {
             addCriterion("QUANTITY_LOCKED in", values, "quantityLocked");
             return (Criteria) this;
         }
 
-        public Criteria andQuantityLockedNotIn(List<Long> values) {
+        public Criteria andQuantityLockedNotIn(List<BigDecimal> values) {
             addCriterion("QUANTITY_LOCKED not in", values, "quantityLocked");
             return (Criteria) this;
         }
 
-        public Criteria andQuantityLockedBetween(Long value1, Long value2) {
+        public Criteria andQuantityLockedBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("QUANTITY_LOCKED between", value1, value2, "quantityLocked");
             return (Criteria) this;
         }
 
-        public Criteria andQuantityLockedNotBetween(Long value1, Long value2) {
+        public Criteria andQuantityLockedNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("QUANTITY_LOCKED not between", value1, value2, "quantityLocked");
             return (Criteria) this;
         }
@@ -3213,7 +3214,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQtyCaseEqualTo(Long value) {
+        public Criteria andQtyCaseEqualTo(BigDecimal value) {
             addCriterion("QTY_CASE =", value, "qtyCase");
             return (Criteria) this;
         }
@@ -3230,7 +3231,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQtyCaseNotEqualTo(Long value) {
+        public Criteria andQtyCaseNotEqualTo(BigDecimal value) {
             addCriterion("QTY_CASE <>", value, "qtyCase");
             return (Criteria) this;
         }
@@ -3247,7 +3248,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQtyCaseGreaterThan(Long value) {
+        public Criteria andQtyCaseGreaterThan(BigDecimal value) {
             addCriterion("QTY_CASE >", value, "qtyCase");
             return (Criteria) this;
         }
@@ -3264,7 +3265,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQtyCaseGreaterThanOrEqualTo(Long value) {
+        public Criteria andQtyCaseGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("QTY_CASE >=", value, "qtyCase");
             return (Criteria) this;
         }
@@ -3281,7 +3282,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQtyCaseLessThan(Long value) {
+        public Criteria andQtyCaseLessThan(BigDecimal value) {
             addCriterion("QTY_CASE <", value, "qtyCase");
             return (Criteria) this;
         }
@@ -3298,7 +3299,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQtyCaseLessThanOrEqualTo(Long value) {
+        public Criteria andQtyCaseLessThanOrEqualTo(BigDecimal value) {
             addCriterion("QTY_CASE <=", value, "qtyCase");
             return (Criteria) this;
         }
@@ -3315,22 +3316,22 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andQtyCaseIn(List<Long> values) {
+        public Criteria andQtyCaseIn(List<BigDecimal> values) {
             addCriterion("QTY_CASE in", values, "qtyCase");
             return (Criteria) this;
         }
 
-        public Criteria andQtyCaseNotIn(List<Long> values) {
+        public Criteria andQtyCaseNotIn(List<BigDecimal> values) {
             addCriterion("QTY_CASE not in", values, "qtyCase");
             return (Criteria) this;
         }
 
-        public Criteria andQtyCaseBetween(Long value1, Long value2) {
+        public Criteria andQtyCaseBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("QTY_CASE between", value1, value2, "qtyCase");
             return (Criteria) this;
         }
 
-        public Criteria andQtyCaseNotBetween(Long value1, Long value2) {
+        public Criteria andQtyCaseNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("QTY_CASE not between", value1, value2, "qtyCase");
             return (Criteria) this;
         }
@@ -3345,7 +3346,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andVolumeEqualTo(Long value) {
+        public Criteria andVolumeEqualTo(BigDecimal value) {
             addCriterion("VOLUME =", value, "volume");
             return (Criteria) this;
         }
@@ -3362,7 +3363,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andVolumeNotEqualTo(Long value) {
+        public Criteria andVolumeNotEqualTo(BigDecimal value) {
             addCriterion("VOLUME <>", value, "volume");
             return (Criteria) this;
         }
@@ -3379,7 +3380,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andVolumeGreaterThan(Long value) {
+        public Criteria andVolumeGreaterThan(BigDecimal value) {
             addCriterion("VOLUME >", value, "volume");
             return (Criteria) this;
         }
@@ -3396,7 +3397,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andVolumeGreaterThanOrEqualTo(Long value) {
+        public Criteria andVolumeGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("VOLUME >=", value, "volume");
             return (Criteria) this;
         }
@@ -3413,7 +3414,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andVolumeLessThan(Long value) {
+        public Criteria andVolumeLessThan(BigDecimal value) {
             addCriterion("VOLUME <", value, "volume");
             return (Criteria) this;
         }
@@ -3430,7 +3431,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andVolumeLessThanOrEqualTo(Long value) {
+        public Criteria andVolumeLessThanOrEqualTo(BigDecimal value) {
             addCriterion("VOLUME <=", value, "volume");
             return (Criteria) this;
         }
@@ -3447,22 +3448,22 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andVolumeIn(List<Long> values) {
+        public Criteria andVolumeIn(List<BigDecimal> values) {
             addCriterion("VOLUME in", values, "volume");
             return (Criteria) this;
         }
 
-        public Criteria andVolumeNotIn(List<Long> values) {
+        public Criteria andVolumeNotIn(List<BigDecimal> values) {
             addCriterion("VOLUME not in", values, "volume");
             return (Criteria) this;
         }
 
-        public Criteria andVolumeBetween(Long value1, Long value2) {
+        public Criteria andVolumeBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("VOLUME between", value1, value2, "volume");
             return (Criteria) this;
         }
 
-        public Criteria andVolumeNotBetween(Long value1, Long value2) {
+        public Criteria andVolumeNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("VOLUME not between", value1, value2, "volume");
             return (Criteria) this;
         }
@@ -3477,7 +3478,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightGrossEqualTo(Long value) {
+        public Criteria andWeightGrossEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_GROSS =", value, "weightGross");
             return (Criteria) this;
         }
@@ -3494,7 +3495,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightGrossNotEqualTo(Long value) {
+        public Criteria andWeightGrossNotEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_GROSS <>", value, "weightGross");
             return (Criteria) this;
         }
@@ -3511,7 +3512,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightGrossGreaterThan(Long value) {
+        public Criteria andWeightGrossGreaterThan(BigDecimal value) {
             addCriterion("WEIGHT_GROSS >", value, "weightGross");
             return (Criteria) this;
         }
@@ -3528,7 +3529,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightGrossGreaterThanOrEqualTo(Long value) {
+        public Criteria andWeightGrossGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_GROSS >=", value, "weightGross");
             return (Criteria) this;
         }
@@ -3545,7 +3546,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightGrossLessThan(Long value) {
+        public Criteria andWeightGrossLessThan(BigDecimal value) {
             addCriterion("WEIGHT_GROSS <", value, "weightGross");
             return (Criteria) this;
         }
@@ -3562,7 +3563,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightGrossLessThanOrEqualTo(Long value) {
+        public Criteria andWeightGrossLessThanOrEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_GROSS <=", value, "weightGross");
             return (Criteria) this;
         }
@@ -3579,22 +3580,22 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightGrossIn(List<Long> values) {
+        public Criteria andWeightGrossIn(List<BigDecimal> values) {
             addCriterion("WEIGHT_GROSS in", values, "weightGross");
             return (Criteria) this;
         }
 
-        public Criteria andWeightGrossNotIn(List<Long> values) {
+        public Criteria andWeightGrossNotIn(List<BigDecimal> values) {
             addCriterion("WEIGHT_GROSS not in", values, "weightGross");
             return (Criteria) this;
         }
 
-        public Criteria andWeightGrossBetween(Long value1, Long value2) {
+        public Criteria andWeightGrossBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("WEIGHT_GROSS between", value1, value2, "weightGross");
             return (Criteria) this;
         }
 
-        public Criteria andWeightGrossNotBetween(Long value1, Long value2) {
+        public Criteria andWeightGrossNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("WEIGHT_GROSS not between", value1, value2, "weightGross");
             return (Criteria) this;
         }
@@ -3609,7 +3610,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightNetEqualTo(Long value) {
+        public Criteria andWeightNetEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_NET =", value, "weightNet");
             return (Criteria) this;
         }
@@ -3626,7 +3627,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightNetNotEqualTo(Long value) {
+        public Criteria andWeightNetNotEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_NET <>", value, "weightNet");
             return (Criteria) this;
         }
@@ -3643,7 +3644,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightNetGreaterThan(Long value) {
+        public Criteria andWeightNetGreaterThan(BigDecimal value) {
             addCriterion("WEIGHT_NET >", value, "weightNet");
             return (Criteria) this;
         }
@@ -3660,7 +3661,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightNetGreaterThanOrEqualTo(Long value) {
+        public Criteria andWeightNetGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_NET >=", value, "weightNet");
             return (Criteria) this;
         }
@@ -3677,7 +3678,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightNetLessThan(Long value) {
+        public Criteria andWeightNetLessThan(BigDecimal value) {
             addCriterion("WEIGHT_NET <", value, "weightNet");
             return (Criteria) this;
         }
@@ -3694,7 +3695,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightNetLessThanOrEqualTo(Long value) {
+        public Criteria andWeightNetLessThanOrEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_NET <=", value, "weightNet");
             return (Criteria) this;
         }
@@ -3711,22 +3712,22 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightNetIn(List<Long> values) {
+        public Criteria andWeightNetIn(List<BigDecimal> values) {
             addCriterion("WEIGHT_NET in", values, "weightNet");
             return (Criteria) this;
         }
 
-        public Criteria andWeightNetNotIn(List<Long> values) {
+        public Criteria andWeightNetNotIn(List<BigDecimal> values) {
             addCriterion("WEIGHT_NET not in", values, "weightNet");
             return (Criteria) this;
         }
 
-        public Criteria andWeightNetBetween(Long value1, Long value2) {
+        public Criteria andWeightNetBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("WEIGHT_NET between", value1, value2, "weightNet");
             return (Criteria) this;
         }
 
-        public Criteria andWeightNetNotBetween(Long value1, Long value2) {
+        public Criteria andWeightNetNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("WEIGHT_NET not between", value1, value2, "weightNet");
             return (Criteria) this;
         }
@@ -3741,7 +3742,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightTareEqualTo(Long value) {
+        public Criteria andWeightTareEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_TARE =", value, "weightTare");
             return (Criteria) this;
         }
@@ -3758,7 +3759,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightTareNotEqualTo(Long value) {
+        public Criteria andWeightTareNotEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_TARE <>", value, "weightTare");
             return (Criteria) this;
         }
@@ -3775,7 +3776,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightTareGreaterThan(Long value) {
+        public Criteria andWeightTareGreaterThan(BigDecimal value) {
             addCriterion("WEIGHT_TARE >", value, "weightTare");
             return (Criteria) this;
         }
@@ -3792,7 +3793,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightTareGreaterThanOrEqualTo(Long value) {
+        public Criteria andWeightTareGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_TARE >=", value, "weightTare");
             return (Criteria) this;
         }
@@ -3809,7 +3810,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightTareLessThan(Long value) {
+        public Criteria andWeightTareLessThan(BigDecimal value) {
             addCriterion("WEIGHT_TARE <", value, "weightTare");
             return (Criteria) this;
         }
@@ -3826,7 +3827,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightTareLessThanOrEqualTo(Long value) {
+        public Criteria andWeightTareLessThanOrEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_TARE <=", value, "weightTare");
             return (Criteria) this;
         }
@@ -3843,22 +3844,22 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightTareIn(List<Long> values) {
+        public Criteria andWeightTareIn(List<BigDecimal> values) {
             addCriterion("WEIGHT_TARE in", values, "weightTare");
             return (Criteria) this;
         }
 
-        public Criteria andWeightTareNotIn(List<Long> values) {
+        public Criteria andWeightTareNotIn(List<BigDecimal> values) {
             addCriterion("WEIGHT_TARE not in", values, "weightTare");
             return (Criteria) this;
         }
 
-        public Criteria andWeightTareBetween(Long value1, Long value2) {
+        public Criteria andWeightTareBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("WEIGHT_TARE between", value1, value2, "weightTare");
             return (Criteria) this;
         }
 
-        public Criteria andWeightTareNotBetween(Long value1, Long value2) {
+        public Criteria andWeightTareNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("WEIGHT_TARE not between", value1, value2, "weightTare");
             return (Criteria) this;
         }

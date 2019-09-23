@@ -20,6 +20,10 @@
     <result column="QUANTITY_RECEIVED" jdbcType="DECIMAL" property="quantityReceived" />
     <result column="OUTBOUND_DATE" jdbcType="TIMESTAMP" property="outboundDate" />
     <result column="QUANTITY_SHIPED" jdbcType="DECIMAL" property="quantityShiped" />
+    <result column="VOLUME" jdbcType="DECIMAL" property="volume" />
+    <result column="WEIGHT_GROSS" jdbcType="DECIMAL" property="weightGross" />
+    <result column="WEIGHT_NET" jdbcType="DECIMAL" property="weightNet" />
+    <result column="WEIGHT_TARE" jdbcType="DECIMAL" property="weightTare" />
     <result column="DAYS" jdbcType="DECIMAL" property="days" />
     <result column="STATUS" jdbcType="VARCHAR" property="status" />
     <result column="REMARK" jdbcType="VARCHAR" property="remark" />
@@ -131,9 +135,9 @@
   <sql id="Base_Column_List">
     BILLING_LEASE_ID, BILLING_DATE, BILLING_MONTH, BILLING_LEASE_CODE, OWNER_ID, OWNER_CODE, 
     SOURCE_BILL_NUMBER, SKU_ID, SKU_CODE, PACK_ID, PACK_CODE, UOM, LOT_ID, LOT_NUMBER, 
-    INBOUND_DATE, QUANTITY_RECEIVED, OUTBOUND_DATE, QUANTITY_SHIPED, DAYS, STATUS, REMARK, 
-    COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
-    UPDATE_VERSION, DESCRIPTION
+    INBOUND_DATE, QUANTITY_RECEIVED, OUTBOUND_DATE, QUANTITY_SHIPED, VOLUME, WEIGHT_GROSS, 
+    WEIGHT_NET, WEIGHT_TARE, DAYS, STATUS, REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, 
+    CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.BillingLeaseTExample" resultMap="BaseResultMap">
     select
@@ -162,22 +166,24 @@
       PACK_ID, PACK_CODE, UOM, 
       LOT_ID, LOT_NUMBER, INBOUND_DATE, 
       QUANTITY_RECEIVED, OUTBOUND_DATE, QUANTITY_SHIPED, 
-      DAYS, STATUS, REMARK, 
-      COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, 
-      CREATE_BY, CREATE_TIME, UPDATE_BY, 
-      UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
-      )
+      VOLUME, WEIGHT_GROSS, WEIGHT_NET, 
+      WEIGHT_TARE, DAYS, STATUS, 
+      REMARK, COMPANY_ID, WAREHOUSE_ID, 
+      DEL_FLAG, CREATE_BY, CREATE_TIME, 
+      UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, 
+      DESCRIPTION)
     values (#{billingLeaseId,jdbcType=DECIMAL}, #{billingDate,jdbcType=TIMESTAMP}, #{billingMonth,jdbcType=VARCHAR}, 
       #{billingLeaseCode,jdbcType=VARCHAR}, #{ownerId,jdbcType=DECIMAL}, #{ownerCode,jdbcType=VARCHAR}, 
       #{sourceBillNumber,jdbcType=VARCHAR}, #{skuId,jdbcType=DECIMAL}, #{skuCode,jdbcType=VARCHAR}, 
       #{packId,jdbcType=DECIMAL}, #{packCode,jdbcType=VARCHAR}, #{uom,jdbcType=VARCHAR}, 
       #{lotId,jdbcType=DECIMAL}, #{lotNumber,jdbcType=VARCHAR}, #{inboundDate,jdbcType=TIMESTAMP}, 
       #{quantityReceived,jdbcType=DECIMAL}, #{outboundDate,jdbcType=TIMESTAMP}, #{quantityShiped,jdbcType=DECIMAL}, 
-      #{days,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
-      #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, 
-      #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}
-      )
+      #{volume,jdbcType=DECIMAL}, #{weightGross,jdbcType=DECIMAL}, #{weightNet,jdbcType=DECIMAL}, 
+      #{weightTare,jdbcType=DECIMAL}, #{days,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, 
+      #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, 
+      #{description,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.BillingLeaseTEntity">
     insert into BILLING_LEASE_T
@@ -235,6 +241,18 @@
       </if>
       <if test="quantityShiped != null">
         QUANTITY_SHIPED,
+      </if>
+      <if test="volume != null">
+        VOLUME,
+      </if>
+      <if test="weightGross != null">
+        WEIGHT_GROSS,
+      </if>
+      <if test="weightNet != null">
+        WEIGHT_NET,
+      </if>
+      <if test="weightTare != null">
+        WEIGHT_TARE,
       </if>
       <if test="days != null">
         DAYS,
@@ -327,6 +345,18 @@
       </if>
       <if test="quantityShiped != null">
         #{quantityShiped,jdbcType=DECIMAL},
+      </if>
+      <if test="volume != null">
+        #{volume,jdbcType=DECIMAL},
+      </if>
+      <if test="weightGross != null">
+        #{weightGross,jdbcType=DECIMAL},
+      </if>
+      <if test="weightNet != null">
+        #{weightNet,jdbcType=DECIMAL},
+      </if>
+      <if test="weightTare != null">
+        #{weightTare,jdbcType=DECIMAL},
       </if>
       <if test="days != null">
         #{days,jdbcType=DECIMAL},
@@ -429,6 +459,18 @@
       <if test="record.quantityShiped != null">
         QUANTITY_SHIPED = #{record.quantityShiped,jdbcType=DECIMAL},
       </if>
+      <if test="record.volume != null">
+        VOLUME = #{record.volume,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightGross != null">
+        WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightNet != null">
+        WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightTare != null">
+        WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL},
+      </if>
       <if test="record.days != null">
         DAYS = #{record.days,jdbcType=DECIMAL},
       </if>
@@ -490,6 +532,10 @@
       QUANTITY_RECEIVED = #{record.quantityReceived,jdbcType=DECIMAL},
       OUTBOUND_DATE = #{record.outboundDate,jdbcType=TIMESTAMP},
       QUANTITY_SHIPED = #{record.quantityShiped,jdbcType=DECIMAL},
+      VOLUME = #{record.volume,jdbcType=DECIMAL},
+      WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL},
+      WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL},
+      WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL},
       DAYS = #{record.days,jdbcType=DECIMAL},
       STATUS = #{record.status,jdbcType=VARCHAR},
       REMARK = #{record.remark,jdbcType=VARCHAR},
@@ -622,6 +668,10 @@
     QUANTITY_RECEIVED = #{record.quantityReceived,jdbcType=DECIMAL}, 
     OUTBOUND_DATE = #{record.outboundDate,jdbcType=TIMESTAMP}, 
     QUANTITY_SHIPED = #{record.quantityShiped,jdbcType=DECIMAL}, 
+    VOLUME = #{record.volume,jdbcType=DECIMAL}, 
+    WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL}, 
+    WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL}, 
+    WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL}, 
     DAYS = #{record.days,jdbcType=DECIMAL}, 
     STATUS = #{record.status,jdbcType=VARCHAR}, 
     REMARK = #{record.remark,jdbcType=VARCHAR}, 
@@ -700,6 +750,18 @@
         </if>
         <if test="record.quantityShiped != null">
           QUANTITY_SHIPED = #{record.quantityShiped,jdbcType=DECIMAL},
+        </if>
+        <if test="record.volume != null">
+          VOLUME = #{record.volume,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightGross != null">
+          WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightNet != null">
+          WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightTare != null">
+          WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL},
         </if>
         <if test="record.days != null">
           DAYS = #{record.days,jdbcType=DECIMAL},

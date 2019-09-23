@@ -134,7 +134,7 @@ select DISTINCT 0 CARRIER_ID,
 -- ----------------------------
 -- 企业货品
 -- ----------------------------
-create or replace view ent_sku_v as
+create or replace view wms.ent_sku_v as
 (
 select DISTINCT 0 SKU_ID,
        0 OWNER_ID,
@@ -147,13 +147,13 @@ select DISTINCT 0 SKU_ID,
        0 PACK_ID,
        '' PACK_CODE,
        '' UOM,
-       0 VOLUME,
-       0 LENGTH,
-       0 WIDTH,
-       0 HEIGHT,
-       0 WEIGHT_GROSS,
-       0 WEIGHT_NET,
-       0 WEIGHT_TARE,
+       VOLUME,
+       LENGTH,
+       WIDTH,
+       HEIGHT,
+       WEIGHT_GROSS,
+       WEIGHT_NET,
+       WEIGHT_TARE,
        0 LOT_VALIDATE_ID,
        '' LOT_VALIDATE_CODE,
        0 PUTAWAY_STRATEGY_ID,
@@ -187,6 +187,7 @@ select DISTINCT 0 SKU_ID,
        '' DESCRIPTION
   from sku_t
 );
+
 
 
 -- ----------------------------
@@ -229,7 +230,7 @@ select DISTINCT 0 PACK_ID,
 -- ----------------------------
 -- 企业包装
 -- ----------------------------
-create or replace view ent_invetnroy_onhand_v as
+create or replace view wms.ent_invetnroy_onhand_v as
 (
 select 0 INVENTORY_ONHAND_ID,
        0 OWNER_ID,
@@ -240,16 +241,16 @@ select 0 INVENTORY_ONHAND_ID,
        SKU.PACK_CODE,
        LOT.LOT_ATTRIBUTE1,
        LOT.LOT_ATTRIBUTE2,
-       LOT.LOT_ATTRIBUTE3,
-       LOT.LOT_ATTRIBUTE4,
-       LOT.LOT_ATTRIBUTE5,
-       LOT.LOT_ATTRIBUTE6,
-       LOT.LOT_ATTRIBUTE7,
-       LOT.LOT_ATTRIBUTE8,
-       LOT.LOT_ATTRIBUTE9,
-       LOT.LOT_ATTRIBUTE10,
-       LOT.LOT_ATTRIBUTE11,
-       LOT.LOT_ATTRIBUTE12,
+       '' LOT_ATTRIBUTE3,
+       '' LOT_ATTRIBUTE4,
+       '' LOT_ATTRIBUTE5,
+       '' LOT_ATTRIBUTE6,
+       '' LOT_ATTRIBUTE7,
+       '' LOT_ATTRIBUTE8,
+       '' LOT_ATTRIBUTE9,
+       '' LOT_ATTRIBUTE10,
+       '' LOT_ATTRIBUTE11,
+       '' LOT_ATTRIBUTE12,
        SUM(QUANTITY_ONHAND) QUANTITY_ONHAND,
        SUM(QUANTITY_ALLOCATED) QUANTITY_ALLOCATED,
        SUM(QUANTITY_LOCKED) QUANTITY_LOCKED,
@@ -274,17 +275,17 @@ select 0 INVENTORY_ONHAND_ID,
        0 UPDATE_VERSION,
        '' DESCRIPTION
   from inventory_onhand_t onhand
-       inner join sku_t sku on onhand.sku_id = sku.sku_id 
+       inner join sku_t sku on onhand.sku_id = sku.sku_id
        inner join pack_t pack on sku.pack_id = pack.pack_id
        inner join lot_attribute_t lot on onhand.lot_id = lot.lot_attribute_id
-  group by 
+  group by
         ONHAND.OWNER_CODE,
         ONHAND.SKU_CODE,
         ONHAND.SKU_ALIAS,
         SKU.PACK_CODE,
         LOT.LOT_ATTRIBUTE1,
         LOT.LOT_ATTRIBUTE2,
-        LOT.LOT_ATTRIBUTE3,
+        /*LOT.LOT_ATTRIBUTE3,
         LOT.LOT_ATTRIBUTE4,
         LOT.LOT_ATTRIBUTE5,
         LOT.LOT_ATTRIBUTE6,
@@ -293,9 +294,10 @@ select 0 INVENTORY_ONHAND_ID,
         LOT.LOT_ATTRIBUTE9,
         LOT.LOT_ATTRIBUTE10,
         LOT.LOT_ATTRIBUTE11,
-        LOT.LOT_ATTRIBUTE12,
+        LOT.LOT_ATTRIBUTE12,*/
         ONHAND.COMPANY_ID,
         ONHAND.WAREHOUSE_ID
 );
+
 
 

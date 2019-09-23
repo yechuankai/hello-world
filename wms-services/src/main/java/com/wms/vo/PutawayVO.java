@@ -10,6 +10,7 @@ public class PutawayVO extends PutawayStrategyDetailTEntity{
 	private InventoryOnhandVO inventoryOnhand;
 	private String locationCode;
 	private String lpnType;
+	private String toZoneCode;
 	
 	public void setLocationCode(String locationCode) {
 		this.locationCode = locationCode;
@@ -58,6 +59,13 @@ public class PutawayVO extends PutawayStrategyDetailTEntity{
 	public void setLpnNumber(String lpnNumber) {
 		this.lpnNumber = lpnNumber;
 	}
-	
-	
+
+	public String getToZoneCode() {
+		return toZoneCode;
+	}
+
+	public void setToZoneCode(String toZoneCode) {
+		this.toZoneCode = toZoneCode;
+	}
+
 }

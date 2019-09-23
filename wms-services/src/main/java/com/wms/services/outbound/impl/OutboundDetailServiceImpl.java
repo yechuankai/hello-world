@@ -969,7 +969,7 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 			detail.setAllocateStrategyId(allocateStrategy.getAllocateStrategyId());
 		}
 		if (outboundVO.getOperatorType() != OperatorTypeEnum.Add 
-				&& outboundVO.getOperatorType() != OperatorTypeEnum.Submit) {
+				&& null != detail.getOutboundDetailId()  ) {
 			return Boolean.TRUE;
 		}
 

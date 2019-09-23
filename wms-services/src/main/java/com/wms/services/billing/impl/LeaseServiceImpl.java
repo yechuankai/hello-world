@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -18,14 +19,18 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.wms.common.core.domain.ExcelTemplate;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
+import com.wms.common.core.services.IExcelService;
+import com.wms.common.enums.ExcelTemplateEnum;
 import com.wms.common.enums.OrderNumberTypeEnum;
 import com.wms.common.enums.TransactionTypeEnum;
 import com.wms.common.enums.YesNoEnum;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.common.utils.DateUtils;
 import com.wms.common.utils.ExampleUtils;
+import com.wms.common.utils.bean.BeanUtils;
 import com.wms.common.utils.key.KeyUtils;
 import com.wms.dao.auto.IBillingLeaseTDao;
 import com.wms.dao.example.BillingLeaseTExample;
@@ -35,17 +40,26 @@ import com.wms.entity.auto.InventoryOnhandTEntity;
 import com.wms.entity.auto.InventoryTransactionTEntity;
 import com.wms.entity.auto.LotAttributeTEntity;
 import com.wms.entity.auto.OwnerTEntity;
+import com.wms.entity.auto.PackTEntity;
+import com.wms.entity.auto.SkuTEntity;
 import com.wms.entity.auto.WarehouseActiveTEntity;
+import com.wms.entity.auto.ZoneTEntity;
 import com.wms.services.base.IOwnerService;
+import com.wms.services.base.IPackService;
+import com.wms.services.base.ISkuService;
+import com.wms.services.base.impl.SkuServiceImpl;
 import com.wms.services.billing.ILeaseService;
 import com.wms.services.inbound.IInboundDetailService;
 import com.wms.services.inventory.IInventoryService;
 import com.wms.services.inventory.ILotService;
 import com.wms.services.inventory.ITransactionService;
 import com.wms.services.sys.IWarehouseActiveService;
+import com.wms.vo.PackVO;
+import com.wms.vo.excel.BillingLeaseExcelVO;
+import com.wms.vo.excel.ZoneImportVO;
 
 @Service
-public class LeaseServiceImpl implements ILeaseService {
+public class LeaseServiceImpl implements ILeaseService, IExcelService<BillingLeaseExcelVO> {
 	
 	private static final Logger log = LoggerFactory.getLogger(LeaseServiceImpl.class);
 	
@@ -63,6 +77,10 @@ public class LeaseServiceImpl implements ILeaseService {
 	private ILotService lotService;
 	@Autowired
 	private IInboundDetailService inboundDetailService;
+	@Autowired
+	private ISkuService skuService;
+	@Autowired
+	private IPackService packService;
 
 
 	@Override
@@ -279,6 +297,7 @@ public class LeaseServiceImpl implements ILeaseService {
 					lease = new BillingLeaseTEntity();
 					lease.setLotNumber(t.getLotNumber());
 					lease.setQuantityShiped(t.getQuantity().abs());
+					lease.setOutboundDate(DateUtils.parseDate(outboundDateStr));
 					outboundLot.put(outboundDateStr, lease);
 				}else {
 					BigDecimal quantity = lease.getQuantityShiped();
@@ -297,9 +316,11 @@ public class LeaseServiceImpl implements ILeaseService {
 	 * @param list
 	 * @return
 	 */
-	private Boolean fillLotValue(AjaxRequest request, List<BillingLeaseTEntity> list) {
+	private Boolean fillLotValue(AjaxRequest<OwnerTEntity> request, List<BillingLeaseTEntity> list) {
 		if (CollectionUtils.isEmpty(list))
 			return Boolean.FALSE;
+		
+		OwnerTEntity owner = request.getData();
 		
 		List<String> lotNumberList = list.stream().map(BillingLeaseTEntity::getLotNumber).collect(Collectors.toList());
 		//转换二维数组，oracle in 操作不可超过1000个字符
@@ -314,6 +335,7 @@ public class LeaseServiceImpl implements ILeaseService {
 			
 			mulitLotNumberList.add(lotNumberList.subList(i * max, toIndex));
 		}
+		
 		Map<String, InboundDetailTEntity> lotPackMap = Maps.newHashMap();
 		List<LotAttributeTEntity> lotList = Lists.newArrayList();
 		for (List<String> lots : mulitLotNumberList) {
@@ -349,12 +371,30 @@ public class LeaseServiceImpl implements ILeaseService {
 				//按批次获取最后收货行
 				lotPackMap.put(k, detail);
 			});
-
 		}
 		
 		if (CollectionUtils.isEmpty(lotList))
 			return Boolean.FALSE;
 		
+		//查询SKU/包装  获取规格信息
+		//查询KSU
+		Set<Long> skuIdSet = lotList.stream().map(LotAttributeTEntity::getSkuId).collect(Collectors.toSet());
+		List<SkuTEntity> skuList = skuService.findByIds(SkuTEntity.builder()
+											.warehouseId(request.getWarehouseId())
+											.companyId(request.getCompanyId())
+											.ownerCode(owner.getOwnerCode())
+											.build(), skuIdSet);
+		Map<Long, SkuTEntity> skuMap = skuList.stream().collect(Collectors.toMap(SkuTEntity::getSkuId, v -> v));
+		
+		//查询包装
+		Set<Long> packIdSet = lotPackMap.values().stream().map(InboundDetailTEntity::getPackId).collect(Collectors.toSet());
+		List<PackTEntity> packList = packService.findByIds(PackTEntity.builder()
+				.warehouseId(request.getWarehouseId())
+				.companyId(request.getCompanyId())
+				.build(), packIdSet);
+		Map<Long, PackTEntity> packMap = packList.stream().collect(Collectors.toMap(PackTEntity::getPackId, v -> v));
+		
+		//将查询出的批次数据转换为map
 		Map<String, LotAttributeTEntity> lotMap = lotList.stream().collect(Collectors.toMap(LotAttributeTEntity::getLotNumber, v -> v));
 		
 		//开始填充数据
@@ -376,6 +416,24 @@ public class LeaseServiceImpl implements ILeaseService {
 				l.setPackCode(inbound.getPackCode());
 				l.setUom(inbound.getUom());
 			}
+			//查询规格信息
+			SkuTEntity sku = skuMap.get(l.getSkuId());
+			PackTEntity pack = packMap.get(l.getPackId());
+			if (sku != null && pack != null) {
+				PackVO packvo = packService.getPack(pack, sku, l.getUom());
+				
+				BigDecimal quantity = null;
+				if (l.getQuantityReceived() != null) {
+					quantity = l.getQuantityReceived();
+				}else {
+					quantity = l.getQuantityShiped();
+				}
+				l.setVolume(packvo.getVolume().multiply(quantity));
+				l.setWeightGross(packvo.getWeightGross().multiply(quantity));
+				l.setWeightNet(packvo.getWeightNet().multiply(quantity));
+				l.setWeightTare(packvo.getWeightTare().multiply(quantity));
+			}
+			
 		});
 		return Boolean.TRUE;
 	}
@@ -439,5 +497,25 @@ public class LeaseServiceImpl implements ILeaseService {
 			throw new BusinessServiceException("add error.");
 		return Boolean.FALSE;
 	}
+	
+    @Override
+    public ExcelTemplate getExcelTemplate() {
+        return new ExcelTemplate<BillingLeaseExcelVO>(ExcelTemplateEnum.BilingLease.getCode(), BillingLeaseExcelVO.class);
+    }
+	
+	@Override
+    public List<BillingLeaseExcelVO> exportData(PageRequest request) throws BusinessServiceException {
+        List<BillingLeaseExcelVO> returnList = Lists.newArrayList();
+        List<BillingLeaseTEntity> zones = find(request);
+        if (CollectionUtils.isEmpty(zones)) {
+            return returnList;
+        }
+        zones.forEach(d ->{
+        	BillingLeaseExcelVO zone = new BillingLeaseExcelVO();
+            BeanUtils.copyBeanProp(zone, d);
+            returnList.add(zone);
+        });
+        return returnList;
+    }
 
 }

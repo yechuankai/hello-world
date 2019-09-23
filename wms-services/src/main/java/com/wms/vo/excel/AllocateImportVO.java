@@ -13,26 +13,14 @@ import java.math.BigDecimal;
 
 public class AllocateImportVO extends AbstractExcelModel {
 
-    @Excel(name = "sourceNumber")
-    private Long sourceNumber;
-
-    @Excel(name = "sourceLineNumber")
-    private Long sourceLineNumber;
-
-    @Excel(name = "sourceBillNumber")
-    private String sourceBillNumber;
-
     @Excel(name = "sourceWaveNumber")
     private String sourceWaveNumber;
-
-    @Excel(name = "allocateType")
-    private String allocateType;
-
-    @Excel(name = "allocateStrategyType")
-    private String allocateStrategyType;
-
-    @Excel(name = "allocateStrategyCode")
-    private String allocateStrategyCode;
+    
+    @Excel(name = "sourceBillNumber")
+    private String sourceBillNumber;
+    
+    @Excel(name = "sourceLineNumber")
+    private Long sourceLineNumber;
 
     @Excel(name = "ownerCode")
     private String ownerCode;
@@ -69,20 +57,18 @@ public class AllocateImportVO extends AbstractExcelModel {
 
     @Excel(name = "fullLocationFlag")
     private String fullLocationFlag;
+    
+    @Excel(name = "fromLocationCode")
+    private String fromLocationCode;
+    
+    @Excel(name = "fromLpnNumber")
+    private String fromLpnNumber;
 
     @Excel(name = "toLocationCode")
     private String toLocationCode;
 
     @Excel(name = "remark")
     private String remark;
-
-    public Long getSourceNumber() {
-        return sourceNumber;
-    }
-
-    public void setSourceNumber(Long sourceNumber) {
-        this.sourceNumber = sourceNumber;
-    }
 
     public Long getSourceLineNumber() {
         return sourceLineNumber;
@@ -106,30 +92,6 @@ public class AllocateImportVO extends AbstractExcelModel {
 
     public void setSourceWaveNumber(String sourceWaveNumber) {
         this.sourceWaveNumber = sourceWaveNumber;
-    }
-
-    public String getAllocateType() {
-        return allocateType;
-    }
-
-    public void setAllocateType(String allocateType) {
-        this.allocateType = allocateType;
-    }
-
-    public String getAllocateStrategyType() {
-        return allocateStrategyType;
-    }
-
-    public void setAllocateStrategyType(String allocateStrategyType) {
-        this.allocateStrategyType = allocateStrategyType;
-    }
-
-    public String getAllocateStrategyCode() {
-        return allocateStrategyCode;
-    }
-
-    public void setAllocateStrategyCode(String allocateStrategyCode) {
-        this.allocateStrategyCode = allocateStrategyCode;
     }
 
     public String getOwnerCode() {
@@ -243,4 +205,22 @@ public class AllocateImportVO extends AbstractExcelModel {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+
+	public String getFromLocationCode() {
+		return fromLocationCode;
+	}
+
+	public void setFromLocationCode(String fromLocationCode) {
+		this.fromLocationCode = fromLocationCode;
+	}
+
+	public String getFromLpnNumber() {
+		return fromLpnNumber;
+	}
+
+	public void setFromLpnNumber(String fromLpnNumber) {
+		this.fromLpnNumber = fromLpnNumber;
+	}
+    
+    
 }

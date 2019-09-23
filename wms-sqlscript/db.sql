@@ -3638,6 +3638,10 @@ inbound_date date,
 quantity_received number(20,5),
 outbound_date date,
 quantity_shiped number(20,5),
+volume number(20,5) default 0,
+weight_gross number(20,5) default 0,
+weight_net number(20,5) default 0,
+weight_tare number(20,5) default 0,
 days number,
 status varchar2(50),
 remark varchar2(500),
@@ -3672,6 +3676,10 @@ comment on column billing_lease_t.inbound_date is '入库日期';
 comment on column billing_lease_t.quantity_received is '入库数量';
 comment on column billing_lease_t.outbound_date is '出库日期';
 comment on column billing_lease_t.quantity_shiped is '出库数量';
+comment on column billing_lease_t.volume is '体积';
+comment on column billing_lease_t.weight_gross is '毛重';
+comment on column billing_lease_t.weight_net is '净重';
+comment on column billing_lease_t.weight_tare is '皮重';
 comment on column billing_lease_t.days is '仓租天数';
 comment on column billing_lease_t.status is '状态';
 comment on column billing_lease_t.remark is '备注';

@@ -13,7 +13,8 @@ public enum ExcelTemplateEnum {
 	InventoryByContainer("STOCKGROUPBYCONTAINER","根据容器分组库存"),
 	InventoryByLpn("STOCKGROUPBYLPN","根据LPN分组库存"),
 	InventoryByLocation("STOCKGROUPBYLOCATION","根据库位分组库存"),
-	InventoryBySku("STOCKGROUPBYSKU","根据货品分组库存");
+	InventoryBySku("STOCKGROUPBYSKU","根据货品分组库存"),
+	BilingLease("BILLINGLEASE","仓租导出");
 	
 	private final String code;
 	private final String desc;

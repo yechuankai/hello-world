@@ -14,6 +14,10 @@
     <result column="CONTAINER_NUMBER" jdbcType="VARCHAR" property="containerNumber" />
     <result column="EXPECTED_DATE" jdbcType="TIMESTAMP" property="expectedDate" />
     <result column="ARRIVAL_DATE" jdbcType="TIMESTAMP" property="arrivalDate" />
+    <result column="VOLUME" jdbcType="DECIMAL" property="volume" />
+    <result column="WEIGHT_GROSS" jdbcType="DECIMAL" property="weightGross" />
+    <result column="WEIGHT_NET" jdbcType="DECIMAL" property="weightNet" />
+    <result column="WEIGHT_TARE" jdbcType="DECIMAL" property="weightTare" />
     <result column="STATUS" jdbcType="VARCHAR" property="status" />
     <result column="REMARK" jdbcType="VARCHAR" property="remark" />
     <result column="COMPANY_ID" jdbcType="DECIMAL" property="companyId" />
@@ -124,8 +128,8 @@
   <sql id="Base_Column_List">
     APPOINTMENT_ID, APPOINTMENT_CODE, TYPE, PLATFORM_ID, PLATFORM_CODE, SOURCE_BILL_NUMBER, 
     CAR_NUMBER, CAR_DRIVER, CAR_DRIVER_PHONE, CONTAINER_NUMBER, EXPECTED_DATE, ARRIVAL_DATE, 
-    STATUS, REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, 
-    UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
+    VOLUME, WEIGHT_GROSS, WEIGHT_NET, WEIGHT_TARE, STATUS, REMARK, COMPANY_ID, WAREHOUSE_ID, 
+    DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.AppointmentTExample" resultMap="BaseResultMap">
     select
@@ -152,18 +156,22 @@
       PLATFORM_ID, PLATFORM_CODE, SOURCE_BILL_NUMBER, 
       CAR_NUMBER, CAR_DRIVER, CAR_DRIVER_PHONE, 
       CONTAINER_NUMBER, EXPECTED_DATE, ARRIVAL_DATE, 
-      STATUS, REMARK, COMPANY_ID, 
-      WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
-      CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
-      UPDATE_VERSION, DESCRIPTION)
+      VOLUME, WEIGHT_GROSS, WEIGHT_NET, 
+      WEIGHT_TARE, STATUS, REMARK, 
+      COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, 
+      CREATE_BY, CREATE_TIME, UPDATE_BY, 
+      UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
+      )
     values (#{appointmentId,jdbcType=DECIMAL}, #{appointmentCode,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
       #{platformId,jdbcType=DECIMAL}, #{platformCode,jdbcType=VARCHAR}, #{sourceBillNumber,jdbcType=VARCHAR}, 
       #{carNumber,jdbcType=VARCHAR}, #{carDriver,jdbcType=VARCHAR}, #{carDriverPhone,jdbcType=VARCHAR}, 
       #{containerNumber,jdbcType=VARCHAR}, #{expectedDate,jdbcType=TIMESTAMP}, #{arrivalDate,jdbcType=TIMESTAMP}, 
-      #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, 
-      #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR})
+      #{volume,jdbcType=DECIMAL}, #{weightGross,jdbcType=DECIMAL}, #{weightNet,jdbcType=DECIMAL}, 
+      #{weightTare,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.AppointmentTEntity">
     insert into APPOINTMENT_T
@@ -203,6 +211,18 @@
       </if>
       <if test="arrivalDate != null">
         ARRIVAL_DATE,
+      </if>
+      <if test="volume != null">
+        VOLUME,
+      </if>
+      <if test="weightGross != null">
+        WEIGHT_GROSS,
+      </if>
+      <if test="weightNet != null">
+        WEIGHT_NET,
+      </if>
+      <if test="weightTare != null">
+        WEIGHT_TARE,
       </if>
       <if test="status != null">
         STATUS,
@@ -274,6 +294,18 @@
       </if>
       <if test="arrivalDate != null">
         #{arrivalDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="volume != null">
+        #{volume,jdbcType=DECIMAL},
+      </if>
+      <if test="weightGross != null">
+        #{weightGross,jdbcType=DECIMAL},
+      </if>
+      <if test="weightNet != null">
+        #{weightNet,jdbcType=DECIMAL},
+      </if>
+      <if test="weightTare != null">
+        #{weightTare,jdbcType=DECIMAL},
       </if>
       <if test="status != null">
         #{status,jdbcType=VARCHAR},
@@ -355,6 +387,18 @@
       <if test="record.arrivalDate != null">
         ARRIVAL_DATE = #{record.arrivalDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.volume != null">
+        VOLUME = #{record.volume,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightGross != null">
+        WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightNet != null">
+        WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightTare != null">
+        WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL},
+      </if>
       <if test="record.status != null">
         STATUS = #{record.status,jdbcType=VARCHAR},
       </if>
@@ -407,6 +451,10 @@
       CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR},
       EXPECTED_DATE = #{record.expectedDate,jdbcType=TIMESTAMP},
       ARRIVAL_DATE = #{record.arrivalDate,jdbcType=TIMESTAMP},
+      VOLUME = #{record.volume,jdbcType=DECIMAL},
+      WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL},
+      WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL},
+      WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL},
       STATUS = #{record.status,jdbcType=VARCHAR},
       REMARK = #{record.remark,jdbcType=VARCHAR},
       COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
@@ -532,6 +580,10 @@
     CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR}, 
     EXPECTED_DATE = #{record.expectedDate,jdbcType=TIMESTAMP}, 
     ARRIVAL_DATE = #{record.arrivalDate,jdbcType=TIMESTAMP}, 
+    VOLUME = #{record.volume,jdbcType=DECIMAL}, 
+    WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL}, 
+    WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL}, 
+    WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL}, 
     STATUS = #{record.status,jdbcType=VARCHAR}, 
     REMARK = #{record.remark,jdbcType=VARCHAR}, 
     COMPANY_ID = #{record.companyId,jdbcType=DECIMAL}, 
@@ -591,6 +643,18 @@
         </if>
         <if test="record.arrivalDate != null">
           ARRIVAL_DATE = #{record.arrivalDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.volume != null">
+          VOLUME = #{record.volume,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightGross != null">
+          WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightNet != null">
+          WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightTare != null">
+          WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL},
         </if>
         <if test="record.status != null">
           STATUS = #{record.status,jdbcType=VARCHAR},

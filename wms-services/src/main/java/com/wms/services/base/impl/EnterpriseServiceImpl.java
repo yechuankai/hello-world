@@ -304,7 +304,7 @@ public class EnterpriseServiceImpl implements IEnterpriseService {
                 .orderby(example);
 
         exampleCriteria.andDelFlagEqualTo(YesNoEnum.No.getCode());
-        exampleCriteria.andQuantityOnhandGreaterThan(0L);
+        exampleCriteria.andQuantityOnhandGreaterThan(BigDecimal.ZERO);
         List<EntInventoryOnhandTEntity> list = inventoryOnhandDao.selectByExample(example);
         List<EntInventoryOnhandVO> returnList = Lists.newArrayList();
         if(CollectionUtils.isEmpty(list))

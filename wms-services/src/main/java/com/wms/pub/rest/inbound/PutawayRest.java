@@ -175,6 +175,8 @@ public class PutawayRest extends BaseController{
 						.releaseTime(new Date())
 						.build();
 				taskService.add(taskdetail);
+				
+				putaway.setToZoneCode(taskdetail.getToZoneCode());
 			}
 			putaway.setLpnType(lpnType.getCode());
 			return success(putaway);

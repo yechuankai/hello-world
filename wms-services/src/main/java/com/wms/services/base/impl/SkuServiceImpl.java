@@ -64,11 +64,19 @@ public class SkuServiceImpl implements ISkuService, IExcelService<SkuVO> {
 			return Lists.newArrayList();
 		
 		SkuTExample example = new SkuTExample();
-		example.createCriteria()
+		SkuTExample.Criteria criteria = example.createCriteria();
+		
+		criteria
 		.andDelFlagEqualTo(YesNoEnum.No.getCode())
 		.andWarehouseIdEqualTo(sku.getWarehouseId())
 		.andCompanyIdEqualTo(sku.getCompanyId())
 		.andSkuIdIn(Lists.newArrayList(ids));
+		
+		if (StringUtils.isNotEmpty(sku.getOwnerCode()))
+			criteria.andOwnerCodeEqualTo(sku.getOwnerCode());
+		
+		if (sku.getOwnerId() != null)
+			criteria.andOwnerIdEqualTo(sku.getSkuId());
 		
 		List<SkuTEntity> list = skuDao.selectByExample(example);
 		if (CollectionUtils.isEmpty(list))

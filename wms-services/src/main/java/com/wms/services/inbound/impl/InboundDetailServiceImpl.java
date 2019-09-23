@@ -1273,6 +1273,10 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 					//默认库位STAGE
 					d.setLocationCode(STAGE);
 					d.setOperatorType(inboundVO.getOperatorType());
+					
+					//将预期数量设置为包装数量进行转换
+					d.setUomQuantityExpected(d.getQuantityExpected());
+					
 					validate(inbound,d);
 					modify(d);
 					statusHistory.setOldStatus(InboundStatusEnum.New.getCode());

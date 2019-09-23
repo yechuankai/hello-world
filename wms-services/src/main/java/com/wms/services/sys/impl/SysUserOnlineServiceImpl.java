@@ -47,9 +47,9 @@ public class SysUserOnlineServiceImpl implements ISysUserOnlineService{
 		}else {
 			rowcount = onlineDao.insertSelective(useronline);
 		}
-		if (rowcount == 0) {
-			throw new BusinessServiceException("SysUserOnlineServiceImpl", ExceptionConstant.ERROR_DEFAULT, null, "insert error.");
-		}
+		//if (rowcount == 0) {
+		//	throw new BusinessServiceException("SysUserOnlineServiceImpl", ExceptionConstant.ERROR_DEFAULT, null, "insert error.");
+		//}
 		return true;
 	}
 

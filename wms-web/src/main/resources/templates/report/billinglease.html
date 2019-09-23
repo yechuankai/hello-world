@@ -53,6 +53,7 @@
 		<a href="#" class="easyui-linkbutton" onclick="generator();" >
 			<span wms:text="${web.label.generrator}">Generator</span>
 		</a>
+		<a href="#" class="easyui-linkbutton" onclick="exportExcel('BILLINGLEASE', '#searchForm')" wms:text="${web.label.export}">Export</a>
 	</div>
     <div>
         <table id="dataTable" wms:title="${wms.labe.bilingleaselist}" class="easyui-datagrid"
@@ -67,13 +68,17 @@
 		            <th field="ownerCode" width="100" wms:text="${web.label.owner}" data-options="sortable:true">ownerCode</th>
 		            <th field="sourceBillNumber" width="100" wms:text="${web.label.sourcebillnumber}" data-options="sortable:true">sourceBillNumber</th>
 		            <th field="skuCode" width="100" wms:text="${web.label.sku}" data-options="sortable:true" >skuCode</th>
-		            <th field="uom" width="60" wms:text="${web.label.sku}" data-options="sortable:true" >uom</th>
+		            <th field="days" width="100" wms:text="${web.label.days}" data-options="sortable:true" >days</th>
 		            <th field="packCode" width="100" wms:text="${web.label.pack}" data-options="sortable:true">packCode</th>
+		            <th field="uom" width="60" wms:text="${web.label.sku}" data-options="sortable:true" >uom</th>
 		            <th field="inboundDate" width="130" wms:text="${web.label.inbounddate}" data-options="sortable:true" >inboundDate</th>
-		            <th field="quantityReceived" width="100" wms:text="${web.label.quantityreceive}" data-options="sortable:true" >quantityReceived</th>
+		            <th field="quantityReceived" width="100" wms:text="${web.label.quantity.onhand}" data-options="sortable:true" >quantityReceived</th>
 		            <th field="outboundDate" width="130" wms:text="${web.label.outbounddate}" data-options="sortable:true" >outboundDate</th>
 		            <th field="quantityShiped" width="100" wms:text="${web.label.uomquantityshiped}" data-options="sortable:true" >quantityShiped</th>
-		            <th field="days" width="100" wms:text="${web.label.days}" data-options="sortable:true" >days</th>
+		            <th field="volume" width="100" wms:text="${web.label.volume}" data-options="sortable:true" >volume</th>
+		            <th field="weightGross" width="100" wms:text="${web.label.weightgross}" data-options="sortable:true" >weightGross</th>
+			        <th field="weightNet" width="100" wms:text="${web.label.weightnet}" data-options="sortable:true" >weightNet</th>
+				    <th field="weightTare" width="100" wms:text="${web.label.weighttare}" data-options="sortable:true" >weightTare</th>
 		            <th field="createBy" width="80" wms:text="${web.label.createby}" >createBy</th>
 		            <th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true" >createTime</th>
             	</tr>

@@ -1,6 +1,7 @@
 package com.wms.dao.example;
 
 import com.wms.entity.auto.EntSkuTEntity;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -1721,7 +1722,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andVolumeEqualTo(Long value) {
+        public Criteria andVolumeEqualTo(BigDecimal value) {
             addCriterion("VOLUME =", value, "volume");
             return (Criteria) this;
         }
@@ -1738,7 +1739,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andVolumeNotEqualTo(Long value) {
+        public Criteria andVolumeNotEqualTo(BigDecimal value) {
             addCriterion("VOLUME <>", value, "volume");
             return (Criteria) this;
         }
@@ -1755,7 +1756,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andVolumeGreaterThan(Long value) {
+        public Criteria andVolumeGreaterThan(BigDecimal value) {
             addCriterion("VOLUME >", value, "volume");
             return (Criteria) this;
         }
@@ -1772,7 +1773,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andVolumeGreaterThanOrEqualTo(Long value) {
+        public Criteria andVolumeGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("VOLUME >=", value, "volume");
             return (Criteria) this;
         }
@@ -1789,7 +1790,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andVolumeLessThan(Long value) {
+        public Criteria andVolumeLessThan(BigDecimal value) {
             addCriterion("VOLUME <", value, "volume");
             return (Criteria) this;
         }
@@ -1806,7 +1807,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andVolumeLessThanOrEqualTo(Long value) {
+        public Criteria andVolumeLessThanOrEqualTo(BigDecimal value) {
             addCriterion("VOLUME <=", value, "volume");
             return (Criteria) this;
         }
@@ -1823,22 +1824,22 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andVolumeIn(List<Long> values) {
+        public Criteria andVolumeIn(List<BigDecimal> values) {
             addCriterion("VOLUME in", values, "volume");
             return (Criteria) this;
         }
 
-        public Criteria andVolumeNotIn(List<Long> values) {
+        public Criteria andVolumeNotIn(List<BigDecimal> values) {
             addCriterion("VOLUME not in", values, "volume");
             return (Criteria) this;
         }
 
-        public Criteria andVolumeBetween(Long value1, Long value2) {
+        public Criteria andVolumeBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("VOLUME between", value1, value2, "volume");
             return (Criteria) this;
         }
 
-        public Criteria andVolumeNotBetween(Long value1, Long value2) {
+        public Criteria andVolumeNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("VOLUME not between", value1, value2, "volume");
             return (Criteria) this;
         }
@@ -1853,7 +1854,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLengthEqualTo(Long value) {
+        public Criteria andLengthEqualTo(BigDecimal value) {
             addCriterion("LENGTH =", value, "length");
             return (Criteria) this;
         }
@@ -1870,7 +1871,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLengthNotEqualTo(Long value) {
+        public Criteria andLengthNotEqualTo(BigDecimal value) {
             addCriterion("LENGTH <>", value, "length");
             return (Criteria) this;
         }
@@ -1887,7 +1888,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLengthGreaterThan(Long value) {
+        public Criteria andLengthGreaterThan(BigDecimal value) {
             addCriterion("LENGTH >", value, "length");
             return (Criteria) this;
         }
@@ -1904,7 +1905,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLengthGreaterThanOrEqualTo(Long value) {
+        public Criteria andLengthGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("LENGTH >=", value, "length");
             return (Criteria) this;
         }
@@ -1921,7 +1922,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLengthLessThan(Long value) {
+        public Criteria andLengthLessThan(BigDecimal value) {
             addCriterion("LENGTH <", value, "length");
             return (Criteria) this;
         }
@@ -1938,7 +1939,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLengthLessThanOrEqualTo(Long value) {
+        public Criteria andLengthLessThanOrEqualTo(BigDecimal value) {
             addCriterion("LENGTH <=", value, "length");
             return (Criteria) this;
         }
@@ -1955,22 +1956,22 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLengthIn(List<Long> values) {
+        public Criteria andLengthIn(List<BigDecimal> values) {
             addCriterion("LENGTH in", values, "length");
             return (Criteria) this;
         }
 
-        public Criteria andLengthNotIn(List<Long> values) {
+        public Criteria andLengthNotIn(List<BigDecimal> values) {
             addCriterion("LENGTH not in", values, "length");
             return (Criteria) this;
         }
 
-        public Criteria andLengthBetween(Long value1, Long value2) {
+        public Criteria andLengthBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("LENGTH between", value1, value2, "length");
             return (Criteria) this;
         }
 
-        public Criteria andLengthNotBetween(Long value1, Long value2) {
+        public Criteria andLengthNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("LENGTH not between", value1, value2, "length");
             return (Criteria) this;
         }
@@ -1985,7 +1986,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWidthEqualTo(Long value) {
+        public Criteria andWidthEqualTo(BigDecimal value) {
             addCriterion("WIDTH =", value, "width");
             return (Criteria) this;
         }
@@ -2002,7 +2003,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWidthNotEqualTo(Long value) {
+        public Criteria andWidthNotEqualTo(BigDecimal value) {
             addCriterion("WIDTH <>", value, "width");
             return (Criteria) this;
         }
@@ -2019,7 +2020,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWidthGreaterThan(Long value) {
+        public Criteria andWidthGreaterThan(BigDecimal value) {
             addCriterion("WIDTH >", value, "width");
             return (Criteria) this;
         }
@@ -2036,7 +2037,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWidthGreaterThanOrEqualTo(Long value) {
+        public Criteria andWidthGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("WIDTH >=", value, "width");
             return (Criteria) this;
         }
@@ -2053,7 +2054,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWidthLessThan(Long value) {
+        public Criteria andWidthLessThan(BigDecimal value) {
             addCriterion("WIDTH <", value, "width");
             return (Criteria) this;
         }
@@ -2070,7 +2071,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWidthLessThanOrEqualTo(Long value) {
+        public Criteria andWidthLessThanOrEqualTo(BigDecimal value) {
             addCriterion("WIDTH <=", value, "width");
             return (Criteria) this;
         }
@@ -2087,22 +2088,22 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWidthIn(List<Long> values) {
+        public Criteria andWidthIn(List<BigDecimal> values) {
             addCriterion("WIDTH in", values, "width");
             return (Criteria) this;
         }
 
-        public Criteria andWidthNotIn(List<Long> values) {
+        public Criteria andWidthNotIn(List<BigDecimal> values) {
             addCriterion("WIDTH not in", values, "width");
             return (Criteria) this;
         }
 
-        public Criteria andWidthBetween(Long value1, Long value2) {
+        public Criteria andWidthBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("WIDTH between", value1, value2, "width");
             return (Criteria) this;
         }
 
-        public Criteria andWidthNotBetween(Long value1, Long value2) {
+        public Criteria andWidthNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("WIDTH not between", value1, value2, "width");
             return (Criteria) this;
         }
@@ -2117,7 +2118,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andHeightEqualTo(Long value) {
+        public Criteria andHeightEqualTo(BigDecimal value) {
             addCriterion("HEIGHT =", value, "height");
             return (Criteria) this;
         }
@@ -2134,7 +2135,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andHeightNotEqualTo(Long value) {
+        public Criteria andHeightNotEqualTo(BigDecimal value) {
             addCriterion("HEIGHT <>", value, "height");
             return (Criteria) this;
         }
@@ -2151,7 +2152,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andHeightGreaterThan(Long value) {
+        public Criteria andHeightGreaterThan(BigDecimal value) {
             addCriterion("HEIGHT >", value, "height");
             return (Criteria) this;
         }
@@ -2168,7 +2169,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andHeightGreaterThanOrEqualTo(Long value) {
+        public Criteria andHeightGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("HEIGHT >=", value, "height");
             return (Criteria) this;
         }
@@ -2185,7 +2186,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andHeightLessThan(Long value) {
+        public Criteria andHeightLessThan(BigDecimal value) {
             addCriterion("HEIGHT <", value, "height");
             return (Criteria) this;
         }
@@ -2202,7 +2203,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andHeightLessThanOrEqualTo(Long value) {
+        public Criteria andHeightLessThanOrEqualTo(BigDecimal value) {
             addCriterion("HEIGHT <=", value, "height");
             return (Criteria) this;
         }
@@ -2219,22 +2220,22 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andHeightIn(List<Long> values) {
+        public Criteria andHeightIn(List<BigDecimal> values) {
             addCriterion("HEIGHT in", values, "height");
             return (Criteria) this;
         }
 
-        public Criteria andHeightNotIn(List<Long> values) {
+        public Criteria andHeightNotIn(List<BigDecimal> values) {
             addCriterion("HEIGHT not in", values, "height");
             return (Criteria) this;
         }
 
-        public Criteria andHeightBetween(Long value1, Long value2) {
+        public Criteria andHeightBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("HEIGHT between", value1, value2, "height");
             return (Criteria) this;
         }
 
-        public Criteria andHeightNotBetween(Long value1, Long value2) {
+        public Criteria andHeightNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("HEIGHT not between", value1, value2, "height");
             return (Criteria) this;
         }
@@ -2249,7 +2250,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightGrossEqualTo(Long value) {
+        public Criteria andWeightGrossEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_GROSS =", value, "weightGross");
             return (Criteria) this;
         }
@@ -2266,7 +2267,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightGrossNotEqualTo(Long value) {
+        public Criteria andWeightGrossNotEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_GROSS <>", value, "weightGross");
             return (Criteria) this;
         }
@@ -2283,7 +2284,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightGrossGreaterThan(Long value) {
+        public Criteria andWeightGrossGreaterThan(BigDecimal value) {
             addCriterion("WEIGHT_GROSS >", value, "weightGross");
             return (Criteria) this;
         }
@@ -2300,7 +2301,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightGrossGreaterThanOrEqualTo(Long value) {
+        public Criteria andWeightGrossGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_GROSS >=", value, "weightGross");
             return (Criteria) this;
         }
@@ -2317,7 +2318,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightGrossLessThan(Long value) {
+        public Criteria andWeightGrossLessThan(BigDecimal value) {
             addCriterion("WEIGHT_GROSS <", value, "weightGross");
             return (Criteria) this;
         }
@@ -2334,7 +2335,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightGrossLessThanOrEqualTo(Long value) {
+        public Criteria andWeightGrossLessThanOrEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_GROSS <=", value, "weightGross");
             return (Criteria) this;
         }
@@ -2351,22 +2352,22 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightGrossIn(List<Long> values) {
+        public Criteria andWeightGrossIn(List<BigDecimal> values) {
             addCriterion("WEIGHT_GROSS in", values, "weightGross");
             return (Criteria) this;
         }
 
-        public Criteria andWeightGrossNotIn(List<Long> values) {
+        public Criteria andWeightGrossNotIn(List<BigDecimal> values) {
             addCriterion("WEIGHT_GROSS not in", values, "weightGross");
             return (Criteria) this;
         }
 
-        public Criteria andWeightGrossBetween(Long value1, Long value2) {
+        public Criteria andWeightGrossBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("WEIGHT_GROSS between", value1, value2, "weightGross");
             return (Criteria) this;
         }
 
-        public Criteria andWeightGrossNotBetween(Long value1, Long value2) {
+        public Criteria andWeightGrossNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("WEIGHT_GROSS not between", value1, value2, "weightGross");
             return (Criteria) this;
         }
@@ -2381,7 +2382,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightNetEqualTo(Long value) {
+        public Criteria andWeightNetEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_NET =", value, "weightNet");
             return (Criteria) this;
         }
@@ -2398,7 +2399,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightNetNotEqualTo(Long value) {
+        public Criteria andWeightNetNotEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_NET <>", value, "weightNet");
             return (Criteria) this;
         }
@@ -2415,7 +2416,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightNetGreaterThan(Long value) {
+        public Criteria andWeightNetGreaterThan(BigDecimal value) {
             addCriterion("WEIGHT_NET >", value, "weightNet");
             return (Criteria) this;
         }
@@ -2432,7 +2433,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightNetGreaterThanOrEqualTo(Long value) {
+        public Criteria andWeightNetGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_NET >=", value, "weightNet");
             return (Criteria) this;
         }
@@ -2449,7 +2450,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightNetLessThan(Long value) {
+        public Criteria andWeightNetLessThan(BigDecimal value) {
             addCriterion("WEIGHT_NET <", value, "weightNet");
             return (Criteria) this;
         }
@@ -2466,7 +2467,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightNetLessThanOrEqualTo(Long value) {
+        public Criteria andWeightNetLessThanOrEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_NET <=", value, "weightNet");
             return (Criteria) this;
         }
@@ -2483,22 +2484,22 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightNetIn(List<Long> values) {
+        public Criteria andWeightNetIn(List<BigDecimal> values) {
             addCriterion("WEIGHT_NET in", values, "weightNet");
             return (Criteria) this;
         }
 
-        public Criteria andWeightNetNotIn(List<Long> values) {
+        public Criteria andWeightNetNotIn(List<BigDecimal> values) {
             addCriterion("WEIGHT_NET not in", values, "weightNet");
             return (Criteria) this;
         }
 
-        public Criteria andWeightNetBetween(Long value1, Long value2) {
+        public Criteria andWeightNetBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("WEIGHT_NET between", value1, value2, "weightNet");
             return (Criteria) this;
         }
 
-        public Criteria andWeightNetNotBetween(Long value1, Long value2) {
+        public Criteria andWeightNetNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("WEIGHT_NET not between", value1, value2, "weightNet");
             return (Criteria) this;
         }
@@ -2513,7 +2514,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightTareEqualTo(Long value) {
+        public Criteria andWeightTareEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_TARE =", value, "weightTare");
             return (Criteria) this;
         }
@@ -2530,7 +2531,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightTareNotEqualTo(Long value) {
+        public Criteria andWeightTareNotEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_TARE <>", value, "weightTare");
             return (Criteria) this;
         }
@@ -2547,7 +2548,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightTareGreaterThan(Long value) {
+        public Criteria andWeightTareGreaterThan(BigDecimal value) {
             addCriterion("WEIGHT_TARE >", value, "weightTare");
             return (Criteria) this;
         }
@@ -2564,7 +2565,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightTareGreaterThanOrEqualTo(Long value) {
+        public Criteria andWeightTareGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_TARE >=", value, "weightTare");
             return (Criteria) this;
         }
@@ -2581,7 +2582,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightTareLessThan(Long value) {
+        public Criteria andWeightTareLessThan(BigDecimal value) {
             addCriterion("WEIGHT_TARE <", value, "weightTare");
             return (Criteria) this;
         }
@@ -2598,7 +2599,7 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightTareLessThanOrEqualTo(Long value) {
+        public Criteria andWeightTareLessThanOrEqualTo(BigDecimal value) {
             addCriterion("WEIGHT_TARE <=", value, "weightTare");
             return (Criteria) this;
         }
@@ -2615,22 +2616,22 @@ public class EntSkuTExample {
             return (Criteria) this;
         }
 
-        public Criteria andWeightTareIn(List<Long> values) {
+        public Criteria andWeightTareIn(List<BigDecimal> values) {
             addCriterion("WEIGHT_TARE in", values, "weightTare");
             return (Criteria) this;
         }
 
-        public Criteria andWeightTareNotIn(List<Long> values) {
+        public Criteria andWeightTareNotIn(List<BigDecimal> values) {
             addCriterion("WEIGHT_TARE not in", values, "weightTare");
             return (Criteria) this;
         }
 
-        public Criteria andWeightTareBetween(Long value1, Long value2) {
+        public Criteria andWeightTareBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("WEIGHT_TARE between", value1, value2, "weightTare");
             return (Criteria) this;
         }
 
-        public Criteria andWeightTareNotBetween(Long value1, Long value2) {
+        public Criteria andWeightTareNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("WEIGHT_TARE not between", value1, value2, "weightTare");
             return (Criteria) this;
         }

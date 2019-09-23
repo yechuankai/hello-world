@@ -47,7 +47,6 @@ public class InventoryRest extends BaseController {
 	 */
 	@RequestMapping(value = "/find")
 	public PageResult<InventoryOnhandVO> find(@RequestBody String req) {
-		List<InventoryOnhandVO> list = null;
 		try {
 			PageRequest pageRequest = pageRequest(req);
 			pageRequest.put(InventoryServiceImpl.QUANTITY_ONHAND_MORE_THAN_ZERO, YesNoEnum.Yes.getCode());

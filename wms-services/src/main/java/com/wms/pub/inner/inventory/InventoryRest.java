@@ -4,6 +4,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.wms.common.core.controller.BaseController;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/services/inner/inventory/onhand")
@@ -31,10 +34,10 @@ public class InventoryRest extends BaseController {
 	
 	@RequestMapping(value = "/find")
 	public PageResult<InventoryOnhandVO> find(@RequestBody String req) {
-		List<InventoryOnhandVO> list = null;
 		try {
 			PageRequest pageRequest = pageRequest(req);
-			return inventoryService.find(pageRequest);
+			PageResult<InventoryOnhandVO> page = inventoryService.find(pageRequest);
+			return page;
 		} catch (Exception e) {
 			return pageFail(e.getMessage());
 		}

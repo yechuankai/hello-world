@@ -39,9 +39,10 @@ public class EntInventoryOnhandVO extends EntInventoryOnhandTEntity {
 
 	public EntInventoryOnhandVO(EntInventoryOnhandTEntity entInventoryOnhandTEntity) {
 		BeanUtils.copyBeanProp(this, entInventoryOnhandTEntity);
-		long quantityAvailable = entInventoryOnhandTEntity.getQuantityOnhand()
-				- entInventoryOnhandTEntity.getQuantityAllocated() - entInventoryOnhandTEntity.getQuantityLocked();
-		this.quantityAvailable = new BigDecimal(quantityAvailable);
+		BigDecimal quantityAvailable = entInventoryOnhandTEntity.getQuantityOnhand()
+				.subtract(entInventoryOnhandTEntity.getQuantityAllocated())
+				.subtract(entInventoryOnhandTEntity.getQuantityLocked());
+		this.quantityAvailable = quantityAvailable;
 	}
 
 	public BigDecimal getQuantityExpected() {

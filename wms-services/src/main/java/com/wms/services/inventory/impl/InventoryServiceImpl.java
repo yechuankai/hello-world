@@ -339,7 +339,11 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 			returnList.add(inventoryOnhandVO);
 		});
 		
-		return PageResult.create(page, returnList);
+		if (CollectionUtils.isEmpty(returnList)) 
+			return PageResult.create(Lists.newArrayList());
+		
+		PageResult pageResult = PageResult.create(page, returnList);
+		return pageResult;
 	 }
 
 	@Override

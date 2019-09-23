@@ -53,7 +53,6 @@ public class ExcelAsync {
 		return new TimerTask() {
 			@Override
 			public void run() {
-				
 				ISysFileService fileService = SpringUtils.getBean(ISysFileService.class);
 				SysFileTEntity sysFile = fileService.find(file);
 				if (!FileStatusEnum.Upload.getCode().equals(sysFile.getStatus())) 
@@ -216,5 +215,4 @@ public class ExcelAsync {
 			}
 		};
 	}
-
 }
