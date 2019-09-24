@@ -1,6 +1,8 @@
 package com.wms.pub.rest.inventory;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,6 +15,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.wms.common.core.controller.BaseController;
 import com.wms.common.core.domain.request.AjaxRequest;
@@ -21,13 +24,16 @@ import com.wms.common.core.domain.response.AjaxResult;
 import com.wms.common.core.domain.response.PageResult;
 import com.wms.common.enums.YesNoEnum;
 import com.wms.common.utils.StringUtils;
+import com.wms.entity.auto.EntInventoryOnhandTEntity;
 import com.wms.entity.auto.InventoryOnhandTEntity;
 import com.wms.entity.auto.LocationTEntity;
 import com.wms.entity.auto.LpnTEntity;
+import com.wms.entity.auto.SysWarehousesTEntity;
 import com.wms.services.base.ILocationService;
 import com.wms.services.inventory.IInventoryService;
 import com.wms.services.inventory.ILpnService;
 import com.wms.services.inventory.impl.InventoryServiceImpl;
+import com.wms.services.sys.ISysWarehouseService;
 import com.wms.vo.InventoryOnhandVO;
 
 @RestController("publicInventoryRest")
@@ -39,6 +45,8 @@ public class InventoryRest extends BaseController {
 	private ILpnService lpnService;
 	@Autowired
 	private ILocationService locationService;
+	@Autowired
+    ISysWarehouseService warehouseService;
 
 	/**
 	 * 多维度查找库存
@@ -50,7 +58,33 @@ public class InventoryRest extends BaseController {
 		try {
 			PageRequest pageRequest = pageRequest(req);
 			pageRequest.put(InventoryServiceImpl.QUANTITY_ONHAND_MORE_THAN_ZERO, YesNoEnum.Yes.getCode());
-			return inventoryService.find(pageRequest);
+			PageResult<InventoryOnhandVO> page = inventoryService.find(pageRequest);
+			
+			List<Map<String, BigDecimal>> quantityList = Lists.newArrayList(); 
+			BigDecimal totalOnhand = BigDecimal.ZERO;
+			BigDecimal totalAvailable = BigDecimal.ZERO;
+			for(InventoryOnhandVO l: page.getRows()) {
+				totalOnhand = totalOnhand.add(l.getQuantityOnhand());
+				totalAvailable = totalAvailable.add(l.getQuantityAvailable());
+			}
+			Map<String, BigDecimal> quantityMap = Maps.newHashMap();
+			quantityMap.put("onhand", totalOnhand);
+			quantityMap.put("available", totalAvailable);
+			quantityList.add(quantityMap);
+			page.setFooter(quantityList);
+			
+			//补全仓库code
+	        Set<Long> ids = Sets.newHashSet(page.getRows().stream().map(InventoryOnhandVO::getWarehouseId).collect(Collectors.toSet()));
+	        List<SysWarehousesTEntity> selectList = warehouseService.findByIds(ids);
+	        Map<Long, SysWarehousesTEntity> warehouseMap = selectList.stream().collect(Collectors.toMap(SysWarehousesTEntity::getWarehouseId, v -> v));
+	        page.getRows().forEach(onhand -> {
+	        	SysWarehousesTEntity wareObj = warehouseMap.get(onhand.getWarehouseId());
+	            if (wareObj != null) {
+	            	onhand.setWarehouseCode(wareObj.getCode());
+	            }
+	        });
+			
+			return page;
 		} catch (Exception e) {
 			return pageFail(e.getMessage());
 		}

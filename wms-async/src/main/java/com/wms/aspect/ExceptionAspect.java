@@ -80,7 +80,7 @@ public class ExceptionAspect {
 						}
 					} catch (Exception e2) {}
 	            	
-	            	AsyncManager.me().execute(AsyncFactory.recordMonitor(monitor, Boolean.FALSE));
+	            	AsyncManager.me().execute(AsyncFactory.recordMonitor(monitor, Boolean.FALSE, 0));
 				}
 				throw new SystemException(e);
 			}

@@ -20,6 +20,7 @@ import com.wms.common.enums.CountStatusEnum;
 import com.wms.common.enums.YesNoEnum;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.common.utils.ExampleUtils;
+import com.wms.common.utils.StringUtils;
 import com.wms.common.utils.bean.BeanUtils;
 import com.wms.common.utils.key.KeyUtils;
 import com.wms.dao.auto.IInventoryCountDetailTDao;
@@ -295,6 +296,20 @@ public class InventoryCountDetailServiceImpl implements IInventoryCountDetailSer
 			}
 			TExampleCriteria.andStatusIn(status);
 		}
+		
+		if(detail.getLocationId() != null) {
+			TExampleCriteria.andLocationIdEqualTo(detail.getLocationId());
+		}
+		if(detail.getSkuId() != null) {
+			TExampleCriteria.andSkuIdEqualTo(detail.getSkuId());
+		}
+		if (StringUtils.isNotEmpty(detail.getLocationCode())) {
+			TExampleCriteria.andLocationCodeEqualTo(detail.getLocationCode());
+		}
+		if (StringUtils.isNotEmpty(detail.getSkuCode())) {
+			TExampleCriteria.andLocationCodeEqualTo(detail.getSkuCode());
+		}
+		
 		
 		List<InventoryCountDetailTEntity> countDetailList = detailDao.selectByExample(TExample);
 		return countDetailList;

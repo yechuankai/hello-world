@@ -1154,9 +1154,11 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 		} 
 		//默认为修改
 		newDetail.stream().forEach(add -> {
-			add.setOperatorType(OperatorTypeEnum.Modify);
 			if (add.getInboundHeaderId() != null) {
 				add.setLineNumber(null); //清空行号数据
+				add.setOperatorType(type);
+			}else {
+				add.setOperatorType(OperatorTypeEnum.Modify);
 			}
 		});
 		
@@ -1207,11 +1209,11 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 		});
 		
 		if (inboundVO.getOperatorType() == OperatorTypeEnum.Add) {
-			processOMSinboundDetail(OperatorTypeEnum.Add, inboundVO.getDetail(), Lists.newArrayList());
+			processOMSinboundDetail(inboundVO.getOperatorType(), inboundVO.getDetail(), Lists.newArrayList());
 		}else if (inboundVO.getOperatorType() == OperatorTypeEnum.Modify ) {
 			//1.获取所有明细
 			List<InboundDetailTEntity> detail = findByHeaderId(inbound.getInboundHeaderId());
-			processOMSinboundDetail(OperatorTypeEnum.Add, inboundVO.getDetail(), detail);
+			processOMSinboundDetail(inboundVO.getOperatorType(), inboundVO.getDetail(), detail);
 		}
 		
 			

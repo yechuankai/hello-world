@@ -82,7 +82,7 @@ public class RestAspect {
 					String url = ServletUtils.getRequest().getRequestURL().toString();
 					monitor.setUrl(url);
 				}
-            	AsyncManager.me().execute(AsyncFactory.recordMonitor(monitor, Boolean.FALSE));
+            	AsyncManager.me().execute(AsyncFactory.recordMonitor(monitor, Boolean.FALSE, 0));
             }
             Object ret = pjp.proceed();
             if(log.isDebugEnabled())
@@ -102,7 +102,7 @@ public class RestAspect {
             			.time(endtime - starttime)
             			.monitorLogId(uuid)
             			.build();
-            	AsyncManager.me().execute(AsyncFactory.recordMonitor(monitor, true));
+            	AsyncManager.me().execute(AsyncFactory.recordMonitor(monitor, true, 0));
             }
             
             return ret;
@@ -119,7 +119,7 @@ public class RestAspect {
             			.time(endtime - starttime)
             			.monitorLogId(uuid)
             			.build();
-            	AsyncManager.me().execute(AsyncFactory.recordMonitor(monitor, true));
+            	AsyncManager.me().execute(AsyncFactory.recordMonitor(monitor, true, 0));
 			}
 			throw e;
 		}

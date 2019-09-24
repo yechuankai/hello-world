@@ -482,6 +482,11 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 			throw new BusinessServiceException("record update error.");
 
 		header.setStatus(status.getCode());
+		
+		//发运状态时更新装车任务
+		if (OutboundStatusEnum.Shiped == status) {
+			loadTask(selectHeader, OperatorTypeEnum.Complate);
+		}
 
 		return status;
 	}

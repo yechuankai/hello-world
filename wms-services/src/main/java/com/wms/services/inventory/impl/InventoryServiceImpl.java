@@ -17,10 +17,12 @@ import com.wms.common.utils.key.KeyUtils;
 import com.wms.dao.auto.IInventoryOnhandTDao;
 import com.wms.dao.example.InventoryOnhandTExample;
 import com.wms.entity.auto.InventoryOnhandTEntity;
+import com.wms.entity.auto.LotAttributeTEntity;
 import com.wms.entity.auto.LpnTEntity;
 import com.wms.entity.auto.SkuTEntity;
 import com.wms.services.core.IInventoryCoreService;
 import com.wms.services.inventory.IInventoryService;
+import com.wms.services.inventory.ILotService;
 import com.wms.services.inventory.ILpnService;
 import com.wms.vo.InventoryOnhandVO;
 import com.wms.vo.InventoryTranDetailVO;
@@ -44,6 +46,8 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 	private IInventoryCoreService inventoryCoreService;
 	@Autowired
 	private ILpnService lpnService;
+	@Autowired
+	private ILotService lotService;
 	
 	private static final String QUANTITY_AVAILABLE_MORE_THAN_ZERO = "quantityAvailableMoreThanZero";
 	public static final String QUANTITY_ONHAND_MORE_THAN_ZERO = "quantityOnhandMoreThanZero";
@@ -329,12 +333,31 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 		List<LpnTEntity> lpnList = lpnService.findByLpnIds(LpnTEntity.builder().warehouseId(request.getWarehouseId()).companyId(request.getCompanyId()).build(), lpnIds);
 		Map<Long, LpnTEntity> lpnMap = lpnList.stream().collect(Collectors.toMap(LpnTEntity::getLpnId, v->v));
 		
+		//查询批属性
+		Set<Long> lotIds = inventoryOnhandDetailList.stream().map(InventoryOnhandTEntity::getLotId).collect(Collectors.toSet());
+		List<LotAttributeTEntity> lotList = lotService.findByIds(LotAttributeTEntity.builder().warehouseId(request.getWarehouseId()).companyId(request.getCompanyId()).build(), lotIds);
+		Map<Long, LotAttributeTEntity> lotMap = lotList.stream().collect(Collectors.toMap(LotAttributeTEntity::getLotAttributeId, v->v));
 		
 		List<InventoryOnhandVO> returnList = Lists.newArrayList();
 		inventoryOnhandDetailList.forEach(d -> {
 			InventoryOnhandVO inventoryOnhandVO = new InventoryOnhandVO(d);
 			if (d.getLpnId() != null && lpnMap.containsKey(d.getLpnId())) {
 				inventoryOnhandVO.setContainerNumber(lpnMap.get(d.getLpnId()).getContainerNumber());
+			}
+			LotAttributeTEntity lot = lotMap.get(d.getLotId());
+			if (lot != null) {
+				inventoryOnhandVO.setLotAttribute1(lot.getLotAttribute1());
+				inventoryOnhandVO.setLotAttribute2(lot.getLotAttribute2());
+				inventoryOnhandVO.setLotAttribute3(lot.getLotAttribute3());
+				inventoryOnhandVO.setLotAttribute4(lot.getLotAttribute4());
+				inventoryOnhandVO.setLotAttribute5(lot.getLotAttribute5());
+				inventoryOnhandVO.setLotAttribute6(lot.getLotAttribute6());
+				inventoryOnhandVO.setLotAttribute7(lot.getLotAttribute7());
+				inventoryOnhandVO.setLotAttribute8(lot.getLotAttribute8());
+				inventoryOnhandVO.setLotAttribute9(lot.getLotAttribute9());
+				inventoryOnhandVO.setLotAttribute10(lot.getLotAttribute10());
+				inventoryOnhandVO.setLotAttribute11(lot.getLotAttribute11());
+				inventoryOnhandVO.setLotAttribute12(lot.getLotAttribute12());
 			}
 			returnList.add(inventoryOnhandVO);
 		});

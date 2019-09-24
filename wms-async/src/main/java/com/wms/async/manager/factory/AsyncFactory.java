@@ -5,6 +5,7 @@ import java.util.TimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.wms.async.manager.AsyncManager;
 import com.wms.common.core.domain.mongodb.RestContent;
 import com.wms.common.enums.MonitorTypeEnum;
 import com.wms.common.utils.ServletUtils;
@@ -65,7 +66,7 @@ public class AsyncFactory {
 	 * 
 	 * @return 任务task
 	 */
-	public static TimerTask recordMonitor(final SysMonitorLogTEntity monitorLog, Boolean update) {
+	public static TimerTask recordMonitor(final SysMonitorLogTEntity monitorLog, Boolean update, int retryCount) {
 		return new TimerTask() {
 			@Override
 			public void run() {
@@ -78,7 +79,14 @@ public class AsyncFactory {
 					SysMonitorLogTExample example = new SysMonitorLogTExample();
 					example.createCriteria()
 					.andMonitorLogIdEqualTo(monitorLog.getMonitorLogId());
-					SpringUtils.getBean(ISysMonitorLogTDao.class).updateByExampleSelective(monitorLog, example);
+					int rowcount = SpringUtils.getBean(ISysMonitorLogTDao.class).updateByExampleSelective(monitorLog, example);
+					if (rowcount == 0 && retryCount < 3) { //更新失败时继续调用，由于执行速度较快，很可能未插入则执行了更新
+						try {
+							Thread.sleep(10);
+							final int _retryCount = retryCount + 1;
+							AsyncManager.me().execute(AsyncFactory.recordMonitor(monitorLog, Boolean.TRUE, _retryCount));
+						} catch (InterruptedException e) {}
+					}
 				}else {
 					SpringUtils.getBean(ISysMonitorLogTDao.class).insertSelective(monitorLog);
 				}

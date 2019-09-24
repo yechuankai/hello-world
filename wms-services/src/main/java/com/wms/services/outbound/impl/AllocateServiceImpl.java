@@ -660,7 +660,6 @@ public class AllocateServiceImpl implements IAllocateService , IExcelService<All
 			List<InventoryTranDetailVO> tranList = Lists.newArrayList();
 			//明细
 			v.forEach(d -> {
-
 				//必须为硬分配
 				if (AllocateStrategyTypeEnum.Soft.getCode().equals(d.getAllocateStrategyType()))
 						throw new BusinessServiceException("AllocateServiceImpl", "allocate.line.pick.must.hardallocate",new Object[] {d.getSourceBillNumber()}) ;
