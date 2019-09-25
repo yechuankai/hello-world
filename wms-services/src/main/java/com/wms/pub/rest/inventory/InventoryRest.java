@@ -189,7 +189,7 @@ public class InventoryRest extends BaseController {
 				InventoryOnhandVO vo = new InventoryOnhandVO(v);
 				vo.setToQuantity(v.getQuantityOnhand());
 				vo.setToLocationCode(moveOnhand.getToLocationCode());
-				vo.setContainerNumber(moveOnhand.getToContainerNumber());
+				vo.setToContainerNumber(moveOnhand.getToContainerNumber());
 				inventoryOnhandVOs.add(vo);
 			});
 			inventoryService.move(new AjaxRequest<List<InventoryOnhandVO>>(inventoryOnhandVOs, request));
