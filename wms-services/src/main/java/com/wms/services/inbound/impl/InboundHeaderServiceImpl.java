@@ -25,6 +25,7 @@ import com.wms.services.inbound.IInboundDetailService;
 import com.wms.services.inbound.IInboundHeaderService;
 import com.wms.services.inventory.ITaskService;
 import com.wms.services.sys.IStatusHistoryService;
+import com.wms.services.sys.ISysWarehouseService;
 import com.wms.vo.inbound.InboundDetailVO;
 import com.wms.vo.inbound.InboundVO;
 import org.apache.commons.collections.CollectionUtils;
@@ -59,7 +60,9 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 	private IEnterpriseService enterpriseService;
 	@Autowired
 	private ITaskService taskService;
-	
+	@Autowired
+	private ISysWarehouseService warehouseService;
+
 	@Override
 	public List<InboundHeaderTEntity> find(PageRequest request) throws BusinessServiceException {
 		
@@ -84,10 +87,9 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 		}
 		
 		List<InboundHeaderTEntity> inboundList = inboundHeaderDao.selectByExample(TExample);
-		
+
 		return inboundList;
 	}
-
 
 	@Override
 	@Transactional
@@ -780,6 +782,10 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 	* @Date: 2019/8/28 
 	*/ 
 	private void deal(InboundVO inbound) {
+		SysWarehousesTEntity warehouses = warehouseService.findById(inbound.getToWarehouseId());
+		if(null != warehouses){
+			inbound.setToWarehouseCode(warehouses.getCode());
+		}
 		if(StringUtils.isNotBlank(inbound.getOwnerCode())){
 			//根据仓库+code查询该仓库是否存在货主，不存在则新建
 			Set<String> code = Sets.newHashSet();

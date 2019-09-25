@@ -26,7 +26,9 @@ import com.wms.services.core.IInventoryCoreService;
 import com.wms.services.core.IPutawayCoreService;
 import com.wms.services.inbound.IInboundDetailService;
 import com.wms.services.inbound.IInboundHeaderService;
-import com.wms.services.inventory.*;
+import com.wms.services.inventory.IAdjustmentDetailService;
+import com.wms.services.inventory.ILotService;
+import com.wms.services.inventory.ITaskService;
 import com.wms.services.sys.IStatusHistoryService;
 import com.wms.vo.InventoryTranDetailVO;
 import com.wms.vo.InventoryTranVO;
@@ -37,8 +39,6 @@ import com.wms.vo.adjustment.AdjustmentVO;
 import com.wms.vo.excel.InboundDetailImportVO;
 import com.wms.vo.inbound.InboundDetailVO;
 import com.wms.vo.inbound.InboundVO;
-import com.wms.vo.outbound.OutboundDetailVO;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1208,7 +1208,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 			d.setOperatorType(inboundVO.getOperatorType());
 		});
 		
-		if (inboundVO.getOperatorType() == OperatorTypeEnum.Add) {
+		if (inboundVO.getOperatorType() == OperatorTypeEnum.Add||inboundVO.getOperatorType() == OperatorTypeEnum.Submit) {
 			processOMSinboundDetail(inboundVO.getOperatorType(), inboundVO.getDetail(), Lists.newArrayList());
 		}else if (inboundVO.getOperatorType() == OperatorTypeEnum.Modify ) {
 			//1.获取所有明细
