@@ -1,5 +1,7 @@
 package com.wms.services.sys;
 
+import java.util.List;
+
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.entity.auto.StatusHistoryTEntity;
 
@@ -12,4 +14,6 @@ import com.wms.entity.auto.StatusHistoryTEntity;
 public interface IStatusHistoryService {
 
     Boolean add(StatusHistoryTEntity statusHistory) throws BusinessServiceException;
+    
+    List<StatusHistoryTEntity> findBySourceNumber(StatusHistoryTEntity statusHistory) throws BusinessServiceException;
 }

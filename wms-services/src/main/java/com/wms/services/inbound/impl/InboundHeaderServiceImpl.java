@@ -604,6 +604,7 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 				inboundVO.setCreateBy(request.getUserName());
 				inboundVO.setCreateTime(new Date());
 				inboundVO.setStatus(InboundStatusEnum.Draft.getCode());
+				statusHistory.setNewStatus(InboundStatusEnum.Draft.getCode());
 				add(inboundVO);
 				break;
 			case Modify:

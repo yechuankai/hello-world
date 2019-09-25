@@ -151,6 +151,7 @@ public class AsyncInit {
 							.code(on.getCode())
 							.descr(on.getDesc())
 							.orderNumberId(KeyUtils.getUID())
+							.dateFormat(DefaultConstants.ORDER_NUMBER_DATE_FORMAT)
 							.updateBy(DefaultConstants.SYSTEM_USER)
 							.createBy(DefaultConstants.SYSTEM_USER)
 							.updateTime(new Date())

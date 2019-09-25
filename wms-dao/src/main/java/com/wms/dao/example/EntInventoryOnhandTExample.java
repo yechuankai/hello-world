@@ -1580,7 +1580,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute4EqualTo(Date value) {
+        public Criteria andLotAttribute4EqualTo(String value) {
             addCriterion("LOT_ATTRIBUTE4 =", value, "lotAttribute4");
             return (Criteria) this;
         }
@@ -1597,7 +1597,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute4NotEqualTo(Date value) {
+        public Criteria andLotAttribute4NotEqualTo(String value) {
             addCriterion("LOT_ATTRIBUTE4 <>", value, "lotAttribute4");
             return (Criteria) this;
         }
@@ -1614,7 +1614,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute4GreaterThan(Date value) {
+        public Criteria andLotAttribute4GreaterThan(String value) {
             addCriterion("LOT_ATTRIBUTE4 >", value, "lotAttribute4");
             return (Criteria) this;
         }
@@ -1631,7 +1631,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute4GreaterThanOrEqualTo(Date value) {
+        public Criteria andLotAttribute4GreaterThanOrEqualTo(String value) {
             addCriterion("LOT_ATTRIBUTE4 >=", value, "lotAttribute4");
             return (Criteria) this;
         }
@@ -1648,7 +1648,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute4LessThan(Date value) {
+        public Criteria andLotAttribute4LessThan(String value) {
             addCriterion("LOT_ATTRIBUTE4 <", value, "lotAttribute4");
             return (Criteria) this;
         }
@@ -1665,7 +1665,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute4LessThanOrEqualTo(Date value) {
+        public Criteria andLotAttribute4LessThanOrEqualTo(String value) {
             addCriterion("LOT_ATTRIBUTE4 <=", value, "lotAttribute4");
             return (Criteria) this;
         }
@@ -1682,22 +1682,32 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute4In(List<Date> values) {
+        public Criteria andLotAttribute4Like(String value) {
+            addCriterion("LOT_ATTRIBUTE4 like", value, "lotAttribute4");
+            return (Criteria) this;
+        }
+
+        public Criteria andLotAttribute4NotLike(String value) {
+            addCriterion("LOT_ATTRIBUTE4 not like", value, "lotAttribute4");
+            return (Criteria) this;
+        }
+
+        public Criteria andLotAttribute4In(List<String> values) {
             addCriterion("LOT_ATTRIBUTE4 in", values, "lotAttribute4");
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute4NotIn(List<Date> values) {
+        public Criteria andLotAttribute4NotIn(List<String> values) {
             addCriterion("LOT_ATTRIBUTE4 not in", values, "lotAttribute4");
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute4Between(Date value1, Date value2) {
+        public Criteria andLotAttribute4Between(String value1, String value2) {
             addCriterion("LOT_ATTRIBUTE4 between", value1, value2, "lotAttribute4");
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute4NotBetween(Date value1, Date value2) {
+        public Criteria andLotAttribute4NotBetween(String value1, String value2) {
             addCriterion("LOT_ATTRIBUTE4 not between", value1, value2, "lotAttribute4");
             return (Criteria) this;
         }
@@ -1712,7 +1722,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute5EqualTo(Date value) {
+        public Criteria andLotAttribute5EqualTo(String value) {
             addCriterion("LOT_ATTRIBUTE5 =", value, "lotAttribute5");
             return (Criteria) this;
         }
@@ -1729,7 +1739,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute5NotEqualTo(Date value) {
+        public Criteria andLotAttribute5NotEqualTo(String value) {
             addCriterion("LOT_ATTRIBUTE5 <>", value, "lotAttribute5");
             return (Criteria) this;
         }
@@ -1746,7 +1756,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute5GreaterThan(Date value) {
+        public Criteria andLotAttribute5GreaterThan(String value) {
             addCriterion("LOT_ATTRIBUTE5 >", value, "lotAttribute5");
             return (Criteria) this;
         }
@@ -1763,7 +1773,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute5GreaterThanOrEqualTo(Date value) {
+        public Criteria andLotAttribute5GreaterThanOrEqualTo(String value) {
             addCriterion("LOT_ATTRIBUTE5 >=", value, "lotAttribute5");
             return (Criteria) this;
         }
@@ -1780,7 +1790,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute5LessThan(Date value) {
+        public Criteria andLotAttribute5LessThan(String value) {
             addCriterion("LOT_ATTRIBUTE5 <", value, "lotAttribute5");
             return (Criteria) this;
         }
@@ -1797,7 +1807,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute5LessThanOrEqualTo(Date value) {
+        public Criteria andLotAttribute5LessThanOrEqualTo(String value) {
             addCriterion("LOT_ATTRIBUTE5 <=", value, "lotAttribute5");
             return (Criteria) this;
         }
@@ -1814,22 +1824,32 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute5In(List<Date> values) {
+        public Criteria andLotAttribute5Like(String value) {
+            addCriterion("LOT_ATTRIBUTE5 like", value, "lotAttribute5");
+            return (Criteria) this;
+        }
+
+        public Criteria andLotAttribute5NotLike(String value) {
+            addCriterion("LOT_ATTRIBUTE5 not like", value, "lotAttribute5");
+            return (Criteria) this;
+        }
+
+        public Criteria andLotAttribute5In(List<String> values) {
             addCriterion("LOT_ATTRIBUTE5 in", values, "lotAttribute5");
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute5NotIn(List<Date> values) {
+        public Criteria andLotAttribute5NotIn(List<String> values) {
             addCriterion("LOT_ATTRIBUTE5 not in", values, "lotAttribute5");
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute5Between(Date value1, Date value2) {
+        public Criteria andLotAttribute5Between(String value1, String value2) {
             addCriterion("LOT_ATTRIBUTE5 between", value1, value2, "lotAttribute5");
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute5NotBetween(Date value1, Date value2) {
+        public Criteria andLotAttribute5NotBetween(String value1, String value2) {
             addCriterion("LOT_ATTRIBUTE5 not between", value1, value2, "lotAttribute5");
             return (Criteria) this;
         }
@@ -2554,7 +2574,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute11EqualTo(Date value) {
+        public Criteria andLotAttribute11EqualTo(String value) {
             addCriterion("LOT_ATTRIBUTE11 =", value, "lotAttribute11");
             return (Criteria) this;
         }
@@ -2571,7 +2591,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute11NotEqualTo(Date value) {
+        public Criteria andLotAttribute11NotEqualTo(String value) {
             addCriterion("LOT_ATTRIBUTE11 <>", value, "lotAttribute11");
             return (Criteria) this;
         }
@@ -2588,7 +2608,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute11GreaterThan(Date value) {
+        public Criteria andLotAttribute11GreaterThan(String value) {
             addCriterion("LOT_ATTRIBUTE11 >", value, "lotAttribute11");
             return (Criteria) this;
         }
@@ -2605,7 +2625,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute11GreaterThanOrEqualTo(Date value) {
+        public Criteria andLotAttribute11GreaterThanOrEqualTo(String value) {
             addCriterion("LOT_ATTRIBUTE11 >=", value, "lotAttribute11");
             return (Criteria) this;
         }
@@ -2622,7 +2642,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute11LessThan(Date value) {
+        public Criteria andLotAttribute11LessThan(String value) {
             addCriterion("LOT_ATTRIBUTE11 <", value, "lotAttribute11");
             return (Criteria) this;
         }
@@ -2639,7 +2659,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute11LessThanOrEqualTo(Date value) {
+        public Criteria andLotAttribute11LessThanOrEqualTo(String value) {
             addCriterion("LOT_ATTRIBUTE11 <=", value, "lotAttribute11");
             return (Criteria) this;
         }
@@ -2656,22 +2676,32 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute11In(List<Date> values) {
+        public Criteria andLotAttribute11Like(String value) {
+            addCriterion("LOT_ATTRIBUTE11 like", value, "lotAttribute11");
+            return (Criteria) this;
+        }
+
+        public Criteria andLotAttribute11NotLike(String value) {
+            addCriterion("LOT_ATTRIBUTE11 not like", value, "lotAttribute11");
+            return (Criteria) this;
+        }
+
+        public Criteria andLotAttribute11In(List<String> values) {
             addCriterion("LOT_ATTRIBUTE11 in", values, "lotAttribute11");
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute11NotIn(List<Date> values) {
+        public Criteria andLotAttribute11NotIn(List<String> values) {
             addCriterion("LOT_ATTRIBUTE11 not in", values, "lotAttribute11");
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute11Between(Date value1, Date value2) {
+        public Criteria andLotAttribute11Between(String value1, String value2) {
             addCriterion("LOT_ATTRIBUTE11 between", value1, value2, "lotAttribute11");
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute11NotBetween(Date value1, Date value2) {
+        public Criteria andLotAttribute11NotBetween(String value1, String value2) {
             addCriterion("LOT_ATTRIBUTE11 not between", value1, value2, "lotAttribute11");
             return (Criteria) this;
         }
@@ -2686,7 +2716,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute12EqualTo(Date value) {
+        public Criteria andLotAttribute12EqualTo(String value) {
             addCriterion("LOT_ATTRIBUTE12 =", value, "lotAttribute12");
             return (Criteria) this;
         }
@@ -2703,7 +2733,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute12NotEqualTo(Date value) {
+        public Criteria andLotAttribute12NotEqualTo(String value) {
             addCriterion("LOT_ATTRIBUTE12 <>", value, "lotAttribute12");
             return (Criteria) this;
         }
@@ -2720,7 +2750,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute12GreaterThan(Date value) {
+        public Criteria andLotAttribute12GreaterThan(String value) {
             addCriterion("LOT_ATTRIBUTE12 >", value, "lotAttribute12");
             return (Criteria) this;
         }
@@ -2737,7 +2767,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute12GreaterThanOrEqualTo(Date value) {
+        public Criteria andLotAttribute12GreaterThanOrEqualTo(String value) {
             addCriterion("LOT_ATTRIBUTE12 >=", value, "lotAttribute12");
             return (Criteria) this;
         }
@@ -2754,7 +2784,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute12LessThan(Date value) {
+        public Criteria andLotAttribute12LessThan(String value) {
             addCriterion("LOT_ATTRIBUTE12 <", value, "lotAttribute12");
             return (Criteria) this;
         }
@@ -2771,7 +2801,7 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute12LessThanOrEqualTo(Date value) {
+        public Criteria andLotAttribute12LessThanOrEqualTo(String value) {
             addCriterion("LOT_ATTRIBUTE12 <=", value, "lotAttribute12");
             return (Criteria) this;
         }
@@ -2788,22 +2818,32 @@ public class EntInventoryOnhandTExample {
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute12In(List<Date> values) {
+        public Criteria andLotAttribute12Like(String value) {
+            addCriterion("LOT_ATTRIBUTE12 like", value, "lotAttribute12");
+            return (Criteria) this;
+        }
+
+        public Criteria andLotAttribute12NotLike(String value) {
+            addCriterion("LOT_ATTRIBUTE12 not like", value, "lotAttribute12");
+            return (Criteria) this;
+        }
+
+        public Criteria andLotAttribute12In(List<String> values) {
             addCriterion("LOT_ATTRIBUTE12 in", values, "lotAttribute12");
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute12NotIn(List<Date> values) {
+        public Criteria andLotAttribute12NotIn(List<String> values) {
             addCriterion("LOT_ATTRIBUTE12 not in", values, "lotAttribute12");
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute12Between(Date value1, Date value2) {
+        public Criteria andLotAttribute12Between(String value1, String value2) {
             addCriterion("LOT_ATTRIBUTE12 between", value1, value2, "lotAttribute12");
             return (Criteria) this;
         }
 
-        public Criteria andLotAttribute12NotBetween(Date value1, Date value2) {
+        public Criteria andLotAttribute12NotBetween(String value1, String value2) {
             addCriterion("LOT_ATTRIBUTE12 not between", value1, value2, "lotAttribute12");
             return (Criteria) this;
         }

@@ -57,5 +57,10 @@ public interface DefaultConstants {
      */
     public static final Long LINE_INCREMENT = 10L;
     
+    /**
+     * 默认单号规则
+     */
+    public static final String ORDER_NUMBER_DATE_FORMAT = "yyMMdd";
+    
 	
 }

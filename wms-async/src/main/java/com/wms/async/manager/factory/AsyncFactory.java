@@ -79,13 +79,15 @@ public class AsyncFactory {
 					SysMonitorLogTExample example = new SysMonitorLogTExample();
 					example.createCriteria()
 					.andMonitorLogIdEqualTo(monitorLog.getMonitorLogId());
-					int rowcount = SpringUtils.getBean(ISysMonitorLogTDao.class).updateByExampleSelective(monitorLog, example);
-					if (rowcount == 0 && retryCount < 3) { //更新失败时继续调用，由于执行速度较快，很可能未插入则执行了更新
+					if (update) { //如果为更新，则延迟10毫秒
 						try {
 							Thread.sleep(10);
-							final int _retryCount = retryCount + 1;
-							AsyncManager.me().execute(AsyncFactory.recordMonitor(monitorLog, Boolean.TRUE, _retryCount));
 						} catch (InterruptedException e) {}
+					}
+					int rowcount = SpringUtils.getBean(ISysMonitorLogTDao.class).updateByExampleSelective(monitorLog, example);
+					if (rowcount == 0 && retryCount < 3) { //更新失败时继续调用，由于执行速度较快，很可能未插入则执行了更新
+						final int _retryCount = retryCount + 1;
+						AsyncManager.me().execute(AsyncFactory.recordMonitor(monitorLog, Boolean.TRUE, _retryCount));
 					}
 				}else {
 					SpringUtils.getBean(ISysMonitorLogTDao.class).insertSelective(monitorLog);

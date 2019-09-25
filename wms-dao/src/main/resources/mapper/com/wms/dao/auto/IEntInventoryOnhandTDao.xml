@@ -11,16 +11,16 @@
     <result column="PACK_CODE" jdbcType="VARCHAR" property="packCode" />
     <result column="LOT_ATTRIBUTE1" jdbcType="VARCHAR" property="lotAttribute1" />
     <result column="LOT_ATTRIBUTE2" jdbcType="VARCHAR" property="lotAttribute2" />
-    <result column="LOT_ATTRIBUTE3" jdbcType="VARCHAR" property="lotAttribute3" />
-    <result column="LOT_ATTRIBUTE4" jdbcType="TIMESTAMP" property="lotAttribute4" />
-    <result column="LOT_ATTRIBUTE5" jdbcType="TIMESTAMP" property="lotAttribute5" />
-    <result column="LOT_ATTRIBUTE6" jdbcType="VARCHAR" property="lotAttribute6" />
-    <result column="LOT_ATTRIBUTE7" jdbcType="VARCHAR" property="lotAttribute7" />
-    <result column="LOT_ATTRIBUTE8" jdbcType="VARCHAR" property="lotAttribute8" />
-    <result column="LOT_ATTRIBUTE9" jdbcType="VARCHAR" property="lotAttribute9" />
-    <result column="LOT_ATTRIBUTE10" jdbcType="VARCHAR" property="lotAttribute10" />
-    <result column="LOT_ATTRIBUTE11" jdbcType="TIMESTAMP" property="lotAttribute11" />
-    <result column="LOT_ATTRIBUTE12" jdbcType="TIMESTAMP" property="lotAttribute12" />
+    <result column="LOT_ATTRIBUTE3" jdbcType="CHAR" property="lotAttribute3" />
+    <result column="LOT_ATTRIBUTE4" jdbcType="CHAR" property="lotAttribute4" />
+    <result column="LOT_ATTRIBUTE5" jdbcType="CHAR" property="lotAttribute5" />
+    <result column="LOT_ATTRIBUTE6" jdbcType="CHAR" property="lotAttribute6" />
+    <result column="LOT_ATTRIBUTE7" jdbcType="CHAR" property="lotAttribute7" />
+    <result column="LOT_ATTRIBUTE8" jdbcType="CHAR" property="lotAttribute8" />
+    <result column="LOT_ATTRIBUTE9" jdbcType="CHAR" property="lotAttribute9" />
+    <result column="LOT_ATTRIBUTE10" jdbcType="CHAR" property="lotAttribute10" />
+    <result column="LOT_ATTRIBUTE11" jdbcType="CHAR" property="lotAttribute11" />
+    <result column="LOT_ATTRIBUTE12" jdbcType="CHAR" property="lotAttribute12" />
     <result column="QUANTITY_ONHAND" jdbcType="DECIMAL" property="quantityOnhand" />
     <result column="QUANTITY_ALLOCATED" jdbcType="DECIMAL" property="quantityAllocated" />
     <result column="QUANTITY_LOCKED" jdbcType="DECIMAL" property="quantityLocked" />
@@ -188,10 +188,10 @@
     values (#{inventoryOnhandId,jdbcType=DECIMAL}, #{ownerId,jdbcType=DECIMAL}, #{ownerCode,jdbcType=VARCHAR}, 
       #{skuId,jdbcType=DECIMAL}, #{skuCode,jdbcType=VARCHAR}, #{skuAlias,jdbcType=VARCHAR}, 
       #{packCode,jdbcType=VARCHAR}, #{lotAttribute1,jdbcType=VARCHAR}, #{lotAttribute2,jdbcType=VARCHAR}, 
-      #{lotAttribute3,jdbcType=VARCHAR}, #{lotAttribute4,jdbcType=TIMESTAMP}, #{lotAttribute5,jdbcType=TIMESTAMP}, 
-      #{lotAttribute6,jdbcType=VARCHAR}, #{lotAttribute7,jdbcType=VARCHAR}, #{lotAttribute8,jdbcType=VARCHAR}, 
-      #{lotAttribute9,jdbcType=VARCHAR}, #{lotAttribute10,jdbcType=VARCHAR}, #{lotAttribute11,jdbcType=TIMESTAMP}, 
-      #{lotAttribute12,jdbcType=TIMESTAMP}, #{quantityOnhand,jdbcType=DECIMAL}, #{quantityAllocated,jdbcType=DECIMAL}, 
+      #{lotAttribute3,jdbcType=CHAR}, #{lotAttribute4,jdbcType=CHAR}, #{lotAttribute5,jdbcType=CHAR}, 
+      #{lotAttribute6,jdbcType=CHAR}, #{lotAttribute7,jdbcType=CHAR}, #{lotAttribute8,jdbcType=CHAR}, 
+      #{lotAttribute9,jdbcType=CHAR}, #{lotAttribute10,jdbcType=CHAR}, #{lotAttribute11,jdbcType=CHAR}, 
+      #{lotAttribute12,jdbcType=CHAR}, #{quantityOnhand,jdbcType=DECIMAL}, #{quantityAllocated,jdbcType=DECIMAL}, 
       #{quantityLocked,jdbcType=DECIMAL}, #{qtyCase,jdbcType=DECIMAL}, #{volume,jdbcType=DECIMAL}, 
       #{weightGross,jdbcType=DECIMAL}, #{weightNet,jdbcType=DECIMAL}, #{weightTare,jdbcType=DECIMAL}, 
       #{locationId,jdbcType=DECIMAL}, #{locationCode,jdbcType=CHAR}, #{lpnId,jdbcType=DECIMAL}, 
@@ -360,34 +360,34 @@
         #{lotAttribute2,jdbcType=VARCHAR},
       </if>
       <if test="lotAttribute3 != null">
-        #{lotAttribute3,jdbcType=VARCHAR},
+        #{lotAttribute3,jdbcType=CHAR},
       </if>
       <if test="lotAttribute4 != null">
-        #{lotAttribute4,jdbcType=TIMESTAMP},
+        #{lotAttribute4,jdbcType=CHAR},
       </if>
       <if test="lotAttribute5 != null">
-        #{lotAttribute5,jdbcType=TIMESTAMP},
+        #{lotAttribute5,jdbcType=CHAR},
       </if>
       <if test="lotAttribute6 != null">
-        #{lotAttribute6,jdbcType=VARCHAR},
+        #{lotAttribute6,jdbcType=CHAR},
       </if>
       <if test="lotAttribute7 != null">
-        #{lotAttribute7,jdbcType=VARCHAR},
+        #{lotAttribute7,jdbcType=CHAR},
       </if>
       <if test="lotAttribute8 != null">
-        #{lotAttribute8,jdbcType=VARCHAR},
+        #{lotAttribute8,jdbcType=CHAR},
       </if>
       <if test="lotAttribute9 != null">
-        #{lotAttribute9,jdbcType=VARCHAR},
+        #{lotAttribute9,jdbcType=CHAR},
       </if>
       <if test="lotAttribute10 != null">
-        #{lotAttribute10,jdbcType=VARCHAR},
+        #{lotAttribute10,jdbcType=CHAR},
       </if>
       <if test="lotAttribute11 != null">
-        #{lotAttribute11,jdbcType=TIMESTAMP},
+        #{lotAttribute11,jdbcType=CHAR},
       </if>
       <if test="lotAttribute12 != null">
-        #{lotAttribute12,jdbcType=TIMESTAMP},
+        #{lotAttribute12,jdbcType=CHAR},
       </if>
       <if test="quantityOnhand != null">
         #{quantityOnhand,jdbcType=DECIMAL},
@@ -497,34 +497,34 @@
         LOT_ATTRIBUTE2 = #{record.lotAttribute2,jdbcType=VARCHAR},
       </if>
       <if test="record.lotAttribute3 != null">
-        LOT_ATTRIBUTE3 = #{record.lotAttribute3,jdbcType=VARCHAR},
+        LOT_ATTRIBUTE3 = #{record.lotAttribute3,jdbcType=CHAR},
       </if>
       <if test="record.lotAttribute4 != null">
-        LOT_ATTRIBUTE4 = #{record.lotAttribute4,jdbcType=TIMESTAMP},
+        LOT_ATTRIBUTE4 = #{record.lotAttribute4,jdbcType=CHAR},
       </if>
       <if test="record.lotAttribute5 != null">
-        LOT_ATTRIBUTE5 = #{record.lotAttribute5,jdbcType=TIMESTAMP},
+        LOT_ATTRIBUTE5 = #{record.lotAttribute5,jdbcType=CHAR},
       </if>
       <if test="record.lotAttribute6 != null">
-        LOT_ATTRIBUTE6 = #{record.lotAttribute6,jdbcType=VARCHAR},
+        LOT_ATTRIBUTE6 = #{record.lotAttribute6,jdbcType=CHAR},
       </if>
       <if test="record.lotAttribute7 != null">
-        LOT_ATTRIBUTE7 = #{record.lotAttribute7,jdbcType=VARCHAR},
+        LOT_ATTRIBUTE7 = #{record.lotAttribute7,jdbcType=CHAR},
       </if>
       <if test="record.lotAttribute8 != null">
-        LOT_ATTRIBUTE8 = #{record.lotAttribute8,jdbcType=VARCHAR},
+        LOT_ATTRIBUTE8 = #{record.lotAttribute8,jdbcType=CHAR},
       </if>
       <if test="record.lotAttribute9 != null">
-        LOT_ATTRIBUTE9 = #{record.lotAttribute9,jdbcType=VARCHAR},
+        LOT_ATTRIBUTE9 = #{record.lotAttribute9,jdbcType=CHAR},
       </if>
       <if test="record.lotAttribute10 != null">
-        LOT_ATTRIBUTE10 = #{record.lotAttribute10,jdbcType=VARCHAR},
+        LOT_ATTRIBUTE10 = #{record.lotAttribute10,jdbcType=CHAR},
       </if>
       <if test="record.lotAttribute11 != null">
-        LOT_ATTRIBUTE11 = #{record.lotAttribute11,jdbcType=TIMESTAMP},
+        LOT_ATTRIBUTE11 = #{record.lotAttribute11,jdbcType=CHAR},
       </if>
       <if test="record.lotAttribute12 != null">
-        LOT_ATTRIBUTE12 = #{record.lotAttribute12,jdbcType=TIMESTAMP},
+        LOT_ATTRIBUTE12 = #{record.lotAttribute12,jdbcType=CHAR},
       </if>
       <if test="record.quantityOnhand != null">
         QUANTITY_ONHAND = #{record.quantityOnhand,jdbcType=DECIMAL},
@@ -611,16 +611,16 @@
       PACK_CODE = #{record.packCode,jdbcType=VARCHAR},
       LOT_ATTRIBUTE1 = #{record.lotAttribute1,jdbcType=VARCHAR},
       LOT_ATTRIBUTE2 = #{record.lotAttribute2,jdbcType=VARCHAR},
-      LOT_ATTRIBUTE3 = #{record.lotAttribute3,jdbcType=VARCHAR},
-      LOT_ATTRIBUTE4 = #{record.lotAttribute4,jdbcType=TIMESTAMP},
-      LOT_ATTRIBUTE5 = #{record.lotAttribute5,jdbcType=TIMESTAMP},
-      LOT_ATTRIBUTE6 = #{record.lotAttribute6,jdbcType=VARCHAR},
-      LOT_ATTRIBUTE7 = #{record.lotAttribute7,jdbcType=VARCHAR},
-      LOT_ATTRIBUTE8 = #{record.lotAttribute8,jdbcType=VARCHAR},
-      LOT_ATTRIBUTE9 = #{record.lotAttribute9,jdbcType=VARCHAR},
-      LOT_ATTRIBUTE10 = #{record.lotAttribute10,jdbcType=VARCHAR},
-      LOT_ATTRIBUTE11 = #{record.lotAttribute11,jdbcType=TIMESTAMP},
-      LOT_ATTRIBUTE12 = #{record.lotAttribute12,jdbcType=TIMESTAMP},
+      LOT_ATTRIBUTE3 = #{record.lotAttribute3,jdbcType=CHAR},
+      LOT_ATTRIBUTE4 = #{record.lotAttribute4,jdbcType=CHAR},
+      LOT_ATTRIBUTE5 = #{record.lotAttribute5,jdbcType=CHAR},
+      LOT_ATTRIBUTE6 = #{record.lotAttribute6,jdbcType=CHAR},
+      LOT_ATTRIBUTE7 = #{record.lotAttribute7,jdbcType=CHAR},
+      LOT_ATTRIBUTE8 = #{record.lotAttribute8,jdbcType=CHAR},
+      LOT_ATTRIBUTE9 = #{record.lotAttribute9,jdbcType=CHAR},
+      LOT_ATTRIBUTE10 = #{record.lotAttribute10,jdbcType=CHAR},
+      LOT_ATTRIBUTE11 = #{record.lotAttribute11,jdbcType=CHAR},
+      LOT_ATTRIBUTE12 = #{record.lotAttribute12,jdbcType=CHAR},
       QUANTITY_ONHAND = #{record.quantityOnhand,jdbcType=DECIMAL},
       QUANTITY_ALLOCATED = #{record.quantityAllocated,jdbcType=DECIMAL},
       QUANTITY_LOCKED = #{record.quantityLocked,jdbcType=DECIMAL},
@@ -715,16 +715,16 @@
     PACK_CODE = #{record.packCode,jdbcType=VARCHAR}, 
     LOT_ATTRIBUTE1 = #{record.lotAttribute1,jdbcType=VARCHAR}, 
     LOT_ATTRIBUTE2 = #{record.lotAttribute2,jdbcType=VARCHAR}, 
-    LOT_ATTRIBUTE3 = #{record.lotAttribute3,jdbcType=VARCHAR}, 
-    LOT_ATTRIBUTE4 = #{record.lotAttribute4,jdbcType=TIMESTAMP}, 
-    LOT_ATTRIBUTE5 = #{record.lotAttribute5,jdbcType=TIMESTAMP}, 
-    LOT_ATTRIBUTE6 = #{record.lotAttribute6,jdbcType=VARCHAR}, 
-    LOT_ATTRIBUTE7 = #{record.lotAttribute7,jdbcType=VARCHAR}, 
-    LOT_ATTRIBUTE8 = #{record.lotAttribute8,jdbcType=VARCHAR}, 
-    LOT_ATTRIBUTE9 = #{record.lotAttribute9,jdbcType=VARCHAR}, 
-    LOT_ATTRIBUTE10 = #{record.lotAttribute10,jdbcType=VARCHAR}, 
-    LOT_ATTRIBUTE11 = #{record.lotAttribute11,jdbcType=TIMESTAMP}, 
-    LOT_ATTRIBUTE12 = #{record.lotAttribute12,jdbcType=TIMESTAMP}, 
+    LOT_ATTRIBUTE3 = #{record.lotAttribute3,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE4 = #{record.lotAttribute4,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE5 = #{record.lotAttribute5,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE6 = #{record.lotAttribute6,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE7 = #{record.lotAttribute7,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE8 = #{record.lotAttribute8,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE9 = #{record.lotAttribute9,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE10 = #{record.lotAttribute10,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE11 = #{record.lotAttribute11,jdbcType=CHAR}, 
+    LOT_ATTRIBUTE12 = #{record.lotAttribute12,jdbcType=CHAR}, 
     QUANTITY_ONHAND = #{record.quantityOnhand,jdbcType=DECIMAL}, 
     QUANTITY_ALLOCATED = #{record.quantityAllocated,jdbcType=DECIMAL}, 
     QUANTITY_LOCKED = #{record.quantityLocked,jdbcType=DECIMAL}, 
@@ -789,34 +789,34 @@
           LOT_ATTRIBUTE2 = #{record.lotAttribute2,jdbcType=VARCHAR},
         </if>
         <if test="record.lotAttribute3 != null">
-          LOT_ATTRIBUTE3 = #{record.lotAttribute3,jdbcType=VARCHAR},
+          LOT_ATTRIBUTE3 = #{record.lotAttribute3,jdbcType=CHAR},
         </if>
         <if test="record.lotAttribute4 != null">
-          LOT_ATTRIBUTE4 = #{record.lotAttribute4,jdbcType=TIMESTAMP},
+          LOT_ATTRIBUTE4 = #{record.lotAttribute4,jdbcType=CHAR},
         </if>
         <if test="record.lotAttribute5 != null">
-          LOT_ATTRIBUTE5 = #{record.lotAttribute5,jdbcType=TIMESTAMP},
+          LOT_ATTRIBUTE5 = #{record.lotAttribute5,jdbcType=CHAR},
         </if>
         <if test="record.lotAttribute6 != null">
-          LOT_ATTRIBUTE6 = #{record.lotAttribute6,jdbcType=VARCHAR},
+          LOT_ATTRIBUTE6 = #{record.lotAttribute6,jdbcType=CHAR},
         </if>
         <if test="record.lotAttribute7 != null">
-          LOT_ATTRIBUTE7 = #{record.lotAttribute7,jdbcType=VARCHAR},
+          LOT_ATTRIBUTE7 = #{record.lotAttribute7,jdbcType=CHAR},
         </if>
         <if test="record.lotAttribute8 != null">
-          LOT_ATTRIBUTE8 = #{record.lotAttribute8,jdbcType=VARCHAR},
+          LOT_ATTRIBUTE8 = #{record.lotAttribute8,jdbcType=CHAR},
         </if>
         <if test="record.lotAttribute9 != null">
-          LOT_ATTRIBUTE9 = #{record.lotAttribute9,jdbcType=VARCHAR},
+          LOT_ATTRIBUTE9 = #{record.lotAttribute9,jdbcType=CHAR},
         </if>
         <if test="record.lotAttribute10 != null">
-          LOT_ATTRIBUTE10 = #{record.lotAttribute10,jdbcType=VARCHAR},
+          LOT_ATTRIBUTE10 = #{record.lotAttribute10,jdbcType=CHAR},
         </if>
         <if test="record.lotAttribute11 != null">
-          LOT_ATTRIBUTE11 = #{record.lotAttribute11,jdbcType=TIMESTAMP},
+          LOT_ATTRIBUTE11 = #{record.lotAttribute11,jdbcType=CHAR},
         </if>
         <if test="record.lotAttribute12 != null">
-          LOT_ATTRIBUTE12 = #{record.lotAttribute12,jdbcType=TIMESTAMP},
+          LOT_ATTRIBUTE12 = #{record.lotAttribute12,jdbcType=CHAR},
         </if>
         <if test="record.quantityOnhand != null">
           QUANTITY_ONHAND = #{record.quantityOnhand,jdbcType=DECIMAL},

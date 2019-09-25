@@ -227,12 +227,18 @@ public class PutawayRest extends BaseController{
 			List<InventoryOnhandTEntity> inventoryOnhands = inventoryService.findByLpnId(inventory, lpnIds);
 
 			List<InventoryOnhandVO> inventoryOnhandVOs = Lists.newArrayList();
-			inventoryOnhands.forEach(v -> {
+			for (InventoryOnhandTEntity v : inventoryOnhands) {
 				InventoryOnhandVO vo = new InventoryOnhandVO(v);
 				vo.setToQuantity(v.getQuantityOnhand());
 				vo.setToLocationCode(putaway.getToLocationCode());
+				//容器移动，则保留容器号
+				if(LpnTypeEnum.Container.getCode().equals(putaway.getLpnType())){
+					vo.setToContainerNumber(fromLpnNumber);
+				}else {
+					vo.setToLpnNumber(fromLpnNumber);
+				}
 				inventoryOnhandVOs.add(vo);
-			});
+			}
 			inventoryService.move(new AjaxRequest<List<InventoryOnhandVO>>(inventoryOnhandVOs, request));
 			
 			//清空锁定的库位

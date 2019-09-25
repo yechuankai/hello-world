@@ -797,6 +797,7 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 				newObj.setPackCode(od.getPackCode());
 				newObj.setUom(od.getUom());
 				newObj.setAllocateStrategyCode(od.getAllocateStrategyCode());
+				newObj.setUomQuantityOrder(newObj.getUomQuantityExpected());
 			}
 		});
 		
@@ -811,7 +812,8 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 		outboundVO.getDetail().forEach(d -> {
 			d.setOperatorType(outboundVO.getOperatorType());
 		});
-		if(outboundVO.getOperatorType() == OperatorTypeEnum.Modify) {
+		if(outboundVO.getOperatorType() == OperatorTypeEnum.Modify
+				|| outboundVO.getOperatorType() == OperatorTypeEnum.Submit) {
 			//需要计算明细新增/删除/修改
 			//1.获取所有明细
 			List<OutboundDetailTEntity> detail = findByHeaderId(outbound.getOutboundHeaderId());
@@ -829,15 +831,6 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 			d.setCompanyId(outboundVO.getCompanyId());
 			d.setWarehouseId(outboundVO.getWarehouseId());
 			d.setUpdateBy(outboundVO.getUpdateBy());
-			StatusHistoryTEntity statusHistory = StatusHistoryTEntity.builder()
-					.companyId(outboundVO.getCompanyId())
-					.warehouseId(outboundVO.getWarehouseId())
-					.createBy(outboundVO.getUpdateBy())
-					.updateBy(outboundVO.getUpdateBy())
-					.createTime(new Date())
-					.updateTime(new Date())
-					.operTime(new Date())
-					.build();
 			outbound.setOperatorType(d.getOperatorType());
 			validate(outbound,d);
 			switch (d.getOperatorType()) {
@@ -862,27 +855,13 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 					}else {
 						modify(d,Boolean.TRUE);
 					}
-					statusHistory.setOldStatus(OutboundStatusEnum.Draft.getCode());
-					statusHistory.setNewStatus(OutboundStatusEnum.WaitingReview.getCode());
 					break;
 				case Review:
 					d.setStatus(OutboundStatusEnum.New.getCode());
 					modify(d,Boolean.TRUE);
-					statusHistory.setOldStatus(OutboundStatusEnum.WaitingReview.getCode());
-					statusHistory.setNewStatus(OutboundStatusEnum.New.getCode());
 					break;
 				default:
 					throw new BusinessServiceException("OutboundHeaderServiceImpl", "opertiontype.not.exists" , null );
-			}
-			if(null != d.getOutboundDetailId()){
-				statusHistory.setSourceNumber(d.getOutboundDetailId());
-			}
-			if(null != d.getLineNumber()){
-				statusHistory.setSourceBillNumber(d.getLineNumber().toString());
-			}
-			if(null != statusHistory.getNewStatus()){
-				//有更新状态就插入记录
-				statusHistoryService.add(statusHistory);
 			}
 
 		});
@@ -933,13 +912,13 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 			detail.setQuantityExpected(BigDecimal.ZERO);
 		}
 
+		/*
 		if (detail.getUomQuantityOrder() != null && detail.getUomQuantityOrder().compareTo(BigDecimal.ZERO) > 0) {
 			detail.setQuantityOrder(detail.getUomQuantityOrder().multiply(uomQuantity));
 		}
 		if (detail.getQuantityOrder() == null) {
 			detail.setQuantityOrder(BigDecimal.ZERO);
 		}
-
 		if (detail.getUomQuantityAllocated() != null && detail.getUomQuantityAllocated().compareTo(BigDecimal.ZERO) > 0) {
 			detail.setQuantityAllocated(detail.getUomQuantityAllocated().multiply(uomQuantity));
 		}
@@ -958,6 +937,8 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 		if (detail.getQuantityShiped() == null) {
 			detail.setQuantityShiped(BigDecimal.ZERO);
 		}
+		*/
+		
 		if(detail.getAllocateStrategyId() != null || StringUtils.isNotEmpty(detail.getAllocateStrategyCode())){
 			AllocateStrategyTEntity allocateStrategy = allocateStrategyHeaderService.find(AllocateStrategyTEntity.builder()
 					.warehouseId(outboundVO.getWarehouseId())
@@ -976,9 +957,12 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 		if(detail.getQuantityExpected().compareTo(BigDecimal.ZERO) <= 0){
 			throw new BusinessServiceException("OutboundDetailServiceImpl", "outbound.expectedquantity.equaltozero", new Object[]{outboundVO.getOutboundNumber(), detail.getLineNumber()});
 		}
-
+		
 		//新增订单数量要默认预期数量
-		detail.setQuantityOrder(detail.getQuantityExpected());
+		if (detail.getQuantityOrder() == null 
+				|| BigDecimal.ZERO.compareTo(detail.getQuantityOrder()) == 0){
+			detail.setQuantityOrder(detail.getQuantityExpected());
+		}
 
 		OwnerTEntity owner = ownerService.find(OwnerTEntity.builder()
 				.warehouseId(outboundVO.getWarehouseId())

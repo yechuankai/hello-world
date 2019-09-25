@@ -65,6 +65,14 @@
 					<td width="200px">
 						<input id="carrierCode" name="carrierCode" th:replace="lov/carrier" />
 					</td>
+					<td>
+                		 <input id="containerNumber" name="containerNumber" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="label:'${web.label.outbound.containernumber}',labelPosition:'top'" />
+                	</td>
+                	<td>
+                		&nbsp;
+                	</td>
+				</tr>
+				<tr>
 					<td width="200px">
 						<input id="carrierCarNumber" name="carrierCarNumber" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.carriercarnumber}',labelPosition:'top'" />
 					</td>
@@ -76,12 +84,12 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="4">
+					<td colspan="3">
 						<input id="shipAddress1" name="shipAddress1" class="lazy-load"  lazy-load="easyui-textbox" style="width: 96%;"  wms:data-options="label:'${web.label.address1}',labelPosition:'top'" />
 					</td>
 				</tr>
 				<tr>
-					<td colspan="4">
+					<td colspan="3">
 						<input id="shipAddress2" name="shipAddress2" class="lazy-load"  lazy-load="easyui-textbox" style="width: 96%;" wms:data-options="label:'${web.label.address2}',labelPosition:'top'" />
 					</td>
 				</tr>

@@ -3,6 +3,7 @@ package com.wms.pub.rest.inbound;
 import com.alibaba.fastjson.TypeReference;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
+import com.wms.common.constants.TableNameConstants;
 import com.wms.common.core.controller.BaseController;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
@@ -10,9 +11,13 @@ import com.wms.common.core.domain.response.AjaxResult;
 import com.wms.common.core.domain.response.PageResult;
 import com.wms.common.enums.OperatorTypeEnum;
 import com.wms.common.exception.BusinessServiceException;
+import com.wms.common.utils.StringUtils;
+import com.wms.common.utils.cache.LocaleUtils;
 import com.wms.entity.auto.InboundHeaderTEntity;
+import com.wms.entity.auto.StatusHistoryTEntity;
 import com.wms.services.inbound.IInboundDetailService;
 import com.wms.services.inbound.IInboundHeaderService;
+import com.wms.services.sys.IStatusHistoryService;
 import com.wms.vo.inbound.InboundDetailVO;
 import com.wms.vo.inbound.InboundVO;
 import org.apache.commons.collections.CollectionUtils;
@@ -35,6 +40,8 @@ public class InboundRest extends BaseController {
     IInboundHeaderService inboundHeaderService;
     @Autowired
     IInboundDetailService inboundDetailService;
+    @Autowired
+    IStatusHistoryService statusService;
 
     @RequestMapping(value = "/find")
     public PageResult<InboundHeaderTEntity> find(@RequestBody String req) {
@@ -114,6 +121,43 @@ public class InboundRest extends BaseController {
             return fail(e.getMessage());
         }
         return fail();
+    }
+    
+    @RequestMapping(value = "/statusList")
+    public AjaxResult<List<StatusHistoryTEntity>> statusList(@RequestBody String req) {
+        try {
+            AjaxRequest<StatusHistoryTEntity> request = ajaxRequest(req, new TypeReference<AjaxRequest<StatusHistoryTEntity>>() {});
+            if (request.getData() == null) {
+                return fail("no record find.");
+            }
+            
+            List<StatusHistoryTEntity> list = statusService.findBySourceNumber(StatusHistoryTEntity.builder()
+            									.warehouseId(request.getWarehouseId())
+            									.companyId(request.getCompanyId())
+            									.sourceNumber(request.getData().getSourceNumber())
+            									.build());
+            if (CollectionUtils.isEmpty(list)) 
+            	return success();
+            
+            //转换状态
+            list.forEach(d -> {
+            	//根据国际化进行转换
+    			StringBuilder localeSb = new StringBuilder();
+    			localeSb.append(TableNameConstants.CODELKUP);
+    			localeSb.append(LocaleUtils.CONTACT);
+    			localeSb.append("OMSINBOUNDSTATUS");
+    			localeSb.append(LocaleUtils.CONTACT);
+    			localeSb.append(d.getNewStatus());
+    			String descr = LocaleUtils.getLocaleLabel(localeSb.toString());
+    			if (StringUtils.isEmpty(descr))
+    				descr = d.getNewStatus();
+    			
+    			d.setDescription(descr);
+            });
+            return success(list);
+        } catch (Exception e) {
+            return fail(e.getMessage());
+        }
     }
 
 }

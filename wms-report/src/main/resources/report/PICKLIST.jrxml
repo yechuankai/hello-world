@@ -52,7 +52,7 @@
   OUTBOUND_DETAIL_T.SKU_CODE,
   OUTBOUND_DETAIL_T.UOM,
   OUTBOUND_DETAIL_T.PACK_CODE,
-  OUTBOUND_DETAIL_T.QUANTITY_PICKED,
+  ALLOCATE_T.QUANTITY_ALLOCATED,
   OUTBOUND_HEADER_T.REMARK,
   OUTBOUND_HEADER_T.CUSTOMER_CODE,
   OUTBOUND_HEADER_T.CUSTOMER_DESCR,
@@ -87,7 +87,7 @@ WHERE
 	 AND ALLOCATE_T.DEL_FLAG = 'N' 
 	 AND OUTBOUND_DETAIL_T.DEL_FLAG = 'N' 
 	 AND PACK_T.DEL_FLAG = 'N' 
-ORDER BY LOCATION_CODE DESC]]>
+ORDER BY LOCATION_CODE ASC]]>
 	</queryString>
 	<field name="WAREHOUSE_ID" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="WAREHOUSE_ID"/>
@@ -116,8 +116,8 @@ ORDER BY LOCATION_CODE DESC]]>
 	<field name="PACK_CODE" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="PACK_CODE"/>
 	</field>
-	<field name="QUANTITY_PICKED" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.label" value="QUANTITY_PICKED"/>
+	<field name="QUANTITY_ALLOCATED" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="QUANTITY_ALLOCATED"/>
 	</field>
 	<field name="REMARK" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="REMARK"/>
@@ -153,7 +153,7 @@ ORDER BY LOCATION_CODE DESC]]>
 		<property name="com.jaspersoft.studio.field.label" value="CODE"/>
 	</field>
 	<variable name="QUANTITY_PICKED1" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{QUANTITY_PICKED}]]></variableExpression>
+		<variableExpression><![CDATA[$F{QUANTITY_ALLOCATED}]]></variableExpression>
 	</variable>
 	<group name="Group1" isStartNewPage="true">
 		<groupExpression><![CDATA[$F{OUTBOUND_HEADER_ID}]]></groupExpression>
@@ -591,7 +591,7 @@ ORDER BY LOCATION_CODE DESC]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="pdfFont" size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{QUANTITY_PICKED}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{QUANTITY_ALLOCATED}]]></textFieldExpression>
 			</textField>
 			<frame>
 				<reportElement x="420" y="0" width="100" height="40" uuid="544997d5-0485-4db8-822f-36a9128693b0"/>

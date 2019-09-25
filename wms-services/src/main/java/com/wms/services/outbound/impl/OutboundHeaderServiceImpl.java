@@ -593,15 +593,18 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 		
 		boolean shipFlag = outboundDetailService.ship(detailVO);
 		
+		/*
 		//发运完成更新装车任务为完成
 		list.forEach(h -> {
 			h.setWarehouseId(request.getWarehouseId());
 			h.setCompanyId(request.getCompanyId());
 			OutboundHeaderTEntity header = find(h);
+			
 			if (OutboundStatusEnum.Shiped.getCode().equals(header.getStatus())) {
 				loadTask(header, OperatorTypeEnum.Complate);
 			}
 		});
+		*/
 		return shipFlag;
 	}
 
@@ -707,6 +710,7 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 					validate(d);
 					add(d);
 				});
+				statusHistory.setNewStatus(OutboundStatusEnum.Draft.getCode());
 				break;
 			case Modify:
 				modify(outboundVO);

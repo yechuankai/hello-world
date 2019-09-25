@@ -27,9 +27,9 @@ public class EntInventoryOnhandTEntity extends BaseEntity {
 
     private String lotAttribute3;
 
-    private Date lotAttribute4;
+    private String lotAttribute4;
 
-    private Date lotAttribute5;
+    private String lotAttribute5;
 
     private String lotAttribute6;
 
@@ -41,9 +41,9 @@ public class EntInventoryOnhandTEntity extends BaseEntity {
 
     private String lotAttribute10;
 
-    private Date lotAttribute11;
+    private String lotAttribute11;
 
-    private Date lotAttribute12;
+    private String lotAttribute12;
 
     private BigDecimal quantityOnhand;
 
@@ -171,20 +171,20 @@ public class EntInventoryOnhandTEntity extends BaseEntity {
         this.lotAttribute3 = lotAttribute3 == null ? null : lotAttribute3.trim();
     }
 
-    public Date getLotAttribute4() {
+    public String getLotAttribute4() {
         return lotAttribute4;
     }
 
-    public void setLotAttribute4(Date lotAttribute4) {
-        this.lotAttribute4 = lotAttribute4;
+    public void setLotAttribute4(String lotAttribute4) {
+        this.lotAttribute4 = lotAttribute4 == null ? null : lotAttribute4.trim();
     }
 
-    public Date getLotAttribute5() {
+    public String getLotAttribute5() {
         return lotAttribute5;
     }
 
-    public void setLotAttribute5(Date lotAttribute5) {
-        this.lotAttribute5 = lotAttribute5;
+    public void setLotAttribute5(String lotAttribute5) {
+        this.lotAttribute5 = lotAttribute5 == null ? null : lotAttribute5.trim();
     }
 
     public String getLotAttribute6() {
@@ -227,20 +227,20 @@ public class EntInventoryOnhandTEntity extends BaseEntity {
         this.lotAttribute10 = lotAttribute10 == null ? null : lotAttribute10.trim();
     }
 
-    public Date getLotAttribute11() {
+    public String getLotAttribute11() {
         return lotAttribute11;
     }
 
-    public void setLotAttribute11(Date lotAttribute11) {
-        this.lotAttribute11 = lotAttribute11;
+    public void setLotAttribute11(String lotAttribute11) {
+        this.lotAttribute11 = lotAttribute11 == null ? null : lotAttribute11.trim();
     }
 
-    public Date getLotAttribute12() {
+    public String getLotAttribute12() {
         return lotAttribute12;
     }
 
-    public void setLotAttribute12(Date lotAttribute12) {
-        this.lotAttribute12 = lotAttribute12;
+    public void setLotAttribute12(String lotAttribute12) {
+        this.lotAttribute12 = lotAttribute12 == null ? null : lotAttribute12.trim();
     }
 
     public BigDecimal getQuantityOnhand() {
@@ -755,7 +755,7 @@ public class EntInventoryOnhandTEntity extends BaseEntity {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder lotAttribute12(Date lotAttribute12) {
+        public Builder lotAttribute12(String lotAttribute12) {
             obj.setLotAttribute12(lotAttribute12);
             return this;
         }
@@ -769,7 +769,7 @@ public class EntInventoryOnhandTEntity extends BaseEntity {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder lotAttribute11(Date lotAttribute11) {
+        public Builder lotAttribute11(String lotAttribute11) {
             obj.setLotAttribute11(lotAttribute11);
             return this;
         }
@@ -825,7 +825,7 @@ public class EntInventoryOnhandTEntity extends BaseEntity {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder lotAttribute4(Date lotAttribute4) {
+        public Builder lotAttribute4(String lotAttribute4) {
             obj.setLotAttribute4(lotAttribute4);
             return this;
         }
@@ -839,7 +839,7 @@ public class EntInventoryOnhandTEntity extends BaseEntity {
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
          */
-        public Builder lotAttribute5(Date lotAttribute5) {
+        public Builder lotAttribute5(String lotAttribute5) {
             obj.setLotAttribute5(lotAttribute5);
             return this;
         }
@@ -1326,16 +1326,16 @@ public class EntInventoryOnhandTEntity extends BaseEntity {
         packCode("PACK_CODE", "packCode", "VARCHAR", false),
         lotAttribute1("LOT_ATTRIBUTE1", "lotAttribute1", "VARCHAR", false),
         lotAttribute2("LOT_ATTRIBUTE2", "lotAttribute2", "VARCHAR", false),
-        lotAttribute3("LOT_ATTRIBUTE3", "lotAttribute3", "VARCHAR", false),
-        lotAttribute4("LOT_ATTRIBUTE4", "lotAttribute4", "TIMESTAMP", false),
-        lotAttribute5("LOT_ATTRIBUTE5", "lotAttribute5", "TIMESTAMP", false),
-        lotAttribute6("LOT_ATTRIBUTE6", "lotAttribute6", "VARCHAR", false),
-        lotAttribute7("LOT_ATTRIBUTE7", "lotAttribute7", "VARCHAR", false),
-        lotAttribute8("LOT_ATTRIBUTE8", "lotAttribute8", "VARCHAR", false),
-        lotAttribute9("LOT_ATTRIBUTE9", "lotAttribute9", "VARCHAR", false),
-        lotAttribute10("LOT_ATTRIBUTE10", "lotAttribute10", "VARCHAR", false),
-        lotAttribute11("LOT_ATTRIBUTE11", "lotAttribute11", "TIMESTAMP", false),
-        lotAttribute12("LOT_ATTRIBUTE12", "lotAttribute12", "TIMESTAMP", false),
+        lotAttribute3("LOT_ATTRIBUTE3", "lotAttribute3", "CHAR", false),
+        lotAttribute4("LOT_ATTRIBUTE4", "lotAttribute4", "CHAR", false),
+        lotAttribute5("LOT_ATTRIBUTE5", "lotAttribute5", "CHAR", false),
+        lotAttribute6("LOT_ATTRIBUTE6", "lotAttribute6", "CHAR", false),
+        lotAttribute7("LOT_ATTRIBUTE7", "lotAttribute7", "CHAR", false),
+        lotAttribute8("LOT_ATTRIBUTE8", "lotAttribute8", "CHAR", false),
+        lotAttribute9("LOT_ATTRIBUTE9", "lotAttribute9", "CHAR", false),
+        lotAttribute10("LOT_ATTRIBUTE10", "lotAttribute10", "CHAR", false),
+        lotAttribute11("LOT_ATTRIBUTE11", "lotAttribute11", "CHAR", false),
+        lotAttribute12("LOT_ATTRIBUTE12", "lotAttribute12", "CHAR", false),
         quantityOnhand("QUANTITY_ONHAND", "quantityOnhand", "DECIMAL", false),
         quantityAllocated("QUANTITY_ALLOCATED", "quantityAllocated", "DECIMAL", false),
         quantityLocked("QUANTITY_LOCKED", "quantityLocked", "DECIMAL", false),

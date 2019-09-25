@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import com.wms.common.constants.DefaultConstants;
 import com.wms.common.core.domain.OrderNumberVO;
 import com.wms.common.enums.YesNoEnum;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.common.utils.StringUtils;
+import com.wms.common.utils.key.KeyUtils;
 import com.wms.dao.auto.ISysOrderNumberTDao;
 import com.wms.dao.example.SysOrderNumberTExample;
 import com.wms.entity.auto.SysOrderNumberTEntity;
@@ -37,8 +39,21 @@ public class KeyGeneratorServiceImpl extends com.wms.common.core.services.impl.K
 		.andDelFlagEqualTo(YesNoEnum.No.getCode());
 		
 		SysOrderNumberTEntity orderNumber = orderNumberDao.selectOneByExample(example);
-		if (orderNumber == null)
-			return null;
+		if (orderNumber == null) {
+			orderNumber = SysOrderNumberTEntity.builder()
+							.orderNumberId(KeyUtils.getUID())
+							.companyId(companyId)
+							.warehouseId(warehouseId)
+							.code(code)
+							.length(10L)
+							.dateFormat(DefaultConstants.ORDER_NUMBER_DATE_FORMAT)
+							.sequenceIncrement(1L)
+							.sequenceCache(5L)
+							.sequence(1L)
+							.updateVersion(0L)
+							.build();
+			orderNumberDao.insertSelective(orderNumber);
+		}
 			
 		vo = new OrderNumberVO();
 		vo.setCode(orderNumber.getCode());

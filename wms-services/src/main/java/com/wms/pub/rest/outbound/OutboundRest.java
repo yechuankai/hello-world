@@ -12,6 +12,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
+import com.wms.common.constants.TableNameConstants;
 import com.wms.common.core.controller.BaseController;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
@@ -19,11 +20,15 @@ import com.wms.common.core.domain.response.AjaxResult;
 import com.wms.common.core.domain.response.PageResult;
 import com.wms.common.enums.OperatorTypeEnum;
 import com.wms.common.exception.BusinessServiceException;
+import com.wms.common.utils.StringUtils;
+import com.wms.common.utils.cache.LocaleUtils;
 import com.wms.entity.auto.OutboundDetailTEntity;
 import com.wms.entity.auto.OutboundHeaderTEntity;
+import com.wms.entity.auto.StatusHistoryTEntity;
 import com.wms.services.base.IEnterpriseService;
 import com.wms.services.outbound.IOutboundDetailService;
 import com.wms.services.outbound.IOutboundHeaderService;
+import com.wms.services.sys.IStatusHistoryService;
 import com.wms.vo.inventory.EntInventoryOnhandVO;
 import com.wms.vo.outbound.OutboundDetailVO;
 import com.wms.vo.outbound.OutboundVO;
@@ -44,6 +49,9 @@ public class OutboundRest extends BaseController {
 
     @Autowired
     IEnterpriseService enterpriseService;
+    
+    @Autowired
+    IStatusHistoryService statusService;
 
     @RequestMapping(value = "/find")
     public PageResult<OutboundVO> find(@RequestBody String req) {
@@ -86,15 +94,16 @@ public class OutboundRest extends BaseController {
         List<EntInventoryOnhandVO> list = null;
         try {
             PageRequest pageRequest = pageRequest(req);
-            PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
+            Page page = PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
             list = enterpriseService.findInventoryOnhand(pageRequest);
             if(CollectionUtils.isEmpty(list)){
                 return page(Lists.newArrayList());
             }
+            return page(page, list);
         } catch (Exception e) {
             return pageFail(e.getMessage());
         }
-        return page(list);
+       
     }
 
     @RequestMapping(value = "/save")
@@ -133,5 +142,42 @@ public class OutboundRest extends BaseController {
             return fail(e.getMessage());
         }
         return fail();
+    }
+    
+    @RequestMapping(value = "/statusList")
+    public AjaxResult<List<StatusHistoryTEntity>> statusList(@RequestBody String req) {
+        try {
+            AjaxRequest<StatusHistoryTEntity> request = ajaxRequest(req, new TypeReference<AjaxRequest<StatusHistoryTEntity>>() {});
+            if (request.getData() == null) {
+                return fail("no record find.");
+            }
+            
+            List<StatusHistoryTEntity> list = statusService.findBySourceNumber(StatusHistoryTEntity.builder()
+            									.warehouseId(request.getWarehouseId())
+            									.companyId(request.getCompanyId())
+            									.sourceNumber(request.getData().getSourceNumber())
+            									.build());
+            if (CollectionUtils.isEmpty(list)) 
+            	return success();
+            
+            //转换状态
+            list.forEach(d -> {
+            	//根据国际化进行转换
+    			StringBuilder localeSb = new StringBuilder();
+    			localeSb.append(TableNameConstants.CODELKUP);
+    			localeSb.append(LocaleUtils.CONTACT);
+    			localeSb.append("OMSOUTBOUNDSTATUS");
+    			localeSb.append(LocaleUtils.CONTACT);
+    			localeSb.append(d.getNewStatus());
+    			String descr = LocaleUtils.getLocaleLabel(localeSb.toString());
+    			if (StringUtils.isEmpty(descr))
+    				descr = d.getNewStatus();
+    			
+    			d.setDescription(descr);
+            });
+            return success(list);
+        } catch (Exception e) {
+            return fail(e.getMessage());
+        }
     }
 }

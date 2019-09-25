@@ -1223,14 +1223,6 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 			d.setInboundHeaderId(inboundVO.getInboundHeaderId());
 			d.setUpdateBy(request.getUserName());
 
-			StatusHistoryTEntity statusHistory = StatusHistoryTEntity.builder()
-					.companyId(request.getCompanyId())
-					.createBy(request.getUserName())
-					.updateBy(request.getUserName())
-					.createTime(new Date())
-					.updateTime(new Date())
-					.operTime(new Date())
-					.build();
 			inboundVO.setOperatorType(d.getOperatorType());
 			switch (inboundVO.getOperatorType()) {
 				case Add:
@@ -1254,22 +1246,18 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 					}else {
 						modify(d);
 					}
-					statusHistory.setOldStatus(InboundStatusEnum.Draft.getCode());
-					statusHistory.setNewStatus(InboundStatusEnum.WaitingReview.getCode());
 					break;
 				case Review:
-					addPackOrSku(inbound,d);
 					d.setStatus(InboundStatusEnum.WaitingDeclaration.getCode());
-					//来源单号存到批属性1
-					d.setLotAttribute1(inbound.getSourceNumber());
 					modify(d);
-					statusHistory.setOldStatus(InboundStatusEnum.WaitingReview.getCode());
-					statusHistory.setNewStatus(InboundStatusEnum.WaitingDeclaration.getCode());
 					break;
 				case Confirm:
+					addPackOrSku(inbound, d);
 					final String STAGE = "STAGE";
 					d.setStatus(InboundStatusEnum.New.getCode());
 					d.setWarehouseId(inbound.getWarehouseId());
+					//来源单号存到批属性1
+					d.setLotAttribute1(inbound.getSourceNumber());
 					//报关单号存到批属性2
 					d.setLotAttribute2(inbound.getReferenceNumber());
 					//默认库位STAGE
@@ -1281,23 +1269,11 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 					
 					validate(inbound,d);
 					modify(d);
-					statusHistory.setOldStatus(InboundStatusEnum.New.getCode());
-					statusHistory.setNewStatus(InboundStatusEnum.WaitingDeclaration.getCode());
 					break;
 				default:
 					throw new BusinessServiceException("InboundDetailServiceImpl", "opertiontype.not.exists" , null );
 			}
 
-			if(null != d.getInboundDetailId()){
-				statusHistory.setSourceNumber(d.getInboundDetailId());
-			}
-			if(null != d.getLineNumber()){
-				statusHistory.setSourceBillNumber(d.getLineNumber().toString());
-			}
-			if(null != statusHistory.getNewStatus()){
-				//有更新状态就插入记录
-				statusHistoryService.add(statusHistory);
-			}
 		});
 
 
@@ -1627,6 +1603,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 				sku.setUpdateBy(inbound.getUpdateBy());
 				sku.setOwnerId(inbound.getOwnerId());
 				sku.setOwnerCode(inbound.getOwnerCode());
+				sku.setSkuAlias(detail.getSkuAlias());
 				sku.setSkuDescr(detail.getSkuDescr());
 
 				PackTEntity pack = packService.find(PackTEntity.builder()
@@ -1636,7 +1613,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 						.build());
 				sku.setPackCode(pack.getPackCode());
 				sku.setPackId(pack.getPackId());
-				sku.setUom(detail.getUom());
+				sku.setUom(pack.getUom());
 
 				BigDecimal uomQuantity = packService.getUOMQty(pack,detail.getUom());
 				sku.setVolume(detail.getVolume().divide(uomQuantity,5,ROUND_FLOOR));

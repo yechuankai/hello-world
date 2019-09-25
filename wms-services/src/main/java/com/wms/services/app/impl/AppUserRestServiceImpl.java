@@ -11,6 +11,7 @@ package com.wms.services.app.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -64,6 +65,9 @@ public class AppUserRestServiceImpl implements IAppUserRestService {
 		} else {
 			list = sysPermissionServiceImpl.findUserPermission(paramUser, PermissionTypeEnum.Function, locale);
 		}
+		if (CollectionUtils.isEmpty(list))
+			return Lists.newArrayList();
+		
 		return getMobileMenu(list);
 	}
 
