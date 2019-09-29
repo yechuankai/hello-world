@@ -4603,7 +4603,7 @@ public class InboundHeaderTExample {
             return (Criteria) this;
         }
 
-        public Criteria andContainerNumberEqualTo(Date value) {
+        public Criteria andContainerNumberEqualTo(String value) {
             addCriterion("CONTAINER_NUMBER =", value, "containerNumber");
             return (Criteria) this;
         }
@@ -4620,7 +4620,7 @@ public class InboundHeaderTExample {
             return (Criteria) this;
         }
 
-        public Criteria andContainerNumberNotEqualTo(Date value) {
+        public Criteria andContainerNumberNotEqualTo(String value) {
             addCriterion("CONTAINER_NUMBER <>", value, "containerNumber");
             return (Criteria) this;
         }
@@ -4637,7 +4637,7 @@ public class InboundHeaderTExample {
             return (Criteria) this;
         }
 
-        public Criteria andContainerNumberGreaterThan(Date value) {
+        public Criteria andContainerNumberGreaterThan(String value) {
             addCriterion("CONTAINER_NUMBER >", value, "containerNumber");
             return (Criteria) this;
         }
@@ -4654,7 +4654,7 @@ public class InboundHeaderTExample {
             return (Criteria) this;
         }
 
-        public Criteria andContainerNumberGreaterThanOrEqualTo(Date value) {
+        public Criteria andContainerNumberGreaterThanOrEqualTo(String value) {
             addCriterion("CONTAINER_NUMBER >=", value, "containerNumber");
             return (Criteria) this;
         }
@@ -4671,7 +4671,7 @@ public class InboundHeaderTExample {
             return (Criteria) this;
         }
 
-        public Criteria andContainerNumberLessThan(Date value) {
+        public Criteria andContainerNumberLessThan(String value) {
             addCriterion("CONTAINER_NUMBER <", value, "containerNumber");
             return (Criteria) this;
         }
@@ -4688,7 +4688,7 @@ public class InboundHeaderTExample {
             return (Criteria) this;
         }
 
-        public Criteria andContainerNumberLessThanOrEqualTo(Date value) {
+        public Criteria andContainerNumberLessThanOrEqualTo(String value) {
             addCriterion("CONTAINER_NUMBER <=", value, "containerNumber");
             return (Criteria) this;
         }
@@ -4705,22 +4705,32 @@ public class InboundHeaderTExample {
             return (Criteria) this;
         }
 
-        public Criteria andContainerNumberIn(List<Date> values) {
+        public Criteria andContainerNumberLike(String value) {
+            addCriterion("CONTAINER_NUMBER like", value, "containerNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andContainerNumberNotLike(String value) {
+            addCriterion("CONTAINER_NUMBER not like", value, "containerNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andContainerNumberIn(List<String> values) {
             addCriterion("CONTAINER_NUMBER in", values, "containerNumber");
             return (Criteria) this;
         }
 
-        public Criteria andContainerNumberNotIn(List<Date> values) {
+        public Criteria andContainerNumberNotIn(List<String> values) {
             addCriterion("CONTAINER_NUMBER not in", values, "containerNumber");
             return (Criteria) this;
         }
 
-        public Criteria andContainerNumberBetween(Date value1, Date value2) {
+        public Criteria andContainerNumberBetween(String value1, String value2) {
             addCriterion("CONTAINER_NUMBER between", value1, value2, "containerNumber");
             return (Criteria) this;
         }
 
-        public Criteria andContainerNumberNotBetween(Date value1, Date value2) {
+        public Criteria andContainerNumberNotBetween(String value1, String value2) {
             addCriterion("CONTAINER_NUMBER not between", value1, value2, "containerNumber");
             return (Criteria) this;
         }

@@ -330,12 +330,12 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 		
 		//查询容器号
 		Set<Long> lpnIds = inventoryOnhandDetailList.stream().filter(v -> v.getLpnId() != null).map(InventoryOnhandTEntity::getLpnId).collect(Collectors.toSet());
-		List<LpnTEntity> lpnList = lpnService.findByLpnIds(LpnTEntity.builder().warehouseId(request.getWarehouseId()).companyId(request.getCompanyId()).build(), lpnIds);
+		List<LpnTEntity> lpnList = lpnService.findByLpnIds(LpnTEntity.builder().companyId(request.getCompanyId()).build(), lpnIds);
 		Map<Long, LpnTEntity> lpnMap = lpnList.stream().collect(Collectors.toMap(LpnTEntity::getLpnId, v->v));
 		
 		//查询批属性
 		Set<Long> lotIds = inventoryOnhandDetailList.stream().map(InventoryOnhandTEntity::getLotId).collect(Collectors.toSet());
-		List<LotAttributeTEntity> lotList = lotService.findByIds(LotAttributeTEntity.builder().warehouseId(request.getWarehouseId()).companyId(request.getCompanyId()).build(), lotIds);
+		List<LotAttributeTEntity> lotList = lotService.findByIds(LotAttributeTEntity.builder().companyId(request.getCompanyId()).build(), lotIds);
 		Map<Long, LotAttributeTEntity> lotMap = lotList.stream().collect(Collectors.toMap(LotAttributeTEntity::getLotAttributeId, v->v));
 		
 		List<InventoryOnhandVO> returnList = Lists.newArrayList();

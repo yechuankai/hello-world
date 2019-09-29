@@ -2,6 +2,7 @@ package com.wms.services.appointment.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -265,6 +266,32 @@ public class AppointmentServiceImpl implements IAppointmentService {
 	                .andWarehouseIdEqualTo(p.getWarehouseId())
 	                .andCompanyIdEqualTo(p.getCompanyId())
 	                .andSourceBillNumberEqualTo(p.getSourceBillNumber());
+	        if (StringUtils.isNotEmpty(p.getType()))
+	        	criteria.andTypeEqualTo(p.getType());
+	        
+	        //排除自己
+	        if (p.getAppointmentId() != null)
+	        	criteria.andAppointmentIdNotEqualTo(p.getAppointmentId());
+	        	
+	        List<AppointmentTEntity> list = appointDao.selectByExample(TExample);
+	        return list;
+	}
+	
+	/**
+     * 查询非取消状态的预约单据
+     */
+	@Override
+	public List<AppointmentTEntity> findByBillNumber(AppointmentTEntity p, Set<String> billNumbers) throws BusinessServiceException {
+		if (CollectionUtils.isEmpty(billNumbers))
+			return Lists.newArrayList();
+		
+		AppointmentTExample TExample = new AppointmentTExample();
+	        AppointmentTExample.Criteria criteria = TExample.createCriteria();
+	        criteria.andDelFlagEqualTo(YesNoEnum.No.getCode())
+	        		.andStatusNotEqualTo(AppointmentStatusEnum.Cancel.getCode())
+	                .andWarehouseIdEqualTo(p.getWarehouseId())
+	                .andCompanyIdEqualTo(p.getCompanyId())
+	                .andSourceBillNumberIn(Lists.newArrayList(billNumbers));
 	        if (StringUtils.isNotEmpty(p.getType()))
 	        	criteria.andTypeEqualTo(p.getType());
 	        

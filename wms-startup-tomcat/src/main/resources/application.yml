@@ -60,7 +60,7 @@ spring:
   date-format: yyyy-MM-dd HH:mm:ss
  jmx:
   enabled: false
-  
+   
 # Shiro
 shiro:
  ehcache: classpath:config/ehcache/ehcache-shiro.xml

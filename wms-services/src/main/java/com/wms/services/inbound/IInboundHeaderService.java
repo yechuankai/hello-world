@@ -20,6 +20,8 @@ public interface IInboundHeaderService {
 	
 	List<InboundHeaderTEntity> find(InboundHeaderTEntity inbound, Set<Long> ids) throws BusinessServiceException;
 	
+	List<InboundHeaderTEntity> findByNumber(InboundHeaderTEntity inbound, Set<String> billNumbers) throws BusinessServiceException;
+	
 	InboundVO save(AjaxRequest<InboundVO> request) throws BusinessServiceException;
 	
 	Boolean modify(InboundVO inbound) throws BusinessServiceException;

@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="inbound" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="593" leftMargin="1" rightMargin="1" topMargin="1" bottomMargin="1" whenResourceMissingType="Error" uuid="33736da5-c761-4230-9c6e-18189c2cbd6b">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="inbound" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="840" leftMargin="1" rightMargin="1" topMargin="1" bottomMargin="1" whenResourceMissingType="Error" uuid="33736da5-c761-4230-9c6e-18189c2cbd6b">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.unit." value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DIFTZER_100"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="175"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="819"/>
 	<parameter name="web.label.sourcebillnumber" class="java.lang.String"/>
 	<parameter name="web.label.type" class="java.lang.String"/>
 	<parameter name="web.label.expectedinbounddate" class="java.lang.String"/>
@@ -23,6 +16,7 @@
 	</parameter>
 	<parameter name="web.label.warehouse" class="java.lang.String"/>
 	<parameter name="web.label.quantityexpected" class="java.lang.String"/>
+	<parameter name="web.label.quantityreceive" class="java.lang.String"/>
 	<parameter name="wms.label.printtime" class="java.lang.String"/>
 	<parameter name="web.label.owner" class="java.lang.String"/>
 	<parameter name="web.label.uom" class="java.lang.String"/>
@@ -40,7 +34,9 @@
 	<parameter name="web.label.weightnet" class="java.lang.String"/>
 	<parameter name="web.label.volume" class="java.lang.String"/>
 	<parameter name="web.label.zone" class="java.lang.String"/>
-	<parameter name="Parameter1" class="java.lang.String"/>
+	<parameter name="web.label.length" class="java.lang.String"/>
+	<parameter name="web.label.width" class="java.lang.String"/>
+	<parameter name="web.label.height" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT ROWNUM,
   INBOUND_DETAIL_T.SKU_CODE,
@@ -62,7 +58,19 @@
   INBOUND_DETAIL_T.WEIGHT_NET AS WEIGHT_NET,
   INBOUND_DETAIL_T.WEIGHT_NET AS VOLUME,
   SYS_WAREHOUSES_V.CODE,
-  SKU_T.PUTAWAY_ZONE_CODE ZONE
+  SKU_T.PUTAWAY_ZONE_CODE ZONE,
+  CASE INBOUND_DETAIL_T.UOM 
+  	WHEN PACK_T.UOM_CASE THEN LENGTH_CASE
+  	WHEN PACK_T.UOM_INNER THEN LENGTH_INNER
+  	ELSE SKU_T.LENGTH END LENGTH,
+  CASE INBOUND_DETAIL_T.UOM 
+  	WHEN PACK_T.UOM_CASE THEN WIDTH_CASE
+  	WHEN PACK_T.UOM_INNER THEN WIDTH_INNER
+  	ELSE SKU_T.WIDTH END WIDTH,
+  CASE INBOUND_DETAIL_T.UOM 
+  	WHEN PACK_T.UOM_CASE THEN HEIGHT_CASE
+  	WHEN PACK_T.UOM_INNER THEN HEIGHT_INNER
+  	ELSE SKU_T.HEIGHT END HEIGHT
 FROM INBOUND_DETAIL_T
   LEFT JOIN INBOUND_HEADER_T ON 
    INBOUND_HEADER_T.INBOUND_HEADER_ID = INBOUND_DETAIL_T.INBOUND_HEADER_ID 
@@ -138,6 +146,15 @@ WHERE
 	<field name="ZONE" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="ZONE"/>
 	</field>
+	<field name="LENGTH" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="LENGTH"/>
+	</field>
+	<field name="WIDTH" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="WIDTH"/>
+	</field>
+	<field name="HEIGHT" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="HEIGHT"/>
+	</field>
 	<variable name="QUANTITY_EXPECTED1" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{QUANTITY_EXPECTED}]]></variableExpression>
 	</variable>
@@ -156,7 +173,7 @@ WHERE
 			<band height="110">
 				<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				<textField>
-					<reportElement x="90" y="60" width="80" height="20" uuid="cd39adc3-18c5-43ad-bb09-25a9ea03e23e">
+					<reportElement x="180" y="60" width="510" height="20" uuid="cd39adc3-18c5-43ad-bb09-25a9ea03e23e">
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -174,7 +191,7 @@ WHERE
 					<textFieldExpression><![CDATA[$F{REMARK}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="90" y="40" width="80" height="20" uuid="11d71e41-45ea-4eee-89cc-e094149c1f35">
+					<reportElement x="180" y="40" width="80" height="20" uuid="11d71e41-45ea-4eee-89cc-e094149c1f35">
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -192,7 +209,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}.get( $F{TYPE} )]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="90" y="20" width="80" height="20" uuid="eb5a6eb7-4e7e-4d64-ab08-9c941f4f4612">
+					<reportElement x="180" y="20" width="80" height="20" uuid="eb5a6eb7-4e7e-4d64-ab08-9c941f4f4612">
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -209,7 +226,7 @@ WHERE
 					<textFieldExpression><![CDATA[$F{OWNER_CODE}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="440" y="20" width="80" height="30" uuid="dfe1760d-1552-4208-a92d-f9fa1dad64ac">
+					<reportElement x="580" y="20" width="120" height="30" uuid="dfe1760d-1552-4208-a92d-f9fa1dad64ac">
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -227,7 +244,7 @@ WHERE
 					<textFieldExpression><![CDATA[DATEFORMAT($F{INBOUND_DATE},"YYYY-MM-dd")]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="440" y="0" width="80" height="20" uuid="e5344035-4e19-49ba-8dec-8eccb7d8b741">
+					<reportElement x="580" y="0" width="120" height="20" uuid="e5344035-4e19-49ba-8dec-8eccb7d8b741">
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -244,7 +261,7 @@ WHERE
 					<textFieldExpression><![CDATA[$F{SOURCE_NUMBER}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="90" y="0" width="80" height="20" uuid="9d37edd8-4eb5-4bee-955c-e56cc95d9202">
+					<reportElement x="180" y="0" width="80" height="20" uuid="9d37edd8-4eb5-4bee-955c-e56cc95d9202">
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -261,72 +278,72 @@ WHERE
 					<textFieldExpression><![CDATA[$F{INBOUND_NUMBER}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="30" y="0" width="60" height="20" uuid="6707bd7f-31d5-4900-b072-595a619cee2d">
+					<reportElement x="80" y="0" width="90" height="20" uuid="6707bd7f-31d5-4900-b072-595a619cee2d">
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
-					<textElement verticalAlignment="Middle">
+					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="pdfFont" size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{web.label.inboundnumber} + ":"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement stretchType="RelativeToTallestObject" x="360" y="20" width="80" height="30" uuid="c0fb5a50-398b-46cc-8154-8715304db2f9">
+					<reportElement stretchType="RelativeToTallestObject" x="470" y="20" width="100" height="30" uuid="c0fb5a50-398b-46cc-8154-8715304db2f9">
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
-					<textElement verticalAlignment="Middle">
+					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="pdfFont" size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{web.label.expectedinbounddate} + ":"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="30" y="20" width="60" height="20" uuid="2644c520-9c95-443b-b942-64decc3b0af9">
+					<reportElement x="80" y="20" width="90" height="20" uuid="2644c520-9c95-443b-b942-64decc3b0af9">
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
-					<textElement verticalAlignment="Middle">
+					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="pdfFont" size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{web.label.owner} + ":"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="360" y="0" width="80" height="20" uuid="d1a62ab7-e4d9-4d03-b981-2e40596a98be">
+					<reportElement x="470" y="0" width="100" height="20" uuid="d1a62ab7-e4d9-4d03-b981-2e40596a98be">
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
-					<textElement verticalAlignment="Middle">
+					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="pdfFont" size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{web.label.sourcebillnumber} + ":"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="30" y="40" width="60" height="20" uuid="c0e38f44-1a39-46c4-b702-c59ddb6c8a3f">
+					<reportElement x="80" y="40" width="90" height="20" uuid="c0e38f44-1a39-46c4-b702-c59ddb6c8a3f">
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					</reportElement>
-					<textElement verticalAlignment="Middle">
+					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="pdfFont" size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{web.label.type} + ":"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="30" y="60" width="60" height="20" uuid="6dd378ce-d7ce-42e6-a580-4bfce47db022">
+					<reportElement x="80" y="60" width="90" height="20" uuid="6dd378ce-d7ce-42e6-a580-4bfce47db022">
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
-					<textElement verticalAlignment="Middle">
+					<textElement textAlignment="Right" verticalAlignment="Middle">
 						<font fontName="pdfFont" size="10"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{web.label.remark} + ":"]]></textFieldExpression>
@@ -362,7 +379,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{web.label.sku}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="130" y="90" width="100" height="20" uuid="cc01621e-9260-4d72-bbd1-efff740fb82a">
+					<reportElement x="130" y="90" width="120" height="20" uuid="cc01621e-9260-4d72-bbd1-efff740fb82a">
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -378,7 +395,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{web.label.descr}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="280" y="90" width="100" height="20" uuid="8b87494d-8b82-4feb-ad00-43642e8f32ca">
+					<reportElement x="300" y="90" width="100" height="20" uuid="8b87494d-8b82-4feb-ad00-43642e8f32ca">
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -393,7 +410,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{web.label.pack}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="380" y="90" width="30" height="20" uuid="7802031c-edce-4217-833a-ac6c81150bbc">
+					<reportElement x="400" y="90" width="40" height="20" uuid="7802031c-edce-4217-833a-ac6c81150bbc">
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -407,7 +424,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{web.label.uom}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement stretchType="RelativeToTallestObject" x="520" y="90" width="60" height="20" uuid="2a282296-3d5e-47eb-ad8e-7a774a58790d">
+					<reportElement stretchType="RelativeToTallestObject" x="700" y="90" width="60" height="20" uuid="2a282296-3d5e-47eb-ad8e-7a774a58790d">
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="net.sf.jasperreports.style.box.rightPadding" value="3"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -421,7 +438,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{web.label.quantityexpected}]]></textFieldExpression>
 				</textField>
 				<line>
-					<reportElement x="10" y="0" width="570" height="1" uuid="036029c4-8d1b-430c-a2cd-20d20db97b74">
+					<reportElement x="10" y="0" width="810" height="1" uuid="036029c4-8d1b-430c-a2cd-20d20db97b74">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -429,7 +446,7 @@ WHERE
 					</reportElement>
 				</line>
 				<frame>
-					<reportElement x="170" y="5" width="130" height="44" uuid="2f4958a1-2b49-4e00-801d-d66e6bf7bba9">
+					<reportElement x="280" y="5" width="130" height="44" uuid="2f4958a1-2b49-4e00-801d-d66e6bf7bba9">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -449,7 +466,7 @@ WHERE
 					</componentElement>
 				</frame>
 				<line>
-					<reportElement x="10" y="80" width="570" height="1" uuid="e308b294-5945-4ac3-81a2-4de4dda80eb8">
+					<reportElement x="10" y="80" width="810" height="1" uuid="e308b294-5945-4ac3-81a2-4de4dda80eb8">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -457,7 +474,7 @@ WHERE
 					</reportElement>
 				</line>
 				<textField>
-					<reportElement x="410" y="90" width="60" height="20" uuid="c49b6682-6eef-49e2-b51b-beecc70e5532">
+					<reportElement x="640" y="90" width="60" height="20" uuid="c49b6682-6eef-49e2-b51b-beecc70e5532">
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="net.sf.jasperreports.style.box.rightPadding" value="3"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -471,7 +488,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{web.label.weightgross}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="470" y="90" width="50" height="20" uuid="0437a868-48cf-4e1e-b8fd-a11588eab2e1">
+					<reportElement x="590" y="90" width="50" height="20" uuid="0437a868-48cf-4e1e-b8fd-a11588eab2e1">
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="net.sf.jasperreports.style.box.rightPadding" value="3"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -485,7 +502,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{web.label.volume}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="230" y="90" width="50" height="20" uuid="2ddab9a1-8f08-41b4-abd1-815de2163f45">
+					<reportElement x="250" y="90" width="50" height="20" uuid="2ddab9a1-8f08-41b4-abd1-815de2163f45">
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -498,6 +515,62 @@ WHERE
 					</textElement>
 					<textFieldExpression><![CDATA[$P{web.label.zone}]]></textFieldExpression>
 				</textField>
+				<textField>
+					<reportElement stretchType="RelativeToTallestObject" x="760" y="90" width="60" height="20" uuid="3ca78cc4-de97-4c6e-a893-310555d1cb16">
+						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+						<property name="net.sf.jasperreports.style.box.rightPadding" value="3"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="pdfFont" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{web.label.quantityreceive}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="490" y="90" width="50" height="20" uuid="288c1193-ce5f-43ba-9def-1ee35996ff10">
+						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+						<property name="net.sf.jasperreports.style.box.rightPadding" value="3"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="pdfFont" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{web.label.width}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="440" y="90" width="50" height="20" uuid="906b9f0a-48eb-4cc5-9572-1745c98f59cc">
+						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+						<property name="net.sf.jasperreports.style.box.rightPadding" value="3"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="pdfFont" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{web.label.length}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="540" y="90" width="50" height="20" uuid="25a4eadc-6b13-4ed3-b4a0-882c10d9ba50">
+						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+						<property name="net.sf.jasperreports.style.box.rightPadding" value="3"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="pdfFont" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{web.label.height}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupHeader>
 	</group>
@@ -505,7 +578,7 @@ WHERE
 		<band height="70" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField>
-				<reportElement x="10" y="10" width="570" height="30" uuid="8ef188b1-910e-4772-8d22-70846fe345fc">
+				<reportElement x="10" y="10" width="818" height="30" uuid="8ef188b1-910e-4772-8d22-70846fe345fc">
 					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 				</reportElement>
 				<textElement textAlignment="Center">
@@ -514,7 +587,7 @@ WHERE
 				<textFieldExpression><![CDATA[$P{wms.label.receivereport}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="420" y="40" width="140" height="30" uuid="944e0e4f-5349-45fc-ab13-582ed2f0f1af">
+				<reportElement x="570" y="40" width="140" height="30" uuid="944e0e4f-5349-45fc-ab13-582ed2f0f1af">
 					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -525,7 +598,7 @@ WHERE
 				<textFieldExpression><![CDATA[DATEFORMAT(NOW( ),"YYYY/MM/dd HH:mm")]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="90" y="40" width="100" height="30" uuid="97654e9d-4c74-42e8-af23-0c4e16a1d600">
+				<reportElement x="200" y="40" width="100" height="30" uuid="97654e9d-4c74-42e8-af23-0c4e16a1d600">
 					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -536,7 +609,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{CODE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="30" y="40" width="60" height="30" uuid="5fc302b6-4a42-4248-8d3d-41ca59130081">
+				<reportElement x="140" y="40" width="60" height="30" uuid="5fc302b6-4a42-4248-8d3d-41ca59130081">
 					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -547,7 +620,7 @@ WHERE
 				<textFieldExpression><![CDATA[$P{web.label.warehouse} + ":"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="360" y="40" width="60" height="30" uuid="4ac0de63-441d-4289-b1b4-6da7372211cd">
+				<reportElement x="510" y="40" width="60" height="30" uuid="4ac0de63-441d-4289-b1b4-6da7372211cd">
 					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
@@ -577,7 +650,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{ROWNUM}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="130" y="0" width="100" height="40" uuid="c250be67-e2fa-4624-bfa3-3679a99f4bfc">
+				<reportElement x="130" y="0" width="120" height="40" uuid="c250be67-e2fa-4624-bfa3-3679a99f4bfc">
 					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -593,7 +666,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{DESCRIPTION}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="380" y="0" width="30" height="40" uuid="5b87f965-ed65-424f-888f-aae19948fbee">
+				<reportElement x="400" y="0" width="40" height="40" uuid="5b87f965-ed65-424f-888f-aae19948fbee">
 					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -608,7 +681,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{UOM}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="520" y="0" width="60" height="40" uuid="5a36f4e4-1885-4b82-b8e4-28dae24d60f9">
+				<reportElement x="700" y="0" width="60" height="40" uuid="5a36f4e4-1885-4b82-b8e4-28dae24d60f9">
 					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 					<property name="net.sf.jasperreports.style.box.rightPadding" value="3"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -659,7 +732,7 @@ WHERE
 				</componentElement>
 			</frame>
 			<textField>
-				<reportElement x="410" y="0" width="60" height="40" uuid="19512499-46b2-4986-8fd6-65b916c8b0a1">
+				<reportElement x="640" y="0" width="60" height="40" uuid="19512499-46b2-4986-8fd6-65b916c8b0a1">
 					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 					<property name="net.sf.jasperreports.style.box.rightPadding" value="3"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -671,7 +744,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{WEIGHT_GROSS}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="470" y="0" width="50" height="40" uuid="24a9d1eb-e385-4601-96b5-a85ce5f25101">
+				<reportElement x="590" y="0" width="50" height="40" uuid="24a9d1eb-e385-4601-96b5-a85ce5f25101">
 					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 					<property name="net.sf.jasperreports.style.box.rightPadding" value="3"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -683,7 +756,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{VOLUME}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="230" y="0" width="50" height="40" uuid="852cd668-ca49-4be7-9d9a-0a5a1f97c083">
+				<reportElement x="250" y="0" width="50" height="40" uuid="852cd668-ca49-4be7-9d9a-0a5a1f97c083">
 					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -699,7 +772,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{ZONE}]]></textFieldExpression>
 			</textField>
 			<frame>
-				<reportElement x="280" y="0" width="100" height="40" uuid="f9eaa446-8e86-4436-9d0f-510c51bf9029"/>
+				<reportElement x="300" y="0" width="100" height="40" uuid="f9eaa446-8e86-4436-9d0f-510c51bf9029"/>
 				<textField>
 					<reportElement x="0" y="0" width="100" height="20" uuid="ca052e38-d299-4fea-9ba9-a08eeb03f68a">
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
@@ -743,13 +816,56 @@ WHERE
 					<textFieldExpression><![CDATA[$F{PACKDESCR}]]></textFieldExpression>
 				</textField>
 			</frame>
+			<textField>
+				<reportElement x="540" y="0" width="50" height="40" uuid="17b1d3d1-0d27-4800-86b7-4e4e0c7eb9f4">
+					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+					<property name="net.sf.jasperreports.style.box.rightPadding" value="3"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{HEIGHT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="490" y="0" width="50" height="40" uuid="bf5f604c-539f-496d-a7c8-7de7347b2edf">
+					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+					<property name="net.sf.jasperreports.style.box.rightPadding" value="3"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{WIDTH}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="0" width="50" height="40" uuid="01ca64d4-7270-4796-8523-db0a59164cac">
+					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+					<property name="net.sf.jasperreports.style.box.rightPadding" value="3"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{LENGTH}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="760" y="0" width="60" height="40" uuid="f2d8087f-38ea-4b39-9b29-83f02471fbfa"/>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<summary>
-		<band height="23">
+		<band height="35">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField>
-				<reportElement x="520" y="0" width="60" height="20" uuid="2f1bf3be-83b4-4b8a-b93b-1ba31447dd4d">
+				<reportElement x="700" y="0" width="60" height="20" uuid="2f1bf3be-83b4-4b8a-b93b-1ba31447dd4d">
 					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 					<property name="net.sf.jasperreports.style.box.rightPadding" value="3"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -763,7 +879,7 @@ WHERE
 				<textFieldExpression><![CDATA[$V{QUANTITY_EXPECTED1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="0" width="400" height="20" uuid="120c8578-6f42-43ff-b06e-501f49eaf0f7">
+				<reportElement x="10" y="0" width="580" height="20" uuid="120c8578-6f42-43ff-b06e-501f49eaf0f7">
 					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 					<property name="net.sf.jasperreports.style.box.rightPadding" value="3"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -777,7 +893,7 @@ WHERE
 				<textFieldExpression><![CDATA[$P{web.label.sum}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="410" y="0" width="60" height="20" uuid="7238a3c9-731d-4bed-89fc-5994de04aa74">
+				<reportElement x="590" y="0" width="50" height="20" uuid="7238a3c9-731d-4bed-89fc-5994de04aa74">
 					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 					<property name="net.sf.jasperreports.style.box.rightPadding" value="3"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -791,7 +907,7 @@ WHERE
 				<textFieldExpression><![CDATA[$V{WEIGHT_GROSS1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="470" y="0" width="50" height="20" uuid="f49e0292-6b3e-4162-9b30-be84fc644442">
+				<reportElement x="640" y="0" width="60" height="20" uuid="f49e0292-6b3e-4162-9b30-be84fc644442">
 					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 					<property name="net.sf.jasperreports.style.box.rightPadding" value="3"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -804,6 +920,13 @@ WHERE
 				</textElement>
 				<textFieldExpression><![CDATA[$V{VOLUME1}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="760" y="0" width="60" height="20" uuid="b6cf4690-b31c-4f74-8f2d-9ab38166dc18"/>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
 		</band>
 	</summary>
 </jasperReport>

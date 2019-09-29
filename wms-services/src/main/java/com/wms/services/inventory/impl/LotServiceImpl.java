@@ -254,9 +254,11 @@ public class LotServiceImpl implements ILotService {
 		
 		criteria
 		.andDelFlagEqualTo(YesNoEnum.No.getCode())
-		.andWarehouseIdEqualTo(lpn.getWarehouseId())
 		.andCompanyIdEqualTo(lpn.getCompanyId())
 		.andLotAttributeIdIn(Lists.newArrayList(ids));
+		if (lpn.getWarehouseId() != null) {
+			criteria.andWarehouseIdEqualTo(lpn.getWarehouseId());
+		}
 		
 		List<LotAttributeTEntity> lots = lotDao.selectByExample(example);
 		if (CollectionUtils.isEmpty(lots))

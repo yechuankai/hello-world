@@ -823,7 +823,6 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 	@Override
 	@Transactional
 	public Boolean receive(List<InboundDetailVO> detail) throws BusinessServiceException {
-		
 		if (CollectionUtils.isEmpty(detail))
 			throw new BusinessServiceException("no record receive.");
 		
@@ -835,9 +834,12 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 			
 			Long companyId = v.get(0).getCompanyId();
 			Long warehouseId = v.get(0).getWarehouseId();
+			String updateBy = v.get(0).getUpdateBy();
 			InboundHeaderTEntity header = inboundHeaderService.find(InboundHeaderTEntity.builder().warehouseId(warehouseId).companyId(companyId).inboundHeaderId(k).build());
 			
 			InboundVO headerVO = new InboundVO(header);
+			headerVO.setUpdateBy(updateBy);
+			
 			List<InboundDetailVO> tranDetail = Lists.newArrayList();
 			v.forEach(d -> {
 				InboundDetailTEntity detailObj = find((InboundDetailTEntity)d);
@@ -862,6 +864,11 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 															.updateTime(new Date())
 															.quantityReceive(detailVO.getQuantityReceive())
 															.build();
+					//默认当前日期
+					if (StringUtils.isEmpty(detailObj.getLotAttribute10())) {
+						updateDetail.setLotAttribute10(header.getInboundNumber());
+						updateDetail.setLotAttribute11(DateUtils.parseDate(DateUtils.getDate()));
+					}
 					modify(new InboundDetailVO(updateDetail));
 				}
 			});

@@ -14,7 +14,10 @@ public enum ExcelTemplateEnum {
 	InventoryByLpn("STOCKGROUPBYLPN","根据LPN分组库存"),
 	InventoryByLocation("STOCKGROUPBYLOCATION","根据库位分组库存"),
 	InventoryBySku("STOCKGROUPBYSKU","根据货品分组库存"),
-	BilingLease("BILLINGLEASE","仓租导出");
+	BilingLease("BILLINGLEASE","仓租导出"),
+	PutawayTask("PUTAWAYTASK","上架任务"),
+	UnLoadTask("UNLOADTASK","卸车任务"),
+	LoadTask("LOADTASK","装车任务");
 	
 	private final String code;
 	private final String desc;

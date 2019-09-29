@@ -62,9 +62,12 @@ public class LpnServiceImpl implements ILpnService {
 		
 		criteria
 		.andDelFlagEqualTo(YesNoEnum.No.getCode())
-		.andWarehouseIdEqualTo(lpn.getWarehouseId())
 		.andCompanyIdEqualTo(lpn.getCompanyId())
 		.andLpnIdIn(Lists.newArrayList(ids));
+		
+		if (lpn.getWarehouseId() != null) {
+			criteria.andWarehouseIdEqualTo(lpn.getWarehouseId());
+		}
 		
 		List<LpnTEntity> lpns = lpnDao.selectByExample(example);
 		

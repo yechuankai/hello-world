@@ -1,9 +1,11 @@
 package com.wms.services.inventory.impl;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
+import com.wms.common.enums.AppointmentTypeEnum;
 import com.wms.common.enums.LpnTypeEnum;
 import com.wms.common.enums.OrderNumberTypeEnum;
 import com.wms.common.enums.TaskStatusEnum;
@@ -15,22 +17,43 @@ import com.wms.common.utils.StringUtils;
 import com.wms.common.utils.key.KeyUtils;
 import com.wms.dao.auto.ITaskDetailTDao;
 import com.wms.dao.example.TaskDetailTExample;
+import com.wms.entity.auto.AppointmentTEntity;
+import com.wms.entity.auto.InboundDetailTEntity;
+import com.wms.entity.auto.InboundHeaderTEntity;
 import com.wms.entity.auto.InventoryOnhandTEntity;
 import com.wms.entity.auto.LocationTEntity;
 import com.wms.entity.auto.LpnTEntity;
+import com.wms.entity.auto.OutboundDetailTEntity;
+import com.wms.entity.auto.OutboundHeaderTEntity;
+import com.wms.entity.auto.PackTEntity;
+import com.wms.entity.auto.SkuTEntity;
 import com.wms.entity.auto.TaskDetailTEntity;
+import com.wms.services.appointment.IAppointmentService;
 import com.wms.services.base.ILocationService;
+import com.wms.services.base.IPackService;
+import com.wms.services.base.ISkuService;
+import com.wms.services.inbound.IInboundDetailService;
+import com.wms.services.inbound.IInboundHeaderService;
 import com.wms.services.inventory.IInventoryService;
 import com.wms.services.inventory.ILpnService;
 import com.wms.services.inventory.ITaskService;
+import com.wms.services.outbound.IOutboundDetailService;
+import com.wms.services.outbound.IOutboundHeaderService;
 import com.wms.vo.InventoryOnhandVO;
+import com.wms.vo.PackVO;
+import com.wms.vo.TaskDetailVO;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static java.math.BigDecimal.ROUND_FLOOR;
+
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,15 +67,26 @@ public class TaskServiceImpl implements ITaskService {
 
     @Autowired
     ITaskDetailTDao taskdetailTDao;
-
     @Autowired
 	ILocationService locationService;
-
     @Autowired
 	IInventoryService inventoryService;
-
     @Autowired
 	ILpnService lpnService;
+    @Autowired
+    IInboundHeaderService inboundHeaderService;
+    @Autowired
+    IInboundDetailService inboundDetailService;
+    @Autowired
+    IOutboundHeaderService outboundHeaderService;
+    @Autowired
+    IOutboundDetailService outboundDetailService;
+    @Autowired
+    IAppointmentService appointmentService;
+    @Autowired
+    ISkuService skuService;
+    @Autowired
+    IPackService packService;
 
     @Override
     public List<TaskDetailTEntity> find(PageRequest request) throws BusinessServiceException {
@@ -72,6 +106,231 @@ public class TaskServiceImpl implements ITaskService {
                 .orderby(example);
         exampleCriteria.andDelFlagEqualTo(YesNoEnum.No.getCode());
         return taskdetailTDao.selectByExample(example);
+    }
+    
+    @Override
+    public List<TaskDetailVO> findUnLoad(PageRequest request) throws BusinessServiceException {
+        TaskDetailTExample example = new TaskDetailTExample();
+        TaskDetailTExample.Criteria exampleCriteria = example.createCriteria();
+
+        //转换查询方法
+        ExampleUtils.create(TaskDetailTEntity.Column.class, TaskDetailTExample.Criterion.class)
+                .criteria(exampleCriteria)
+                .data(request)
+                .build(request)
+                .betweenDate(TaskDetailTEntity.Column.releaseTime.getJavaProperty(),
+                        TaskDetailTEntity.Column.completeTime.getJavaProperty(),
+                        TaskDetailTEntity.Column.startTime.getJavaProperty(),
+                        TaskDetailTEntity.Column.endTime.getJavaProperty()
+                )
+                .orderby(example);
+        exampleCriteria.andDelFlagEqualTo(YesNoEnum.No.getCode());
+        List<TaskDetailTEntity> list = taskdetailTDao.selectByExample(example);
+        if (CollectionUtils.isEmpty(list))
+        	return Lists.newArrayList();
+        
+        //获取入库单据信息
+        Set<String> sourceNumber = list.stream().filter(v -> StringUtils.isNotEmpty(v.getSourceBillNumber())).map(TaskDetailTEntity::getSourceBillNumber).collect(Collectors.toSet());
+        List<InboundHeaderTEntity> inboundList = inboundHeaderService.findByNumber(InboundHeaderTEntity.builder()
+        								.warehouseId(request.getWarehouseId())
+        								.companyId(request.getCompanyId())
+        								.build(), sourceNumber);
+        Map<String, InboundHeaderTEntity> inboundMap = Maps.newHashMap();
+        Map<Long, BigDecimal> weightMap = Maps.newHashMap();
+        Map<Long, BigDecimal> volumeMap = Maps.newHashMap();
+        if (CollectionUtils.isNotEmpty(inboundList)) {
+        	inboundMap = inboundList.stream().collect(Collectors.toMap(InboundHeaderTEntity::getInboundNumber, v -> v));
+        
+        	 //获取明细，计算重量，体积汇总信息
+            Set<Long> headerIds = inboundList.stream().map(InboundHeaderTEntity::getInboundHeaderId).collect(Collectors.toSet());
+            List<InboundDetailTEntity> inboundDetail = inboundDetailService.findByHeaderIds(InboundDetailTEntity.builder()
+        								.warehouseId(request.getWarehouseId())
+        								.companyId(request.getCompanyId())
+        								.build(), headerIds);
+            if (CollectionUtils.isNotEmpty(inboundDetail)) {
+            	for (InboundDetailTEntity detail : inboundDetail) {
+            		//仅查询预期收货数据
+            		if (BigDecimal.ZERO.compareTo(detail.getQuantityExpected()) >= 0) {
+            			continue;
+            		}
+					BigDecimal weight = weightMap.get(detail.getInboundHeaderId());
+					if (weight != null) {
+						weight  = weight.add(detail.getWeightGross());
+					}else {
+						weight = detail.getWeightGross();
+					}
+					weightMap.put(detail.getInboundHeaderId(), weight);
+					
+					BigDecimal volume = volumeMap.get(detail.getInboundHeaderId());
+					if (volume != null) {
+						volume  = volume.add(detail.getVolume());
+					}else {
+						volume = detail.getVolume();
+					}
+					volumeMap.put(detail.getInboundHeaderId(), volume);
+				}
+            }
+            
+        }
+        
+        //获取泊位信息
+        List<AppointmentTEntity> appointmentList = appointmentService.findByBillNumber(AppointmentTEntity.builder()
+        								.warehouseId(request.getWarehouseId())
+        								.companyId(request.getCompanyId())
+        								.type(AppointmentTypeEnum.Inbound.getCode())
+        								.build(), sourceNumber);
+        
+        Map<String, AppointmentTEntity> appointmentMap = Maps.newHashMap();
+        if (CollectionUtils.isNotEmpty(appointmentList))
+        	appointmentMap = appointmentList.stream().collect(Collectors.toMap(AppointmentTEntity::getSourceBillNumber, v -> v));
+        
+        List<TaskDetailVO> returnLists = Lists.newArrayList();
+        for (TaskDetailTEntity task : list) {
+        	TaskDetailVO vo = new TaskDetailVO(task);
+        	
+        	InboundHeaderTEntity inbound = inboundMap.get(task.getSourceBillNumber());
+        	if (inbound != null) {
+        		vo.setCarNumber(inbound.getCarrierCarNumber());
+        		vo.setContainerNumber(inbound.getContainerNumber());
+        		
+        		BigDecimal weight = weightMap.get(inbound.getInboundHeaderId());
+        		BigDecimal volume = volumeMap.get(inbound.getInboundHeaderId());
+        		vo.setWeightGross(weight);
+        		vo.setVolume(volume);
+        	}
+        	
+        	AppointmentTEntity appointment = appointmentMap.get(task.getSourceBillNumber());
+        	if (appointment != null) {
+        		vo.setPlatFormCode(appointment.getPlatformCode());
+        	}
+        	returnLists.add(vo);
+		}
+        return returnLists;
+    }
+    
+    @Override
+    public List<TaskDetailVO> findLoad(PageRequest request) throws BusinessServiceException {
+        TaskDetailTExample example = new TaskDetailTExample();
+        TaskDetailTExample.Criteria exampleCriteria = example.createCriteria();
+
+        //转换查询方法
+        ExampleUtils.create(TaskDetailTEntity.Column.class, TaskDetailTExample.Criterion.class)
+                .criteria(exampleCriteria)
+                .data(request)
+                .build(request)
+                .betweenDate(TaskDetailTEntity.Column.releaseTime.getJavaProperty(),
+                        TaskDetailTEntity.Column.completeTime.getJavaProperty(),
+                        TaskDetailTEntity.Column.startTime.getJavaProperty(),
+                        TaskDetailTEntity.Column.endTime.getJavaProperty()
+                )
+                .orderby(example);
+        exampleCriteria.andDelFlagEqualTo(YesNoEnum.No.getCode());
+        List<TaskDetailTEntity> list = taskdetailTDao.selectByExample(example);
+        if (CollectionUtils.isEmpty(list))
+        	return Lists.newArrayList();
+        
+        //获取出库单据信息
+        Set<String> sourceNumber = list.stream().filter(v -> StringUtils.isNotEmpty(v.getSourceBillNumber())).map(TaskDetailTEntity::getSourceBillNumber).collect(Collectors.toSet());
+        List<OutboundHeaderTEntity> outboundList = outboundHeaderService.findByNumber(OutboundHeaderTEntity.builder()
+        								.warehouseId(request.getWarehouseId())
+        								.companyId(request.getCompanyId())
+        								.build(), sourceNumber);
+        Map<String, OutboundHeaderTEntity> outboundMap = Maps.newHashMap();
+        Map<Long, BigDecimal> weightMap = Maps.newHashMap();
+        Map<Long, BigDecimal> volumeMap = Maps.newHashMap();
+        if (CollectionUtils.isNotEmpty(outboundList)) {
+        	outboundMap = outboundList.stream().collect(Collectors.toMap(OutboundHeaderTEntity::getOutboundNumber, v -> v));
+        
+        	//获取明细，计算重量，体积汇总信息
+            Set<Long> headerIds = outboundList.stream().map(OutboundHeaderTEntity::getOutboundHeaderId).collect(Collectors.toSet());
+            List<OutboundDetailTEntity> outboundDetail = outboundDetailService.findByHeaderIds(OutboundDetailTEntity.builder()
+        								.warehouseId(request.getWarehouseId())
+        								.companyId(request.getCompanyId())
+        								.build(), headerIds);
+            if (CollectionUtils.isNotEmpty(outboundDetail)) {
+            	//获取包装
+            	Set<Long> packIds = outboundDetail.stream().map(OutboundDetailTEntity::getPackId).collect(Collectors.toSet());
+            	List<PackTEntity> packList = packService.findByIds(PackTEntity.builder()
+        								.warehouseId(request.getWarehouseId())
+        								.companyId(request.getCompanyId())
+        								.build(), packIds);
+            	Map<Long, PackTEntity> packMap = packList.stream().collect(Collectors.toMap(PackTEntity::getPackId, v -> v));
+            	
+            	//获取货品
+            	Set<Long> skuIds = outboundDetail.stream().map(OutboundDetailTEntity::getSkuId).collect(Collectors.toSet());
+            	List<SkuTEntity> skuList = skuService.findByIds(SkuTEntity.builder()
+						.warehouseId(request.getWarehouseId())
+						.companyId(request.getCompanyId())
+						.build(), skuIds);
+            	Map<Long, SkuTEntity> skuMap = skuList.stream().collect(Collectors.toMap(SkuTEntity::getSkuId, v -> v));
+            	
+            	for (OutboundDetailTEntity detail : outboundDetail) {
+            		BigDecimal qty = detail.getQuantityExpected().add(detail.getQuantityShiped());
+            		if (BigDecimal.ZERO.compareTo(qty) >= 0) {
+            			continue;
+            		}
+            		
+            		//计算单位数量
+            		qty = qty.divide(detail.getUomQuantity(), 5, ROUND_FLOOR);
+            		
+            		PackTEntity pack = packMap.get(detail.getPackId());
+            		SkuTEntity sku = skuMap.get(detail.getSkuId());
+            		
+            		PackVO packVo = packService.getPack(pack, sku, detail.getUom());
+            		
+					BigDecimal weight = weightMap.get(detail.getOutboundHeaderId());
+					if (weight != null) {
+						weight  = weight.add(packVo.getWeightGross().multiply(qty));
+					}else {
+						weight = packVo.getWeightGross().multiply(qty);
+					}
+					weightMap.put(detail.getOutboundHeaderId(), weight);
+					
+					BigDecimal volume = volumeMap.get(detail.getOutboundHeaderId());
+					if (volume != null) {
+						volume  = volume.add(packVo.getVolume().multiply(qty));
+					}else {
+						volume = packVo.getVolume().multiply(qty);
+					}
+					volumeMap.put(detail.getOutboundHeaderId(), volume);
+				}
+            }
+            
+        }
+        
+        //获取泊位信息
+        List<AppointmentTEntity> appointmentList = appointmentService.findByBillNumber(AppointmentTEntity.builder()
+        								.warehouseId(request.getWarehouseId())
+        								.companyId(request.getCompanyId())
+        								.type(AppointmentTypeEnum.Outbound.getCode())
+        								.build(), sourceNumber);
+        
+        Map<String, AppointmentTEntity> appointmentMap = Maps.newHashMap();
+        if (CollectionUtils.isNotEmpty(appointmentList))
+        	appointmentMap = appointmentList.stream().collect(Collectors.toMap(AppointmentTEntity::getSourceBillNumber, v -> v));
+        
+        List<TaskDetailVO> returnLists = Lists.newArrayList();
+        for (TaskDetailTEntity task : list) {
+        	TaskDetailVO vo = new TaskDetailVO(task);
+        	
+        	OutboundHeaderTEntity inbound = outboundMap.get(task.getSourceBillNumber());
+        	if (inbound != null) {
+        		vo.setCarNumber(inbound.getCarNumber());
+        		vo.setContainerNumber(inbound.getContainerNumber());
+        		
+        		BigDecimal weight = weightMap.get(inbound.getOutboundHeaderId());
+        		BigDecimal volume = volumeMap.get(inbound.getOutboundHeaderId());
+        		vo.setWeightGross(weight);
+        		vo.setVolume(volume);
+        	}
+        	
+        	AppointmentTEntity appointment = appointmentMap.get(task.getSourceBillNumber());
+        	if (appointment != null) {
+        		vo.setPlatFormCode(appointment.getPlatformCode());
+        	}
+        	returnLists.add(vo);
+		}
+        return returnLists;
     }
 
     @Override
@@ -218,9 +477,15 @@ public class TaskServiceImpl implements ITaskService {
 					.updateBy(request.getUserName())
 					.updateTime(new Date())
 					.userName(task.getUserName())
+					.userCompany(task.getUserCompany())
+					.weightGross(task.getWeightGross())
+					.weightNet(task.getWeightNet())
+					.weightTare(task.getWeightTare())
+					.volume(task.getVolume())
 					.toLocationCode(task.getToLocationCode())
 					.toZoneCode(task.getToZoneCode())
 					.startTime(task.getStartTime())
+					.reason(task.getReason())
 					.endTime(task.getEndTime())
 					.completeTime(task.getCompleteTime())
 					.status(task.getStatus())

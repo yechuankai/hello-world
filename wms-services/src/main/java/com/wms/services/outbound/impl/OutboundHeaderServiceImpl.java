@@ -194,7 +194,6 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 
 	@Override
 	public OutboundHeaderTEntity find(OutboundHeaderTEntity outbound) throws BusinessServiceException {
-		
 		OutboundHeaderTExample TExample = new OutboundHeaderTExample();
 		OutboundHeaderTExample.Criteria criteria = TExample.createCriteria();
 		
@@ -243,6 +242,26 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 		}
 		return outbounds;
 	}
+	
+	@Override
+	public List<OutboundHeaderTEntity> findByNumber(OutboundHeaderTEntity outbound, Set<String> billNumbers) throws BusinessServiceException {
+		if(CollectionUtils.isEmpty(billNumbers))
+			return Lists.newArrayList();
+		
+		OutboundHeaderTExample TExample = new OutboundHeaderTExample();
+		OutboundHeaderTExample.Criteria criteria = TExample.createCriteria();
+		
+		criteria.andDelFlagEqualTo(YesNoEnum.No.getCode())
+		.andWarehouseIdEqualTo(outbound.getWarehouseId())
+		.andCompanyIdEqualTo(outbound.getCompanyId())
+		.andOutboundNumberIn(Lists.newArrayList(billNumbers));
+		
+		List<OutboundHeaderTEntity> outbounds = outboundHeaderDao.selectByExample(TExample);
+		if (outbounds == null) {
+			return Lists.newArrayList();
+		}
+		return outbounds;
+	}
 
 	@Override
 	public OutboundVO save(AjaxRequest<OutboundVO> request) throws BusinessServiceException {
@@ -283,7 +302,8 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 			throw new BusinessServiceException("OutboundHeaderServiceImpl", "outbound.status.not.process" , new Object[] {selectHeader.getOutboundNumber()});
 		}
 		OutboundStatusEnum status = null;
-		if(!StringUtils.equals(selectHeader.getStatus(),OutboundStatusEnum.Draft.getCode())&&!StringUtils.equals(selectHeader.getStatus(),OutboundStatusEnum.WaitingReview.getCode())){
+		if(!StringUtils.equals(selectHeader.getStatus(),OutboundStatusEnum.Draft.getCode())
+				&& !StringUtils.equals(selectHeader.getStatus(),OutboundStatusEnum.WaitingReview.getCode())){
 			//非草稿,待接单，待出货状态就自动计算状态
 			status= outboundStatus(selectHeader,Boolean.FALSE);
 		}
@@ -296,10 +316,35 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 
 		if(null != status){
 			updateHeader.setStatus(status.getCode());
+			if (!selectHeader.getStatus().equals(status.getCode())) {
+				//记录状态关闭状态
+				StatusHistoryTEntity statusHistory = StatusHistoryTEntity.builder()
+						.companyId(selectHeader.getCompanyId())
+						.warehouseId(selectHeader.getWarehouseId())
+						.createBy(outbound.getUpdateBy())
+						.updateBy(outbound.getUpdateBy())
+						.createTime(new Date())
+						.updateTime(new Date())
+						.operTime(new Date())
+						.sourceBillNumber(selectHeader.getOutboundNumber())
+						.sourceNumber(selectHeader.getOutboundHeaderId())
+						.oldStatus(selectHeader.getStatus())
+						.newStatus(status.getCode())
+						.build();
+				statusHistoryService.add(statusHistory);
+			}
+			if (OutboundStatusEnum.Shiped == status
+					|| OutboundStatusEnum.PartShiped == status) {
+				updateHeader.setOutboundDate(new Date());
+			}
 		}else {
 			updateHeader.setStatus(outbound.getStatus());
 		}
-
+		
+		//发运状态时更新装车任务
+		if (OutboundStatusEnum.Shiped == status) {
+			loadTask(selectHeader, OperatorTypeEnum.Complate);
+		}
 
 		OutboundHeaderTExample example = new OutboundHeaderTExample();
 		example.createCriteria()
@@ -341,7 +386,9 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 
 	@Override
 	public Boolean add(OutboundVO outbound) throws BusinessServiceException {
-		outbound.setOutboundHeaderId(KeyUtils.getUID());
+		if (outbound.getOutboundHeaderId() == null)
+			outbound.setOutboundHeaderId(KeyUtils.getUID());
+		
 		OutboundHeaderTEntity  header = new OutboundHeaderTEntity();
         BeanUtils.copyBeanProp(header, outbound, Boolean.FALSE);
 		header.setCreateBy(outbound.getCreateBy());
@@ -457,19 +504,27 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 
 		if (!updateFlag)
 			return status;
-
+		
 		OutboundHeaderTEntity selectHeader = find(OutboundHeaderTEntity.builder()
 												.warehouseId(header.getWarehouseId())
 												.companyId(header.getCompanyId())
 												.outboundHeaderId(header.getOutboundHeaderId())
 												.status(status.getCode())
 												.build());
+		
+		//状态一致则不继续更新
+		if (status.getCode().equals(selectHeader.getStatus()))
+			return status;
 
 		OutboundHeaderTEntity updateHeader = OutboundHeaderTEntity.builder()
 												.status(status.getCode())
 												.updateBy(header.getUpdateBy())
 												.updateTime(new Date())
 												.build();
+		if (OutboundStatusEnum.Shiped == status 
+				|| OutboundStatusEnum.PartShiped == status )
+			updateHeader.setOutboundDate(new Date());
+		
 		OutboundHeaderTExample example = new OutboundHeaderTExample();
 		example.createCriteria()
 		.andWarehouseIdEqualTo(header.getWarehouseId())
@@ -481,6 +536,22 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 		if (rowcount == 0)
 			throw new BusinessServiceException("record update error.");
 
+		//记录状态关闭状态
+		StatusHistoryTEntity statusHistory = StatusHistoryTEntity.builder()
+				.companyId(header.getCompanyId())
+				.warehouseId(header.getWarehouseId())
+				.createBy(header.getUpdateBy())
+				.updateBy(header.getUpdateBy())
+				.createTime(new Date())
+				.updateTime(new Date())
+				.operTime(new Date())
+				.sourceBillNumber(selectHeader.getOutboundNumber())
+				.sourceNumber(selectHeader.getOutboundHeaderId())
+				.oldStatus(selectHeader.getStatus())
+				.newStatus(status.getCode())
+				.build();
+		statusHistoryService.add(statusHistory);
+				
 		header.setStatus(status.getCode());
 		
 		//发运状态时更新装车任务
@@ -725,7 +796,7 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 				addList.add(outboundVO);
 				break;
 			case Submit:
-				if(null == outboundVO.getOutboundHeaderId()){
+				if(StringUtils.isEmpty(outboundVO.getOutboundNumber())){
 					addList = deal(outboundVO);
 					addList.forEach(d ->{
 						d.setStatus(OutboundStatusEnum.WaitingReview.getCode());
@@ -1129,6 +1200,9 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 					.companyId(header.getCompanyId())
 					.sourceBillNumber(header.getOutboundNumber())
 					.build());
+			if (CollectionUtils.isEmpty(tasks)) {
+				break;
+			}
 			tasks = tasks.stream().filter(v->TaskStatusEnum.New.getCode().equals(v.getStatus())).collect(Collectors.toList());
 			tasks.forEach(t -> {
 				t.setStatus(TaskStatusEnum.Completed.getCode());

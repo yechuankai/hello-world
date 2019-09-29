@@ -34,7 +34,7 @@
     <result column="TO_WAREHOUSE_CODE" jdbcType="VARCHAR" property="toWarehouseCode" />
     <result column="TO_WAREHOUSE_ID" jdbcType="DECIMAL" property="toWarehouseId" />
     <result column="CARRIER_DRIVER_PHONE" jdbcType="VARCHAR" property="carrierDriverPhone" />
-    <result column="CONTAINER_NUMBER" jdbcType="TIMESTAMP" property="containerNumber" />
+    <result column="CONTAINER_NUMBER" jdbcType="VARCHAR" property="containerNumber" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -182,7 +182,7 @@
       #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, #{toWarehouseCode,jdbcType=VARCHAR}, 
-      #{toWarehouseId,jdbcType=DECIMAL}, #{carrierDriverPhone,jdbcType=VARCHAR}, #{containerNumber,jdbcType=TIMESTAMP}
+      #{toWarehouseId,jdbcType=DECIMAL}, #{carrierDriverPhone,jdbcType=VARCHAR}, #{containerNumber,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.InboundHeaderTEntity">
@@ -386,7 +386,7 @@
         #{carrierDriverPhone,jdbcType=VARCHAR},
       </if>
       <if test="containerNumber != null">
-        #{containerNumber,jdbcType=TIMESTAMP},
+        #{containerNumber,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -496,7 +496,7 @@
         CARRIER_DRIVER_PHONE = #{record.carrierDriverPhone,jdbcType=VARCHAR},
       </if>
       <if test="record.containerNumber != null">
-        CONTAINER_NUMBER = #{record.containerNumber,jdbcType=TIMESTAMP},
+        CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -537,7 +537,7 @@
       TO_WAREHOUSE_CODE = #{record.toWarehouseCode,jdbcType=VARCHAR},
       TO_WAREHOUSE_ID = #{record.toWarehouseId,jdbcType=DECIMAL},
       CARRIER_DRIVER_PHONE = #{record.carrierDriverPhone,jdbcType=VARCHAR},
-      CONTAINER_NUMBER = #{record.containerNumber,jdbcType=TIMESTAMP}
+      CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -671,7 +671,7 @@
     TO_WAREHOUSE_CODE = #{record.toWarehouseCode,jdbcType=VARCHAR}, 
     TO_WAREHOUSE_ID = #{record.toWarehouseId,jdbcType=DECIMAL}, 
     CARRIER_DRIVER_PHONE = #{record.carrierDriverPhone,jdbcType=VARCHAR}, 
-    CONTAINER_NUMBER = #{record.containerNumber,jdbcType=TIMESTAMP}
+    CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
     </if>
@@ -780,7 +780,7 @@
           CARRIER_DRIVER_PHONE = #{record.carrierDriverPhone,jdbcType=VARCHAR},
         </if>
         <if test="record.containerNumber != null">
-          CONTAINER_NUMBER = #{record.containerNumber,jdbcType=TIMESTAMP},
+          CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR},
         </if>
       </trim>
     </set>

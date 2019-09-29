@@ -41,8 +41,11 @@ public class StatusHistoryServiceImpl implements IStatusHistoryService {
 		example.createCriteria()
 		.andDelFlagEqualTo(YesNoEnum.No.getCode())
 		.andCompanyIdEqualTo(statusHistory.getCompanyId())
-		.andWarehouseIdEqualTo(statusHistory.getWarehouseId())
+		//.andWarehouseIdEqualTo(statusHistory.getWarehouseId())
 		.andSourceNumberEqualTo(statusHistory.getSourceNumber());
+		
+		//按主键升序
+		example.orderBy(StatusHistoryTEntity.Column.historyId.getValue());
 		
 		return statusHistoryDao.selectByExample(example);
 	}

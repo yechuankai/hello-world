@@ -5,6 +5,7 @@ import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.enums.TaskStatusEnum;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.entity.auto.TaskDetailTEntity;
+import com.wms.vo.TaskDetailVO;
 
 import java.util.List;
 
@@ -17,6 +18,10 @@ import java.util.List;
 public interface ITaskService {
 	
     List<TaskDetailTEntity> find(PageRequest request) throws BusinessServiceException;
+    
+    List<TaskDetailVO> findUnLoad(PageRequest request) throws BusinessServiceException;
+    
+    List<TaskDetailVO> findLoad(PageRequest request) throws BusinessServiceException;
     
     TaskDetailTEntity findBySourceNumber(TaskDetailTEntity task) throws BusinessServiceException;
     

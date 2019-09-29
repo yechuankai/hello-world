@@ -216,6 +216,26 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 		return inbounds;
 	}
 	
+	@Override
+	public List<InboundHeaderTEntity> findByNumber(InboundHeaderTEntity inbound, Set<String> billNumbers) throws BusinessServiceException {
+		if(CollectionUtils.isEmpty(billNumbers))
+			return Lists.newArrayList();
+		
+		InboundHeaderTExample TExample = new InboundHeaderTExample();
+		InboundHeaderTExample.Criteria criteria = TExample.createCriteria();
+		
+		criteria.andDelFlagEqualTo(YesNoEnum.No.getCode())
+		.andCompanyIdEqualTo(inbound.getCompanyId())
+		.andWarehouseIdEqualTo(inbound.getWarehouseId())
+		.andInboundNumberIn(Lists.newArrayList(billNumbers));
+		
+		List<InboundHeaderTEntity> inbounds = inboundHeaderDao.selectByExample(TExample);
+		if (inbounds == null) {
+			return Lists.newArrayList();
+		}
+		return inbounds;
+	}
+	
 	private Boolean validate(InboundVO inbound) {
 		
 		if (inbound.getOwnerId() == null && StringUtils.isEmpty(inbound.getOwnerCode()))
@@ -346,7 +366,9 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 
     @Override
 	public Boolean add(InboundVO inbound) throws BusinessServiceException {
-		inbound.setInboundHeaderId(KeyUtils.getUID());
+    	if (inbound.getInboundHeaderId() == null)
+    		inbound.setInboundHeaderId(KeyUtils.getUID());
+    	
 		InboundHeaderTEntity header = new InboundHeaderTEntity();
 		BeanUtils.copyBeanProp(header, inbound, Boolean.FALSE);
 		header.setCreateBy(inbound.getCreateBy());
@@ -467,6 +489,9 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 												.inboundHeaderId(header.getInboundHeaderId())
 												.status(status.getCode())
 												.build());
+		//状态一致则不继续更新
+		if (status.getCode().equals(selectHeader.getStatus()))
+			return status;
 		
 		InboundHeaderTEntity updateHeader = InboundHeaderTEntity.builder()
 												.status(status.getCode())
@@ -480,8 +505,23 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 		if (rowcount == 0)
 			throw new BusinessServiceException("record update error.");
 		
-		header.setStatus(status.getCode());
+		//记录状态关闭状态
+		StatusHistoryTEntity statusHistory = StatusHistoryTEntity.builder()
+				.companyId(header.getCompanyId())
+				.warehouseId(header.getWarehouseId())
+				.createBy(header.getUpdateBy())
+				.updateBy(header.getUpdateBy())
+				.createTime(new Date())
+				.updateTime(new Date())
+				.operTime(new Date())
+				.sourceBillNumber(selectHeader.getInboundNumber())
+				.sourceNumber(selectHeader.getInboundHeaderId())
+				.oldStatus(selectHeader.getStatus())
+				.newStatus(status.getCode())
+				.build();
+		statusHistoryService.add(statusHistory);
 		
+		header.setStatus(status.getCode());
 		return status;
 	}
 
@@ -564,6 +604,21 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 			d.setClosedDate(new Date());
 			modify(d);
 			
+			//记录状态关闭状态
+			StatusHistoryTEntity statusHistory = StatusHistoryTEntity.builder()
+					.companyId(request.getCompanyId())
+					.warehouseId(request.getWarehouseId())
+					.createBy(request.getUserName())
+					.updateBy(request.getUserName())
+					.createTime(new Date())
+					.updateTime(new Date())
+					.operTime(new Date())
+					.sourceBillNumber(d.getInboundNumber())
+					.sourceNumber(d.getInboundHeaderId())
+					.newStatus(InboundStatusEnum.Closed.getCode())
+					.build();
+			statusHistoryService.add(statusHistory);
+			
 			//完成卸车任务
 			unLoadTask(d, OperatorTypeEnum.Complate);
 		});
@@ -619,7 +674,15 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 				break;
 			case Submit:
 				inboundVO.setStatus(InboundStatusEnum.WaitingReview.getCode());
-				if(null == inboundVO.getInboundHeaderId()|| 0L == inboundVO.getInboundHeaderId()){//提交时新增
+				boolean add = false;
+				//查询是否存在单据
+				if (inboundVO.getInboundHeaderId() == null) {
+					add = true;
+				}else {
+					InboundVO vo = findById(inboundVO);
+					add = vo == null;   //查询为空则认为新增
+				}
+				if(add){//单据为空时新增
 					inboundVO.setCreateBy(request.getUserName());
 					inboundVO.setCreateTime(new Date());
 					add(inboundVO);
@@ -921,6 +984,9 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 					.companyId(header.getCompanyId())
 					.sourceBillNumber(header.getInboundNumber())
 					.build());
+			if (CollectionUtils.isEmpty(tasks)) {
+				break;
+			}
 			tasks = tasks.stream().filter(v->TaskStatusEnum.New.getCode().equals(v.getStatus())).collect(Collectors.toList());
 			tasks.forEach(t -> {
 				t.setStatus(TaskStatusEnum.Completed.getCode());

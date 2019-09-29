@@ -29,6 +29,8 @@ public interface IOutboundHeaderService {
 	
 	OutboundHeaderTEntity find(OutboundHeaderTEntity outbound) throws BusinessServiceException;
 	
+	List<OutboundHeaderTEntity> findByNumber(OutboundHeaderTEntity outbound, Set<String> billNumbers) throws BusinessServiceException;
+	
 	List<OutboundHeaderTEntity> find(OutboundHeaderTEntity outbound, Set<Long> ids) throws BusinessServiceException;
 	
 	OutboundVO save(AjaxRequest<OutboundVO> request) throws BusinessServiceException;

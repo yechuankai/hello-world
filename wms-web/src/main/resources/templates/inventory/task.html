@@ -175,6 +175,7 @@
            th:data-url="@{/services/inner/inventory/task/delete}">
 	            <span wms:text="${web.label.delete}">Delete</span>
 	     </a>
+	     <a th:if="${type == 'PA'}" href="#" class="easyui-linkbutton" onclick="exportExcel('PUTAWAYTASK', '#searchForm')" wms:text="${web.label.export}">Export</a>
 	</div>
     <div>
         <table id="dataTable" wms:title="${web.label.task.title}" class="easyui-datagrid"

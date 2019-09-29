@@ -19,8 +19,28 @@
                            wms:data-options="label:'${web.label.inboundnumber}',labelPosition:'top'">
                 </div>
                 <div style="margin-bottom:10px">
-                    <input name="ownerCode" class="easyui-textbox"
-                           wms:data-options="label:'${web.label.owner}',labelPosition:'top'">
+                    <input name="ownerCode" class="easyui-combogrid" wms:data-options="
+								label: '${web.label.owner}',
+								labelPosition: 'top',
+								idField:'ownerCode',
+    							textField:'ownerCode',
+								url:'../../services/inner/base/owner/find',
+								queryParams: getBaseData({'active': 'Y'}),
+							    columns:[[
+								    {field:'ownerId',hidden:true},
+								    {field:'phone1',hidden:true},
+								    {field:'phone2',hidden:true},
+								    {field:'contact1',hidden:true},
+								    {field:'contact2',hidden:true},
+								    {field:'address1',hidden:true},
+								    {field:'address2',hidden:true},
+								    {field:'fax',hidden:true},
+								    {field:'email1',hidden:true},
+								    {field:'email2',hidden:true},
+								    {field:'ownerCode',title:'${web.label.owner}',width:80},
+								    {field:'ownerDescr',title:'${web.label.descr}',width:150}
+							    ]]
+							" />
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="skuCode" class="easyui-textbox"

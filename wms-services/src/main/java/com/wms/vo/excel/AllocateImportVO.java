@@ -67,8 +67,8 @@ public class AllocateImportVO extends AbstractExcelModel {
     @Excel(name = "toLocationCode")
     private String toLocationCode;
 
-    @Excel(name = "remark")
-    private String remark;
+    @Excel(name = "updateTime")
+    private String updateTime;
 
     public Long getSourceLineNumber() {
         return sourceLineNumber;
@@ -198,14 +198,6 @@ public class AllocateImportVO extends AbstractExcelModel {
         this.toLocationCode = toLocationCode;
     }
 
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
 	public String getFromLocationCode() {
 		return fromLocationCode;
 	}
@@ -221,6 +213,13 @@ public class AllocateImportVO extends AbstractExcelModel {
 	public void setFromLpnNumber(String fromLpnNumber) {
 		this.fromLpnNumber = fromLpnNumber;
 	}
-    
+
+	public String getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
+	}
     
 }

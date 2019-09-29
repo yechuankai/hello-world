@@ -3934,4 +3934,24 @@ comment on column OUTBOUND_DETAIL_T.SKU_DESCR   is '货品描述';
 alter table OWNER_T ADD BILLING_LEASE_DATE date;
 comment on column OWNER_T.BILLING_LEASE_DATE   is '仓租计费日期';
 
+--入库单增加容器号（集装箱号）
+alter table INBOUND_HEADER_T ADD CONTAINER_NUMBER varchar2(50);
+comment on column INBOUND_HEADER_T.CONTAINER_NUMBER   is '集装箱号';
+
+--增加箱包装规格
+alter table TASK_DETAIL_T ADD (
+volume number(20,5) default 0,
+weight_gross number(20,5) default 0,
+weight_net number(20,5) default 0,
+weight_tare number(20,5) default 0,
+user_company varchar2(50)
+);
+comment on column TASK_DETAIL_T.volume is '体积';
+comment on column TASK_DETAIL_T.weight_gross is '毛重';
+comment on column TASK_DETAIL_T.weight_net is '净重';
+comment on column TASK_DETAIL_T.weight_tare is '皮重';
+comment on column TASK_DETAIL_T.user_company is '装卸公司';
+
+
+
 

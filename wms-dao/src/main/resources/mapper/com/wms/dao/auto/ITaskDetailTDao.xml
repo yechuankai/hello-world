@@ -44,6 +44,11 @@
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="UPDATE_VERSION" jdbcType="DECIMAL" property="updateVersion" />
     <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="VOLUME" jdbcType="DECIMAL" property="volume" />
+    <result column="WEIGHT_GROSS" jdbcType="DECIMAL" property="weightGross" />
+    <result column="WEIGHT_NET" jdbcType="DECIMAL" property="weightNet" />
+    <result column="WEIGHT_TARE" jdbcType="DECIMAL" property="weightTare" />
+    <result column="USER_COMPANY" jdbcType="VARCHAR" property="userCompany" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -147,7 +152,8 @@
     FROM_LOCATION_LOGICAL, TO_LOCATION_LOGICAL, USER_NAME, RELEASE_TIME, COMPLETE_TIME, 
     START_TIME, END_TIME, QUANTITY, REASON, SOURCE_NUMBER, SOURCE_LINE_NUMBER, SOURCE_BILL_NUMBER, 
     STATUS, REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, 
-    UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
+    UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, VOLUME, WEIGHT_GROSS, WEIGHT_NET, WEIGHT_TARE, 
+    USER_COMPANY
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.TaskDetailTExample" resultMap="BaseResultMap">
     select
@@ -183,8 +189,9 @@
       SOURCE_BILL_NUMBER, STATUS, REMARK, 
       COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, 
       CREATE_BY, CREATE_TIME, UPDATE_BY, 
-      UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
-      )
+      UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, 
+      VOLUME, WEIGHT_GROSS, WEIGHT_NET, 
+      WEIGHT_TARE, USER_COMPANY)
     values (#{taskDetailId,jdbcType=DECIMAL}, #{taskDetailNumber,jdbcType=VARCHAR}, #{taskType,jdbcType=VARCHAR}, 
       #{sourceType,jdbcType=VARCHAR}, #{ownerId,jdbcType=DECIMAL}, #{ownerCode,jdbcType=VARCHAR}, 
       #{skuId,jdbcType=DECIMAL}, #{skuCode,jdbcType=VARCHAR}, #{uom,jdbcType=VARCHAR}, 
@@ -198,8 +205,9 @@
       #{sourceBillNumber,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, 
       #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}
-      )
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, 
+      #{volume,jdbcType=DECIMAL}, #{weightGross,jdbcType=DECIMAL}, #{weightNet,jdbcType=DECIMAL}, 
+      #{weightTare,jdbcType=DECIMAL}, #{userCompany,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.TaskDetailTEntity">
     insert into TASK_DETAIL_T
@@ -330,6 +338,21 @@
       <if test="description != null">
         DESCRIPTION,
       </if>
+      <if test="volume != null">
+        VOLUME,
+      </if>
+      <if test="weightGross != null">
+        WEIGHT_GROSS,
+      </if>
+      <if test="weightNet != null">
+        WEIGHT_NET,
+      </if>
+      <if test="weightTare != null">
+        WEIGHT_TARE,
+      </if>
+      <if test="userCompany != null">
+        USER_COMPANY,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="taskDetailId != null">
@@ -457,6 +480,21 @@
       </if>
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="volume != null">
+        #{volume,jdbcType=DECIMAL},
+      </if>
+      <if test="weightGross != null">
+        #{weightGross,jdbcType=DECIMAL},
+      </if>
+      <if test="weightNet != null">
+        #{weightNet,jdbcType=DECIMAL},
+      </if>
+      <if test="weightTare != null">
+        #{weightTare,jdbcType=DECIMAL},
+      </if>
+      <if test="userCompany != null">
+        #{userCompany,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -595,6 +633,21 @@
       <if test="record.description != null">
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       </if>
+      <if test="record.volume != null">
+        VOLUME = #{record.volume,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightGross != null">
+        WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightNet != null">
+        WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL},
+      </if>
+      <if test="record.weightTare != null">
+        WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL},
+      </if>
+      <if test="record.userCompany != null">
+        USER_COMPANY = #{record.userCompany,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -643,7 +696,12 @@
       UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
       UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
       UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
-      DESCRIPTION = #{record.description,jdbcType=VARCHAR}
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      VOLUME = #{record.volume,jdbcType=DECIMAL},
+      WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL},
+      WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL},
+      WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL},
+      USER_COMPANY = #{record.userCompany,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -786,7 +844,12 @@
     CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP}, 
     UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR}, 
     UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
-    DESCRIPTION = #{record.description,jdbcType=VARCHAR}
+    DESCRIPTION = #{record.description,jdbcType=VARCHAR}, 
+    VOLUME = #{record.volume,jdbcType=DECIMAL}, 
+    WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL}, 
+    WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL}, 
+    WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL}, 
+    USER_COMPANY = #{record.userCompany,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
     </if>
@@ -923,6 +986,21 @@
         </if>
         <if test="record.description != null">
           DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+        </if>
+        <if test="record.volume != null">
+          VOLUME = #{record.volume,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightGross != null">
+          WEIGHT_GROSS = #{record.weightGross,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightNet != null">
+          WEIGHT_NET = #{record.weightNet,jdbcType=DECIMAL},
+        </if>
+        <if test="record.weightTare != null">
+          WEIGHT_TARE = #{record.weightTare,jdbcType=DECIMAL},
+        </if>
+        <if test="record.userCompany != null">
+          USER_COMPANY = #{record.userCompany,jdbcType=VARCHAR},
         </if>
       </trim>
     </set>

@@ -228,7 +228,8 @@ public class LeaseServiceImpl implements ILeaseService, IExcelService<BillingLea
 			}
 			long days = _endDate.getTime() - startDate.getTime();
 			days = days / (1000 * 24 * 60 * 60);
-			l.setDays(days);
+			//入库当天需计算为1天
+			l.setDays(days + 1);
 			add(l);
 		});
 
@@ -447,6 +448,7 @@ public class LeaseServiceImpl implements ILeaseService, IExcelService<BillingLea
 		ExampleUtils.create(BillingLeaseTEntity.Column.class, BillingLeaseTExample.Criterion.class)
 				.criteria(TExampleCriteria)
 				.data(request)
+				.betweenDate(BillingLeaseTEntity.Column.billingDate.getJavaProperty())
 				.build(request)
 				.orderby(TExample);
 		
