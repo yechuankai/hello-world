@@ -9,6 +9,7 @@
 /wms-startup-report-tomcat/target
 /wms-startup-tomcat/target
 /wms-web/target
+/wms-task/target
 /bin
 /wms-common/.settings
 /wms-async/.settings
@@ -33,3 +34,5 @@
 /wms-report/.settings
 /wms-dao/.classpath
 /wms-file/.classpath
+/wms-deploy/wms
+/wms-deploy/swp

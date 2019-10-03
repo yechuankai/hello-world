@@ -343,5 +343,8 @@
 		<table tableName="billing_lease_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
 		 	<property name="versionColumn" value="UPDATE_VERSION"/>
 		</table>
+		<table tableName="inventory_onhand_snapshot_t" enableDeleteByPrimaryKey="false" enableSelectByPrimaryKey="false" enableUpdateByPrimaryKey="false">
+		 	<property name="versionColumn" value="UPDATE_VERSION"/>
+		</table>
 	</context>
 </generatorConfiguration>

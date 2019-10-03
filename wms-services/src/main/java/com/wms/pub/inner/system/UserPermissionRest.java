@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.collect.Lists;
-import com.wms.aspect.ExceptionAspect;
 import com.wms.common.core.controller.BaseController;
 import com.wms.services.sys.ISysRolePermissionService;
 import com.wms.vo.PermissionTreeVO;

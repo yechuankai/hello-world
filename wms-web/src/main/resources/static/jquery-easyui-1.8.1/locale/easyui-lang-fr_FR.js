@@ -107,7 +107,9 @@ var locale = {
 	clearAll:'Dégagez toutes les autorisations.? ',
 	offLine:'Détermination de données de {row} lignes hors ligne ?',
 	initWarehouse:'Détermination de données d entreposage initialisées sur {row} lignes?',
-	warehouseAction:'Détermination {action}{row} lignes?'
+	warehouseAction:'Détermination {action}{row} lignes?',
+	
+	inboundNewStatusPrint: 'Seuls les nouveaux 、 InRecive Can Print'
 }
 if ($.locale){
 	$.extend($.locale,locale);

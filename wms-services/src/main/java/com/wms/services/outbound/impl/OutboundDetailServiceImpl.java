@@ -893,7 +893,6 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 		PackTEntity pack = packService.find(PackTEntity.builder()
 				.warehouseId(detail.getWarehouseId())
 				.companyId(detail.getCompanyId())
-				.packId(detail.getPackId())
 				.packCode(detail.getPackCode())
 				.build());
 		detail.setPackCode(pack.getPackCode());
@@ -943,7 +942,6 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 			AllocateStrategyTEntity allocateStrategy = allocateStrategyHeaderService.find(AllocateStrategyTEntity.builder()
 					.warehouseId(outboundVO.getWarehouseId())
 					.companyId(outboundVO.getCompanyId())
-					.allocateStrategyId(detail.getAllocateStrategyId())
 					.allocateStrategyCode(detail.getAllocateStrategyCode())
 					.build());
 			detail.setAllocateStrategyCode(allocateStrategy.getAllocateStrategyCode());
@@ -967,7 +965,6 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 		OwnerTEntity owner = ownerService.find(OwnerTEntity.builder()
 				.warehouseId(outboundVO.getWarehouseId())
 				.companyId(outboundVO.getCompanyId())
-				.ownerId(outboundVO.getOwnerId())
 				.ownerCode(outboundVO.getOwnerCode())
 				.build());
 		detail.setOwnerCode(owner.getOwnerCode());
@@ -976,7 +973,6 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 		SkuTEntity sku = skuService.find(SkuTEntity.builder()
 				.warehouseId(detail.getWarehouseId())
 				.companyId(detail.getCompanyId())
-				.skuId(detail.getSkuId())
 				.skuCode(detail.getSkuCode())
 				.ownerCode(detail.getOwnerCode())
 				.build());

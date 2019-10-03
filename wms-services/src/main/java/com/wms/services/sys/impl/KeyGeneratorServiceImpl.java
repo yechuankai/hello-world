@@ -49,7 +49,7 @@ public class KeyGeneratorServiceImpl extends com.wms.common.core.services.impl.K
 							.dateFormat(DefaultConstants.ORDER_NUMBER_DATE_FORMAT)
 							.sequenceIncrement(1L)
 							.sequenceCache(5L)
-							.sequence(1L)
+							.sequence(0L)
 							.updateVersion(0L)
 							.build();
 			orderNumberDao.insertSelective(orderNumber);

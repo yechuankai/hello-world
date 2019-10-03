@@ -53,6 +53,12 @@ public class InboundRest extends BaseController {
             if(CollectionUtils.isEmpty(list)){
                 return page(Lists.newArrayList());
             }
+            list.forEach(l -> {
+            	//如果来源单据号为空，则为内部创建，内部创建来源单号默认为入库单号
+            	if (StringUtils.isEmpty(l.getSourceNumber())) {
+            		l.setSourceNumber(l.getInboundNumber());
+            	}
+            });
         } catch (Exception e) {
             return pageFail(e.getMessage());
         }

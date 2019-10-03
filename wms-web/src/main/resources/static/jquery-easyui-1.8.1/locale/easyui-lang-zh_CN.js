@@ -116,10 +116,11 @@ var locale = {
 	initWarehouse:'确定初始化{row}行仓库数据?',
 	warehouseAction:'确定{action}{row}行仓库数据?',
 	uploadAppName:'上传app',
-	
+	inboundNewStatusPrint: '只允许待收货、收货中状态可打印',
 	actions:{
 		receiveAll:"全部接收",
 		unReceive:"撤销收货",
+		close: '关闭',
 		pick:"拣货",
 		ship:"发运",
 		allocate:"分配",

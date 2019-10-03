@@ -9,16 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
-import com.alibaba.fastjson.parser.ParserConfig;
-import com.alibaba.fastjson.parser.deserializer.JavaBeanDeserializer;
 import com.wms.common.config.Global;
 import com.wms.common.utils.AddressUtils;
 import com.wms.common.utils.DateUtils;
 import com.wms.common.utils.IpUtils;
 import com.wms.common.utils.StringUtils;
-import com.wms.common.utils.bean.BeanUtils;
 
 public class AjaxRequest<T> extends HashMap {
 
@@ -159,12 +154,16 @@ public class AjaxRequest<T> extends HashMap {
 			Object val = get(key);
 			if (val == null) return null;
 			
-			String valueStr = val.toString();
-			if (valueStr.trim().length() > 10) {
-				value = DateUtils.dateTime(Global.dateFormater, valueStr);
-			}else {
-				String dateFormater = StringUtils.split(Global.dateFormater, " ")[0];
-				value = DateUtils.dateTime(dateFormater, valueStr);
+			if (val instanceof String) {
+				String valueStr = val.toString();
+				if (valueStr.trim().length() > 10) {
+					value = DateUtils.dateTime(Global.dateFormater, valueStr);
+				}else {
+					String dateFormater = StringUtils.split(Global.dateFormater, " ")[0];
+					value = DateUtils.dateTime(dateFormater, valueStr);
+				}
+			}else if (val instanceof Date) {
+				return (Date)val;
 			}
 		} catch (Exception e) {
 			
@@ -178,6 +177,14 @@ public class AjaxRequest<T> extends HashMap {
 	
 	public Date getDateEnd(String key) {
 		return getDate(StringUtils.join(key, PRO_DATE_END));
+	}
+	
+	public void setDateBegin(String key, Date value) {
+		this.put(StringUtils.join(key, PRO_DATE_BEGIN), value);
+	}
+	
+	public void setDateEnd(String key, Date value) {
+		this.put(StringUtils.join(key, PRO_DATE_END), value);
 	}
 
 	public void setWarehouseId(Long warehouseId) {

@@ -19,7 +19,7 @@ public interface ILeaseService {
 	
 	void createLease(AjaxRequest<Date> request);
 	
-	void createOwnerLease(AjaxRequest<OwnerTEntity> request, Date endDate);
+	void createOwnerLease(AjaxRequest<OwnerTEntity> request, Date startDate, Date endDate);
 	
 	Boolean add(BillingLeaseTEntity lease);
 	

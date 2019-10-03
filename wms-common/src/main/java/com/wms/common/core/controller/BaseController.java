@@ -35,7 +35,7 @@ import com.wms.common.utils.StringUtils;
 /**
  * web层通用数据处理
  * 
- */
+ */ 
 public class BaseController {
 	protected final Logger logger = LoggerFactory.getLogger(BaseController.class);
 

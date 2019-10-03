@@ -213,6 +213,8 @@ function lazyLoadView(obj){
 			$(this).numberbox();
 		else if(component == 'easyui-combogrid')
 			$(this).combogrid();
+		else if(component == 'easyui-datetimebox')
+			$(this).datetimebox();
 		
 		$(this).removeClass('lazy-load');
 	});

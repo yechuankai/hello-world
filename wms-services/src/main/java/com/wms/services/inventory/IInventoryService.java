@@ -19,6 +19,8 @@ public interface IInventoryService {
 	
 	PageResult<InventoryOnhandVO> find(PageRequest request) throws BusinessServiceException;
 	
+	List<InventoryOnhandTEntity> findAll(InventoryOnhandTEntity inventory) throws BusinessServiceException;
+	
 	InventoryOnhandTEntity findByLogicalKey(InventoryOnhandTEntity inventory) throws BusinessServiceException;
 	
 	List<InventoryOnhandTEntity> findByLocationId(InventoryOnhandTEntity inventory, Set<Long> locations) throws BusinessServiceException;

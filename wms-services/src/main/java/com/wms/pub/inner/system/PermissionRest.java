@@ -3,25 +3,18 @@ package com.wms.pub.inner.system;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.TypeReference;
-import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
-import com.wms.aspect.ExceptionAspect;
 import com.wms.common.core.controller.BaseController;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.core.domain.response.AjaxResult;
 import com.wms.common.core.domain.response.PageResult;
-import com.wms.common.enums.PermissionTypeEnum;
-import com.wms.common.utils.MessageUtils;
-import com.wms.entity.auto.SysPermissionTEntity;
 import com.wms.services.sys.ISysPermissionService;
 import com.wms.vo.PermissionVO;
 

@@ -70,7 +70,7 @@
 </div>
 <div data-options="region:'center',border:false">
      <div class="tableToolbar">
-		<a href="#" class="easyui-linkbutton" onclick="generator();" >
+		<a href="#" class="easyui-linkbutton common-add" data-addpanel="#generatorDiv">
 			<span wms:text="${web.label.generrator}">Generator</span>
 		</a>
 		<a href="#" class="easyui-linkbutton" onclick="exportExcel('BILLINGLEASE', '#searchForm')" wms:text="${web.label.export}">Export</a>
@@ -83,7 +83,16 @@
             </thead>
             <thead>
             	<tr>
-		            <th field="billingDate" width="130" wms:text="${web.label.billdate}" data-options="sortable:true">billingDate</th>
+		            <th field="lotNumber" data-options="hidden:true">lotNumber</th>
+		            <th field="billingDate" width="100" wms:text="${web.label.billdate}" data-options="
+		            	sortable:true,
+		            	formatter: function(v){
+		            		if (v != undefined && v.length > 10){
+		            			return v.substring(0, 10);
+		            		}else{
+		            			return v;
+		            		}
+		            	}">billingDate</th>
 		            <th field="billingMonth" width="100" wms:text="${web.label.billmonth}" data-options="sortable:true" >billingMonth</th>
 		            <th field="ownerCode" width="100" wms:text="${web.label.owner}" data-options="sortable:true">ownerCode</th>
 		            <th field="sourceBillNumber" width="100" wms:text="${web.label.sourcebillnumber}" data-options="sortable:true">sourceBillNumber</th>
@@ -91,9 +100,25 @@
 		            <th field="days" width="100" wms:text="${web.label.days}" data-options="sortable:true" >days</th>
 		            <th field="packCode" width="100" wms:text="${web.label.pack}" data-options="sortable:true">packCode</th>
 		            <th field="uom" width="60" wms:text="${web.label.sku}" data-options="sortable:true" >uom</th>
-		            <th field="inboundDate" width="130" wms:text="${web.label.inbounddate}" data-options="sortable:true" >inboundDate</th>
+		            <th field="inboundDate" width="100" wms:text="${web.label.inbounddate}" data-options="
+		            	sortable:true,
+		            	formatter: function(v){
+		            		if (v != undefined && v.length > 10){
+		            			return v.substring(0, 10);
+		            		}else{
+		            			return v;
+		            		}
+		            	}" >inboundDate</th>
 		            <th field="quantityReceived" width="100" wms:text="${web.label.quantity.onhand}" data-options="sortable:true" >quantityReceived</th>
-		            <th field="outboundDate" width="130" wms:text="${web.label.outbounddate}" data-options="sortable:true" >outboundDate</th>
+		            <th field="outboundDate" width="100" wms:text="${web.label.outbounddate}" data-options="
+		            	sortable:true,
+		            	formatter: function(v){
+		            		if (v != undefined && v.length > 10){
+		            			return v.substring(0, 10);
+		            		}else{
+		            			return v;
+		            		}
+		            	}" >outboundDate</th>
 		            <th field="quantityShiped" width="100" wms:text="${web.label.uomquantityshiped}" data-options="sortable:true" >quantityShiped</th>
 		            <th field="volume" width="100" wms:text="${web.label.volume}" data-options="sortable:true" >volume</th>
 		            <th field="weightGross" width="100" wms:text="${web.label.weightgross}" data-options="sortable:true" >weightGross</th>
@@ -103,11 +128,104 @@
 		            <th field="createTime" width="150" wms:text="${web.label.createtime}" data-options="sortable:true" >createTime</th>
             	</tr>
             </thead>
+          </table>
+    </div>
+</div>
+<div id="generatorDiv" wms:title="${web.label.generrator}" style="width:500px;height:260px; display: none;">
+    <div style="width: 100%;padding-left: 50px;">
+        <form method="post" id="generatorForm" th:data-url="@{/services/inner/report/billing/lease/create}">
+            <table style="width: 100%;">
+                <tr>
+                    <td colspan="2">
+						<input id="ownerCode" name="ownerCode" class="easyui-combogrid" style="width: 87%;" wms:data-options="
+								required:true,
+								label: '${web.label.owner}',
+								labelPosition: 'top',
+								idField:'ownerCode',
+    							textField:'ownerCode',
+    							multiple: true,
+								url:'../../services/inner/base/owner/find',
+								params: getBaseData({active:'Y'}),
+							    columns:[[
+								    {field:'ownerId',hidden:true},
+								    {field:'phone1',hidden:true},
+								    {field:'phone2',hidden:true},
+								    {field:'contact1',hidden:true},
+								    {field:'contact2',hidden:true},
+								    {field:'address1',hidden:true},
+								    {field:'address2',hidden:true},
+								    {field:'email1',hidden:true},
+								    {field:'email2',hidden:true},
+								    {field:'ownerCode',title:'${web.label.owner}',width:80},
+								    {field:'ownerDescr',title:'${web.label.descr}',width:150}
+							    ]]
+							" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input name="billingDateBegin" class="easyui-datebox"
+                           wms:data-options="required: true,label:'${web.label.billingdatebegin}',labelPosition:'top'"/>
+                    </td>
+                     <td>
+                         <input name="billingDateEnd" class="easyui-datebox"
+                           wms:data-options="required: true,label:'${web.label.billingdateend}',labelPosition:'top'"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div style="text-align: center;margin-top: 30px;">
+        <a href="#" class="easyui-linkbutton common-generator" data-form="#generatorForm" data-table="#dataTable"
+           id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:100px;">
+            <span style="font-size:14px;" wms:text="${web.label.submit}">Submit</span>
+        </a>
+        <a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');"
+           data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
+            <span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
+        </a>
     </div>
 </div>
 </body>
 <script th:replace="common/js"/>
 <script type="text/javascript" th:inline="text">
+$(function(){
+	$('.common-generator').click(function(){
+		var from = $(this).attr('data-form');
+		var datagrid = $(this).attr('data-table');
+		var url = $(from).attr('data-url');
+		var valid = $(from).form('validate');
+		if (!valid) {
+			return;
+		}
+		var data = $(from).serializeObject();
+		var owners = $('#ownerCode').combogrid('getText');
+		data['ownerCode'] = owners;
+		data = getBaseData(data);
+		loading();
+		$.post({
+			url: url,
+			data:data,
+			success: function(data){
+				data = returnData(data);
+				closeLoading();
+				if (data.code == '0') {
+					showError(data.msg);
+					return;
+				}
+				showMsg(data.msg, function(r){
+					$(from).form('reset');
+					$(from).parents('.window-body').dialog('close');
+					if ($('.common-search').length > 0){
+						$('.common-search').trigger('click');
+					}
+				});
+			}
+		});
+	});
+});
+
+//生成所有计费(暂时未使用)
 function generator(){
 	confirmMsg('Generator All Billing?', function(r){
 		if (!r){

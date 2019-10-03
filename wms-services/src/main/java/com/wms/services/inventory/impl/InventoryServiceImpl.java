@@ -548,4 +548,22 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 		List<InventoryOnhandTEntity> selectInventory = inventoryDao.selectByExample(example);
 		return selectInventory;
 	}
+
+	@Override
+	public List<InventoryOnhandTEntity> findAll(InventoryOnhandTEntity inventory) throws BusinessServiceException {
+		InventoryOnhandTExample example = new InventoryOnhandTExample();
+		InventoryOnhandTExample.Criteria criteria = example.createCriteria();
+		criteria
+		.andDelFlagEqualTo(YesNoEnum.No.getCode())
+		.andQuantityOnhandGreaterThan(BigDecimal.ZERO);
+		if (inventory.getWarehouseId() != null) {
+			criteria.andWarehouseIdEqualTo(inventory.getWarehouseId());
+		}
+		
+		if (inventory.getCompanyId() != null) {
+			criteria.andCompanyIdEqualTo(inventory.getCompanyId());
+		}
+		List<InventoryOnhandTEntity> selectInventory = inventoryDao.selectByExample(example);
+		return selectInventory;
+	}
 }

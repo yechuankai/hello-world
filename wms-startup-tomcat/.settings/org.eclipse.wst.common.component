@@ -21,6 +21,9 @@
         <dependent-module archiveName="wms-services-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/wms-services/wms-services">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="wms-task-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/wms-task/wms-task">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="java-output-path" value="/wms-startup-tomcat/target/classes"/>
         <property name="context-root" value="WMS-JBT"/>
     </wb-module>

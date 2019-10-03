@@ -332,6 +332,11 @@
 			return;
 		}
 		rowData = checkedRows[0];
+		if (type == 'INBOUND' && 
+				!(rowData.status == '10' || rowData.status == '20')){
+			showError($.locale.inboundNewStatusPrint);
+			return;
+		}
 		exportInboundReport(type, rowData);
 	}
 	

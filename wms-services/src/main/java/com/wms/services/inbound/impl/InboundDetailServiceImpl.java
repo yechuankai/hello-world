@@ -315,7 +315,6 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 	
 	
 	private Boolean validate(InboundVO inbound, InboundDetailVO detail) {
-		
 		if (inbound.getInboundHeaderId() == null)
 			throw new BusinessServiceException("InboundDetailServiceImpl", "inbound.header.isnull" , new Object[] {inbound.getInboundNumber()});
 		else 
@@ -350,7 +349,6 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 					.warehouseId(detail.getWarehouseId())
 					.companyId(detail.getCompanyId())
 					.putawayStrategyCode(detail.getPutawayStrategyCode())
-					.putawayStrategyId(detail.getPutawayStrategyId())
 					.build());
 			detail.setPutawayStrategyId(putawayStrategy.getPutawayStrategyId());
 			detail.setPutawayStrategyCode(putawayStrategy.getPutawayStrategyCode());
@@ -363,7 +361,6 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 		PackTEntity pack = packService.find(PackTEntity.builder()
 				.warehouseId(detail.getWarehouseId())
 				.companyId(detail.getCompanyId())
-				.packId(detail.getPackId())
 				.packCode(detail.getPackCode())
 				.build());
 		detail.setPackCode(pack.getPackCode());
@@ -407,7 +404,6 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 		OwnerTEntity owner = ownerService.find(OwnerTEntity.builder()
 				.warehouseId(inbound.getWarehouseId())
 				.companyId(inbound.getCompanyId())
-				.ownerId(inbound.getOwnerId())
 				.ownerCode(inbound.getOwnerCode())
 				.build());
 		detail.setOwnerCode(owner.getOwnerCode());
@@ -416,7 +412,6 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 		SkuTEntity sku = skuService.find(SkuTEntity.builder()
 				.warehouseId(detail.getWarehouseId())
 				.companyId(detail.getCompanyId())
-				.skuId(detail.getSkuId())
 				.skuCode(detail.getSkuCode())
 				.ownerCode(owner.getOwnerCode())
 				.build());
@@ -852,6 +847,11 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 
 					detailVO.setQuantityReceive(detailObj.getQuantityReceive().add(detailVO.getTranQuantity()));
 
+					//默认当前日期
+					if (StringUtils.isEmpty(detailObj.getLotAttribute10())) {
+						detailVO.setLotAttribute10(header.getInboundNumber());
+						detailVO.setLotAttribute11(DateUtils.parseDate(DateUtils.getDate()));
+					}
 					tranDetail.add(detailVO);
 
 					//更新入库单数量
@@ -863,12 +863,10 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 															.updateBy(d.getUpdateBy())
 															.updateTime(new Date())
 															.quantityReceive(detailVO.getQuantityReceive())
+															.lotAttribute10(detailVO.getLotAttribute10())
+															.lotAttribute11(detailVO.getLotAttribute11())
 															.build();
-					//默认当前日期
-					if (StringUtils.isEmpty(detailObj.getLotAttribute10())) {
-						updateDetail.setLotAttribute10(header.getInboundNumber());
-						updateDetail.setLotAttribute11(DateUtils.parseDate(DateUtils.getDate()));
-					}
+					
 					modify(new InboundDetailVO(updateDetail));
 				}
 			});

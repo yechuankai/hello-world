@@ -106,7 +106,9 @@ var locale = {
 	clearAll:'Clear All Permission ? ',
 	offLine:'Confirm Off line {row} Recored ?',
 	initWarehouse:'Confirm Init {row} Warehouse Recored ?',
-	warehouseAction:'Confirm {action} {row} Warehouse Recored ?'
+	warehouseAction:'Confirm {action} {row} Warehouse Recored ?',
+	
+	inboundNewStatusPrint: 'Only New、InReceive Can Print'
 }
 if ($.locale){
 	$.extend($.locale,locale);

@@ -48,8 +48,7 @@ public class TransactionServiceImpl implements ITransactionService, IExcelServic
 		ExampleUtils.create(InventoryTransactionTEntity.Column.class, InventoryTransactionTExample.Criterion.class)
 				.criteria(TExampleCriteria)
 				.data(request)
-				.betweenDate(	InventoryTransactionTEntity.Column.transactionDate.getJavaProperty()
-				 )
+				.betweenDate(InventoryTransactionTEntity.Column.transactionDate.getJavaProperty())
 				.build(request)
 				.orderby(TExample);
 		
@@ -77,25 +76,4 @@ public class TransactionServiceImpl implements ITransactionService, IExcelServic
 		return returnList;
 	}
 
-	@Override
-	public List<InventoryTransactionTEntity> findGreaterThanDate(InventoryTransactionTEntity tran) {
-		InventoryTransactionTExample TExample = new InventoryTransactionTExample();
-		InventoryTransactionTExample.Criteria TExampleCriteria = TExample.createCriteria();
-		TExampleCriteria
-		.andDelFlagEqualTo(YesNoEnum.No.getCode())
-		.andCompanyIdEqualTo(tran.getCompanyId())
-		.andWarehouseIdEqualTo(tran.getWarehouseId())
-		.andTransactionDateGreaterThan(tran.getTransactionDate());
-		
-		if (StringUtils.isNotEmpty(tran.getOwnerCode()))
-			TExampleCriteria.andOwnerCodeEqualTo(tran.getOwnerCode());
-		
-		if (StringUtils.isNotEmpty(tran.getSkuCode()))
-			TExampleCriteria.andSkuCodeEqualTo(tran.getSkuCode());
-		
-		if (StringUtils.isNotEmpty(tran.getTransactionType()))
-			TExampleCriteria.andTransactionTypeEqualTo(tran.getTransactionType());
-		
-		return tranDao.selectByExample(TExample);
-	}
 }

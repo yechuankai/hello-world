@@ -97,6 +97,11 @@
 	/* 导出文件  */
 	function exportPDFReport(type) {
 		headerData = getInboundHeaderData();
+		if (type == 'INBOUND' && 
+				!(headerData.status == '10' || headerData.status == '20')){
+			showError($.locale.inboundNewStatusPrint);
+			return;
+		}
 		exportInboundReport(type, headerData);
 	}
 	

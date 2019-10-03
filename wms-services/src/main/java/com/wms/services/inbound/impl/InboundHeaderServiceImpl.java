@@ -704,8 +704,8 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 				inboundVO.setWarehouseId(inboundVO.getToWarehouseId());
 				validate(inboundVO);
 				modify(inboundVO);
-				statusHistory.setOldStatus(InboundStatusEnum.New.getCode());
-				statusHistory.setNewStatus(InboundStatusEnum.WaitingDeclaration.getCode());
+				statusHistory.setOldStatus(InboundStatusEnum.WaitingDeclaration.getCode());
+				statusHistory.setNewStatus(InboundStatusEnum.New.getCode());
 				//产生卸车任务
 				unLoadTask(inboundVO, OperatorTypeEnum.Add);
 				break;

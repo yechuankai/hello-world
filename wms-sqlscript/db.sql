@@ -3698,6 +3698,68 @@ comment on column billing_lease_t.description   is '数据描述';
 
 
 
+-- ----------------------------
+-- 库存快照
+-- ----------------------------
+
+drop table inventory_onhand_snapshot_t cascade constraints;
+create table inventory_onhand_snapshot_t (
+inventory_onhand_id number,
+day varchar2(50),
+owner_id number,
+owner_code varchar2(50),
+sku_id number,
+sku_code varchar2(50),
+sku_alias varchar2(50),
+quantity_onhand number(20,5) default 0,
+quantity_allocated number(20,5) default 0,
+quantity_locked number(20,5) default 0,
+location_id number,
+location_code varchar2(50),
+lpn_id number,
+lpn_number varchar2(50),
+lot_id number,
+lot_number varchar2(50),
+  company_id         number        default '0',
+  warehouse_id       number        default '0',
+  del_flag                char(1)         default 'N',
+  create_by               varchar2(64)    default '',
+  create_time             date            default sysdate,
+  update_by               varchar2(64)    default '',
+  update_time             date            default sysdate,
+  update_version          number          default '1',
+  description             varchar2(500)   default null
+);
+
+comment on table  inventory_onhand_snapshot_t               is '库存';
+comment on column inventory_onhand_snapshot_t.inventory_onhand_id is '库存明细ID';
+comment on column inventory_onhand_snapshot_t.day is '货主ID';
+comment on column inventory_onhand_snapshot_t.owner_id is '货主ID';
+comment on column inventory_onhand_snapshot_t.owner_code is '货主代码';
+comment on column inventory_onhand_snapshot_t.sku_id is '货品ID';
+comment on column inventory_onhand_snapshot_t.sku_code is '货品代码';
+comment on column inventory_onhand_snapshot_t.sku_alias is '货品别称';
+comment on column inventory_onhand_snapshot_t.quantity_onhand is '现有量';
+comment on column inventory_onhand_snapshot_t.quantity_allocated is '分配量';
+comment on column inventory_onhand_snapshot_t.quantity_locked is '锁定量';
+comment on column inventory_onhand_snapshot_t.location_id is '库位ID';
+comment on column inventory_onhand_snapshot_t.location_code is '库位';
+comment on column inventory_onhand_snapshot_t.lpn_id is 'LPN ID';
+comment on column inventory_onhand_snapshot_t.lpn_number is 'LPN';
+comment on column inventory_onhand_snapshot_t.lot_id is '批次号 ID';
+comment on column inventory_onhand_snapshot_t.lot_number is '批次号';
+comment on column inventory_onhand_snapshot_t.company_id      is '公司ID';
+comment on column inventory_onhand_snapshot_t.warehouse_id    is '仓库ID';
+comment on column inventory_onhand_snapshot_t.del_flag    is '删除标志（N代表存在 Y代表删除）';
+comment on column inventory_onhand_snapshot_t.create_by     is '创建者';
+comment on column inventory_onhand_snapshot_t.create_time   is '创建时间';
+comment on column inventory_onhand_snapshot_t.update_by     is '更新者';
+comment on column inventory_onhand_snapshot_t.update_time   is '更新时间';
+comment on column inventory_onhand_snapshot_t.update_version   is '更新时间';
+comment on column inventory_onhand_snapshot_t.description   is '数据描述';
+
+
+
 alter table ALLOCATE_T modify STATUS default '10';
 alter table INBOUND_CANCEL_DETAIL_T modify STATUS default '10';
 alter table INBOUND_CANCEL_HEADER_T modify STATUS default '10';
@@ -3924,6 +3986,7 @@ create index i_inbound_header_t on inbound_header_t(inbound_number);
 create index i_inbound_detail_t on inbound_detail_t(inbound_header_id,line_number);
 create index i_outbound_header_t on outbound_header_t(outbound_number);
 create index i_outbound_detail_t on outbound_detail_t(outbound_header_id,line_number);
+create index i_inventory_transaction_t on inventory_transaction_t (transaction_date);
 
 --订单系统出库增加货品描述
 alter table OUTBOUND_DETAIL_T ADD SKU_DESCR varchar2(200);

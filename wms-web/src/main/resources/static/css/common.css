@@ -110,3 +110,7 @@ body {
 .textbox-readonly .validatebox-readonly{
 	background-color: #F5F5F5 !important;
 }
+
+.combo-p .datagrid-row-selected{
+	background: yellow !important;
+}

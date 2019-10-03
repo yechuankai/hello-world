@@ -33,6 +33,11 @@
 		        </exclusion>
 		    </exclusions>
 		</dependency>
+		<dependency>
+			<groupId>wms.base</groupId>
+			<artifactId>wms-task</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	
 	<!-- 

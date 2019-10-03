@@ -62,6 +62,7 @@ import com.wms.services.outbound.IOutboundHeaderService;
 import com.wms.services.sys.IStatusHistoryService;
 import com.wms.services.sys.ISysWarehouseService;
 import com.wms.shiro.utils.WaveBuildUtils;
+import com.wms.vo.inbound.InboundVO;
 import com.wms.vo.inventory.EntInventoryOnhandVO;
 import com.wms.vo.outbound.OutboundDetailVO;
 import com.wms.vo.outbound.OutboundVO;
@@ -796,7 +797,18 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 				addList.add(outboundVO);
 				break;
 			case Submit:
-				if(StringUtils.isEmpty(outboundVO.getOutboundNumber())){
+				boolean add = false;
+				//查询是否存在单据
+				if (outboundVO.getOutboundHeaderId() == null) {
+					add = true;
+				}else {
+					OutboundVO vo = null;
+					try {
+						vo = find(outboundVO);
+					} catch (BusinessServiceException e) {}
+					add = vo == null;   //查询为空则认为新增
+				}
+				if(add){
 					addList = deal(outboundVO);
 					addList.forEach(d ->{
 						d.setStatus(OutboundStatusEnum.WaitingReview.getCode());
@@ -1007,7 +1019,18 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 					.build());
 			outboundVO.setCustomerId(customer.getCustomerId());
 			outboundVO.setCustomerCode(customer.getCustomerCode());
-			outboundVO.setCustomerCode(customer.getCustomerDescr());
+			outboundVO.setCustomerDescr(customer.getCustomerDescr());
+		}
+		
+		if(null != outboundVO.getCarrierId() || StringUtils.isNotEmpty(outboundVO.getCarrierCode())){
+			CarrierTEntity carrier = carrierService.find(CarrierTEntity.builder()
+					.warehouseId(outboundVO.getWarehouseId())
+					.companyId(outboundVO.getCompanyId())
+					.carrierId(outboundVO.getCarrierId())
+					.carrierCode(outboundVO.getCarrierCode())
+					.build());
+			outboundVO.setCarrierId(carrier.getCarrierId());
+			outboundVO.setCarrierCode(carrier.getCarrierCode());
 		}
 
 		if (StringUtils.isEmpty(outboundVO.getOutboundNumber())) {

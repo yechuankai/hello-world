@@ -68,6 +68,7 @@ public class RestConfig implements WebMvcConfigurer {
         fastJsonHttpMessageConverter.setSupportedMediaTypes(fastMediaTypes);
         //日期格式化
         fastJsonConfig.setDateFormat(dataformater);
+        fastJsonHttpMessageConverter.setDateFormat(dataformater);
         fastJsonHttpMessageConverter.setFastJsonConfig(fastJsonConfig);
         fastJsonHttpMessageConverter.setFeatures(SerializerFeature.DisableCircularReferenceDetect);
 		converters.add(fastJsonHttpMessageConverter);

@@ -12,7 +12,9 @@ import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.core.services.IExcelService;
 import com.wms.common.enums.ExcelTemplateEnum;
 import com.wms.common.exception.BusinessServiceException;
+import com.wms.common.utils.StringUtils;
 import com.wms.common.utils.bean.BeanUtils;
+import com.wms.entity.auto.TaskDetailTEntity;
 import com.wms.services.inventory.IPutawayTaskService;
 import com.wms.services.inventory.ITaskService;
 import com.wms.vo.TaskDetailVO;
@@ -31,7 +33,14 @@ public class UnLoadTaskServiceImpl implements IPutawayTaskService, IExcelService
 	
 	@Override
     public List<LoadTaskExcelVO> exportData(PageRequest request) throws BusinessServiceException {
-        List<LoadTaskExcelVO> returnList = Lists.newArrayList();
+		final String PRO_SEARCH_USERNAME = "suserName";
+		String username = request.getString(PRO_SEARCH_USERNAME);
+		if (StringUtils.isEmpty(username)){
+			request.remove(TaskDetailTEntity.Column.userName.getJavaProperty());
+        }else{
+        	request.put(TaskDetailTEntity.Column.userName.getJavaProperty(), username);
+        }
+		List<LoadTaskExcelVO> returnList = Lists.newArrayList();
         List<TaskDetailVO> task = taskService.findUnLoad(request);
         if (CollectionUtils.isEmpty(task)) {
             return returnList;

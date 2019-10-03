@@ -36,6 +36,7 @@ import com.wms.dao.auto.IBillingLeaseTDao;
 import com.wms.dao.example.BillingLeaseTExample;
 import com.wms.entity.auto.BillingLeaseTEntity;
 import com.wms.entity.auto.InboundDetailTEntity;
+import com.wms.entity.auto.InventoryOnhandSnapshotTEntity;
 import com.wms.entity.auto.InventoryOnhandTEntity;
 import com.wms.entity.auto.InventoryTransactionTEntity;
 import com.wms.entity.auto.LotAttributeTEntity;
@@ -43,20 +44,18 @@ import com.wms.entity.auto.OwnerTEntity;
 import com.wms.entity.auto.PackTEntity;
 import com.wms.entity.auto.SkuTEntity;
 import com.wms.entity.auto.WarehouseActiveTEntity;
-import com.wms.entity.auto.ZoneTEntity;
 import com.wms.services.base.IOwnerService;
 import com.wms.services.base.IPackService;
 import com.wms.services.base.ISkuService;
-import com.wms.services.base.impl.SkuServiceImpl;
 import com.wms.services.billing.ILeaseService;
 import com.wms.services.inbound.IInboundDetailService;
 import com.wms.services.inventory.IInventoryService;
+import com.wms.services.inventory.IInventorySnapshotService;
 import com.wms.services.inventory.ILotService;
 import com.wms.services.inventory.ITransactionService;
 import com.wms.services.sys.IWarehouseActiveService;
 import com.wms.vo.PackVO;
 import com.wms.vo.excel.BillingLeaseExcelVO;
-import com.wms.vo.excel.ZoneImportVO;
 
 @Service
 public class LeaseServiceImpl implements ILeaseService, IExcelService<BillingLeaseExcelVO> {
@@ -70,8 +69,6 @@ public class LeaseServiceImpl implements ILeaseService, IExcelService<BillingLea
 	@Autowired
 	private IOwnerService ownerService;
 	@Autowired
-	private IInventoryService inventoryService;
-	@Autowired
 	private ITransactionService transactionService;
 	@Autowired
 	private ILotService lotService;
@@ -81,6 +78,8 @@ public class LeaseServiceImpl implements ILeaseService, IExcelService<BillingLea
 	private ISkuService skuService;
 	@Autowired
 	private IPackService packService;
+	@Autowired
+	private IInventorySnapshotService inventorySnapshotService;
 
 
 	@Override
@@ -98,7 +97,7 @@ public class LeaseServiceImpl implements ILeaseService, IExcelService<BillingLea
 	}
 
 	/**
-	 * 按仓库生成计费
+	 * 按仓库生成计费上个月计费
 	 */
 	@Override
 	public void createLease(AjaxRequest<Date> request) {
@@ -111,15 +110,41 @@ public class LeaseServiceImpl implements ILeaseService, IExcelService<BillingLea
 		
 		owners.forEach(o -> {
 			try {
-				createOwnerLease(new AjaxRequest<OwnerTEntity>(o, request), request.getData());
-				OwnerTEntity update = OwnerTEntity.builder()
-										.warehouseId(o.getWarehouseId())
-										.companyId(o.getCompanyId())
-										.ownerId(o.getOwnerId())
-										.billingLeaseDate(new Date())
-										.updateVersion(o.getUpdateVersion())
-										.build();
+				//获取最后一次计算计费的时间
+				//如果日期为空，则按1999-01-01开始计算
+				if (o.getBillingLeaseDate() == null) {
+					Calendar c = Calendar.getInstance();
+					c.set(Calendar.YEAR, 1999);
+					c.set(Calendar.MONTH, 1);
+				    c.set(Calendar.DAY_OF_MONTH, 1);//设置为1号,当前日期既为本月第一天 
+				    c.set(Calendar.HOUR_OF_DAY, 0);
+					c.set(Calendar.MINUTE, 0);
+					c.set(Calendar.SECOND, 0);
+					c.set(Calendar.MILLISECOND, 0);
+					o.setBillingLeaseDate(c.getTime());
+				}
+				Date endDate = request.getData();
+				//上个月最后一天
+				if (endDate == null) {
+					Calendar c = Calendar.getInstance();
+					c.add(Calendar.MONTH, 0); 
+				    c.set(Calendar.DAY_OF_MONTH, -1);
+				    c.set(Calendar.HOUR_OF_DAY, 0);
+					c.set(Calendar.MINUTE, 0);
+					c.set(Calendar.SECOND, 0);
+					c.set(Calendar.MILLISECOND, 0);
+					endDate = c.getTime();
+				}
+				
+				createOwnerLease(new AjaxRequest<OwnerTEntity>(o, request), o.getBillingLeaseDate(), endDate);
 				if (request.getData() == null) { //如果传入指定日期则不更新最后一次计算日期
+					OwnerTEntity update = OwnerTEntity.builder()
+											.warehouseId(o.getWarehouseId())
+											.companyId(o.getCompanyId())
+											.ownerId(o.getOwnerId())
+											.billingLeaseDate(new Date())
+											.updateVersion(o.getUpdateVersion())
+											.build();
 					//更新计算日期
 					ownerService.modify(update);
 				}
@@ -135,39 +160,24 @@ public class LeaseServiceImpl implements ILeaseService, IExcelService<BillingLea
 	 */
 	@Override
 	@Transactional
-	public void createOwnerLease(AjaxRequest<OwnerTEntity> request, Date endDate) {
+	public void createOwnerLease(AjaxRequest<OwnerTEntity> request, final Date startDate, final Date endDate) {
 		OwnerTEntity owner = request.getData();
-		//获取最后一次计算计费的时间
-		//如果日期为空，则按1999-01-01开始计算
-		if (owner.getBillingLeaseDate() == null) {
-			Calendar c = Calendar.getInstance();
-			c.set(Calendar.YEAR, 1999);
-			c.set(Calendar.MONTH, 1);
-		    c.set(Calendar.DAY_OF_MONTH, 1);//设置为1号,当前日期既为本月第一天 
-		    c.set(Calendar.HOUR_OF_DAY, 0);
-			c.set(Calendar.MINUTE, 0);
-			c.set(Calendar.SECOND, 0);
-			c.set(Calendar.MILLISECOND, 0);
-			owner.setBillingLeaseDate(c.getTime());
-		}
 
-		//上个月最后一天
-		if (endDate == null) {
-			Calendar c = Calendar.getInstance();
-			c.add(Calendar.MONTH, 0); 
-		    c.set(Calendar.DAY_OF_MONTH, -1);
-		    c.set(Calendar.HOUR_OF_DAY, 0);
-			c.set(Calendar.MINUTE, 0);
-			c.set(Calendar.SECOND, 0);
-			c.set(Calendar.MILLISECOND, 0);
-			endDate = c.getTime();
+		//如果结束日期为当天，则需判断产生库存快照
+		if (DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD, endDate).equals(DateUtils.getDate())) {
+			//建立库存快照
+			inventorySnapshotService.synchronize(InventoryOnhandSnapshotTEntity.builder()
+													.warehouseId(request.getWarehouseId())
+													.companyId(request.getCompanyId())
+													.day(DateUtils.getDate())
+													.build());
 		}
 		
 		//按库存计算仓租
-		List<BillingLeaseTEntity> inventoryBillList = getByOnhandInventory(owner);
+		List<BillingLeaseTEntity> inventoryBillList = getByOnhandInventory(owner, startDate, endDate);
 		
 		//按交易计算仓租
-		List<BillingLeaseTEntity> transactionBillList = getByTransaction(owner);
+		List<BillingLeaseTEntity> transactionBillList = getByTransaction(owner, startDate, endDate);
 		
 		List<BillingLeaseTEntity> all = Lists.newArrayList();
 		all.addAll(inventoryBillList);
@@ -183,12 +193,11 @@ public class LeaseServiceImpl implements ILeaseService, IExcelService<BillingLea
 		String monthStr = DateUtils.parseDateToStr(DateUtils.YYYY_MM, endDate);
 		
 		//检查是否已经产生过记录
-		List<BillingLeaseTEntity> oldLeaseList = findByOwnerMonth(BillingLeaseTEntity.builder()
-							.warehouseId(request.getWarehouseId())
-							.companyId(request.getCompanyId())
-							.ownerCode(owner.getOwnerCode())
-							.billingMonth(monthStr)
-							.build());
+		PageRequest pageRequest = new PageRequest();
+		pageRequest.setWarehouseId(request.getWarehouseId());
+		pageRequest.setCompanyId(request.getCompanyId());
+		pageRequest.put(BillingLeaseTEntity.Column.ownerCode.getJavaProperty(), owner.getOwnerCode());
+		List<BillingLeaseTEntity> oldLeaseList = find(pageRequest);
 		if (CollectionUtils.isNotEmpty(oldLeaseList)) {
 			oldLeaseList.forEach(l -> {
 				l.setUpdateBy(request.getUserName());
@@ -222,11 +231,11 @@ public class LeaseServiceImpl implements ILeaseService, IExcelService<BillingLea
 			if (l.getOutboundDate() != null) {
 				_endDate = l.getOutboundDate();
 			}
-			Date startDate = owner.getBillingLeaseDate();
-			if (l.getInboundDate().compareTo(startDate) > 0) { //入库日期比上一次计算日期晚，以入库日期为开始日期
-				startDate = l.getInboundDate();
+			Date _startDate = startDate;
+			if (l.getInboundDate().compareTo(_startDate) > 0) { //入库日期比上一次计算日期晚，以入库日期为开始日期
+				_startDate = l.getInboundDate();
 			}
-			long days = _endDate.getTime() - startDate.getTime();
+			long days = _endDate.getTime() - _startDate.getTime();
 			days = days / (1000 * 24 * 60 * 60);
 			//入库当天需计算为1天
 			l.setDays(days + 1);
@@ -240,12 +249,13 @@ public class LeaseServiceImpl implements ILeaseService, IExcelService<BillingLea
 	 * @param inventory
 	 * @return
 	 */
-	private List<BillingLeaseTEntity> getByOnhandInventory(OwnerTEntity owner){
+	private List<BillingLeaseTEntity> getByOnhandInventory(OwnerTEntity owner, final Date startDate, final Date endDate){
 		//按货主查询所有库存
-		List<InventoryOnhandTEntity> inventoryList = inventoryService.findByOwner(InventoryOnhandTEntity.builder()
+		List<InventoryOnhandSnapshotTEntity> inventoryList = inventorySnapshotService.findByOwner(InventoryOnhandSnapshotTEntity.builder()
 				.warehouseId(owner.getWarehouseId())
 				.companyId(owner.getCompanyId())
 				.ownerCode(owner.getOwnerCode())
+				.day(DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD, endDate))
 				.build());
 		//按批次分组汇总在库的库存
 		Map<String, BigDecimal> onhandLotInventory = Maps.newHashMap();
@@ -276,16 +286,17 @@ public class LeaseServiceImpl implements ILeaseService, IExcelService<BillingLea
 	 * @param inventory
 	 * @return
 	 */
-	private List<BillingLeaseTEntity> getByTransaction(OwnerTEntity owner){
+	private List<BillingLeaseTEntity> getByTransaction(OwnerTEntity owner, final Date startDate, final Date endDate){
+		PageRequest pageRequest = new PageRequest();
+		pageRequest.setWarehouseId(owner.getWarehouseId());
+		pageRequest.setCompanyId(owner.getCompanyId());
+		pageRequest.put(InventoryTransactionTEntity.Column.ownerCode.getJavaProperty(), owner.getOwnerCode());
+		pageRequest.put(InventoryTransactionTEntity.Column.transactionType.getJavaProperty(), TransactionTypeEnum.Outbound.getCode());
+		pageRequest.setDateBegin(InventoryTransactionTEntity.Column.transactionDate.getJavaProperty(), startDate);
+		pageRequest.setDateEnd(InventoryTransactionTEntity.Column.transactionDate.getJavaProperty(), endDate);
+		
 		///按货主查询当月出库交易
-		List<InventoryTransactionTEntity> tranList = transactionService.findGreaterThanDate(InventoryTransactionTEntity.builder()
-				.warehouseId(owner.getWarehouseId())
-				.companyId(owner.getCompanyId())
-				.ownerCode(owner.getOwnerCode())
-				.transactionType(TransactionTypeEnum.Outbound.getCode())
-				.transactionDate(owner.getBillingLeaseDate())
-				.build()
-				);
+		List<InventoryTransactionTEntity> tranList = transactionService.find(pageRequest);
 		
 		//按批次分组汇总出库的库存
 		Map<String, BillingLeaseTEntity> outboundLot = Maps.newHashMap();
@@ -299,7 +310,7 @@ public class LeaseServiceImpl implements ILeaseService, IExcelService<BillingLea
 					lease.setLotNumber(t.getLotNumber());
 					lease.setQuantityShiped(t.getQuantity().abs());
 					lease.setOutboundDate(DateUtils.parseDate(outboundDateStr));
-					outboundLot.put(outboundDateStr, lease);
+					outboundLot.put(t.getLotNumber() + outboundDateStr, lease);
 				}else {
 					BigDecimal quantity = lease.getQuantityShiped();
 					quantity = quantity.add(t.getQuantity().abs());
@@ -496,7 +507,7 @@ public class LeaseServiceImpl implements ILeaseService, IExcelService<BillingLea
 		
 		int rowcount = billingLeaseDao.updateWithVersionByExampleSelective(lease.getUpdateVersion(), update, TExample);
 		if (rowcount == 0)
-			throw new BusinessServiceException("add error.");
+			throw new BusinessServiceException("delete error.");
 		return Boolean.FALSE;
 	}
 	

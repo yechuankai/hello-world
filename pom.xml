@@ -15,7 +15,8 @@
 		<module>wms-async</module>
     	<module>wms-file</module>
   		<module>wms-report</module>
-  	</modules>
+    <module>wms-task</module>
+  </modules>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
