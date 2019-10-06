@@ -306,6 +306,7 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 			TExampleCriteria.andQuantityOnhandGreaterThan(BigDecimal.ZERO);
 		}
 		
+		//按容器查询
 		String container = request.getString(LpnTEntity.Column.containerNumber.getJavaProperty());
 		if (StringUtils.isNotEmpty(container)) {
 			List<LpnTEntity> lpns = lpnService.findByContainerNumber(LpnTEntity.builder()
@@ -319,6 +320,17 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 			Set<Long> lpnIds = lpns.stream().map(LpnTEntity::getLpnId).collect(Collectors.toSet());
 			TExampleCriteria.andLpnIdIn(Lists.newArrayList(lpnIds));
 		}
+		
+		//按批属性查询
+		if (haveLotAttribute(request)) {
+			List<LotAttributeTEntity> lots = lotService.find(request);
+			if (CollectionUtils.isEmpty(lots))
+				return PageResult.create(Lists.newArrayList());
+			
+			Set<Long> lotIds = lots.stream().map(LotAttributeTEntity::getLotAttributeId).collect(Collectors.toSet());
+			TExampleCriteria.andLotIdIn(Lists.newArrayList(lotIds));
+		}
+		
 		
 		TExampleCriteria.andDelFlagEqualTo(YesNoEnum.No.getCode());
 		
@@ -368,6 +380,17 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 		PageResult pageResult = PageResult.create(page, returnList);
 		return pageResult;
 	 }
+	
+	private Boolean haveLotAttribute(PageRequest request) {
+		final String lotAttribute = "lotAttribute";
+		Set<String> values = request.keySet();
+		for (String s : values) {
+			if (s.startsWith(lotAttribute)) {
+				return Boolean.TRUE;
+			}
+		}
+		return Boolean.FALSE;
+	}
 
 	@Override
 	public List<InventoryOnhandTEntity> findByLocationId(InventoryOnhandTEntity inventory, Set<Long> locations)

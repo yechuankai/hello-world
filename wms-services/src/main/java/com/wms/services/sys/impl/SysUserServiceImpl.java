@@ -147,7 +147,8 @@ public class SysUserServiceImpl implements ISysUserService {
 				if (active)
 					userVo.getWarehouses().add(w);
 			});
-			if (CollectionUtils.isNotEmpty(userVo.getWarehouses())) {
+			if (userVo.isAdmin() 
+					&& CollectionUtils.isNotEmpty(userVo.getWarehouses())) {
 				//增加系统仓库
 				WarehouseVO wh = new WarehouseVO();
 				wh.setCompanyId(0L);
@@ -158,8 +159,6 @@ public class SysUserServiceImpl implements ISysUserService {
 				userVo.getWarehouses().add(0, wh);
 			}
 		}
-		
-		
 		
 		//查找默认值配置
 		SysUserDefaultTExample defaultExample = new SysUserDefaultTExample();
