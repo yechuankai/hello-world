@@ -214,14 +214,14 @@ $(function(){
 	
 	//公共显示新增框-------------------------START
 	$('.common-confirmadd').click(function(){
-		var from = $(this).attr('data-form');
+		var form = $(this).attr('data-form');
 		var datagrid = $(this).attr('data-table');
-		var url = $(from).attr('data-url');
-		var valid = $(from).form('validate');
+		var url = $(form).attr('data-url');
+		var valid = $(form).form('validate');
 		if (!valid) {
 			return;
 		}
-		var data = $(from).serializeObject();
+		var data = $(form).serializeObject();
 		data = getBaseData(data);
 		loading();
 		$.post({
@@ -235,9 +235,9 @@ $(function(){
 					return;
 				}
 				confirmMsg(data.msg + '<br /> Go on ?', function(r){
-					$(from).form('reset');
+					$(form).form('reset');
 					if (!r) {
-						$(from).parents('.window-body').dialog('close');
+						$(form).parents('.window-body').dialog('close');
 						if ($('.common-search').length > 0){
 							$('.common-search').trigger('click');
 						}

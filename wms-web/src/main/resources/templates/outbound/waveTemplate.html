@@ -183,7 +183,6 @@
 	        <a href="#" class="easyui-linkbutton wavetemplatesave" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
 	            <span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
 	        </a>
-	        <a href="#" style="display: none;" class="common-confirmadd"  onclick="save('add')" >Add</a>
 	        <a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');" data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
 	            <span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
 	        </a>
@@ -198,7 +197,7 @@
 	$(function(){
 		$('.wavetemplatesave').click(function(){
 			if (addFlag){
-				$('.common-confirmadd').trigger('click');
+				save('add');
 			}else{
 				save('save');
 			}
@@ -370,9 +369,16 @@
                     showError(data.msg);
                     return;
                 }
-                $(form).form('reset');
-                $('#addWaveTemplate').dialog('close');
-                $("#dataTable").datagrid('reload').datagrid('clearChecked');
+                confirmMsg(data.msg + '<br /> Go on ?', function(r){
+					$(form).form('reset');
+					if (!r) {
+						$(form).parents('.window-body').dialog('close');
+						if ($('.common-search').length > 0){
+							$('.common-search').trigger('click');
+						}
+					}
+				});
+                
 			}
 		});
 	}
