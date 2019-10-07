@@ -43,6 +43,7 @@
     <result column="EMAIL2" jdbcType="VARCHAR" property="email2" />
     <result column="SOURCE_WAVE_NUMBER" jdbcType="VARCHAR" property="sourceWaveNumber" />
     <result column="DRIVER_PHONE" jdbcType="VARCHAR" property="driverPhone" />
+    <result column="PLATFORM_CODE" jdbcType="VARCHAR" property="platformCode" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -145,7 +146,8 @@
     PHONE2, ADDRESS1, ADDRESS2, FAX, EMAIL1, SHIP_LABEL, CAR_NUMBER, DRIVER, CONTAINER_NUMBER, 
     OUTBOUND_DATE, EXPECTED_OUTBOUND_DATE, STATUS, PROCESS_STATUS, REMARK, COMPANY_ID, 
     WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, 
-    DESCRIPTION, CARRIER_ID, CARRIER_CODE, EMAIL2, SOURCE_WAVE_NUMBER, DRIVER_PHONE
+    DESCRIPTION, CARRIER_ID, CARRIER_CODE, EMAIL2, SOURCE_WAVE_NUMBER, DRIVER_PHONE, 
+    PLATFORM_CODE
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.OutboundHeaderTExample" resultMap="BaseResultMap">
     select
@@ -181,8 +183,8 @@
       DEL_FLAG, CREATE_BY, CREATE_TIME, 
       UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, 
       DESCRIPTION, CARRIER_ID, CARRIER_CODE, 
-      EMAIL2, SOURCE_WAVE_NUMBER, DRIVER_PHONE
-      )
+      EMAIL2, SOURCE_WAVE_NUMBER, DRIVER_PHONE, 
+      PLATFORM_CODE)
     values (#{outboundHeaderId,jdbcType=DECIMAL}, #{outboundNumber,jdbcType=VARCHAR}, 
       #{sourceNumber,jdbcType=VARCHAR}, #{referenceNumber,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
       #{ownerId,jdbcType=DECIMAL}, #{ownerCode,jdbcType=VARCHAR}, #{customerId,jdbcType=DECIMAL}, 
@@ -196,8 +198,8 @@
       #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, 
       #{description,jdbcType=VARCHAR}, #{carrierId,jdbcType=DECIMAL}, #{carrierCode,jdbcType=VARCHAR}, 
-      #{email2,jdbcType=VARCHAR}, #{sourceWaveNumber,jdbcType=VARCHAR}, #{driverPhone,jdbcType=VARCHAR}
-      )
+      #{email2,jdbcType=VARCHAR}, #{sourceWaveNumber,jdbcType=VARCHAR}, #{driverPhone,jdbcType=VARCHAR}, 
+      #{platformCode,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.OutboundHeaderTEntity">
     insert into OUTBOUND_HEADER_T
@@ -325,6 +327,9 @@
       <if test="driverPhone != null">
         DRIVER_PHONE,
       </if>
+      <if test="platformCode != null">
+        PLATFORM_CODE,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="outboundHeaderId != null">
@@ -449,6 +454,9 @@
       </if>
       <if test="driverPhone != null">
         #{driverPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="platformCode != null">
+        #{platformCode,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -584,6 +592,9 @@
       <if test="record.driverPhone != null">
         DRIVER_PHONE = #{record.driverPhone,jdbcType=VARCHAR},
       </if>
+      <if test="record.platformCode != null">
+        PLATFORM_CODE = #{record.platformCode,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -631,7 +642,8 @@
       CARRIER_CODE = #{record.carrierCode,jdbcType=VARCHAR},
       EMAIL2 = #{record.email2,jdbcType=VARCHAR},
       SOURCE_WAVE_NUMBER = #{record.sourceWaveNumber,jdbcType=VARCHAR},
-      DRIVER_PHONE = #{record.driverPhone,jdbcType=VARCHAR}
+      DRIVER_PHONE = #{record.driverPhone,jdbcType=VARCHAR},
+      PLATFORM_CODE = #{record.platformCode,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -773,7 +785,8 @@
     CARRIER_CODE = #{record.carrierCode,jdbcType=VARCHAR}, 
     EMAIL2 = #{record.email2,jdbcType=VARCHAR}, 
     SOURCE_WAVE_NUMBER = #{record.sourceWaveNumber,jdbcType=VARCHAR}, 
-    DRIVER_PHONE = #{record.driverPhone,jdbcType=VARCHAR}
+    DRIVER_PHONE = #{record.driverPhone,jdbcType=VARCHAR}, 
+    PLATFORM_CODE = #{record.platformCode,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
     </if>
@@ -907,6 +920,9 @@
         </if>
         <if test="record.driverPhone != null">
           DRIVER_PHONE = #{record.driverPhone,jdbcType=VARCHAR},
+        </if>
+        <if test="record.platformCode != null">
+          PLATFORM_CODE = #{record.platformCode,jdbcType=VARCHAR},
         </if>
       </trim>
     </set>

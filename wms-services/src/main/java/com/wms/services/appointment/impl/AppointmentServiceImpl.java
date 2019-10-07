@@ -25,7 +25,6 @@ import com.wms.common.utils.ExampleUtils;
 import com.wms.common.utils.StringUtils;
 import com.wms.common.utils.key.KeyUtils;
 import com.wms.dao.auto.IAppointmentTDao;
-import com.wms.dao.auto.IInboundCancelHeaderTDao;
 import com.wms.dao.example.AppointmentTExample;
 import com.wms.entity.auto.AppointmentTEntity;
 import com.wms.entity.auto.InboundHeaderTEntity;
@@ -34,9 +33,9 @@ import com.wms.entity.auto.PlatformTEntity;
 import com.wms.services.appointment.IAppointmentService;
 import com.wms.services.appointment.IPlatFormService;
 import com.wms.services.inbound.IInboundHeaderService;
-import com.wms.services.inbound.impl.InboundHeaderServiceImpl;
 import com.wms.services.outbound.IOutboundHeaderService;
-import com.wms.services.outbound.impl.OutboundHeaderServiceImpl;
+import com.wms.vo.inbound.InboundVO;
+import com.wms.vo.outbound.OutboundVO;
 
 /**
  * 泊位管理
@@ -103,6 +102,7 @@ public class AppointmentServiceImpl implements IAppointmentService {
                     .carNumber(p.getCarNumber())
                     .carDriverPhone(p.getCarDriverPhone())
                     .build();
+            
 
             AppointmentTExample example = new AppointmentTExample();
             example.createCriteria()
@@ -114,9 +114,14 @@ public class AppointmentServiceImpl implements IAppointmentService {
             if (row == 0) {
                 throw new BusinessServiceException("record update error.");
             }
-            
-          //更新月台状态
-          modifyPlatFormStatus(new AjaxRequest<AppointmentTEntity>(p, request));
+
+			// 更新月台状态
+			modifyPlatFormStatus(new AjaxRequest<AppointmentTEntity>(p, request));
+			// 非取消状态，更新单据月台字段
+			if (AppointmentStatusEnum.Cancel.getCode().equals(p.getStatus())) {
+				p.setPlatformCode("");
+			}
+			modifyOrderPlatForm(new AjaxRequest<AppointmentTEntity>(p, request));
         }
         return Boolean.TRUE;
     }
@@ -147,6 +152,11 @@ public class AppointmentServiceImpl implements IAppointmentService {
             }
             //更新月台状态
             modifyPlatFormStatus(new AjaxRequest<AppointmentTEntity>(p, request));
+            //非取消状态，更新单据月台字段
+            if (AppointmentStatusEnum.Cancel.getCode().equals(p.getStatus())) {
+            	p.setPlatformCode("");
+            }
+            modifyOrderPlatForm(new AjaxRequest<AppointmentTEntity>(p, request));
         }
         return true;
     }
@@ -189,6 +199,9 @@ public class AppointmentServiceImpl implements IAppointmentService {
 					.build();
 			platFormService.modifyStats(new AjaxRequest<PlatformTEntity>(plat, request), PlatFormStatusEnum.Idle);
             
+			// 删除，更新单据月台字段为空
+			p.setPlatformCode("");
+			modifyOrderPlatForm(new AjaxRequest<AppointmentTEntity>(p, request));
         }
         return Boolean.TRUE;
     }
@@ -223,6 +236,10 @@ public class AppointmentServiceImpl implements IAppointmentService {
 					.platformId(p.getPlatformId())
 					.build();
 			platFormService.modifyStats(new AjaxRequest<PlatformTEntity>(plat, request), PlatFormStatusEnum.Idle);
+			
+			// 取消状态，更新单据月台字段为空
+			p.setPlatformCode("");
+			modifyOrderPlatForm(new AjaxRequest<AppointmentTEntity>(p, request));
         }
         return Boolean.TRUE;
     }
@@ -405,7 +422,11 @@ public class AppointmentServiceImpl implements IAppointmentService {
 		return Boolean.TRUE;
 	}
 	
-	
+	/**
+	 * 修改月台状态
+	 * @param request
+	 * @return
+	 */
 	private Boolean modifyPlatFormStatus(AjaxRequest<AppointmentTEntity> request) {
 		AppointmentTEntity appointment = request.getData();
 		
@@ -443,6 +464,43 @@ public class AppointmentServiceImpl implements IAppointmentService {
         	
         List<AppointmentTEntity> list = appointDao.selectByExample(TExample);
         return list;
+	}
+	
+	/**
+	 * 更新单据月台
+	 * @param request
+	 * @return
+	 */
+	private Boolean modifyOrderPlatForm(AjaxRequest<AppointmentTEntity> request) {
+		AppointmentTEntity appointment = request.getData();
+		if (AppointmentTypeEnum.Inbound.getCode().equals(appointment.getType())) {
+			InboundHeaderTEntity inboundCondition = InboundHeaderTEntity.builder()
+			.warehouseId(request.getWarehouseId())
+			.companyId(request.getCompanyId())
+			.inboundNumber(appointment.getSourceBillNumber())
+			.build();
+			
+			InboundHeaderTEntity inbound = inboundService.find(inboundCondition);
+			inboundCondition.setInboundHeaderId(inbound.getInboundHeaderId());
+			inboundCondition.setPlatformCode(appointment.getPlatformCode());
+			inboundCondition.setUpdateBy(request.getUserName());
+			inboundCondition.setUpdateTime(new Date());
+			inboundService.modify(new InboundVO(inboundCondition));
+		}else if (AppointmentTypeEnum.Outbound.getCode().equals(appointment.getType())) {
+			OutboundHeaderTEntity outboundCondition = OutboundHeaderTEntity.builder()
+					.warehouseId(request.getWarehouseId())
+					.companyId(request.getCompanyId())
+					.outboundNumber(appointment.getSourceBillNumber())
+					.build();
+					
+			OutboundHeaderTEntity outbound = outboundService.find(outboundCondition);
+			outboundCondition.setOutboundHeaderId(outbound.getOutboundHeaderId());
+			outboundCondition.setPlatformCode(appointment.getPlatformCode());
+			outboundCondition.setUpdateBy(request.getUserName());
+					outboundCondition.setUpdateTime(new Date());
+			outboundService.modify(new OutboundVO(outboundCondition));
+		}
+		return Boolean.TRUE;
 	}
 
 
