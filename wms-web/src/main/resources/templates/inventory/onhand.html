@@ -6,8 +6,8 @@
 </head>
 <body class="easyui-layout">
 <div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
-    <div id="searchDiv">
-        <div style="margin-left: 10px;">
+    <div id="searchDiv" class="easyui-layout" style="height: 100%;">
+        <div style="margin-left: 10px;height: 100%;" data-options="region:'center',border:false">
             <form id="searchForm" data-table="#onhandData">
                 <div style="margin-bottom:10px">
                     <input name="ownerCode" class="easyui-textbox"
@@ -38,6 +38,18 @@
                            wms:data-options="label:'${web.label.lpnnumber}',labelPosition:'top'"/>
                 </div>
                 <div style="margin-bottom:10px">
+					<input name="lotAttribute1" class="easyui-textbox" wms:data-options="label:'${web.label.lotattribute1}',labelPosition:'top'" />
+				</div>
+				<div style="margin-bottom:10px">
+					<input name="lotAttribute2" class="easyui-textbox" wms:data-options="label:'${web.label.lotattribute2}',labelPosition:'top'" />
+				</div>
+				<div style="margin-bottom:10px">
+					<input name="lotAttribute3" class="easyui-textbox" wms:data-options="label:'${web.label.lotattribute3}',labelPosition:'top'" />
+				</div>
+				<div style="margin-bottom:10px">
+					<input name="lotAttribute4" class="easyui-textbox" wms:data-options="label:'${web.label.lotattribute4}',labelPosition:'top'" />
+				</div>	
+                <div style="margin-bottom:10px">
                     <input class="easyui-combobox" name="quantityAvailableMoreThanZero" wms:data-options="
 						data: codelkups['YESNO'],
 						panelHeight: 100,
@@ -49,7 +61,7 @@
                 </div>
             </form>
         </div>
-        <div style="text-align: center;">
+        <div style="text-align: center;height:50px;" data-options="region:'south',border:false">
             <a href="#" class="easyui-linkbutton common-search" data-form="#searchForm" style="width:80px;"
                data-options="iconCls:'icon-search'">
                 <span wms:text="${web.label.search}">Search</span>

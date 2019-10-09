@@ -21,6 +21,7 @@ import com.wms.services.base.ICarrierService;
 import com.wms.services.base.IEnterpriseService;
 import com.wms.services.base.IOwnerService;
 import com.wms.services.base.ISupplierService;
+import com.wms.services.inbound.IDeclarationService;
 import com.wms.services.inbound.IInboundDetailService;
 import com.wms.services.inbound.IInboundHeaderService;
 import com.wms.services.inventory.ITaskService;
@@ -62,7 +63,9 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 	private ITaskService taskService;
 	@Autowired
 	private ISysWarehouseService warehouseService;
-
+	@Autowired
+	private IDeclarationService declarationService;
+	
 	@Override
 	public List<InboundHeaderTEntity> find(PageRequest request) throws BusinessServiceException {
 		
@@ -700,6 +703,11 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 				statusHistory.setNewStatus(InboundStatusEnum.WaitingDeclaration.getCode());
 				break;
 			case Confirm:
+				//校验报关单号
+				List<InboundHeaderTEntity> list = declarationService.findByDeclareNumber(InboundHeaderTEntity.builder().referenceNumber(inboundVO.getReferenceNumber()).build());
+				if (CollectionUtils.isNotEmpty(list))
+					throw new BusinessServiceException("InboundHeaderServiceImpl", "declarenumber.exists" , new Object[] {inboundVO.getReferenceNumber()});
+				
 				inboundVO.setStatus(InboundStatusEnum.New.getCode());
 				inboundVO.setWarehouseId(inboundVO.getToWarehouseId());
 				validate(inboundVO);

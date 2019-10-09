@@ -2,7 +2,7 @@ package com.wms.services.inbound;
 
 import java.util.List;
 
-import com.wms.entity.auto.InboundDetailTEntity;
+import com.wms.entity.auto.InboundHeaderTEntity;
 
 /**
  * 报关操作
@@ -11,5 +11,5 @@ import com.wms.entity.auto.InboundDetailTEntity;
  */
 public interface IDeclarationService {
 
-	List<InboundDetailTEntity> findByDeclareNumber();
+	List<InboundHeaderTEntity> findByDeclareNumber(InboundHeaderTEntity inbound);
 }
