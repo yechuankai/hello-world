@@ -141,10 +141,10 @@ public class JasperUtils {
 			ExporterOutput out = null;
 			if (HTML.equals(rptParam.getFormat())) {
 				out = new SimpleHtmlExporterOutput(baos);
+				((SimpleHtmlExporterOutput)out).setImageHandler(new WebHtmlResourceHandler("../../static/images?image={0}"));
 			}else {
 				out = new SimpleOutputStreamExporterOutput(baos);
 			}
-
 			exporter.setExporterOutput(out);
 			
 			exporter.exportReport();

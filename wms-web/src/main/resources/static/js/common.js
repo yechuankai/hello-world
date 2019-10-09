@@ -13,6 +13,7 @@ $.ajaxSetup({
 	    withCredentials: true //跨域请求时使用
     },
     complete: function(xhr) {
+    	closeTopLoading(); //关闭加载进度
     	if (this.url.indexOf('/find') > -1 && !showErrorFlag){
     		var json = xhr.responseText;
     		if (typeof(json) == 'string'){
@@ -28,6 +29,7 @@ $.ajaxSetup({
     	}
     },
     beforeSend: function(xhr){
+    	topLoading(); //显示加载进度
     	if (typeof(this.data) == 'object' && this.contentType == 'application/json')
     		this.data = JSON.stringify(this.data);
     },
@@ -35,6 +37,7 @@ $.ajaxSetup({
     	
     },
     error: function(xhr, status, e){
+    	closeTopLoading(); //关闭加载进度
     	closeLoading();
     	$.messager.alert('ERROR','[' + status + ']' + xhr.responseText + e ,'error');
     }
@@ -62,6 +65,63 @@ function validate(){
 	return valid;
 }
 
+function topLoading(){
+	var currProgressBar;
+	var top = true;
+	if (window.self == window.top){
+		currProgressBar = progressBar;
+	}else{
+		currProgressBar = window.top.progressBar;
+		top = false;
+	}
+	if (currProgressBar == undefined){ //无顶部加载进度条
+		return;
+	}
+	//顶级窗口，不存在则创建
+	if (top && currProgressBar == undefined){
+		progressBar = new ToProgress({
+			 id: 'top-progress-bar',
+			 color: '#29d', 
+			 height: '2px', 
+			 duration: 0.2
+			});
+			progressBar.increase(10);
+			progressInterval = setInterval(() => {
+				var progress = progressBar.getProgress();
+				if (progress <= 80){
+					progressBar.increase(10);
+				}
+			}, 1000);
+	}else{
+		currProgressBar.increase(10);
+		if (window.top.progressInterval != undefined){
+			window.top.clearInterval(window.top.progressInterval);
+		}
+		window.top.progressInterval = window.top.setInterval(() => {
+			var progress = currProgressBar.getProgress();
+			if (progress <= 80){
+				currProgressBar.increase(10);
+			}
+		}, 1000);
+	}
+}
+
+function closeTopLoading(){
+	var currProgressBar;
+	var top = true;
+	if (window.self == window.top){
+		currProgressBar = progressBar;
+	}else{
+		currProgressBar = window.top.progressBar;
+		top = false;
+	}
+	if (currProgressBar == undefined){ //无顶部加载进度条
+		return;
+	}
+	//完成进度条
+	currProgressBar.finish();
+	window.top.clearInterval(window.top.progressInterval);
+}
 
 function loading(message){
 	$.messager.progress({ 
@@ -283,8 +343,6 @@ function getReportUrl(url, p){
 				params += '&'+i+"="+p[i];
 			}
 		}
-	}else{
-		params += p;
 	}
 	return base + url + params;
 }
@@ -333,6 +391,8 @@ function exportReport(options){
 $(function(){
 	$('body').css({'opacity':'1'});
 	$('.icon-loading').remove();
+	//每次加载完成均关闭进度条
+	closeTopLoading();
 });
 
 

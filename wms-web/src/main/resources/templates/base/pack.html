@@ -168,7 +168,7 @@
 					<table style="width: 100%;padding-left: 60px;">
 						<tr>
 							<td>
-								<input name="packCode" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="required:true,label:'${web.label.pack}',labelPosition:'top'">
+								<input name="packCode" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="required:true,label:'${web.label.pack}',labelPosition:'top',validType:'characterNumber'">
 							</td>
 							<td>
 								<input name="packDescr" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="required:true,label:'${web.label.descr}',labelPosition:'top'">
@@ -186,7 +186,11 @@
 								" />
 							</td>
 							<td>
-								<input name="qty" class="lazy-load" lazy-load="easyui-numberbox" value="1"  wms:data-options="required:true,label:'${web.label.quantity}',labelPosition:'top'">
+								<input name="qty" class="lazy-load" lazy-load="easyui-numberbox" value="1"  wms:data-options="
+									required:true,
+									label:'${web.label.quantity}',
+									labelPosition:'top',
+									validType:['greaterthanzero']," />
 							</td>
 						</tr>
 						<tr>
@@ -201,7 +205,11 @@
 								" />
 							</td>
 							<td>
-								<input name="qtyInner" class="lazy-load" lazy-load="easyui-numberbox"  value="0"  wms:data-options="required:true,label:'${web.label.qtyInner}',labelPosition:'top'">
+								<input name="qtyInner" class="lazy-load" lazy-load="easyui-numberbox"  value="0"  wms:data-options="
+									required:true,
+									label:'${web.label.qtyInner}',
+									labelPosition:'top',
+									validType:['greaterthanzero'],">
 							</td>
 						</tr>
 						<tr>
@@ -216,7 +224,11 @@
 								" />
 							</td>
 							<td>
-								<input name="qtyCase" class="lazy-load" lazy-load="easyui-numberbox"  value="0"  wms:data-options="required:true,label:'${web.label.qtyCase}',labelPosition:'top'">
+								<input name="qtyCase" class="lazy-load" lazy-load="easyui-numberbox"  value="0"  wms:data-options="
+									required:true,
+									label:'${web.label.qtyCase}',
+									labelPosition:'top',
+									validType:['greaterthanzero'],">
 							</td>
 						</tr>
 						<tr>
@@ -241,27 +253,36 @@
 					<table style="width: 100%;padding-left: 10px;">
 						 <tr>
 							<td >
-								<input name="weightGrossInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
+								<input id="weightGrossInner" name="weightGrossInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
 									required:true,
 									precision:4,
 									label:'${web.label.weightgross}',
-									labelPosition:'top'
+									labelPosition:'top',
+									validType:['greaterthanzero'],
+									onChange(newValue, oldValue){
+										calculateTareWeight('Inner');
+									}
 									">
 							</td>
 							<td >
-								<input name="weightNetInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
+								<input id="weightNetInner" name="weightNetInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
 									required:true,
 									precision:4,
 									label:'${web.label.weightnet}',
-									labelPosition:'top'
+									labelPosition:'top',
+									validType:['greaterthanzero'],
+									onChange(newValue, oldValue){
+										calculateTareWeight('Inner');
+									}
 									">
 							</td>
 							<td >
-								<input name="weightTareInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
+								<input id="weightTareInner" name="weightTareInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
 									required:true,
 									precision:4,
 									label:'${web.label.weighttare}',
-									labelPosition:'top'
+									labelPosition:'top',
+									validType:['greaterthanzero'],
 									">
 							</td>
 						 </tr>
@@ -272,8 +293,9 @@
 									precision:4,
 									label:'${web.label.length}',
 									labelPosition:'top',
+									validType:['greaterthanzero'],
 									onChange(newValue, oldValue){
-										calculateCase(newValue);
+										calculateVolume('Inner');
 									}
 									">
 							</td>
@@ -283,8 +305,9 @@
 									precision:4,
 									label:'${web.label.width}',
 									labelPosition:'top',
+									validType:['greaterthanzero'],
 									onChange(newValue, oldValue){
-										calculateInner(newValue);
+										calculateVolume('Inner');
 									}
 									">
 							</td>
@@ -294,15 +317,21 @@
 									precision:4,
 									label:'${web.label.height}',
 									labelPosition:'top',
+									validType:['greaterthanzero'],
 									onChange(newValue, oldValue){
-										calculateInner(newValue);
+										calculateVolume('Inner');
 									}
 									">
 							</td>
 						 </tr>
 						 <tr>
 						 	<td >
-								<input id="volumeInner" name="volumeInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:4,label:'${web.label.volume}',labelPosition:'top'">
+								<input id="volumeInner" name="volumeInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
+									required:true,
+									precision:4,
+									label:'${web.label.volume}',
+									labelPosition:'top',
+									validType:['greaterthanzero'],">
 							</td>
 							<td >
 								&nbsp;
@@ -317,13 +346,34 @@
 					<table style="width: 100%;padding-left: 10px;">
 						 <tr>
 							<td >
-								<input name="weightGrossCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:4,label:'${web.label.weightgross}',labelPosition:'top'">
+								<input id="weightGrossCase" name="weightGrossCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
+									required:true,
+									precision:4,
+									label:'${web.label.weightgross}',
+									labelPosition:'top',
+									validType:['greaterthanzero'],
+									onChange(newValue, oldValue){
+										calculateTareWeight('Case');
+									}">
 							</td>
 							<td >
-								<input name="weightNetCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:4,label:'${web.label.weightnet}',labelPosition:'top'">
+								<input id="weightNetCase" name="weightNetCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
+									required:true,
+									precision:4,
+									label:'${web.label.weightnet}',
+									labelPosition:'top',
+									validType:['greaterthanzero'],
+									onChange(newValue, oldValue){
+										calculateTareWeight('Case');
+									}">
 							</td>
 							<td >
-								<input name="weightTareCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:4,label:'${web.label.weighttare}',labelPosition:'top'">
+								<input id="weightTareCase" name="weightTareCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
+									required:true,
+									precision:4,
+									label:'${web.label.weighttare}',
+									labelPosition:'top',
+									validType:['greaterthanzero']">
 							</td>
 						 </tr>
 						  <tr>
@@ -333,8 +383,9 @@
 									precision:4,
 									label:'${web.label.length}',
 									labelPosition:'top',
+									validType:['greaterthanzero'],
 									onChange(newValue, oldValue){
-										calculateCase(newValue);
+										calculateVolume('Case');
 									}
 									">
 							</td>
@@ -344,8 +395,9 @@
 									precision:4,
 									label:'${web.label.width}',
 									labelPosition:'top',
+									validType:['greaterthanzero'],
 									onChange(newValue, oldValue){
-										calculateCase(newValue);
+										calculateVolume('Case');
 									}
 									">
 							</td>
@@ -355,8 +407,9 @@
 									precision:4,
 									label:'${web.label.height}',
 									labelPosition:'top',
+									validType:['greaterthanzero'],
 									onChange(newValue, oldValue){
-										calculateCase(newValue);
+										calculateVolume('Case');
 									}
 									">
 							</td>
@@ -367,6 +420,7 @@
 									required:true,
 									precision:4,
 									label:'${web.label.volume}',
+									validType:['greaterthanzero'],
 									labelPosition:'top'
 									">
 							</td>
@@ -463,29 +517,40 @@ function save(){
 /**
  * 根据长、宽、高自动计算体积
  **/
-function calculateInner() {
+function calculateVolume(type) {
 	//var volume = $('#volume').numberbox('getValue');
 	//if (Number(volume) != 0){
 	//	return;
 	//}
-	var length = $('#lengthInner').numberbox('getValue');
-	var width = $('#widthInner').numberbox('getValue');
-	var height = $('#heightInner').numberbox('getValue');
-	$('#volumeInner').numberbox('setValue',Number(length) * Number(width) * Number(height));
+	var length = $('#length' + type).numberbox('getValue');
+	var width = $('#width' + type).numberbox('getValue');
+	var height = $('#height' + type).numberbox('getValue');
+	var volume = Number(length) * Number(width) * Number(height);
+	if (Number(length) < 0 || Number(width) < 0 || Number(height) < 0 || Number(volume) < 0) {
+		showError($.locale.lessThenZero);
+		return false;
+	}
+	$('#volume' + type).numberbox('setValue', volume);
 }
 
 /**
- * 根据长、宽、高自动计算体积
+ * 根据毛重、净重 自动计算皮重
  **/
-function calculateCase() {
-	//var volume = $('#volume').numberbox('getValue');
-	//if (Number(volume) != 0){
-	//	return;
-	//}
-	var length = $('#lengthCase').numberbox('getValue');
-	var width = $('#widthCase').numberbox('getValue');
-	var height = $('#heightCase').numberbox('getValue');
-	$('#volumeCase').numberbox('setValue',Number(length) * Number(width) * Number(height));
+function calculateTareWeight(type) {
+	debugger;
+	var weightGross = $('#weightGross' + type).numberbox('getValue');
+	var weightNet = $('#weightNet' + type).numberbox('getValue');
+	var tareWeight = Number(weightGross) - Number(weightNet);
+	if (Number(weightGross) < 0 || Number(weightNet) < 0 || Number(tareWeight) < 0) {
+		showError($.locale.lessThenZero);
+		return false;
+	}
+	if (Number(weightGross) < Number(weightNet)) {
+		showError($.locale.weightGrossMorethenNet);
+		return false;
+	}
+	$('#weightTare' + type).numberbox('setValue',tareWeight);
+	return true;
 }
 
 

@@ -662,7 +662,7 @@ comment on column wms.OUTBOUND_DETAIL_T.SKU_DESCR   is '货品描述';
 --新增"卸车任务列表"的子菜单
 delete uums.WEB_FUNC where func_id = 'wms:inbound:unloadtask';
 insert into uums.WEB_FUNC (FUNC_ID, FUNC_NAME, MENU_ID, FUNC_DESC, FUNC_URL, FUNC_ID_SEQ, SYS_CODE, IS_VALID, SYS_URL, REAL_SYS_CODE, INVALID_TIME, INVALID_USER, CREATE_TIME, VERSION, FUNC_UNIQUE_ID)
-values ('wms:inbound:unloadtask', '卸车任务', 'wms:inbound', '卸车任务', 'inbound/unloadtask', 10, 'WMS', 'Y', null, null, null, null, to_date('21-08-2019 14:08:28', 'dd-mm-yyyy hh24:mi:ss'), '0', 1173880490653638703);
+values ('wms:inbound:unloadtask', '卸车任务', 'wms:inbound', '卸车任务', 'inbound/unloadtask', 10, 'WMS', 'Y', null, null, null, null, to_date('21-08-2019 14:08:28', 'dd-mm-yyyy hh24:mi:ss'), '0', 1173880490653638704);
 
 delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:inbound:unloadtask';
 insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
@@ -678,7 +678,7 @@ values (1336, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '卸车任务', '卸车任务', 
 --新增"装车任务列表"的子菜单
 delete uums.WEB_FUNC where func_id = 'wms:outbound:loadtask';
 insert into uums.WEB_FUNC (FUNC_ID, FUNC_NAME, MENU_ID, FUNC_DESC, FUNC_URL, FUNC_ID_SEQ, SYS_CODE, IS_VALID, SYS_URL, REAL_SYS_CODE, INVALID_TIME, INVALID_USER, CREATE_TIME, VERSION, FUNC_UNIQUE_ID)
-values ('wms:outbound:loadtask', '装车任务', 'wms:outbound', '装车任务', 'outbound/loadtask', 50, 'WMS', 'Y', null, null, null, null, to_date('21-08-2019 14:08:28', 'dd-mm-yyyy hh24:mi:ss'), '0', 1173880490653638703);
+values ('wms:outbound:loadtask', '装车任务', 'wms:outbound', '装车任务', 'outbound/loadtask', 50, 'WMS', 'Y', null, null, null, null, to_date('21-08-2019 14:08:28', 'dd-mm-yyyy hh24:mi:ss'), '0', 1173880490653638705);
 
 delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:outbound:loadtask';
 insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
@@ -697,7 +697,7 @@ alter table uums.web_log modify (LOGIN_IP varchar2(50) );
 --新增"计费报表"的子菜单
 delete uums.WEB_FUNC where func_id = 'wms:report:billing:lease';
 insert into uums.WEB_FUNC (FUNC_ID, FUNC_NAME, MENU_ID, FUNC_DESC, FUNC_URL, FUNC_ID_SEQ, SYS_CODE, IS_VALID, SYS_URL, REAL_SYS_CODE, INVALID_TIME, INVALID_USER, CREATE_TIME, VERSION, FUNC_UNIQUE_ID)
-values ('wms:report:billing:lease', '仓租计费', 'wms:report', '仓租计费', 'report/billinglease', 10, 'WMS', 'Y', null, null, null, null, to_date('21-08-2019 14:08:28', 'dd-mm-yyyy hh24:mi:ss'), '0', 1173880490653638703);
+values ('wms:report:billing:lease', '仓租计费', 'wms:report', '仓租计费', 'report/billinglease', 10, 'WMS', 'Y', null, null, null, null, to_date('21-08-2019 14:08:28', 'dd-mm-yyyy hh24:mi:ss'), '0', 1173880490653638706);
 
 delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:report:billing:lease';
 insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
@@ -709,5 +709,20 @@ values (1338, 'WEB_FUNC', 'FUNC_NAME', 'fr_FR', 'Facturation facturation', 'Fact
 insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
 values (1339, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '仓租计费', '仓租计费', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:report:billing:lease', 'WMS');
 
+
+--新增"统计报表"的子菜单
+delete uums.WEB_FUNC where func_id = 'wms:report:summary';
+insert into uums.WEB_FUNC (FUNC_ID, FUNC_NAME, MENU_ID, FUNC_DESC, FUNC_URL, FUNC_ID_SEQ, SYS_CODE, IS_VALID, SYS_URL, REAL_SYS_CODE, INVALID_TIME, INVALID_USER, CREATE_TIME, VERSION, FUNC_UNIQUE_ID)
+values ('wms:report:summary', '统计', 'wms:report', '统计', 'report/summary', 20, 'WMS', 'Y', null, null, null, null, to_date('21-08-2019 14:08:28', 'dd-mm-yyyy hh24:mi:ss'), '0', 1173880490653638707);
+
+delete uums.sc_mappingconfig_lang where TABLE_NAME = 'WEB_FUNC' and table_id = 'wms:report:summary';
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1340, 'WEB_FUNC', 'FUNC_NAME', 'en_US', 'Summary', 'Summary', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:report:summary', 'WMS');
+
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1341, 'WEB_FUNC', 'FUNC_NAME', 'fr_FR', 'sommaire', 'sommaire', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:report:summary', 'WMS');
+
+insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUAGENO, LANGUAGE_CONTENT, MEMO, CREATE_DATE, CREATE_USER, UPDATE_DATE, UPDATE_USER, TABLE_ID, SYS_CODE)
+values (1342, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '统计', '统计', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:report:summary', 'WMS');
 
 

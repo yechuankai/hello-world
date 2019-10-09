@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title wms:text="${web.label.report}">报表</title>
+    <head th:replace="common/head" />
+</head>
+<body style="height: 1000px;">
+</body>
+<script th:replace="common/js" />
+<script type="text/javascript">
+$(function(){
+	var url = getReportUrl('/report/html/SUMMARY');
+	$('body').append('<iframe scrolling="no" frameborder="0"  src="'+url+'" style="width:100%;height:98%;" />');
+});
+</script>
+</html>

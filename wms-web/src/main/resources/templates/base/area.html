@@ -3,6 +3,9 @@
 <head>
     <title wms:text="${wms.area.title}">区域</title>
     <head th:replace="common/head"/>
+    <script th:replace="common/js"/>
+	<script type="text/javascript" th:src="@{/js/codelkupList?listName=YESNO,AREATYPE,LOCATIONTYPE}"></script>
+	<script type="text/javascript" th:src="@{/static/ui/plugins/datagrid-filter.js}"></script>
 </head>
 <body class="easyui-layout">
 <div data-options="region:'west',collapsible:true" wms:title="${web.label.search.title}" style="width:200px;">
@@ -156,7 +159,7 @@
                 <tr>
                     <td>
                         <input name="areaCode" class="easyui-textbox"
-                               wms:data-options="required:true,label:'${web.label.areacode}',labelPosition:'top'">
+                               wms:data-options="required:true,label:'${web.label.areacode}',labelPosition:'top',validType:'characterNumber'">
                     </td>
                     <td style="padding-left: 30px;">
                         <input class="easyui-combobox" name="type" style="width: 100px;" wms:data-options="
@@ -209,8 +212,6 @@
 </div>
 </div>
 </body>
-<script th:replace="common/js"/>
-<script type="text/javascript" th:src="@{/js/codelkupList?listName=YESNO,AREATYPE}"></script>
 <script type="text/javascript" th:inline="text">
     var headerData;
     $(function () {

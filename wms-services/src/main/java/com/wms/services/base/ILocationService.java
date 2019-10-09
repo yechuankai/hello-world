@@ -27,5 +27,5 @@ public interface ILocationService {
 	
 	List<LocationTEntity> findByZone(LocationTEntity location) throws BusinessServiceException;
 
-	List<LocationTEntity> findlocationAvailable( AreaTEntity area) throws BusinessServiceException;
+	List<LocationTEntity> findlocationAvailable(PageRequest request, AreaTEntity area) throws BusinessServiceException;
 }

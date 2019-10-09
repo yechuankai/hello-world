@@ -272,7 +272,10 @@
 							valueField: 'code',
 							textField: 'descr',
 							label: '${web.label.type}',
-							labelPosition: 'top'
+							labelPosition: 'top',
+							onChange: function(newValue, oldValue){
+								changeType(newValue);
+							}
 							"/>
                     </td>
                 </tr>
@@ -315,7 +318,7 @@
 							" />
                     </td>
                     <td style="padding-left: 20px;">
-                        <input name="fromZoneCode" class="easyui-combogrid" wms:data-options="
+                        <input id="fromZoneCode" name="fromZoneCode" class="easyui-combogrid" wms:data-options="
 								label: '${web.label.fromzonecode}',
 								labelPosition: 'top',
 								idField:'zoneCode',
@@ -390,7 +393,7 @@
 							" />
                     </td>
                     <td style="padding-left: 20px;">
-                        <input name="toZoneCode" class="easyui-combogrid" wms:data-options="
+                        <input id="toZoneCode" name="toZoneCode" class="easyui-combogrid" wms:data-options="
 								label: '${web.label.tozonecode}',
 								labelPosition: 'top',
 								idField:'zoneCode',
@@ -491,5 +494,43 @@
             $.extend(data, params);
         }
         return data;
+    }
+    function changeType(type){
+    	if (type == '10'){
+    		$('#fromLocationCode').combogrid({readonly:false});
+    		$('#fromZoneCode').combogrid({readonly:true});
+    		$('#toLocationCode').combogrid({readonly:false});
+    		$('#toZoneCode').combogrid({readonly:true});
+    	}else if (type == '20'){
+    		$('#fromLocationCode').combogrid({readonly:false});
+    		$('#fromZoneCode').combogrid({readonly:true});
+    		$('#toLocationCode').combogrid({readonly:true});
+    		$('#toZoneCode').combogrid({readonly:false});
+    	}else if (type == '30'){
+    		$('#fromLocationCode').combogrid({readonly:true});
+    		$('#fromZoneCode').combogrid({readonly:false});
+    		$('#toLocationCode').combogrid({readonly:false});
+    		$('#toZoneCode').combogrid({readonly:true});
+    	}else if (type == '40'){
+    		$('#fromLocationCode').combogrid({readonly:true});
+    		$('#fromZoneCode').combogrid({readonly:false});
+    		$('#toLocationCode').combogrid({readonly:true});
+    		$('#toZoneCode').combogrid({readonly:false});
+    	}else if (type == '50'){
+    		$('#fromLocationCode').combogrid({readonly:true});
+    		$('#fromZoneCode').combogrid({readonly:true});
+    		$('#toLocationCode').combogrid({readonly:true});
+    		$('#toZoneCode').combogrid({readonly:true});
+    	}else if (type == '60'){
+    		$('#fromLocationCode').combogrid({readonly:true});
+    		$('#fromZoneCode').combogrid({readonly:true});
+    		$('#toLocationCode').combogrid({readonly:true});
+    		$('#toZoneCode').combogrid({readonly:true});
+    	}else if (type == '100'){
+    		$('#fromLocationCode').combogrid({readonly:true});
+    		$('#fromZoneCode').combogrid({readonly:true});
+    		$('#toLocationCode').combogrid({readonly:false});
+    		$('#toZoneCode').combogrid({readonly:true});
+    	}
     }
 </script>

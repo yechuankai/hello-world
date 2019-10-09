@@ -177,7 +177,11 @@
             <table style="width: 100%;">
                 <tr>
                     <td >
-                        <input id="locationCode" name="locationCode" class="easyui-textbox" wms:data-options="required:true,label:'${web.label.location}',labelPosition:'top'">
+                        <input id="locationCode" name="locationCode" class="easyui-textbox" wms:data-options="
+                        	required:true,
+                        	label:'${web.label.location}',
+                        	labelPosition:'top',
+                        	validType:'characterNumber'">
                     </td>
                     <td >
                         <input class="easyui-combobox" name="locationType"  style="width: 100px;"  wms:data-options="
@@ -192,7 +196,7 @@
                 </tr>
                 <tr>
                     <td >
-                        <input id="locationLogical" name="locationLogical" class="easyui-textbox" wms:data-options="required:true,label:'${web.label.location.locationLogical}',labelPosition:'top'">
+                        <input id="locationLogical" name="locationLogical" class="easyui-textbox" wms:data-options="required:true,label:'${web.label.location.locationLogical}',labelPosition:'top',validType:'characterNumber'">
                     </td>
                     <td >
                        <input name="zonecode" th:replace="lov/zone" />
@@ -268,7 +272,6 @@
 	   $('#zoneCode').combogrid({required:true});
 	   $('#locationCode').textbox({
 	   		onChange: function(newValue, oldValue){
-	   			console.log(newValue);
 	   			var value = $('#locationLogical').textbox('getValue');
 	   			if (value == ''){
 	   				$('#locationLogical').textbox('setValue', newValue);

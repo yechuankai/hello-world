@@ -108,7 +108,10 @@ var locale = {
 	initWarehouse:'Confirm Init {row} Warehouse Recored ?',
 	warehouseAction:'Confirm {action} {row} Warehouse Recored ?',
 	
-	inboundNewStatusPrint: 'Only New、InReceive Can Print'
+	inboundNewStatusPrint: 'Only New、InReceive Can Print',
+	weightGrossMorethenNet: 'gross is greater than net weight',
+	lessThenZero: 'Value cannot be less than 0',
+	characterornumber: 'Only Character or Number',
 }
 if ($.locale){
 	$.extend($.locale,locale);

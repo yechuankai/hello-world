@@ -143,9 +143,14 @@ function addPanel(name, url){
 	if (count > 0){
 		name = name + '('+(count+1)+')';
 	}
+	
+	//加载顶部进度条
+	topLoading();
+	
+	var id = new Date().getTime();
 	$('#main').tabs('add',{
 		title: name + "&nbsp;",
-		content: '<iframe scrolling="no" frameborder="0"  src="'+url+'" style="width:100%;height:98%;" />',
+		content: '<iframe id="'+id+'" scrolling="no" frameborder="0"  src="'+url+'" style="width:100%;height:98%;" />',
 		closable: true,
 		plain: false,
 		border:false,

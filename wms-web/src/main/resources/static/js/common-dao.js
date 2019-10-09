@@ -11,17 +11,31 @@ $.extend($.fn.datagrid.methods, {
         return indexs;
     }
 });
+//增加数字规则不可小于0
+$.extend($.fn.validatebox.defaults.rules, {
+	greaterthanzero: {
+		validator: function(value){
+			return Number(value) >= 0
+		},
+		message: $.locale.lessThenZero
+    },
+    characterNumber: {
+		validator: function(value){
+			return /^[A-Za-z0-9]+$/i.test(value)
+		},
+		message: $.locale.characterornumber
+    }
+});
 $.extend($.fn.combogrid.defaults, {
-	striped: true,
-	panelWidth: 400,
-	delay: 100,
-	mode: 'remote',
-	method: 'post',
-	fix:true,
-	rownumbers: true,
-	pagination: true,
-	pageSize: 15,
-	pageList: [15,50,100,500,1000]
+	
+});
+$.extend($.fn.layout.defaults, {
+	onCollapse: function(){
+		$('.easyui-datagrid').datagrid('resize');
+	},
+	onExpand: function(){
+		$('.easyui-datagrid').datagrid('resize');
+	}
 });
 $.extend($.fn.datagrid.defaults, {
 	striped: true,
@@ -72,10 +86,12 @@ $.extend($.fn.datagrid.defaults.editors, {
 	}
 });
 
-
+var datagridHeight = 800;
 $(function(){
 	// 公共搜索-------------------------START
 	$('.common-search').click(function(){
+		datagridHeight = $('body').height() - 100;
+		
 		var searchFormId = $(this).attr('data-form');
 		var searchForm = $(searchFormId);
 		var searchData = $(searchForm).serializeObject();
@@ -87,8 +103,9 @@ $(function(){
 		var url = $(loadTable).attr('data-delayUrl');
 		$(loadTable).datagrid({
 			url: url,
-			queryParams: data
-		}).datagrid('clearChecked');
+			queryParams: data,
+			height: datagridHeight
+		}).datagrid('clearChecked').datagrid('resize');;
 	});
 	$('.common-search-clear').click(function(){
 		var searchFormId = $(this).attr('data-form');

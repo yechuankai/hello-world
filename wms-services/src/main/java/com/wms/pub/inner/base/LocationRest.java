@@ -100,7 +100,7 @@ public class LocationRest extends BaseController {
         List<LocationTEntity> list = null;
         try {
             AjaxRequest<AreaTEntity> request = ajaxRequest(req, new TypeReference<AjaxRequest<AreaTEntity>>() {});
-            list = locationService.findlocationAvailable(request.getData());
+            list = locationService.findlocationAvailable(pageRequest(req), request.getData());
             if (list == null) {
                 list = Lists.newArrayList();
             }

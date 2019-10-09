@@ -66,7 +66,7 @@
     <table id="areaLocationData" class="easyui-datagrid" style="height: 100%;width:100%;"
            wms:data-options="
 										sortOrder: 'desc',
-										sortName: 'areaId',
+										sortName: 'locationCode',
 										toolbar: '#areaLocationToolbar'
 										"
            th:data-delayUrl="@{/services/inner/base/location/findArealocation}">
@@ -76,28 +76,43 @@
             <th field="locationCode" width="100" wms:text="${web.label.location}" data-options="sortable:true">
                 locationCode
             </th>
-            <th field="active" width="100" wms:text="${web.label.active}" data-options="
+            <th field="locationType" width="100" wms:text="${web.label.type}" data-options="
 							            sortable:true,
 							            formatter:function(value,row){
-								            return getCodelkupValue('YESNO',value);
-							            },
-							            editor:{
-								            type:'combobox',
-								            options:{
-									            valueField:'code',
-									            textField:'descr',
-									            data: codelkups['YESNO']
-								            }
+								            return getCodelkupValue('LOCATIONTYPE',value);
 							            }
-						            ">active
+						            ">locationType
             </th>
-            <th field="remark" width="200" wms:text="${web.label.remark}" data-options="editor:'text'">remark</th>
+            <th field="zoneCode" width="100" wms:text="${web.label.zone}" data-options="
+							            sortable:true
+						            ">zoneCode
+            </th>
         </tr>
         </thead>
     </table>
 </div>
 <script type="text/javascript" th:inline="text">
-
+	var detailFilterRules = [{
+		field:'locationType',
+		type:'combobox',
+		options:{
+			panelHeight:'auto',
+			data:getFilterCodelkupValue('LOCATIONTYPE'),
+			onChange:function(value){
+				if (value == '---' || value == ''){
+					$('#areaLocationData').datagrid('removeFilterRule', 'status');
+				} else {
+					$('#areaLocationData').datagrid('addFilterRule', {
+						field: 'locationType',
+						op: 'equal',
+						value: value
+					});
+				}
+				$('#areaLocationData').datagrid('doFilter');
+			}
+		}
+	}];
+	
     function refreshAreaDetail(data) {
         var areaDetailTableId = '#areaDetailTable';
         var url = $(areaDetailTableId).attr('data-delayUrl');
@@ -118,7 +133,23 @@
         var url = $('#areaLocationData').attr('data-delayUrl');
         $('#areaLocationData').datagrid({
             url: url,
-            queryParams: data
-        }).datagrid('clearChecked');
+            queryParams: data,
+            filterPosition: 'top',
+            remoteFilter: true,
+            clientPaging: false,
+            oldLoadFilter: undefined,
+            filterStringify: function(params, filter) {
+                var obj = params;
+                if (typeof(params) != 'object'){
+                    return;
+                }
+                for (var i in filter){
+                    var q = filter[i];
+                    var qObj = {};
+                    qObj[q.field] = q.value;
+                    $.extend(obj, qObj);
+                }
+            }
+        }).datagrid('clearChecked').datagrid('destroyFilter').datagrid('enableFilter', detailFilterRules);;
     }
 </script>

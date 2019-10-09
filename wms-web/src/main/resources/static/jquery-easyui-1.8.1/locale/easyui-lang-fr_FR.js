@@ -109,7 +109,10 @@ var locale = {
 	initWarehouse:'Détermination de données d entreposage initialisées sur {row} lignes?',
 	warehouseAction:'Détermination {action}{row} lignes?',
 	
-	inboundNewStatusPrint: 'Seuls les nouveaux 、 InRecive Can Print'
+	inboundNewStatusPrint: 'Seuls les nouveaux 、 InRecive Can Print',
+	weightGrossMorethenNet: 'brut est supérieur au poids net',
+	lessThenZero: 'La valeur ne peut être inférieure à 0',
+	characterornumber: 'Seul caractère ou nombre',
 }
 if ($.locale){
 	$.extend($.locale,locale);

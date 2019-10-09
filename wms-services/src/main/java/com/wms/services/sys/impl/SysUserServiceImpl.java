@@ -130,6 +130,7 @@ public class SysUserServiceImpl implements ISysUserService {
 			userVo.setAllWarehouses(userWarehouse);
 		}
 		
+		int systemCount = 0;
 		if (CollectionUtils.isNotEmpty(userVo.getAllWarehouses())) {
 			
 			Set<Long> warehouseIds = userVo.getAllWarehouses().stream().filter(d->null != d.getWarehouseId()).map(WarehouseVO::getWarehouseId).collect(Collectors.toSet());
@@ -157,18 +158,25 @@ public class SysUserServiceImpl implements ISysUserService {
 				wh.setWarehouseCode(DefaultConstants.WAREHOUSE_CODE);
 				wh.setWarehouseDescr(DefaultConstants.WAREHOUSE_DESCR);
 				userVo.getWarehouses().add(0, wh);
+				systemCount += 1;
 			}
 		}
 		
-		//查找默认值配置
-		SysUserDefaultTExample defaultExample = new SysUserDefaultTExample();
-		defaultExample.createCriteria()
-		.andLoginNameEqualTo(user.getLoginName())
-		.andDelFlagEqualTo(YesNoEnum.No.getCode());
-		SysUserDefaultTEntity userDefault = userDefaultDao.selectOneByExample(defaultExample);
-		if (userDefault != null)
-			userVo.setUserDefault(userDefault);
-		
+		//仅拥有一个仓库时，自动默认该仓库
+		if ((userVo.getWarehouses().size() - systemCount) == 1) {
+			WarehouseVO w = userVo.getWarehouses().get(0);
+			userVo.setWarehouseId(w.getWarehouseId());
+			userVo.setCompanyId(w.getCompanyId());
+		}else {
+			//查找默认值配置
+			SysUserDefaultTExample defaultExample = new SysUserDefaultTExample();
+			defaultExample.createCriteria()
+			.andLoginNameEqualTo(user.getLoginName())
+			.andDelFlagEqualTo(YesNoEnum.No.getCode());
+			SysUserDefaultTEntity userDefault = userDefaultDao.selectOneByExample(defaultExample);
+			if (userDefault != null)
+				userVo.setUserDefault(userDefault);
+		}
 		
 		
 		return userVo;

@@ -157,6 +157,7 @@
 							labelPosition:'top',
 							required:true,
 							precision:4,
+							validType:['greaterthanzero'],
 							onChange(newValue, oldValue){
 								calculate(newValue);
 							}
@@ -181,7 +182,13 @@
 							}" />
 						</td>
 						<td>
-							<input id="uomQuantityReceive" name="uomQuantityReceive" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.label.quantityreceive}',labelPosition:'top',required:true,precision:4" />
+							<input id="uomQuantityReceive" name="uomQuantityReceive" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="
+								label:'${web.label.quantityreceive}',
+								labelPosition:'top',
+								required:true,
+								precision:4,
+								validType:['greaterthanzero'],
+								" />
 						</td>
 						<td>
 							<input id="lpnNumber" name="lpnNumber" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="label:'${web.label.lpnnumber}',labelPosition:'top'" />
@@ -192,16 +199,42 @@
 					</tr>
 					<tr>
 						<td>
-							<input id="weightGross" name="weightGross" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.label.weightgross}',labelPosition:'top',required:true,precision:4" />
+							<input id="weightGross" name="weightGross" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="
+								label:'${web.label.weightgross}',
+								labelPosition:'top',
+								required:true,
+								precision:4,
+								validType:['greaterthanzero'],
+								onChange(newValue, oldValue){
+									calculateTareWeight();
+								}" />
 						</td>
 						<td>
-							<input id="weightNet" name="weightNet" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.label.weightnet}',labelPosition:'top',required:true,precision:4" />
+							<input id="weightNet" name="weightNet" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="
+								label:'${web.label.weightnet}',
+								labelPosition:'top',
+								required:true,
+								precision:4,
+								validType:['greaterthanzero'],
+								onChange(newValue, oldValue){
+									calculateTareWeight();
+								}" />
 						</td>
 						<td>
-							<input id="weightTare" name="weightTare" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.label.weighttare}',labelPosition:'top',required:true,precision:4" />
+							<input id="weightTare" name="weightTare" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="
+								label:'${web.label.weighttare}',
+								labelPosition:'top',
+								required:true,
+								precision:4,
+								validType:['greaterthanzero']," />
 						</td>
 						<td>
-							<input id="volume" name="volume" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="label:'${web.label.volume}',labelPosition:'top',required:true,precision:4" />
+							<input id="volume" name="volume" value="0" class="lazy-load" lazy-load="easyui-numberbox" wms:data-options="
+								label:'${web.label.volume}',
+								labelPosition:'top',
+								required:true,
+								precision:4,
+								validType:['greaterthanzero']," />
 						</td>
 					</tr>
 				</table>
@@ -643,6 +676,24 @@
 		
 	}
 	
+	/**
+	 * 根据预期量计算毛重、净重、皮重、体积
+	 **/
+	function calculateTareWeight() {
+		var weightGross = $('#weightGross').numberbox('getValue');
+		var weightNet = $('#weightNet').numberbox('getValue');
+		var tareWeight = Number(weightGross) - Number(weightNet);
+		if (Number(weightGross) < 0 || Number(weightNet) < 0 || Number(tareWeight) < 0) {
+			showError($.locale.lessThenZero);
+			return false;
+		}
+		if (Number(weightGross) < Number(weightNet)) {
+			showError($.locale.weightGrossMorethenNet);
+			return false;
+		}
+		$('#weightTare').numberbox('setValue',tareWeight);
+		return true;
+	}
 
 	function detailEditable(status) {
 		if('0' == status){

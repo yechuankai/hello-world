@@ -90,7 +90,21 @@
 		</div>
 		<div>
 			<table id="skuData" wms:title="${web.label.skulist.title}" class="easyui-datagrid"
-							th:data-delayUrl="@{/services/inner/base/sku/find}">
+							th:data-delayUrl="@{/services/inner/base/sku/find}" data-options="
+							onEndEdit: function(rowIndex, rowData, changes){
+								if (changes['length'] || changes['width'] || changes['height']){
+									var length = changes['length'] ? changes['length'] : rowData.length;
+									var width = changes['width'] ? changes['width'] : rowData.width;
+									var height = changes['height'] ? changes['height'] : rowData.height;
+									rowData.volume = Number(length) * Number(width) * Number(height);
+								}
+								if (changes['weightGross'] || changes['weightNet']){
+									var weightGross = changes['weightGross'] ? changes['weightGross'] : rowData.weightGross;
+									var weightNet = changes['weightNet'] ? changes['weightNet'] : rowData.weightNet;
+									rowData.weightTare = Number(weightGross) - Number(weightNet);
+								}
+							}
+							">
 				<thead data-options="frozen:true">
 	            	<tr>
 	            		<th field="skuId" data-options="checkbox:true"></th>
@@ -150,6 +164,7 @@
 							editor:{
 								type:'combobox',
 								options:{
+									required: true,
 									valueField:'code',
 									textField:'descr',
 									data: codelkups['UOM']
@@ -160,49 +175,58 @@
 																													type: 'numberbox',
 																													options: {
 																														precision:4,
-																														required: true
+																														required: true,
+																														validType: 'greaterthanzero',
 																													}
 																												}" >volume</th>
-						<th field="length" width="100" wms:text="${web.label.length}" data-options="sortable:true,editor:{
-																													type: 'numberbox',
-																													options: {
-																														precision:4,
-																														required: true
-																													}
-																												}" >length</th>
+						<th field="length" width="100" wms:text="${web.label.length}" data-options="
+							sortable:true,
+							editor:{
+								type: 'numberbox',
+								options: {
+									precision:4,
+									required: true,
+									validType: 'greaterthanzero',
+								}
+							}" >length</th>
 						<th field="width" width="100" wms:text="${web.label.width}" data-options="sortable:true,editor:{
 																													type: 'numberbox',
 																													options: {
 																														precision:4,
-																														required: true
+																														required: true,
+																														validType: 'greaterthanzero',
 																													}
 																												}" >width</th>
 				        <th field="height" width="100" wms:text="${web.label.height}" data-options="sortable:true,editor:{
 																													type: 'numberbox',
 																													options: {
 																														precision:4,
-																														required: true
+																														required: true,
+																														validType: 'greaterthanzero',
 																													}
 																												}" >height</th>
 					    <th field="weightGross" width="100" wms:text="${web.label.weightgross}" data-options="sortable:true,editor:{
 																													type: 'numberbox',
 																													options: {
 																														precision:4,
-																														required: true
+																														required: true,
+																														validType: 'greaterthanzero',
 																													}
 																												}" >weightGross</th>
 				        <th field="weightNet" width="100" wms:text="${web.label.weightnet}" data-options="sortable:true,editor:{
 																													type: 'numberbox',
 																													options: {
 																														precision:4,
-																														required: true
+																														required: true,
+																														validType: 'greaterthanzero',
 																													}
 																												}" >weightNet</th>
 					    <th field="weightTare" width="100" wms:text="${web.label.weighttare}" data-options="sortable:true,editor:{
 																													type: 'numberbox',
 																													options: {
 																														precision:4,
-																														required: true
+																														required: true,
+																														validType: 'greaterthanzero',
 																													}
 																												}" >weightTare</th>
 						<th field="lotValidateCode" width="100" wms:text="${web.label.lotvalidate}" wms:data-options="
@@ -210,6 +234,7 @@
 							editor:{
 								type:'combogrid',
 								options:{
+									required: true,
 									idField:'lotValidateCode',
 	    							textField:'lotValidateCode',
 									url:'../../services/inner/base/lotValidate/find',
@@ -227,6 +252,7 @@
 							editor:{
 								type:'combogrid',
 								options:{
+									required: true,
 									idField:'allocateStrategyCode',
 	    							textField:'allocateStrategyCode',
 									url:'../../services/inner/base/allocateStrategy/find',
@@ -244,6 +270,7 @@
 							editor:{
 								type:'combogrid',
 								options:{
+									required: true,
 									idField:'putawayStrategyCode',
 	    							textField:'putawayStrategyCode',
 									url:'../../services/inner/base/putawayStrategy/find',
@@ -261,6 +288,7 @@
 							editor:{
 								type:'combogrid',
 								options:{
+									required: true,
 									idField:'zoneCode',
 	    							textField:'zoneCode',
 									url:'../../services/inner/base/zone/find',
@@ -343,7 +371,7 @@
 								<input type="hidden" name="ownerId" id="ownerId" />
 							</td>
 							<td width="200">
-								<input id="skuCode" name="skuCode" class="easyui-textbox"  wms:data-options="required:true,label:'${web.label.sku}',labelPosition:'top'">
+								<input id="skuCode" name="skuCode" class="easyui-textbox"  wms:data-options="required:true,label:'${web.label.sku}',labelPosition:'top',validType:'characterNumber'">
 							</td>
 							<td width="200">
 								<input name="skuAlias" class="easyui-textbox"  wms:data-options="label:'${web.label.skualias}',labelPosition:'top'">
@@ -363,11 +391,16 @@
 									data: codelkups['SKUTYPE'],
 									valueField: 'code',
 									textField: 'descr',
-									label: '${web.label.sku}',
+									label: '${web.label.type}',
 									labelPosition: 'top'" />
 							</td>
 							<td >
-								<input id="volume" name="volume" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:4,label:'${web.label.volume}',labelPosition:'top'">
+								<input id="volume" name="volume" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
+									required:true,
+									precision:4,
+									label:'${web.label.volume}',
+									labelPosition:'top',
+									validType:['greaterthanzero']">
 							</td>
 						 </tr>
 						 <tr>
@@ -381,8 +414,9 @@
 								precision:4,
 								label:'${web.label.length}',
 								labelPosition:'top',
+								validType:['greaterthanzero'],
 								onChange(newValue, oldValue){
-									calculate(newValue);
+									calculateVolume(newValue);
 								}
 								">
 							</td>
@@ -392,8 +426,9 @@
 								precision:4,
 								label:'${web.label.width}',
 								labelPosition:'top',
+								validType:['greaterthanzero'],
 								onChange(newValue, oldValue){
-									calculate(newValue);
+									calculateVolume(newValue);
 								}
 								">
 							</td>
@@ -403,8 +438,9 @@
 								precision:4,
 								label:'${web.label.height}',
 								labelPosition:'top',
+								validType:['greaterthanzero'],
 								onChange(newValue, oldValue){
-									calculate(newValue);
+									calculateVolume(newValue);
 								}
 								">
 							</td>
@@ -422,13 +458,34 @@
 									" />
 							</td>
 							<td >
-								<input name="weightGross" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:4,label:'${web.label.weightgross}',labelPosition:'top'">
+								<input id="weightGross" name="weightGross" class="lazy-load" lazy-load="easyui-numberbox" value="0" wms:data-options="
+									required:true,
+									precision:4,
+									label:'${web.label.weightgross}',
+									labelPosition:'top',
+									validType:['greaterthanzero'],
+									onChange: function(newValue, oldValue){
+										calculateTareWeight();
+									}">
 							</td>
 							<td >
-								<input name="weightNet" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="required:true,precision:4,label:'${web.label.weightnet}',labelPosition:'top'">
+								<input id="weightNet" name="weightNet" class="lazy-load" lazy-load="easyui-numberbox" value="0" wms:data-options="
+									required:true,
+									precision:4,
+									label:'${web.label.weightnet}',
+									labelPosition:'top',
+									validType:['greaterthanzero'],
+									onChange: function(newValue, oldValue){
+										calculateTareWeight();
+									}">
 							</td>
 							<td >
-								<input name="weightTare" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="required:true,precision:4,label:'${web.label.weighttare}',labelPosition:'top'">
+								<input id="weightTare" name="weightTare" class="lazy-load" lazy-load="easyui-numberbox" value="0" wms:data-options="
+									required:true,
+									precision:4,
+									label:'${web.label.weighttare}',
+									labelPosition:'top',
+									validType:'greaterthanzero'" />	
 							</td>
 						 </tr>
 						 <tr>
@@ -554,10 +611,12 @@
 <script th:replace="common/js" />
 <script type="text/javascript" th:src="@{/js/codelkupList?listName=YESNO,SKUTYPE,UOM,ZONETYPE}"></script>
 <script type="text/javascript" th:inline="text">
+	//记录上一个编辑列
+	var perChanges;
+	
     $(function(){
     	$('#skuCode').textbox({
     		onChange: function(newValue, oldValue){
-    			console.log(newValue);
     			var value = $('#barcode').textbox('getValue');
     			if (value == ''){
     				$('#barcode').textbox('setValue', newValue);
@@ -569,7 +628,7 @@
     /**
 	 * 根据长、宽、高自动计算体积
 	 **/
-	function calculate() {
+	function calculateVolume() {
 		//var volume = $('#volume').numberbox('getValue');
 		//if (Number(volume) != 0){
 		//	return;
@@ -577,7 +636,34 @@
 		var length = $('#length').numberbox('getValue');
 		var width = $('#width').numberbox('getValue');
 		var height = $('#height').numberbox('getValue');
-		$('#volume').numberbox('setValue',Number(length) * Number(width) * Number(height));
+		var volume = Number(length) * Number(width) * Number(height);
+		if (Number(length) < 0 || Number(width) < 0 || Number(height) < 0 || Number(volume) < 0) {
+			showError($.locale.lessThenZero);
+			return false;
+		}
+		if (Number(weightGross) < Number(weightNet)) {
+			showError($.locale.weightGrossMorethenNet);
+			return false;
+		}
+		$('#volume').numberbox('setValue', volume);
+	}
+	/**
+	 * 根据毛重、净重 自动计算皮重
+	 **/
+	function calculateTareWeight() {
+		var weightGross = $('#weightGross').numberbox('getValue');
+		var weightNet = $('#weightNet').numberbox('getValue');
+		var tareWeight = Number(weightGross) - Number(weightNet);
+		if (Number(weightGross) < 0 || Number(weightNet) < 0 || Number(tareWeight) < 0) {
+			showError($.locale.lessThenZero);
+			return false;
+		}
+		if (Number(weightGross) < Number(weightNet)) {
+			showError($.locale.weightGrossMorethenNet);
+			return false;
+		}
+		$('#weightTare').numberbox('setValue',tareWeight);
+		return true;
 	}
 </script>
 </html>

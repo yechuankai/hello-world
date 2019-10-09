@@ -23,7 +23,7 @@ public class MenuUtils {
 	
 	private static final String TOP_MENU = "<a href=\"javascript:void(0);\" class=\"easyui-menubutton\" data-url=\"%s\" data-options=\"menu:'#%s'\">%s</a>";
 	
-	private static final String CHILD_MENU = "<div id=\"%s\" data-url=\"%s\">%s</div>";
+	private static final String CHILD_MENU = "<div id=\"%s\" name=\"%s\" data-url=\"%s\">%s</div>";
 	
 	private static final String CHILDS_MENU = "<div id=\"%s\"><span>%s</span><div>%s</div></div>";
 	
@@ -81,7 +81,7 @@ public class MenuUtils {
 		StringBuilder childMenuHtml = new StringBuilder();
 		for (SysPermissionTEntity per : topMenus) {
 			String childMenu = processChildMenu(treeMenus, per);
-			String menuHtml = String.format(CHILD_MENU, per.getPermissionId(), per.getUrl(), childMenu);
+			String menuHtml = String.format(CHILD_MENU, per.getPermissionId(), per.getPerms(), per.getUrl(), childMenu);
 			childMenuHtml.append(menuHtml);
 		}
 		allMenuHtml.append(childMenuHtml);
@@ -103,7 +103,7 @@ public class MenuUtils {
 				String menus = processChildMenu(treeMap, per);
 				menuHtml = String.format(CHILDS_MENU, per.getPermissionId(), per.getPermissionName(), menus);
 			}else {
-				menuHtml = String.format(CHILD_MENU, per.getPermissionId(), per.getUrl(), per.getPermissionName());
+				menuHtml = String.format(CHILD_MENU, per.getPermissionId(), per.getPerms(), per.getUrl(), per.getPermissionName());
 			}
 			childMenuHtml.append(menuHtml);
 		}

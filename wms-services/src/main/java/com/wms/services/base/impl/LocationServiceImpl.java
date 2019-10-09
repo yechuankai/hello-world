@@ -1,5 +1,6 @@
 package com.wms.services.base.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.wms.common.core.domain.ExcelTemplate;
@@ -120,6 +121,33 @@ public class LocationServiceImpl implements ILocationService, IExcelService<Loca
         locationTExampleCriteria.andDelFlagEqualTo(YesNoEnum.No.getCode());
         return locationDao.selectByExample(locationTExample);
     }
+    
+    @Override
+    public List<LocationTEntity> findlocationAvailable(PageRequest request, AreaTEntity area) throws BusinessServiceException {
+        List<AreaDetailTEntity> existsList = areaDetailService.findByArea(area);
+
+        LocationTExample locationTExample = new LocationTExample();
+        LocationTExample.Criteria createCriteria = locationTExample.createCriteria();
+        
+        //转换查询方法
+        ExampleUtils.create(LocationTEntity.Column.class, LocationTExample.Criterion.class)
+                .criteria(createCriteria)
+                .data(request)
+                .build(request)
+                .orderby(locationTExample);
+        createCriteria.andDelFlagEqualTo(YesNoEnum.No.getCode());
+
+        if (CollectionUtils.isNotEmpty(existsList)) {
+            Set<Long> ids = Sets.newHashSet();
+            existsList.forEach(w -> {
+                ids.add(w.getLocationId());
+            });
+            createCriteria.andLocationIdNotIn(Lists.newArrayList(ids));
+        }
+        PageHelper.startPage(request.getPageStart(), request.getPageSize());
+        List<LocationTEntity> locations = locationDao.selectByExample(locationTExample);
+        return locations;
+    }
 
     @Override
     public List<LocationTEntity> findByLocationCodes(LocationTEntity location, Set<String> codes)
@@ -160,27 +188,6 @@ public class LocationServiceImpl implements ILocationService, IExcelService<Loca
         List<LocationTEntity> list = locationDao.selectByExample(example);
 
         return list;
-    }
-
-    @Override
-    public List<LocationTEntity> findlocationAvailable(AreaTEntity area) throws BusinessServiceException {
-        List<AreaDetailTEntity> existsList = areaDetailService.findByArea(area);
-
-        LocationTExample locationTExample = new LocationTExample();
-        LocationTExample.Criteria createCriteria = locationTExample.createCriteria();
-        createCriteria.andDelFlagEqualTo(YesNoEnum.No.getCode())
-                .andCompanyIdEqualTo(area.getCompanyId())
-                .andWarehouseIdEqualTo(area.getWarehouseId());
-
-        if (CollectionUtils.isNotEmpty(existsList)) {
-            Set<Long> ids = Sets.newHashSet();
-            existsList.forEach(w -> {
-                ids.add(w.getLocationId());
-            });
-            createCriteria.andLocationIdNotIn(Lists.newArrayList(ids));
-        }
-        List<LocationTEntity> locations = locationDao.selectByExample(locationTExample);
-        return locations;
     }
 
     @Override
