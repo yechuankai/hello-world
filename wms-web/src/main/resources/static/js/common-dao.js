@@ -21,13 +21,22 @@ $.extend($.fn.validatebox.defaults.rules, {
     },
     characterNumber: {
 		validator: function(value){
-			return /^[A-Za-z0-9]+$/i.test(value)
+			return /^[A-Za-z0-9\-]+$/i.test(value)
 		},
 		message: $.locale.characterornumber
     }
 });
 $.extend($.fn.combogrid.defaults, {
-	
+	striped: true,
+	panelWidth: 400,
+	delay: 100,
+	mode: 'remote',
+	method: 'post',
+	fix:true,
+	rownumbers: true,
+	pagination: true,
+	pageSize: 15,
+	pageList: [15,50,100,500,1000]
 });
 $.extend($.fn.layout.defaults, {
 	onCollapse: function(){

@@ -466,6 +466,7 @@ $(function(){
 	});
 });
 
+var loadFlag = false;
 function toEdit(data) {
 	addFlag = false;
     if (typeof(data) == 'object') {
@@ -481,9 +482,11 @@ function toEdit(data) {
         fix: true,
         buttons: '#editButton',
     }).dialog('open');
+    loadFlag = true;
     $(panel).find('form').form('reset');
     var from = $(panel).find('form');
     $(from).form('load', editData);
+    loadFlag = false;
 }
 
 function save(){
@@ -522,11 +525,14 @@ function calculateVolume(type) {
 	//if (Number(volume) != 0){
 	//	return;
 	//}
+	if (loadFlag){
+		return
+	}
 	var length = $('#length' + type).numberbox('getValue');
 	var width = $('#width' + type).numberbox('getValue');
 	var height = $('#height' + type).numberbox('getValue');
 	var volume = Number(length) * Number(width) * Number(height);
-	if (Number(length) < 0 || Number(width) < 0 || Number(height) < 0 || Number(volume) < 0) {
+	if (Number(length) < 0 || Number(width) < 0 || Number(height) < 0) {
 		showError($.locale.lessThenZero);
 		return false;
 	}
@@ -537,11 +543,12 @@ function calculateVolume(type) {
  * 根据毛重、净重 自动计算皮重
  **/
 function calculateTareWeight(type) {
-	debugger;
+	if (loadFlag){
+		return
+	}
 	var weightGross = $('#weightGross' + type).numberbox('getValue');
 	var weightNet = $('#weightNet' + type).numberbox('getValue');
-	var tareWeight = Number(weightGross) - Number(weightNet);
-	if (Number(weightGross) < 0 || Number(weightNet) < 0 || Number(tareWeight) < 0) {
+	if (Number(weightGross) < 0 || Number(weightNet) < 0) {
 		showError($.locale.lessThenZero);
 		return false;
 	}
@@ -549,6 +556,7 @@ function calculateTareWeight(type) {
 		showError($.locale.weightGrossMorethenNet);
 		return false;
 	}
+	var tareWeight = Number(weightGross) - Number(weightNet);
 	$('#weightTare' + type).numberbox('setValue',tareWeight);
 	return true;
 }

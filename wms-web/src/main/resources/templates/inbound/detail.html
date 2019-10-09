@@ -586,7 +586,8 @@
 		$(from).form('load', copyData);
 		$('.tooltip').remove();
 	}
-
+	
+	var loadFlag = false;
 	function toEditDetail(data) {
 		if (typeof(data) == 'object') {
 			detailEditData = data;
@@ -600,7 +601,6 @@
 		}
 		$('#detailAddButton').hide();
 		$('#detailEditButton').show();
-		debugger;
 		var panel = '#addDetailDiv';
 		$(panel).dialog({
 			closed: true,
@@ -609,12 +609,14 @@
 			buttons: '#detailEditButton'
 		}).dialog('open');
 		lazyLoadView('#inboundDetailForm');
+		loadFlag = true;
 		$(panel).find('form').form('reset');
 		var from = '#inboundDetailForm';
 		//设定可编辑框
 		detailEditable(detailEditData.status);
 		loadPutawayStrategyLov();
 		$(from).form('load', detailEditData);
+		loadFlag = false;
 		$('.tooltip').remove();
 	}
 	/**
@@ -680,10 +682,12 @@
 	 * 根据预期量计算毛重、净重、皮重、体积
 	 **/
 	function calculateTareWeight() {
+		if (loadFlag){
+			return;
+		}
 		var weightGross = $('#weightGross').numberbox('getValue');
 		var weightNet = $('#weightNet').numberbox('getValue');
-		var tareWeight = Number(weightGross) - Number(weightNet);
-		if (Number(weightGross) < 0 || Number(weightNet) < 0 || Number(tareWeight) < 0) {
+		if (Number(weightGross) < 0 || Number(weightNet) < 0 ) {
 			showError($.locale.lessThenZero);
 			return false;
 		}
@@ -691,6 +695,7 @@
 			showError($.locale.weightGrossMorethenNet);
 			return false;
 		}
+		var tareWeight = Number(weightGross) - Number(weightNet);
 		$('#weightTare').numberbox('setValue',tareWeight);
 		return true;
 	}
