@@ -38,24 +38,22 @@ public class SkuServiceImpl implements ISkuService, IExcelService<SkuVO> {
 
 	@Autowired
 	private ISkuTDao skuDao;
-	
 	@Autowired
 	private IInventoryService inventoryService;
-	
 	@Autowired
     private IPutawayStrategyHeaderService putawayStrategyHeaderService;
-
     @Autowired
     private IAllocateStrategyHeaderService allocateStrategyHeaderService;
-    
     @Autowired
     private IOwnerService ownerService;
-    
     @Autowired
     private IPackService packService;
-    
     @Autowired
     private ILotValidateService lotValidateService;
+    @Autowired
+    private ILocationService locationService;
+    @Autowired
+    private IZoneService zoneService;
     
 	
 	@Override
@@ -420,6 +418,26 @@ public class SkuServiceImpl implements ISkuService, IExcelService<SkuVO> {
                 .build());
 		sku.setLotValidateId(lotv.getLotValidateId());
 		sku.setLotValidateCode(lotv.getLotValidateCode());
+		
+		//验证库位
+		if (StringUtils.isNotEmpty(sku.getPutawayLocationCode())) {
+			LocationTEntity loc = locationService.find(LocationTEntity.builder()
+					.warehouseId(sku.getWarehouseId())
+	                .companyId(sku.getCompanyId())
+	                .locationCode(sku.getPutawayLocationCode())
+	                .build());
+			sku.setPutawayLocationCode(loc.getLocationCode());
+			sku.setPutawayZoneCode(loc.getZoneCode());
+		}else {
+			if (StringUtils.isNotEmpty(sku.getPutawayZoneCode())) {
+				ZoneTEntity zone = zoneService.find(ZoneTEntity.builder()
+					.warehouseId(sku.getWarehouseId())
+	                .companyId(sku.getCompanyId())
+	                .zoneCode(sku.getPutawayZoneCode())
+	                .build());
+				sku.setPutawayZoneCode(zone.getZoneCode());
+			}
+		}
 		
 		//验证毛重/净重
 		if (sku.getWeightGross().compareTo(sku.getWeightNet()) < 0) 

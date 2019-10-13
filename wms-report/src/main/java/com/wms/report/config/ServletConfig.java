@@ -27,7 +27,7 @@ public class ServletConfig {
 	//jasper 图片
 	@Bean
     public ServletRegistrationBean jasperImages() {
-        return new ServletRegistrationBean(new net.sf.jasperreports.j2ee.servlets.ImageServlet(), "/static/images/*");
+        return new ServletRegistrationBean(new net.sf.jasperreports.j2ee.servlets.ImageServlet(), "/jasper/images/*");
     }
 	
 }

@@ -91,19 +91,31 @@
 		<div>
 			<table id="skuData" wms:title="${web.label.skulist.title}" class="easyui-datagrid"
 							th:data-delayUrl="@{/services/inner/base/sku/find}" data-options="
-							onEndEdit: function(rowIndex, rowData, changes){
-								if (changes['length'] || changes['width'] || changes['height']){
-									var length = changes['length'] ? changes['length'] : rowData.length;
-									var width = changes['width'] ? changes['width'] : rowData.width;
-									var height = changes['height'] ? changes['height'] : rowData.height;
-									rowData.volume = Number(length) * Number(width) * Number(height);
+								onBeforeEdit: function(rowIndex, rowData){
+									var putawayLocatoinCode = $('#skuData').datagrid('getColumnOption','putawayLocationCode');
+									if (putawayLocatoinCode.editor != undefined){
+										putawayLocatoinCode.editor.options.onBeforeLoad = function(param){
+											$.extend(param, {zoneCode: rowData.putawayZoneCode})
+										},
+										putawayLocatoinCode.editor.options.onClickRow = function(i, row){
+											rowData.putawayZoneCode = row.zoneCode
+										}
+										console.log(putawayLocatoinCode);
+									}
+								},
+								onEndEdit: function(rowIndex, rowData, changes){
+									if (changes['length'] || changes['width'] || changes['height']){
+										var length = changes['length'] ? changes['length'] : rowData.length;
+										var width = changes['width'] ? changes['width'] : rowData.width;
+										var height = changes['height'] ? changes['height'] : rowData.height;
+										rowData.volume = Number(length) * Number(width) * Number(height);
+									}
+									if (changes['weightGross'] || changes['weightNet']){
+										var weightGross = changes['weightGross'] ? changes['weightGross'] : rowData.weightGross;
+										var weightNet = changes['weightNet'] ? changes['weightNet'] : rowData.weightNet;
+										rowData.weightTare = Number(weightGross) - Number(weightNet);
+									}
 								}
-								if (changes['weightGross'] || changes['weightNet']){
-									var weightGross = changes['weightGross'] ? changes['weightGross'] : rowData.weightGross;
-									var weightNet = changes['weightNet'] ? changes['weightNet'] : rowData.weightNet;
-									rowData.weightTare = Number(weightGross) - Number(weightNet);
-								}
-							}
 							">
 				<thead data-options="frozen:true">
 	            	<tr>
@@ -288,7 +300,6 @@
 							editor:{
 								type:'combogrid',
 								options:{
-									required: true,
 									idField:'zoneCode',
 	    							textField:'zoneCode',
 									url:'../../services/inner/base/zone/find',
@@ -312,7 +323,11 @@
 									queryParams: getBaseData(),
 								    columns:[[
 									    {field:'locationId',hidden:true},
-								        {field:'locationCode',title:'${web.label.code}',width:150}
+								        {field:'locationCode',title:'${web.label.code}',width:150},
+								        {field:'zoneCode',title:'${web.label.zone}',width:100},
+								    	{field:'locationType',title:'${web.label.type}',width:100,formatter:function(value,row){
+											return getCodelkupValue('LOCATIONTYPE',value);
+										}}
 								    ]]
 								}
 							}
@@ -532,8 +547,23 @@
 									<input type="hidden" name="putawayStrategyId" id="putawayStrategyId" />
 								</td>
 								<td width="200">
-									<input name="zonecode" th:replace="lov/zone" />
-									<input type="hidden" name="zoneId" id="zoneId" />
+									<input id="putawayZoneCode" name="putawayZoneCode" class="lazy-load" lazy-load="easyui-combogrid" wms:data-options="
+										label: '${web.label.zone}',
+										labelPosition: 'top',
+										idField:'zoneCode',
+		    							textField:'zoneCode',
+										url:'../../services/inner/base/zone/find',
+									    queryParams: getBaseData(),
+									    columns:[[
+										    {field:'zoneId',hidden:true},
+										    {field:'zoneCode',title:'${web.label.zone}',width:100},
+										    {field:'pickToLocation',title:'${web.label.pickToLocation}',width:100},
+										    {field:'type',title:'${web.label.type}',width:80,formatter:function(value,row){
+													return getCodelkupValue('ZONETYPE',value);
+												}
+											}
+									    ]]
+									" />
 								</td>
 								<td>
 									<input name="putawayLocationCode" class="easyui-combogrid" wms:data-options="
@@ -543,6 +573,12 @@
 		    							textField:'locationCode',
 										url:'../../services/inner/base/location/find',
 										queryParams: getBaseData(),
+										onClickRow: function(rowIndex, rowData){
+											$('#putawayZoneCode').combogrid('setValue', rowData.zoneCode)
+										},
+										onBeforeLoad: function(param){
+											$.extend(param, {zoneCode: $('#putawayZoneCode').combobox('getText')})
+										},
 									    columns:[[
 										    {field:'locationId',hidden:true},
 										    {field:'locationCode',title:'${web.label.code}',width:150},
