@@ -289,6 +289,9 @@ public class SysWarehouseServiceImpl implements ISysWarehouseService {
 		//初始化分配策略 STD
 		AsyncManager.me().execute(AsyncInit.allocateStrategy(warehouse.getCompanyId(), warehouse.getWarehouseId()));
 		
+		//初始化参数
+		AsyncManager.me().execute(AsyncInit.config(warehouse.getCompanyId(), warehouse.getWarehouseId()));
+		
 		return Boolean.TRUE;
 	}
 

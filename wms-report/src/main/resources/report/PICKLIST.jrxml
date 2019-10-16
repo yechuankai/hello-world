@@ -193,7 +193,7 @@ ORDER BY LOCATION_CODE ASC]]>
 					<textFieldExpression><![CDATA[$F{OWNER_CODE}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="440" y="70" width="80" height="20" uuid="e5344035-4e19-49ba-8dec-8eccb7d8b741">
+					<reportElement x="440" y="70" width="140" height="20" uuid="e5344035-4e19-49ba-8dec-8eccb7d8b741">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -342,7 +342,7 @@ ORDER BY LOCATION_CODE ASC]]>
 					<textFieldExpression><![CDATA[$P{web.label.expectedoutbounddate} + ":"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="440" y="90" width="80" height="30" uuid="7511eeb5-e86c-49cd-8369-b9640c90fdca">
+					<reportElement x="440" y="90" width="140" height="30" uuid="7511eeb5-e86c-49cd-8369-b9640c90fdca">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>

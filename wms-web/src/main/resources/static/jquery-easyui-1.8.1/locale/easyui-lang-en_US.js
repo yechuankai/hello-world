@@ -112,6 +112,7 @@ var locale = {
 	weightGrossMorethenNet: 'gross is greater than net weight',
 	lessThenZero: 'Value cannot be less than 0',
 	characterornumber: 'Only Character or Number',
+	locationprintall: 'Print All Location?'
 }
 if ($.locale){
 	$.extend($.locale,locale);

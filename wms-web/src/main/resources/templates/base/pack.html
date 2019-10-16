@@ -508,7 +508,9 @@ function save(){
 				showError(data.msg);
 				return;
 			}
+			loadFlag = true;
 			$('#addForm').form('reset');
+			loadFlag = false;
 			$('#addForm').parents('.window-body').dialog('close');
 			if ($('.common-search').length > 0){
 				$('.common-search').trigger('click');

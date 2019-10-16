@@ -9,8 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
+import com.wms.common.constants.ConfigConstants;
 import com.wms.common.constants.DefaultConstants;
 import com.wms.common.core.domain.request.AjaxRequest;
+import com.wms.common.enums.ConfigTypeEnum;
 import com.wms.common.enums.OrderNumberTypeEnum;
 import com.wms.common.enums.allocate.AllocateStrategyTypeEnum;
 import com.wms.common.enums.allocate.AllocateTypeEnum;
@@ -32,9 +34,11 @@ import com.wms.entity.auto.LotValidateTEntity;
 import com.wms.entity.auto.PackTEntity;
 import com.wms.entity.auto.PutawayStrategyDetailTEntity;
 import com.wms.entity.auto.PutawayStrategyTEntity;
+import com.wms.entity.auto.SysConfigTEntity;
 import com.wms.entity.auto.SysOrderNumberTEntity;
 import com.wms.entity.auto.ZoneTEntity;
 import com.wms.services.base.ILocationService;
+import com.wms.services.sys.ISysConfigService;
 
 /**
  * 异步工厂（产生任务用）
@@ -86,9 +90,10 @@ public class AsyncInit {
 				zoneDao.insertSelective(shipZone);
 				
 				LocationTEntity stageLoc = LocationTEntity.builder()
-						.warehouseId(warehouseId).
-						companyId(companyId)
+						.warehouseId(warehouseId)
+						.companyId(companyId)
 						.locationCode("STAGE")
+						.locationLogical("ZZZZZZZZZZ")
 						.locationType("0")
 						.zoneCode("REC")
 						.updateBy(DefaultConstants.SYSTEM_USER)
@@ -98,9 +103,10 @@ public class AsyncInit {
 						.build();
 				
 				LocationTEntity unknownLoc = LocationTEntity.builder()
-						.warehouseId(warehouseId).
-						companyId(companyId)
+						.warehouseId(warehouseId)
+						.companyId(companyId)
 						.locationCode("UNKNOWN")
+						.locationLogical("ZZZZZZZZZZ")
 						.locationType("0")
 						.zoneCode("REC")
 						.updateBy(DefaultConstants.SYSTEM_USER)
@@ -111,9 +117,10 @@ public class AsyncInit {
 				
 				
 				LocationTEntity picktoLoc = LocationTEntity.builder()
-						.warehouseId(warehouseId).
-						companyId(companyId)
+						.warehouseId(warehouseId)
+						.companyId(companyId)
 						.locationCode("PICKTO")
+						.locationLogical("ZZZZZZZZZZ")
 						.locationType("0")
 						.zoneCode("SHIP")
 						.updateBy(DefaultConstants.SYSTEM_USER)
@@ -303,6 +310,49 @@ public class AsyncInit {
 				
 				IAllocateStrategyDetailTDao detailDao = SpringUtils.getBean(IAllocateStrategyDetailTDao.class);
 				detailDao.insertSelective(detail);
+			}
+		};
+	}
+	
+	/**
+	 * 初始配置
+	 */
+	public static TimerTask config(Long companyId, Long warehouseId) {
+		return new TimerTask() {
+			@Override
+			public void run() {
+				
+				SysConfigTEntity config_allocate = SysConfigTEntity.builder()
+						.warehouseId(warehouseId).
+						companyId(companyId)
+						.configCode(ConfigConstants.CONFIG_ALLOCATE_MONITOR)
+						.configType(ConfigTypeEnum.OnOff.getCode())
+						.configDescr("Switch On-Off")
+						.build();
+				
+				
+				SysConfigTEntity receive_exceed = SysConfigTEntity.builder()
+						.warehouseId(warehouseId).
+						companyId(companyId)
+						.configCode(ConfigConstants.CONFIG_INBOUND_RECEIVE_EXCEED)
+						.configType(ConfigTypeEnum.OnOff.getCode())
+						.configDescr("Inbound Receive Can exceed the receipt")
+						.build();
+				
+				SysConfigTEntity recieve_nosku = SysConfigTEntity.builder()
+						.warehouseId(warehouseId).
+						companyId(companyId)
+						.configCode(ConfigConstants.CONFIG_RF_INBOUND_RECEIVE_NO_SKU)
+						.configType(ConfigTypeEnum.OnOff.getCode())
+						.configDescr("SKU not exists In zhe Inbound Order can be rf receive")
+						.build();
+				
+				ISysConfigService configService = SpringUtils.getBean(ISysConfigService.class);
+				AjaxRequest<List<SysConfigTEntity>> request = new AjaxRequest<List<SysConfigTEntity>>(Lists.newArrayList(config_allocate, receive_exceed, recieve_nosku));
+				request.setWarehouseId(warehouseId);
+				request.setCompanyId(companyId);
+				request.setUserName(DefaultConstants.SYSTEM_USER);
+				configService.add(request);
 			}
 		};
 	}

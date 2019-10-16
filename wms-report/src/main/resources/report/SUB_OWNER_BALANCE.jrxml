@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SUB_OWNER_BALANCE" pageWidth="490" pageHeight="400" columnWidth="490" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4f5da969-2156-4184-8f90-e26067a5458f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DIFTZER_100"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<parameter name="companyId" class="java.lang.String"/>
+	<parameter name="web.label.owner.summary" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select onhand.owner_code ownerCode, sum(onhand.quantity_onhand) onhand
+  from inventory_onhand_t onhand
+ where onhand.del_flag = 'N' and onhand.quantity_onhand > 0
+  and (company_id = $P{companyId} or nvl($P{companyId},0) = 0)
+ group by onhand.owner_code]]>
+	</queryString>
+	<field name="OWNERCODE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="OWNERCODE"/>
+	</field>
+	<field name="ONHAND" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ONHAND"/>
+	</field>
+	<columnHeader>
+		<band height="260" splitType="Stretch">
+			<pieChart>
+				<chart isShowLegend="false" evaluationTime="Report">
+					<reportElement x="0" y="0" width="490" height="260" uuid="b6494465-70c5-462a-8147-5f42c6d971fc"/>
+					<chartTitle>
+						<titleExpression><![CDATA[$P{web.label.owner.summary}]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<keyExpression><![CDATA[$F{OWNERCODE}]]></keyExpression>
+					<valueExpression><![CDATA[$F{ONHAND}]]></valueExpression>
+				</pieDataset>
+				<piePlot labelFormat="{0} ({2})" legendLabelFormat="">
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+		</band>
+	</columnHeader>
+</jasperReport>

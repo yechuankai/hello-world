@@ -784,6 +784,13 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 		if (ConfigUtils.getBooleanValue(newDetail.getCompanyId(), newDetail.getWarehouseId(),  ConfigConstants.CONFIG_INBOUND_RECEIVE_EXCEED))
 			return Boolean.TRUE;
 		
+		if (newDetail instanceof InboundDetailVO) {
+			//允许不存在的SKU进行收货
+			if (YesNoEnum.Yes.getCode().equals(((InboundDetailVO)newDetail).getNoSku())
+					&& ConfigUtils.getBooleanValue(newDetail.getCompanyId(), newDetail.getWarehouseId(),  ConfigConstants.CONFIG_RF_INBOUND_RECEIVE_NO_SKU)) {
+				return Boolean.TRUE;
+			}
+		}
 		BigDecimal quantityExpected = null;
 		
 		if (newDetail.getQuantityExpected() != null) 
@@ -977,7 +984,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 	@Transactional
 	public Boolean receive(AjaxRequest<List<InboundDetailVO>> request) throws BusinessServiceException {
 		List<InboundDetailVO> list = request.getData();
-		if (CollectionUtils.isEmpty(list))
+		if (CollectionUtils.isEmpty(list)) 
 			throw new BusinessServiceException("no data.");
 		
 		list.forEach(detail -> {
@@ -991,46 +998,62 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 			detail.setUpdateBy(request.getUserName());
 	
 			//判断数据相关栏位数据是否一致（包装、单位、库位、LPN、容器、批属性），不一致则需要新建收货行进行收货
-			InboundDetailTEntity selectDetail = find(detail);
+			InboundDetailTEntity selectDetail = null;
+			try {
+				if (!YesNoEnum.Yes.getCode().equals(detail.getNoSku()))
+					selectDetail = find(detail);
+			} catch (BusinessServiceException e) {}
+			if (selectDetail == null 
+					&& !ConfigUtils.getBooleanValue(request.getCompanyId(), request.getWarehouseId(), ConfigConstants.CONFIG_RF_INBOUND_RECEIVE_NO_SKU))
+				throw new BusinessServiceException("InboundDetailServiceImpl", "inbound.line.isnull" , null);
 	
 			boolean sameFlag = true;
-			//无包装时按原行包装进行收货
-			if (StringUtils.isEmpty(detail.getPackCode()))
-				detail.setPackCode(selectDetail.getPackCode());
-	
-			//无单位时按最小单位进行收货
-			if (StringUtils.isEmpty(detail.getUom())) {
-				PackTEntity pack = packService.find(PackTEntity.builder()
-														.warehouseId(request.getWarehouseId())
-														.companyId(request.getCompanyId())
-														.packCode(detail.getPackCode()).build());
-				detail.setUom(pack.getUom());
-				detail.setUomQuantity(pack.getQty());
+			if (selectDetail != null) {
+				//无包装时按原行包装进行收货
+				if (StringUtils.isEmpty(detail.getPackCode()))
+					detail.setPackCode(selectDetail.getPackCode());
+		
+				//无单位时按最小单位进行收货
+				if (StringUtils.isEmpty(detail.getUom())) {
+					PackTEntity pack = packService.find(PackTEntity.builder()
+															.warehouseId(request.getWarehouseId())
+															.companyId(request.getCompanyId())
+															.packCode(detail.getPackCode()).build());
+					detail.setUom(pack.getUom());
+					detail.setUomQuantity(pack.getQty());
+				}
+		
+				if (!selectDetail.getPackCode().equals(detail.getPackCode())) //包装
+					sameFlag = false;
+				else if  (!selectDetail.getUom().equals(detail.getUom())) //单位
+					sameFlag = false;
+				else if  (!selectDetail.getLocationCode().equals(detail.getLocationCode())) //库位
+					sameFlag = false;
+				else if  ((selectDetail.getLpnNumber() == null && StringUtils.isNotEmpty(detail.getLpnNumber()))
+							|| (selectDetail.getLpnNumber() != null && !selectDetail.getLpnNumber().equals(detail.getLpnNumber())) )  //LPN
+					sameFlag = false;
+				else if  ((selectDetail.getContainerNumber() == null && StringUtils.isNotEmpty(detail.getContainerNumber()))
+						|| (selectDetail.getContainerNumber() != null && !selectDetail.getContainerNumber().equals(detail.getContainerNumber())) )  //容器
+					sameFlag = false;
+				else if  (!lotService.validateLotAttribute(detail, selectDetail))
+					sameFlag = false;
+			}else {
+				sameFlag = false;
 			}
-	
-			if (!selectDetail.getPackCode().equals(detail.getPackCode())) //包装
-				sameFlag = false;
-			else if  (!selectDetail.getUom().equals(detail.getUom())) //单位
-				sameFlag = false;
-			else if  (!selectDetail.getLocationCode().equals(detail.getLocationCode())) //库位
-				sameFlag = false;
-			else if  ((selectDetail.getLpnNumber() == null && StringUtils.isNotEmpty(detail.getLpnNumber()))
-						|| (selectDetail.getLpnNumber() != null && !selectDetail.getLpnNumber().equals(detail.getLpnNumber())) )  //LPN
-				sameFlag = false;
-			else if  ((selectDetail.getContainerNumber() == null && StringUtils.isNotEmpty(detail.getContainerNumber()))
-					|| (selectDetail.getContainerNumber() != null && !selectDetail.getContainerNumber().equals(detail.getContainerNumber())) )  //容器
-				sameFlag = false;
-			else if  (!lotService.validateLotAttribute(detail, selectDetail))
-				sameFlag = false;
 	
 			//所有信息都一致的情况下，直接按原行进行接收
 			if (sameFlag) {
 				receive(Lists.newArrayList(detail));
 			}else {
+				List<InboundDetailTEntity> selectDetailList = findByHeaderId(detail);
+				long maxLineNumber = DefaultConstants.LINE_INCREMENT;
 				//获取最大行号
-				List<InboundDetailTEntity> selectDetailList = findByHeaderId(selectDetail);
-				long maxLineNumber = selectDetailList.stream().mapToLong(InboundDetailTEntity::getLineNumber).max().getAsLong();
-				maxLineNumber = maxLineNumber + DefaultConstants.LINE_INCREMENT;
+				if (CollectionUtils.isNotEmpty(selectDetailList)) {
+					maxLineNumber = selectDetailList.stream().mapToLong(InboundDetailTEntity::getLineNumber).max().getAsLong();
+					maxLineNumber = maxLineNumber + DefaultConstants.LINE_INCREMENT;
+				}else {
+					selectDetailList = Lists.newArrayList();
+				}
 				//新增收货行
 				detail.setParentLineNumber(detail.getLineNumber());
 				detail.setLineNumber(maxLineNumber);
@@ -1065,18 +1088,18 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 				if (sumReceive.compareTo(sumExpected) >= 0)
 					status = InboundStatusEnum.Receive;
 				
-				InboundDetailTEntity updateDetail = InboundDetailTEntity.builder()
-														.warehouseId(request.getWarehouseId())
-														.companyId(request.getCompanyId())
-														.inboundDetailId(selectDetail.getInboundDetailId())
-														.status(status.getCode())
-														.updateBy(request.getUserName())
-														.updateTime(new Date())
-														.build();
-				modify(new InboundDetailVO(updateDetail));
-				
+				if (selectDetail != null) {
+					InboundDetailTEntity updateDetail = InboundDetailTEntity.builder()
+															.warehouseId(request.getWarehouseId())
+															.companyId(request.getCompanyId())
+															.inboundDetailId(selectDetail.getInboundDetailId())
+															.status(status.getCode())
+															.updateBy(request.getUserName())
+															.updateTime(new Date())
+															.build();
+					modify(new InboundDetailVO(updateDetail));
+				}
 				inboundHeaderService.inboundStatus(header, Boolean.TRUE);
-				
 			}
 		
 		});
@@ -1258,7 +1281,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 					break;
 				case Confirm:
 					addPackOrSku(inbound, d);
-					final String STAGE = "STAGE";
+					final String STAGE = DefaultConstants.RECEIVE_LOCATION;
 					d.setStatus(InboundStatusEnum.New.getCode());
 					d.setWarehouseId(inbound.getWarehouseId());
 					//来源单号存到批属性1

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SUB_WAREHOUSE_BALANCE" pageWidth="490" pageHeight="400" columnWidth="490" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4f5da969-2156-4184-8f90-e26067a5458f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DIFTZER_100"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="companyId" class="java.lang.String"/>
+	<parameter name="web.label.warehouse.summary" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select 
+wh.code warehouseCode, 
+sum(onhand.quantity_onhand) onhand
+  from inventory_onhand_t onhand
+ inner join sys_warehouses_v wh
+    on onhand.warehouse_id = wh.warehouse_id
+ where 
+ onhand.del_flag = 'N' 
+ and onhand.quantity_onhand > 0
+ and (onhand.company_id = $P{companyId} or nvl($P{companyId},0) = 0)
+ group by wh.code]]>
+	</queryString>
+	<field name="WAREHOUSECODE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="WAREHOUSECODE"/>
+	</field>
+	<field name="ONHAND" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ONHAND"/>
+	</field>
+	<columnHeader>
+		<band height="260" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<pieChart>
+				<chart isShowLegend="false" evaluationTime="Report">
+					<reportElement x="0" y="0" width="490" height="260" uuid="b71a7fd1-856f-4b67-bdbf-62c22c830bd7"/>
+					<chartTitle>
+						<titleExpression><![CDATA[$P{web.label.warehouse.summary}]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend position="Bottom"/>
+				</chart>
+				<pieDataset minPercentage="0.0">
+					<keyExpression><![CDATA[$F{WAREHOUSECODE}]]></keyExpression>
+					<valueExpression><![CDATA[$F{ONHAND}]]></valueExpression>
+				</pieDataset>
+				<piePlot isShowLabels="true" isCircular="true" labelFormat="{0} ({2})" legendLabelFormat="{0} ({2})">
+					<plot/>
+					<itemLabel>
+						<font size="10"/>
+					</itemLabel>
+				</piePlot>
+			</pieChart>
+		</band>
+	</columnHeader>
+</jasperReport>

@@ -19,8 +19,8 @@
 	<parameter name="companyId" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT o."CUSTOMER_CODE",
-	o."SOURCE_NUMBER",
-	a."LPN_ID"
+  o."SOURCE_NUMBER",
+  a."FROM_LPN_NUMBER" LPN_ID
 FROM "ALLOCATE_T" a
 	left join "OUTBOUND_DETAIL_T" d 
 		ON d."OUTBOUND_DETAIL_ID" = a."SOURCE_NUMBER"

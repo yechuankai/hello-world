@@ -102,6 +102,7 @@ public class PutawayRest extends BaseController{
 					onhand.setLpnNumber(task.getFromLpnNumber());
 					putaway.setLpnNumber(task.getFromLpnNumber());
 				}
+				putaway.setToZoneCode(task.getToZoneCode());
 				putaway.setInventoryOnhand(onhand);
 				putaway.setLocationCode(task.getFromLocationCode());
 				putaway.setToLocationCode(task.getToLocationCode());
@@ -111,10 +112,12 @@ public class PutawayRest extends BaseController{
 			
 			//查找库存
 			LpnTypeEnum lpnType = null;
+			String lpnNumber = null;
 			try {
 				LpnTEntity selectLpn = lpnService.find(lpn);
 				lpn.setLpnNumber(selectLpn.getLpnNumber());
 				lpnType = LpnTypeEnum.Carton;
+				lpnNumber = selectLpn.getLpnNumber();
 			} catch (BusinessServiceException e) {
 				//not lpnNumber
 				lpn.setContainerNumber(lpn.getLpnNumber());
@@ -123,6 +126,7 @@ public class PutawayRest extends BaseController{
 					lpn.setContainerNumber(lpn.getLpnNumber());
 					lpn.setLpnNumber(null);
 					lpnType = LpnTypeEnum.Container;
+					lpnNumber = lpn.getContainerNumber();
 				}else {
 					throw new BusinessServiceException("PutawayRest", "lpn.record.not.exists", new Object[] {lpn.getLpnNumber()});
 				}
@@ -163,11 +167,11 @@ public class PutawayRest extends BaseController{
 						.packId(sku.getPackId())
 						.packCode(sku.getPackCode())
 						.lotNumber(putaway.getInventoryOnhand().getLotNumber())
-						.fromLpnNumber(lpn.getLpnNumber())
+						.fromLpnNumber(lpnNumber)
 						.fromLocationCode(putaway.getInventoryOnhand().getLocationCode())
 						.fromLocationLogical(locMap.get(putaway.getInventoryOnhand().getLocationCode()).getLocationLogical())
 						.fromZoneCode(locMap.get(putaway.getInventoryOnhand().getLocationCode()).getZoneCode())
-						.toLpnNumber(lpn.getLpnNumber())
+						.toLpnNumber(lpnNumber)
 						.toLocationCode(putaway.getToLocationCode())
 						.toLocationLogical(putaway.getToLocationCode())
 						.toZoneCode(locMap.get(putaway.getToLocationCode()).getZoneCode())

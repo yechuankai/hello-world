@@ -113,6 +113,7 @@ var locale = {
 	weightGrossMorethenNet: 'brut est supérieur au poids net',
 	lessThenZero: 'La valeur ne peut être inférieure à 0',
 	characterornumber: 'Seul caractère ou nombre',
+	locationprintall: 'Imprimer tous les emplacements?'
 }
 if ($.locale){
 	$.extend($.locale,locale);

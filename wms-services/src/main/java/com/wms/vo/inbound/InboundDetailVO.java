@@ -14,6 +14,7 @@ import static java.math.BigDecimal.ROUND_FLOOR;
 
 public class InboundDetailVO extends InboundDetailTEntity {
 
+	private String noSku;
 	private String transactionCategory;
 	private BigDecimal uomQuantityExpected = BigDecimal.ZERO;
     private BigDecimal uomQuantityReceive = BigDecimal.ZERO;
@@ -141,4 +142,13 @@ public class InboundDetailVO extends InboundDetailTEntity {
 	public void setInboundNumber(String inboundNumber) {
 		this.inboundNumber = inboundNumber;
 	}
+
+	public String getNoSku() {
+		return noSku;
+	}
+
+	public void setNoSku(String noSku) {
+		this.noSku = noSku;
+	}
+
 }

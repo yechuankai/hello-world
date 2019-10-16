@@ -85,6 +85,7 @@ public class PutawayCoreServiceImpl implements IPutawayCoreService, Initializing
 			//目前未存储库存行ID，无法获取更多信息
 			InventoryOnhandVO onhand = new InventoryOnhandVO();
 			onhand.setSkuCode(lock.getSkuCode());
+			onhand.setLocationCode(lock.getLocationCode());
 			putaway.setInventoryOnhand(onhand);
 			
 			return putaway;

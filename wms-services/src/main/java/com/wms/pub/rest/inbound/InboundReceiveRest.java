@@ -1,12 +1,18 @@
 package com.wms.pub.rest.inbound;
 
 import com.alibaba.fastjson.TypeReference;
+import com.google.common.collect.Lists;
+import com.wms.common.constants.ConfigConstants;
+import com.wms.common.constants.DefaultConstants;
 import com.wms.common.core.controller.BaseController;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.response.AjaxResult;
 import com.wms.common.enums.InboundStatusEnum;
 import com.wms.common.enums.TransactionCategoryEnum;
+import com.wms.common.enums.YesNoEnum;
 import com.wms.common.exception.BusinessServiceException;
+import com.wms.common.utils.bean.BeanUtils;
+import com.wms.common.utils.cache.ConfigUtils;
 import com.wms.entity.auto.LotValidateTEntity;
 import com.wms.entity.auto.PackTEntity;
 import com.wms.entity.auto.SkuTEntity;
@@ -79,9 +85,21 @@ public class InboundReceiveRest extends BaseController{
 			}
 			
 			List<InboundDetailVO> list = inboundDetailService.findExpected(detail);
-			if (CollectionUtils.isEmpty(list))
-				throw new BusinessServiceException("InboundRest", "inbound.not.expected" , new Object[] {request.getData().getSkuCode()});
-			
+			if (CollectionUtils.isEmpty(list)) {
+				//是否开启RF无SKU收货功能
+				if (!ConfigUtils.getBooleanValue(request.getCompanyId(), request.getWarehouseId(), ConfigConstants.CONFIG_RF_INBOUND_RECEIVE_NO_SKU)) {
+					throw new BusinessServiceException("InboundRest", "inbound.not.expected" , new Object[] {request.getData().getSkuCode()});
+				}else {
+					list = Lists.newArrayList();
+					InboundDetailVO vo = new InboundDetailVO();
+					BeanUtils.copyBeanProp(vo, sku, Boolean.FALSE);
+					vo.setInboundHeaderId(detail.getInboundHeaderId());
+					vo.setNoSku(YesNoEnum.Yes.getCode());
+					vo.setLocationCode(DefaultConstants.RECEIVE_LOCATION);
+					list.add(vo);
+				}
+					
+			}
 			//一次只获取一行
 			InboundDetailVO one = list.get(0);
 			

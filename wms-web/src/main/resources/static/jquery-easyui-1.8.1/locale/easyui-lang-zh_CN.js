@@ -120,6 +120,7 @@ var locale = {
 	weightGrossMorethenNet: '毛重大于净重',
 	lessThenZero: '值不能小于0',
 	characterornumber: '只可输入字母或数字',
+	locationprintall: '打印所有库位?',
 	actions:{
 		receiveAll:"全部接收",
 		unReceive:"撤销收货",

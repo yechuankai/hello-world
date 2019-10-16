@@ -32,7 +32,7 @@
 		<undeploy url="${server.wms-report.host}" username="${server.wms-report.username}" password="${server.wms-report.password}" path="${server.wms-report.path}"/>
 	</target>
 	<target name="wms-report-deploy" description="deploy web application wms-report" depends="wms-report-undeploy">
-		<deploy url="${server.wms-report.host}" username="${server.wms-report.username}" password="${server.wms-report.password}" path="${server.wms-report.path}" war="${server.wms-service.from}"/>
+		<deploy url="${server.wms-report.host}" username="${server.wms-report.username}" password="${server.wms-report.password}" path="${server.wms-report.path}" war="${server.wms-report.from}"/>
 	</target>
 	
 	<target name="wms-config-undeploy" description="Remove web application">

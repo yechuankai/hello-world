@@ -4,7 +4,7 @@
     <title wms:text="${wms.outbound.title}">出库单</title>
     <head th:replace="common/head" />
     <script th:replace="common/js" />
-    <script type="text/javascript" th:src="@{/js/codelkupList?listName=OUTBOUNDSTATUS,OUTBOUNDTYPE,UOM}"></script>
+    <script type="text/javascript" th:src="@{/js/codelkupList?listName=OUTBOUNDSTATUS,OUTBOUNDTYPE,ALLOCATESTRATEGYTYPE,SHIPLABEL,UOM}"></script>
     <script type="text/javascript" th:src="@{/static/js/outbound/outbound.js}"></script>
     <style>
         td{

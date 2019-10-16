@@ -4,13 +4,16 @@
     <title wms:text="${web.label.report}">报表</title>
     <head th:replace="common/head" />
 </head>
-<body style="height: 1000px;">
+<body style="overflow: auto;">
+	<div id="content" style="height: 700px;">
+		
+	</div>
 </body>
 <script th:replace="common/js" />
 <script type="text/javascript">
 $(function(){
-	var url = getReportUrl('/report/html/SUMMARY');
-	$('body').append('<iframe scrolling="no" frameborder="0"  src="'+url+'" style="width:100%;height:98%;" />');
+	var url = getReportUrl('/report/html/SUMMARY', getBaseData());
+	$('#content').append('<iframe name="summary" frameborder="0"  src="'+url+'" style="width:100%;height:98%;" />');
 });
 </script>
 </html>

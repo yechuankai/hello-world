@@ -62,5 +62,10 @@ public interface DefaultConstants {
      */
     public static final String ORDER_NUMBER_DATE_FORMAT = "yyMMdd";
     
+    /**
+     * 默认收货库位
+     */
+    public static final String RECEIVE_LOCATION = "STAGE";
+    
 	
 }

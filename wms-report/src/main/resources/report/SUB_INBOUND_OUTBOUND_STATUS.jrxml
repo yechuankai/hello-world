@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SUB_INBOUND_OUTBOUND_STATUS" pageWidth="490" pageHeight="400" columnWidth="490" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4f5da969-2156-4184-8f90-e26067a5458f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DIFTZER_100"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="web.label.inbound" class="java.lang.String"/>
+	<parameter name="web.label.outbound" class="java.lang.String"/>
+	<parameter name="companyId" class="java.lang.String"/>
+	<parameter name="web.label.orderstatus" class="java.lang.String"/>
+	<parameter name="web.label.new" class="java.lang.String"/>
+	<parameter name="web.label.processing" class="java.lang.String"/>
+	<parameter name="web.label.close" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[with inbound as
+ (select $P{web.label.inbound} type,
+         decode(status, '40', 'Close', '20', 'Processing', 'New') status
+    from inbound_header_t
+   where status in ('10', '20', '30', '40')
+     and (company_id = $P{companyId} or nvl($P{companyId},0) = 0)
+     and del_flag = 'N'),
+outbound as
+ (select $P{web.label.outbound} type,
+         case
+           when status in ('70', '80') then
+            'Close'
+           when status in ('20', '30', '40', '50', '60') then
+            'Processing'
+           else
+            'New'
+         end status
+    from outbound_header_t
+   where status in ('10', '20', '30', '40', '50', '60', '70', '80')
+     and (company_id = $P{companyId} or nvl($P{companyId},0) = 0)
+     and del_flag = 'N')
+select type,
+       sum(decode(status, 'New', 1, 0)) New,
+       sum(decode(status, 'Processing', 1, 0)) Processing,
+       sum(decode(status, 'Close', 1, 0)) Close
+  from (select * from inbound union all select * from outbound) t
+ group by type]]>
+	</queryString>
+	<field name="TYPE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TYPE"/>
+	</field>
+	<field name="NEW" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="NEW"/>
+	</field>
+	<field name="PROCESSING" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="PROCESSING"/>
+	</field>
+	<field name="CLOSE" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="CLOSE"/>
+	</field>
+	<columnHeader>
+		<band height="260" splitType="Stretch">
+			<barChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="0" width="490" height="260" uuid="8189499d-2c74-4863-aae8-8a454bb9b5eb"/>
+					<chartTitle>
+						<titleExpression><![CDATA[$P{web.label.orderstatus}]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$P{web.label.new}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{TYPE}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{NEW}]]></valueExpression>
+						<labelExpression><![CDATA[$F{NEW}.toString()]]></labelExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA[$P{web.label.processing}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{TYPE}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{PROCESSING}]]></valueExpression>
+						<labelExpression><![CDATA[$F{PROCESSING}.toString()]]></labelExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA[$P{web.label.close}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{TYPE}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{CLOSE}]]></valueExpression>
+						<labelExpression><![CDATA[$F{CLOSE}.toString()]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot isShowLabels="true">
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+		</band>
+	</columnHeader>
+</jasperReport>

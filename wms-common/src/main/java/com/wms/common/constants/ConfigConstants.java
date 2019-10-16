@@ -10,4 +10,6 @@ public interface ConfigConstants {
 	public static final String CONFIG_SYSTEM_MONITOR_REST = "SYSTEM_MONITOR_REST";
 	//超收验证开关
 	public static final String CONFIG_INBOUND_RECEIVE_EXCEED = "INBOUND_RECEIVE_EXCEED";
+	//无SKU收货
+	public static final String CONFIG_RF_INBOUND_RECEIVE_NO_SKU = "RF_INBOUND_RECEIVE_NO_SKU";
 }

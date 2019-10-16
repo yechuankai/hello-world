@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SUB_INBOUND_OUTBOUND_SUMMARY" pageWidth="490" pageHeight="400" columnWidth="490" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4f5da969-2156-4184-8f90-e26067a5458f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DIFTZER_100"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="companyId" class="java.lang.String"/>
+	<parameter name="web.label.order.month.summary" class="java.lang.String"/>
+	<parameter name="web.label.inbound" class="java.lang.String"/>
+	<parameter name="web.label.outbound" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[with inbound as
+ (select $P{web.label.inbound} type, to_char(create_time, 'YYYY-MM') mon, count(1) count
+    from inbound_header_t
+   where status in ('10', '20', '30', '40')
+     and (company_id = $P{companyId} or nvl($P{companyId},0) = 0)
+     and create_time > add_months(to_date(to_char(sysdate, 'YYYY-MM'), 'YYYY-MM'), -6)
+     and del_flag = 'N' group by to_char(create_time, 'YYYY-MM')),
+outbound as
+ (select $P{web.label.outbound} type, to_char(create_time, 'YYYY-MM') mon, count(1) count
+    from outbound_header_t
+   where status in ('10', '20', '30', '40', '50', '60', '70', '80')
+     and (company_id = $P{companyId} or nvl($P{companyId},0) = 0)
+     and create_time > add_months(to_date(to_char(sysdate, 'YYYY-MM'), 'YYYY-MM'), -6)
+     and del_flag = 'N' group by to_char(create_time, 'YYYY-MM'))
+select * from inbound union all select * from outbound]]>
+	</queryString>
+	<field name="TYPE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TYPE"/>
+	</field>
+	<field name="MON" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MON"/>
+	</field>
+	<field name="COUNT" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="COUNT"/>
+	</field>
+	<columnHeader>
+		<band height="260" splitType="Stretch">
+			<lineChart>
+				<chart evaluationTime="Report">
+					<reportElement isPrintRepeatedValues="false" x="0" y="0" width="490" height="260" uuid="057fe4d7-2222-4425-a3d0-edfd813725c4"/>
+					<chartTitle>
+						<titleExpression><![CDATA[$P{web.label.order.month.summary}]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{TYPE}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{MON}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{COUNT}]]></valueExpression>
+						<labelExpression><![CDATA[$F{COUNT}.toString()]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<linePlot>
+					<plot labelRotation="90.0"/>
+					<categoryAxisFormat labelRotation="90.0">
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</valueAxisFormat>
+				</linePlot>
+			</lineChart>
+		</band>
+	</columnHeader>
+</jasperReport>

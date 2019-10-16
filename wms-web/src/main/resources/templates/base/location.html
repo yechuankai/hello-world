@@ -71,6 +71,7 @@
         <a href="#" class="easyui-linkbutton common-rowsave" data-table="#dataTable" th:data-url="@{/services/inner/base/location/save}" >
             <span wms:text="${web.label.save}">Save</span>
         </a>
+        <a href="#" class="easyui-linkbutton" onclick="locationPrint()" wms:text="${web.label.print}">Print</a>
         <a href="#" class="easyui-linkbutton" onclick="importExcel('LOCATION')" wms:text="${web.label.import}">Import</a>
         <a href="#" class="easyui-linkbutton" onclick="exportExcel('LOCATION', '#searchForm')" wms:text="${web.label.export}">Export</a>
         <a href="#" class="easyui-linkbutton common-rowdel"  data-table="#dataTable" th:data-url="@{/services/inner/base/location/delete}">
@@ -279,6 +280,37 @@
 	   		}
 	   	});
    });
+   
+   function locationPrint(){
+	   debugger;
+	   var data = $('#searchForm').serializeObject();
+	   if (data.zoneCode == ''
+			   && data.locationCode == ''){
+		   confirmMsg($.locale.locationprintall, function(r){
+			   if (!r){
+				   return;
+			   }
+			   p(data.zoneCode, data.locationCode);
+		   });
+	   }else{
+		   p(data.zoneCode, data.locationCode);
+	   }
+	   
+	   function p(zoneCode, locationCode){
+		   if (zoneCode != ''){
+		   	zoneCode = zoneCode.replace('*', '%');
+		   }
+		   if (locationCode != ''){
+		   	locationCode = locationCode.replace('*', '%');
+		   }
+		   exportReport({
+				fileType: "pdf",
+				reportType: 'LOCATION',
+				zoneCode: zoneCode,
+				locationCode: locationCode
+			});
+	   }
+   }
    
 </script>
 </html>

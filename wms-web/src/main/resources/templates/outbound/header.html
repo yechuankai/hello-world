@@ -21,7 +21,7 @@
 							" />
                     </td>
                     <td rowspan="3">
-                        <input id="remark" name="remark" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.remark}',labelPosition:'top',multiline:true" style="width: 300px;height:150px;" />
+                        <input id="remark" name="remark" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.remark}',labelPosition:'top',multiline:true" style="width: 250px;height:150px;" />
                     </td>
                 </tr>
                 <tr>
@@ -119,13 +119,13 @@
                 </tr>
                 <tr>
                     <td >
-                        <input name="driver" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.carrierdriver}',labelPosition:'top'" />
+                        <input id="driver" name="driver" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.carrierdriver}',labelPosition:'top'" />
                     </td>
                     <td >
                         <input id="carNumber" name="carNumber" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.carriercarnumber}',labelPosition:'top'" />
                     </td>
                     <td>
-                       <input name="driverPhone" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.driverphone}',labelPosition:'top'" />
+                       <input id="driverPhone" name="driverPhone" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.driverphone}',labelPosition:'top'" />
                     </td>
                 </tr>
             </table>
@@ -165,14 +165,21 @@
             $('#referenceNumber').textbox({readonly:false});
             $('#type').combobox({readonly:false});
             $('#expectedOutboundDate').datebox({readonly:false});
-            $('#customerId').combogrid({readonly:false});
+            $('#customerCode').combogrid({readonly:false});
+            $('#shipLabel').combobox({readonly:false});
             $('#contact1').textbox({readonly:false});
+            $('#contact2').textbox({readonly:false});
             $('#phone1').textbox({readonly:false});
             $('#phone2').textbox({readonly:false});
             $('#address1').textbox({readonly:false});
             $('#address2').textbox({readonly:false});
-            $('#fax').textbox({readonly:false});
-            $('#email').textbox({readonly:false});
+            $('#email1').textbox({readonly:false});
+            $('#email2').textbox({readonly:false});
+            $('#carrierCode').combogrid({readonly:false});
+            $('#containerNumber').textbox({readonly:false});
+            $('#driver').textbox({readonly:false});
+            $('#carNumber').textbox({readonly:false});
+            $('#driverPhone').textbox({readonly:false});
         }else if( '10' == status){
             //新建状态
             $('#ownerCode').combogrid({readonly:true});
@@ -180,14 +187,21 @@
             $('#referenceNumber').textbox({readonly:false});
             $('#type').combobox({readonly:false});
             $('#expectedOutboundDate').datebox({readonly:false});
-            $('#customerId').combogrid({readonly:false});
+            $('#customerCode').combogrid({readonly:false});
+            $('#shipLabel').combobox({readonly:false});
             $('#contact1').textbox({readonly:false});
+            $('#contact2').textbox({readonly:false});
             $('#phone1').textbox({readonly:false});
             $('#phone2').textbox({readonly:false});
             $('#address1').textbox({readonly:false});
             $('#address2').textbox({readonly:false});
-            $('#fax').textbox({readonly:false});
-            $('#email').textbox({readonly:false});
+            $('#email1').textbox({readonly:false});
+            $('#email2').textbox({readonly:false});
+            $('#carrierCode').textbox({readonly:false});
+            $('#containerNumber').textbox({readonly:false});
+            $('#driver').textbox({readonly:false});
+            $('#carNumber').textbox({readonly:false});
+            $('#driverPhone').textbox({readonly:false});
         }else if('20' == status || '30' == status || '40' == status || '50' == status || '60' == status){
             //分配、部分分配、发放、拣货、部分拣货
             $('#ownerCode').combogrid({readonly:true});
@@ -195,29 +209,42 @@
             $('#referenceNumber').textbox({readonly:false});
             $('#type').combobox({readonly:true});
             $('#expectedOutboundDate').datebox({readonly:false});
-            $('#createTime').datebox({readonly:false});
-            $('#customerId').combogrid({readonly:false});
+            $('#customerCode').combogrid({readonly:false});
+            $('#shipLabel').combobox({readonly:false});
             $('#contact1').textbox({readonly:false});
+            $('#contact2').textbox({readonly:false});
             $('#phone1').textbox({readonly:false});
             $('#phone2').textbox({readonly:false});
             $('#address1').textbox({readonly:false});
             $('#address2').textbox({readonly:false});
-            $('#fax').textbox({readonly:false});
-            $('#email').textbox({readonly:false});
+            $('#email1').textbox({readonly:false});
+            $('#email2').textbox({readonly:false});
+            $('#carrierCode').textbox({readonly:false});
+            $('#containerNumber').textbox({readonly:false});
+            $('#driver').textbox({readonly:false});
+            $('#carNumber').textbox({readonly:false});
+            $('#driverPhone').textbox({readonly:false});
         }else {
             $('#ownerCode').combogrid({readonly:true});
             $('#sourceNumber').textbox({readonly:true});
             $('#referenceNumber').textbox({readonly:true});
             $('#type').combobox({readonly:true});
             $('#expectedOutboundDate').datebox({readonly:true});
-            $('#customerId').combogrid({readonly:true});
+            $('#customerCode').combogrid({readonly:true});
+            $('#shipLabel').combobox({readonly:true});
             $('#contact1').textbox({readonly:true});
+            $('#contact2').textbox({readonly:true});
             $('#phone1').textbox({readonly:true});
             $('#phone2').textbox({readonly:true});
             $('#address1').textbox({readonly:true});
             $('#address2').textbox({readonly:true});
-            $('#fax').textbox({readonly:true});
-            $('#email').textbox({readonly:true});
+            $('#email1').textbox({readonly:true});
+            $('#email2').textbox({readonly:true});
+            $('#carrierCode').combogrid({readonly:true});
+            $('#containerNumber').textbox({readonly:true});
+            $('#driver').textbox({readonly:true});
+            $('#carNumber').textbox({readonly:true});
+            $('#driverPhone').textbox({readonly:true});
         }
     }
 </script>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="summary" pageWidth="1000" pageHeight="842" orientation="Landscape" columnWidth="1000" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="d6a9f8db-067f-43a0-9ddb-6972d5edc033">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DIFTZER_100"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="web.label.orderstatus" class="java.lang.String"/>
+	<parameter name="web.label.new" class="java.lang.String"/>
+	<parameter name="web.label.processing" class="java.lang.String"/>
+	<parameter name="web.label.close" class="java.lang.String"/>
+	<parameter name="web.label.order.month.summary" class="java.lang.String"/>
+	<parameter name="web.label.warehouse.summary" class="java.lang.String"/>
+	<parameter name="web.label.owner.summary" class="java.lang.String"/>
+	<parameter name="web.label.inventory.day.summary" class="java.lang.String"/>
+	<parameter name="web.label.inbound" class="java.lang.String"/>
+	<parameter name="web.label.outbound" class="java.lang.String"/>
+	<parameter name="companyId" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select $P{companyId} companyId from dual]]>
+	</queryString>
+	<field name="COMPANYID" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="COMPANYID"/>
+	</field>
+	<detail>
+		<band height="807">
+			<subreport>
+				<reportElement x="10" y="10" width="489" height="260" uuid="d500d7ad-0c66-49fe-afbb-03e7845bf762"/>
+				<subreportParameter name="companyId">
+					<subreportParameterExpression><![CDATA[$P{companyId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="web.label.close">
+					<subreportParameterExpression><![CDATA[$P{web.label.close}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="web.label.new">
+					<subreportParameterExpression><![CDATA[$P{web.label.new}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="web.label.processing">
+					<subreportParameterExpression><![CDATA[$P{web.label.processing}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="web.label.inbound">
+					<subreportParameterExpression><![CDATA[$P{web.label.inbound}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="web.label.outbound">
+					<subreportParameterExpression><![CDATA[$P{web.label.outbound}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="web.label.orderstatus">
+					<subreportParameterExpression><![CDATA[$P{web.label.orderstatus}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["report/SUB_INBOUND_OUTBOUND_STATUS.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="499" y="10" width="490" height="260" uuid="3d17ccc7-982f-4533-acb8-3a251431d657">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<subreportParameter name="companyId">
+					<subreportParameterExpression><![CDATA[$P{companyId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="web.label.inbound">
+					<subreportParameterExpression><![CDATA[$P{web.label.inbound}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="web.label.outbound">
+					<subreportParameterExpression><![CDATA[$P{web.label.outbound}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="web.label.order.month.summary">
+					<subreportParameterExpression><![CDATA[$P{web.label.order.month.summary}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["report/SUB_INBOUND_OUTBOUND_SUMMARY.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="10" y="280" width="489" height="260" uuid="ddf4f2d7-1e2a-4113-88f8-4b2761f00bc0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<subreportParameter name="companyId">
+					<subreportParameterExpression><![CDATA[$P{companyId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="web.label.warehouse.summary">
+					<subreportParameterExpression><![CDATA[$P{web.label.warehouse.summary}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["report/SUB_WAREHOUSE_BALANCE.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="500" y="280" width="489" height="260" uuid="fa386bae-f50a-47fe-9a7e-0f11d9084344"/>
+				<subreportParameter name="companyId">
+					<subreportParameterExpression><![CDATA[$P{companyId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="web.label.owner.summary">
+					<subreportParameterExpression><![CDATA[$P{web.label.owner.summary}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["report/SUB_OWNER_BALANCE.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="10" y="550" width="979" height="250" uuid="a0f28286-f87d-4432-aa98-6dc895eb480a"/>
+				<subreportParameter name="companyId">
+					<subreportParameterExpression><![CDATA[$P{companyId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="web.label.inventory.day.summary">
+					<subreportParameterExpression><![CDATA[$P{web.label.inventory.day.summary}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["report/SUB_BALANCE_DAY_SUMMARY.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

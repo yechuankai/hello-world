@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SUB_BALANCE_DAY_SUMMARY" pageWidth="980" pageHeight="400" columnWidth="980" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4f5da969-2156-4184-8f90-e26067a5458f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DIFTZER_100"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<parameter name="companyId" class="java.lang.String"/>
+	<parameter name="web.label.inventory.day.summary" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select DAY, sum(quantity_onhand) onhand
+  from inventory_onhand_snapshot_t
+  where 
+  	del_flag = 'N' and quantity_onhand > 0
+  	and (company_id = $P{companyId} or nvl($P{companyId},0) = 0)
+    and to_date(day, 'YYYY-MM-DD') > add_months(to_date(to_char(sysdate, 'YYYY-MM'), 'YYYY-MM'), -6)
+ group by DAY]]>
+	</queryString>
+	<field name="DAY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="DAY"/>
+	</field>
+	<field name="ONHAND" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="ONHAND"/>
+	</field>
+	<columnHeader>
+		<band height="207" splitType="Stretch">
+			<lineChart>
+				<chart isShowLegend="false" evaluationTime="Report">
+					<reportElement x="0" y="0" width="980" height="207" uuid="06fe390e-d18f-4b28-a752-4d698c17ca28"/>
+					<chartTitle>
+						<titleExpression><![CDATA[$P{web.label.inventory.day.summary}]]></titleExpression>
+					</chartTitle>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["onhand"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{DAY}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{ONHAND}]]></valueExpression>
+						<labelExpression><![CDATA[$F{ONHAND}.toString()]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<linePlot>
+					<plot labelRotation="90.0"/>
+					<categoryAxisFormat labelRotation="90.0">
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" tickLabelMask="" axisLineColor="#000000"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</valueAxisFormat>
+				</linePlot>
+			</lineChart>
+		</band>
+	</columnHeader>
+</jasperReport>
