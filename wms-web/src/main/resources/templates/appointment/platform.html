@@ -124,12 +124,12 @@
     </div>
 </div>
 <div id="addDiv" wms:title="${web.label.add}" style="width:300px;height:300px; display: none;">
-    <div style="width: 100%;padding-left: 50px;">
+    <div style="width: 100%;padding-left: 10px;">
         <form method="post" id="addForm" th:data-url="@{/services/inner/appointment/platForm/add}">
             <table style="width: 100%;">
                 <tr>
                     <td>
-                        <input name="platformCode" class="easyui-textbox"
+                        <input name="platformCode" class="easyui-textbox" style="width: 96%"
                                wms:data-options="required:true,label:'${web.label.platform}',labelPosition:'top'">
                     </td>
                 </tr>

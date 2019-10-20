@@ -35,8 +35,13 @@ $.extend($.fn.combogrid.defaults, {
 	fix:true,
 	rownumbers: true,
 	pagination: true,
+	multiSort: true,
+	remoteSort: true,
 	pageSize: 15,
 	pageList: [15,50,100,500,1000]
+});
+$.extend($.fn.textbox.defaults, {
+	validType: ['length[0,50]']
 });
 $.extend($.fn.layout.defaults, {
 	onCollapse: function(){
@@ -232,8 +237,11 @@ $(function(){
 				}
 			}
 		}).dialog('open');
-		$(panel).find('form').form('reset');
 		lazyLoadView(panel);
+		$(panel).find('form').form('reset');
+		if ($(panel).find('.tabs-first').length > 0){
+			$(panel).find('.tabs-first > a').trigger('click');
+		}
 		$('.tooltip').remove();
 	});
 	//公共显示新增框-------------------------END

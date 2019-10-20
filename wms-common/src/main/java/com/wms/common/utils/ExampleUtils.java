@@ -225,6 +225,9 @@ public class ExampleUtils {
 			if (StringUtils.isEmpty(name) || StringUtils.isEmpty(value))
 				return;
 			
+			//左右去空格
+			value = value.trim();
+			
 			//获的列名
 			String dbPro = getColumn(name);
 			if (StringUtils.isEmpty(dbPro)|| StringUtils.equals(name, PRO_SORT)) {

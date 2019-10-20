@@ -174,7 +174,7 @@
 		</div>
 	</div>
 	<!-- add header -->
-	<div id="addHeaderDiv" wms:title="${web.label.header.add}" style="height: 400px;width: 820px;display: none;" data-options="buttons: '#headerAddButton'">
+	<div id="addHeaderDiv" wms:title="${web.label.header.add}" style="height: 400px;width: 800px;display: none;" data-options="buttons: '#headerAddButton'">
 		<div id="headerAddButton">
 			<a href="#" class="easyui-linkbutton common-confirmadd" wms:text="${web.label.save}" data-form="#inboundHeaderForm" data-table="#inboundData">Save</a>
 			<a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#inboundHeaderForm').form('clear');" wms:text="${web.label.clear}" data-options="iconCls:'icon-clear'">Clear</a>
@@ -195,7 +195,6 @@
 			window.parent.addPanel($(this).attr('title'), 'inbound/edit');
 		});
 		$('.header-add').click(function(){
-			headerEditable(0);
 			$('#headerAddButton').show();
 			$('#headerEditButton').hide();
 			var panel = $(this).attr('data-addpanel');
@@ -204,12 +203,19 @@
 				closed: true,
 				modal: true,
 				fix: true,
-				buttons: '#headerAddButton'
+				buttons: '#headerAddButton',
 			}).dialog('open');
 			$(panel).find('form').form('reset');
 			$('#inboundHeaderId').val("");
+			//加载货主
 			loadOwnerLov();
+			//默认第一个选项卡
+			if ($(panel).find('.tabs-first').length > 0){
+				$(panel).find('.tabs-first > a').trigger('click');
+			}
 			$('.tooltip').remove();
+			//禁用文本框
+			headerEditable(0);
 		});
 		$('.common-search').click(function(){
 			$('#detailLayout').layout('collapse', 'south');
@@ -305,6 +311,10 @@
 		}).dialog('open');
 		$(panel).find('form').form('reset');
 		refreshEditHeader(headerData);
+		//默认第一个选项卡
+		if ($(panel).find('.tabs-first').length > 0){
+			$(panel).find('.tabs-first > a').trigger('click');
+		}
 		$('.tooltip').remove();
 	}
 	

@@ -17,6 +17,7 @@ import com.wms.common.enums.MonitorStatusEnum;
 import com.wms.common.enums.MonitorTypeEnum;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.common.exception.SystemException;
+import com.wms.common.exception.base.BaseException;
 import com.wms.common.utils.IpUtils;
 import com.wms.common.utils.ServletUtils;
 import com.wms.common.utils.cache.ConfigUtils;
@@ -50,8 +51,10 @@ public class ExceptionAspect {
 			if (!isTopService()) {
 				throw e;
 			}
-			if (e instanceof BusinessServiceException) {
-				log.warn(((BusinessServiceException)e).getParams().toString());
+			if (e instanceof BaseException) {
+				if (((BaseException)e).getArgs() != null){
+					log.warn(((BaseException)e).getArgs().toString());
+				}
 				log.warn(e.getMessage(), e);
 				throw e;
 			}else {

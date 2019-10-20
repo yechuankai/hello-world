@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PRIVATECARCARDBACK" pageWidth="155" pageHeight="240" columnWidth="155" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5a1d5ead-fe31-4d19-838e-b53e77c1c471">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DIFTZER_100"/>
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<style name="font" isDefault="true" mode="Opaque" forecolor="#FCFCFC" backcolor="#1F497D"/>
+	<parameter name="applicationNo" class="java.lang.String">
+		<parameterDescription><![CDATA[applicationNo]]></parameterDescription>
+	</parameter>
+	<parameter name="logicCardNo" class="java.lang.String">
+		<parameterDescription><![CDATA[logicCardNo]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 
+       T.Application_No,
+       C.SHORTNAME COMPANYNAME,
+       T.LICENSE_PLATE_NO vehicleNo,
+       $P{logicCardNo} Card_NO,
+       ' ' Remark
+  FROM 
+       DPSP.CARD_INFO_VEHICLE_LIGHT_LIST T
+       INNER JOIN UUMS.COMPANY C ON C.COMPANY_ID = T.COMPANY_ID
+  WHERE 
+       T.Application_No = $P{applicationNo}
+  ORDER BY 
+        T.Application_No]]>
+	</queryString>
+	<field name="APPLICATION_NO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="APPLICATION_NO"/>
+	</field>
+	<field name="COMPANYNAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="COMPANYNAME"/>
+	</field>
+	<field name="VEHICLENO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="VEHICLENO"/>
+	</field>
+	<field name="CARD_NO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CARD_NO"/>
+	</field>
+	<field name="REMARK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="REMARK"/>
+	</field>
+	<detail>
+		<band height="240" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement x="0" y="40" width="155" height="60" uuid="ae0310e7-97d7-438d-a1bc-e86369ce0f80"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="19" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{VEHICLENO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="100" width="155" height="40" uuid="92bbcf51-11fe-4d6f-853c-42e4ef270d96"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COMPANYNAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="46" y="220" width="109" height="20" uuid="ab2524ff-faf7-44ed-9f03-d930d8205072"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CARD_NO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="220" width="46" height="20" uuid="f6eefc42-1510-48c0-a4a5-91cfd38142ed"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Card No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="155" height="40" uuid="d7309bd5-5b48-4709-9e9f-ff76a9e51f9d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Light Vehicle Lane]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="140" width="155" height="80" uuid="e30ea974-6372-41f8-9f29-23a4d413c2fd"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<image>
+				<reportElement x="50" y="160" width="50" height="30" uuid="bf6f3e55-b944-4322-a33e-a41dee512028"/>
+				<imageExpression><![CDATA["report/images/logo.png"]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+</jasperReport>

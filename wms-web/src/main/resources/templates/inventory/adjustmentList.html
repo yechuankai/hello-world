@@ -115,24 +115,24 @@
     </div>
 </div>
 <div id="addDiv" wms:title="${web.label.add}" style="width:350px;height:420px; display: none;">
-    <div style="width: 100%;padding-left: 50px;">
+    <div style="width: 100%;padding-left: 10px;">
         <form method="post" id="addForm" th:data-url="@{/services/inner/inventory/adjustment/add}">
             <table style="width: 100%;">
                 <tr>
                     <td>
-                        <input name="sourceNumber" class="easyui-textbox"
+                        <input name="sourceNumber" class="easyui-textbox" style="width:96%"
                                wms:data-options="label:'${web.label.sourcebillnumber}',labelPosition:'top'"/>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input id="referenceNumber" name="referenceNumber" class="lazy-load" lazy-load="easyui-textbox"
+                        <input id="referenceNumber" name="referenceNumber" class="lazy-load" lazy-load="easyui-textbox" style="width:96%"
                                wms:data-options="label:'${web.label.referencenumber}',labelPosition:'top'"/>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input class="easyui-combobox" name="status" readonly="readonly" wms:data-options="
+                        <input class="easyui-combobox" name="status" readonly="readonly" style="width: 100px" wms:data-options="
                                 data: codelkups['ADJUSTMENTSTATUS'],
                                 value: '10',
                                 valueField: 'code',
@@ -146,7 +146,7 @@
                     <td>
                         <input name="remark" class="easyui-textbox"
                                wms:data-options="label:'${web.label.remark}',labelPosition:'top',multiline:true"
-                               style="width: 260px;height:100px;"/>
+                               style="width: 96%;height:100px;"/>
                     </td>
                 </tr>
             </table>

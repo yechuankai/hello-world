@@ -13,17 +13,17 @@ public class BaseException extends RuntimeException {
 	/**
 	 * 所属模块
 	 */
-	private String module;
+	protected String module;
 
 	/**
 	 * 错误码
 	 */
-	private String code;
+	protected String code;
 
 	/**
 	 * 错误码对应的参数
 	 */
-	private Object[] args;
+	protected Object[] args;
 
 	/**
 	 * 错误消息
@@ -39,6 +39,7 @@ public class BaseException extends RuntimeException {
 
 	public BaseException(String module, String code, Object[] args) {
 		this(module, code, args, null);
+		this.args = args;
 	}
 
 	public BaseException(String module, String defaultMessage) {
@@ -47,6 +48,7 @@ public class BaseException extends RuntimeException {
 
 	public BaseException(String code, Object[] args) {
 		this(null, code, args, null);
+		this.args = args;
 	}
 
 	public BaseException(String defaultMessage) {
@@ -74,6 +76,8 @@ public class BaseException extends RuntimeException {
 	}
 
 	public Object[] getArgs() {
+		if (args == null)
+			return new Object[] {};
 		return args;
 	}
 

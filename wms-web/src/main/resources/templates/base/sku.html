@@ -374,34 +374,34 @@
 		<a href="#" class="easyui-linkbutton common-confirmadd" wms:text="${web.label.save}" data-table="#skuData" data-form="#addForm">Save</a>
 		<a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');" wms:text="${web.label.clear}" data-options="iconCls:'icon-clear'">Clear</a>
 	</div>
-	<div id="addDiv" wms:title="${web.label.add}" style="width:830px;height:450px; display: none;" data-options="buttons: '#addButton'">
+	<div id="addDiv" wms:title="${web.label.add}" style="width:700px;height:450px; display: none;" data-options="buttons: '#addButton'">
 		<div style="width: 100%;">
 			<form method="post" id="addForm" th:data-url="@{/services/inner/base/sku/add}">
 			  <div class="lazy-load" lazy-load="easyui-tabs" style="width: 100%;">
-				  <div wms:title="${web.label.normal}" style="padding-left: 50px;">
-					<table border="0" cellpadding="0" cellspacing="0" >
+				  <div wms:title="${web.label.normal}" style="padding-left: 10px;">
+					<table border="0" cellpadding="0" cellspacing="0" width="100%">
 						<tr>
-							<td width="200">
+							<td style="width: 25%">
 								<input id="ownerCode" name="ownerCode" th:replace="lov/owner" />
 								<input type="hidden" name="ownerId" id="ownerId" />
 							</td>
-							<td width="200">
-								<input id="skuCode" name="skuCode" class="easyui-textbox"  wms:data-options="required:true,label:'${web.label.sku}',labelPosition:'top',validType:'characterNumber'">
+							<td style="width: 25%">
+								<input id="skuCode" name="skuCode" class="easyui-textbox" style="width: 96%"  wms:data-options="required:true,label:'${web.label.sku}',labelPosition:'top',validType:['characterNumber','length[0,50]']">
 							</td>
-							<td width="200">
-								<input name="skuAlias" class="easyui-textbox"  wms:data-options="label:'${web.label.skualias}',labelPosition:'top'">
+							<td style="width: 25%">
+								<input name="skuAlias" class="easyui-textbox" style="width: 96%" wms:data-options="label:'${web.label.skualias}',labelPosition:'top'">
 							</td>
-							<td width="200">
-								<input id="barcode"  name="barcode" class="easyui-textbox"  wms:data-options="label:'${web.label.barcode}',labelPosition:'top'">
+							<td style="width: 25%">
+								<input id="barcode"  name="barcode" class="easyui-textbox" style="width: 96%"  wms:data-options="label:'${web.label.barcode}',labelPosition:'top'">
 							</td>
 						 </tr>
 						 <tr >
 						    <td colspan="2" >
-								<input name="skuDescr" class="lazy-load"  lazy-load="easyui-textbox"  wms:data-options="
-								required:true,label:'${web.label.skudescr}',labelPosition:'top',multiline:true" style="width:350px; height:80px"/>
+								<input name="skuDescr" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="
+								required:true,label:'${web.label.skudescr}',labelPosition:'top',multiline:true" style="width:96%; height:80px"/>
 							</td>
 							<td >
-								<input name="skuType" class="easyui-combobox"  wms:data-options="
+								<input name="skuType" class="easyui-combobox" style="width: 96%" wms:data-options="
 									required:false,
 									data: codelkups['SKUTYPE'],
 									valueField: 'code',
@@ -410,7 +410,7 @@
 									labelPosition: 'top'" />
 							</td>
 							<td >
-								<input id="volume" name="volume" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
+								<input id="volume" name="volume" class="lazy-load" lazy-load="easyui-numberbox" value="0" style="width: 96%" wms:data-options="
 									required:true,
 									precision:4,
 									label:'${web.label.volume}',
@@ -424,7 +424,7 @@
 								<input type="hidden" name="packId" id="packId" />
 							</td>
 							<td >
-								<input id="length" name="length" class="lazy-load" lazy-load="easyui-numberbox" value="0" wms:data-options="
+								<input id="length" name="length" class="lazy-load" lazy-load="easyui-numberbox" value="0" style="width: 96%" wms:data-options="
 								required:true,
 								precision:4,
 								label:'${web.label.length}',
@@ -436,7 +436,7 @@
 								">
 							</td>
 							<td >
-								<input id="width" name="width" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
+								<input id="width" name="width" class="lazy-load" lazy-load="easyui-numberbox" value="0" style="width: 96%"  wms:data-options="
 								required:true,
 								precision:4,
 								label:'${web.label.width}',
@@ -448,7 +448,7 @@
 								">
 							</td>
 							<td >
-								<input id="height" name="height" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
+								<input id="height" name="height" class="lazy-load" lazy-load="easyui-numberbox" value="0" style="width: 96%" wms:data-options="
 								required:true,
 								precision:4,
 								label:'${web.label.height}',
@@ -462,7 +462,7 @@
 						 </tr>
 						 <tr>
 							<td >
-								<input name="uom" class="easyui-combobox"  wms:data-options="
+								<input name="uom" class="easyui-combobox"  style="width: 96%" wms:data-options="
 									required:true,
 									data: codelkups['UOM'],
 									value: 'EA',
@@ -473,7 +473,7 @@
 									" />
 							</td>
 							<td >
-								<input id="weightGross" name="weightGross" class="lazy-load" lazy-load="easyui-numberbox" value="0" wms:data-options="
+								<input id="weightGross" name="weightGross" class="lazy-load" lazy-load="easyui-numberbox" value="0" style="width: 96%" wms:data-options="
 									required:true,
 									precision:4,
 									label:'${web.label.weightgross}',
@@ -484,7 +484,7 @@
 									}">
 							</td>
 							<td >
-								<input id="weightNet" name="weightNet" class="lazy-load" lazy-load="easyui-numberbox" value="0" wms:data-options="
+								<input id="weightNet" name="weightNet" class="lazy-load" lazy-load="easyui-numberbox" value="0" style="width: 96%" wms:data-options="
 									required:true,
 									precision:4,
 									label:'${web.label.weightnet}',
@@ -495,7 +495,7 @@
 									}">
 							</td>
 							<td >
-								<input id="weightTare" name="weightTare" class="lazy-load" lazy-load="easyui-numberbox" value="0" wms:data-options="
+								<input id="weightTare" name="weightTare" class="lazy-load" lazy-load="easyui-numberbox" value="0" style="width: 96%" wms:data-options="
 									required:true,
 									precision:4,
 									label:'${web.label.weighttare}',
@@ -505,7 +505,7 @@
 						 </tr>
 						 <tr>
 							<td colspan="4" >
-								<input class="easyui-combobox" name="active"  wms:data-options="
+								<input class="easyui-combobox" name="active" style="width: 100px" wms:data-options="
 								required:true,
 								value: 'Y',
 								data: codelkups['YESNO'],
@@ -518,11 +518,11 @@
 						 </tr>
 						</table>
 					</div>
-					<div wms:title="${web.lable.control}" style="padding-left: 50px;" >
-						<table border="0" >
+					<div wms:title="${web.lable.control}" style="padding-left: 10px;" >
+						<table border="0" width="100%">
 							<tr>
-								<td>                  
-									<input name="lotValidateCode" class="easyui-combogrid" wms:data-options="
+								<td width="33%">                  
+									<input name="lotValidateCode" class="easyui-combogrid" style="width: 96%" wms:data-options="
 										label: '${web.label.lotvalidate}',
 										labelPosition: 'top',
 										idField:'lotValidateCode',
@@ -536,18 +536,21 @@
 									    ]]
 									" />
 								</td>
-								<td colspan="2">
+								<td width="33%">
 									<input name="allocateStrategyCode" th:replace="lov/allocateStrategy" />
 									<input type="hidden" name="allocateStrategyId" id="allocateStrategyId" />
 								</td>
+								<td width="33%">
+									&nbsp;
+								</td>
 							</tr>
 							<tr>
-								<td width="200">                  
+								<td >                  
 									<input name="putawayStrategyCode" th:replace="lov/putawayStrategy" />
 									<input type="hidden" name="putawayStrategyId" id="putawayStrategyId" />
 								</td>
-								<td width="200">
-									<input id="putawayZoneCode" name="putawayZoneCode" class="lazy-load" lazy-load="easyui-combogrid" wms:data-options="
+								<td >
+									<input id="putawayZoneCode" name="putawayZoneCode" class="lazy-load" lazy-load="easyui-combogrid" style="width: 96%" wms:data-options="
 										label: '${web.label.zone}',
 										labelPosition: 'top',
 										idField:'zoneCode',
@@ -565,8 +568,8 @@
 									    ]]
 									" />
 								</td>
-								<td>
-									<input name="putawayLocationCode" class="easyui-combogrid" wms:data-options="
+								<td >
+									<input name="putawayLocationCode" class="easyui-combogrid" style="width: 96%" wms:data-options="
 										label: '${web.label.putawayLocationcode}',
 										labelPosition: 'top',
 										idField:'locationCode',
@@ -593,48 +596,48 @@
 							</tr>
 						</table>
 					</div>
-					<div wms:title="${web.lable.lotattribute}" style="padding-left: 50px;" >
-						<table border="0" >
+					<div wms:title="${web.lable.lotattribute}" style="padding-left: 10px;" >
+						<table border="0" width="100%">
 							<tr>
-								<td style="width: 200px;">                  
-									<input id="lotAttribute1" name="lotAttribute1Label" class="lazy-load" lazy-load="easyui-textbox" wms:value="${web.label.lotattribute1}"  wms:data-options="label:'${web.label.lotattribute1}',labelPosition:'top'" />
+								<td width="25%">                  
+									<input id="lotAttribute1" name="lotAttribute1Label" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:value="${web.label.lotattribute1}"  wms:data-options="label:'${web.label.lotattribute1}',labelPosition:'top'" />
 								</td>
-								<td style="width: 200px;">
-									<input id="lotAttribute4" name="lotAttribute4Label" class="lazy-load" lazy-load="easyui-textbox" wms:value="${web.label.lotattribute4}" wms:data-options="label:'${web.label.lotattribute4}',labelPosition:'top'" />
+								<td width="25%">
+									<input id="lotAttribute4" name="lotAttribute4Label" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:value="${web.label.lotattribute4}" wms:data-options="label:'${web.label.lotattribute4}',labelPosition:'top'" />
 								</td>
-								<td style="width: 200px;">
-									<input id="lotAttribute7" name="lotAttribute7Label" class="lazy-load" lazy-load="easyui-textbox" wms:value="${web.label.lotattribute7}"  wms:data-options="label:'${web.label.lotattribute7}',labelPosition:'top'" />
+								<td width="25%">
+									<input id="lotAttribute7" name="lotAttribute7Label" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:value="${web.label.lotattribute7}"  wms:data-options="label:'${web.label.lotattribute7}',labelPosition:'top'" />
 								</td>
-								<td style="width: 200px;">
-									<input id="lotAttribute10" name="lotAttribute10Label" class="lazy-load" lazy-load="easyui-textbox" wms:value="${web.label.lotattribute10}"  wms:data-options="label:'${web.label.lotattribute10}',labelPosition:'top'" />
+								<td width="25%">
+									<input id="lotAttribute10" name="lotAttribute10Label" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:value="${web.label.lotattribute10}"  wms:data-options="label:'${web.label.lotattribute10}',labelPosition:'top'" />
 								</td>
 							</tr>
 							<tr>
 								<td >
-									<input id="lotAttribute2" name="lotAttribute2Label" class="lazy-load" lazy-load="easyui-textbox" wms:value="${web.label.lotattribute2}"  wms:data-options="label:'${web.label.lotattribute2}',labelPosition:'top'" />
+									<input id="lotAttribute2" name="lotAttribute2Label" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:value="${web.label.lotattribute2}"  wms:data-options="label:'${web.label.lotattribute2}',labelPosition:'top'" />
 								</td>
 								<td>
-									<input id="lotAttribute5" name="lotAttribute5Label" class="lazy-load" lazy-load="easyui-textbox" wms:value="${web.label.lotattribute5}"  wms:data-options="label:'${web.label.lotattribute5}',labelPosition:'top'" />
+									<input id="lotAttribute5" name="lotAttribute5Label" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:value="${web.label.lotattribute5}"  wms:data-options="label:'${web.label.lotattribute5}',labelPosition:'top'" />
 								</td>
 								<td>
-									<input id="lotAttribute8" name="lotAttribute8Label" class="lazy-load" lazy-load="easyui-textbox" wms:value="${web.label.lotattribute8}"  wms:data-options="label:'${web.label.lotattribute8}',labelPosition:'top'" />
+									<input id="lotAttribute8" name="lotAttribute8Label" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:value="${web.label.lotattribute8}"  wms:data-options="label:'${web.label.lotattribute8}',labelPosition:'top'" />
 								</td>
 								<td >
-									<input id="lotAttribute11" name="lotAttribute11Label" class="lazy-load" lazy-load="easyui-textbox" wms:value="${web.label.lotattribute11}"  wms:data-options="label:'${web.label.lotattribute11}',labelPosition:'top'" />
+									<input id="lotAttribute11" name="lotAttribute11Label" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:value="${web.label.lotattribute11}"  wms:data-options="label:'${web.label.lotattribute11}',labelPosition:'top'" />
 								</td>
 							</tr>
 							<tr>
 								<td >
-									<input id="lotAttribute3" name="lotAttribute3Label" class="lazy-load" lazy-load="easyui-textbox" wms:value="${web.label.lotattribute3}"  wms:data-options="label:'${web.label.lotattribute3}',labelPosition:'top'" />
+									<input id="lotAttribute3" name="lotAttribute3Label" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:value="${web.label.lotattribute3}"  wms:data-options="label:'${web.label.lotattribute3}',labelPosition:'top'" />
 								</td>
 								<td>
-									<input id="lotAttribute6" name="lotAttribute6Label" class="lazy-load" lazy-load="easyui-textbox" wms:value="${web.label.lotattribute6}"  wms:data-options="label:'${web.label.lotattribute6}',labelPosition:'top'" />
+									<input id="lotAttribute6" name="lotAttribute6Label" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:value="${web.label.lotattribute6}"  wms:data-options="label:'${web.label.lotattribute6}',labelPosition:'top'" />
 								</td>
 								<td>
-									<input id="lotAttribute9" name="lotAttribute9Label" class="lazy-load" lazy-load="easyui-textbox" wms:value="${web.label.lotattribute9}"  wms:data-options="label:'${web.label.lotattribute9}',labelPosition:'top'" />
+									<input id="lotAttribute9" name="lotAttribute9Label" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:value="${web.label.lotattribute9}"  wms:data-options="label:'${web.label.lotattribute9}',labelPosition:'top'" />
 								</td>
 								<td >
-									<input id="lotAttribute12" name="lotAttribute12Label" class="lazy-load" lazy-load="easyui-textbox" wms:value="${web.label.lotattribute12}"  wms:data-options="label:'${web.label.lotattribute12}',labelPosition:'top'" />
+									<input id="lotAttribute12" name="lotAttribute12Label" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:value="${web.label.lotattribute12}"  wms:data-options="label:'${web.label.lotattribute12}',labelPosition:'top'" />
 								</td>
 							</tr>
 						</table>

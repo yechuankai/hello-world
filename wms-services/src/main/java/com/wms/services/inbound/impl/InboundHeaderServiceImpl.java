@@ -992,13 +992,13 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 					.companyId(header.getCompanyId())
 					.sourceBillNumber(header.getInboundNumber())
 					.build());
-			if (CollectionUtils.isEmpty(tasks)) {
-				break;
-			}
 			tasks = tasks.stream().filter(v->TaskStatusEnum.New.getCode().equals(v.getStatus())).collect(Collectors.toList());
 			tasks.forEach(t -> {
 				t.setStatus(TaskStatusEnum.Completed.getCode());
 			});
+			if (CollectionUtils.isEmpty(tasks)) {
+				break;
+			}
 			AjaxRequest<List<TaskDetailTEntity>> request = new AjaxRequest<List<TaskDetailTEntity>>(tasks);
 			request.setWarehouseId(header.getWarehouseId());
 			request.setCompanyId(header.getCompanyId());

@@ -153,15 +153,15 @@
 
 </div>
 <div id="addDiv" wms:title="${web.label.add}" style="width:400px;height:380px; display: none;">
-    <div style="width: 100%;padding-left: 50px;">
+    <div style="width: 100%;padding-left: 10px;">
         <form method="post" id="addForm" th:data-url="@{/services/inner/base/area/add}">
             <table style="width: 100%;">
                 <tr>
-                    <td>
-                        <input name="areaCode" class="easyui-textbox"
-                               wms:data-options="required:true,label:'${web.label.areacode}',labelPosition:'top',validType:'characterNumber'">
+                    <td style="width: 50%">
+                        <input name="areaCode" class="easyui-textbox" style="width: 96%"
+                               wms:data-options="required:true,label:'${web.label.areacode}',labelPosition:'top',validType:['characterNumber','length[0,50]']">
                     </td>
-                    <td style="padding-left: 30px;">
+                    <td style="width: 50%">
                         <input class="easyui-combobox" name="type" style="width: 100px;" wms:data-options="
 							required:true,
 							data: codelkups['AREATYPE'],
@@ -174,10 +174,10 @@
                 </tr>
                 <tr>
                     <td>
-                        <input name="areaDescr" class="easyui-textbox"
+                        <input name="areaDescr" class="easyui-textbox" style="width: 96%"
                                wms:data-options="required:true,label:'${web.label.descr}',labelPosition:'top'">
                     </td>
-                    <td style="padding-left: 30px;">
+                    <td>
                         <input class="easyui-combobox" name="active" style="width: 100px;" wms:data-options="
 							required:true,
 							value: 'Y',
@@ -191,9 +191,9 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <input name="remark" class="easyui-textbox"
+                        <input name="remark" class="easyui-textbox" 
                                wms:data-options="label:'${web.label.remark}',labelPosition:'top',multiline:true"
-                               style="width: 300px;height:100px;"/>
+                               style="width: 96%;height:100px;"/>
                     </td>
                 </tr>
             </table>

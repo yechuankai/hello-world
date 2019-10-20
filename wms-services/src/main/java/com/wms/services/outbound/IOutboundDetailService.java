@@ -21,6 +21,8 @@ public interface IOutboundDetailService {
 	
 	List<OutboundDetailTEntity> findByHeaderIds(OutboundDetailTEntity outbound, Set<Long> ids) throws BusinessServiceException;
 	
+	List<OutboundDetailTEntity> findByIds(OutboundDetailTEntity outbound, Set<Long> ids) throws BusinessServiceException;
+	
 	Long findMaxLine(OutboundDetailTEntity outbound) throws BusinessServiceException;
 	
 	OutboundDetailTEntity find(OutboundDetailTEntity outbound) throws BusinessServiceException;

@@ -137,6 +137,20 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 		List<OutboundDetailTEntity> outboundDetailList = outboundDetailDao.selectByExample(TExample);
 		return outboundDetailList;
 	}
+	
+	@Override
+	public List<OutboundDetailTEntity> findByIds(OutboundDetailTEntity outbound, Set<Long> ids) throws BusinessServiceException {
+		if (CollectionUtils.isEmpty(ids))
+			return Lists.newArrayList();
+		OutboundDetailTExample TExample = new OutboundDetailTExample();
+		TExample.createCriteria()
+		.andDelFlagEqualTo(YesNoEnum.No.getCode())
+		.andWarehouseIdEqualTo(outbound.getWarehouseId())
+		.andCompanyIdEqualTo(outbound.getCompanyId())
+		.andOutboundDetailIdIn(Lists.newArrayList(ids));
+		List<OutboundDetailTEntity> outboundDetailList = outboundDetailDao.selectByExample(TExample);
+		return outboundDetailList;
+	}
 
 	@Override
 	public OutboundDetailTEntity find(OutboundDetailTEntity outbound) throws BusinessServiceException {

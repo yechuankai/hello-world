@@ -99,7 +99,7 @@
 		            <th field="skuCode" width="100" wms:text="${web.label.sku}" data-options="sortable:true" >skuCode</th>
 		            <th field="days" width="100" wms:text="${web.label.days}" data-options="sortable:true" >days</th>
 		            <th field="packCode" width="100" wms:text="${web.label.pack}" data-options="sortable:true">packCode</th>
-		            <th field="uom" width="60" wms:text="${web.label.sku}" data-options="sortable:true" >uom</th>
+		            <th field="uom" width="60" wms:text="${web.label.uom}" data-options="sortable:true" >uom</th>
 		            <th field="inboundDate" width="100" wms:text="${web.label.inbounddate}" data-options="
 		            	sortable:true,
 		            	formatter: function(v){
@@ -131,13 +131,13 @@
           </table>
     </div>
 </div>
-<div id="generatorDiv" wms:title="${web.label.generrator}" style="width:500px;height:260px; display: none;">
-    <div style="width: 100%;padding-left: 50px;">
+<div id="generatorDiv" wms:title="${web.label.generrator}" style="width:400px;height:260px; display: none;">
+    <div style="width: 100%;padding-left: 10px;">
         <form method="post" id="generatorForm" th:data-url="@{/services/inner/report/billing/lease/create}">
             <table style="width: 100%;">
                 <tr>
                     <td colspan="2">
-						<input id="ownerCode" name="ownerCode" class="easyui-combogrid" style="width: 87%;" wms:data-options="
+						<input id="ownerCode" name="ownerCode" class="easyui-combogrid" style="width: 96%;" wms:data-options="
 								required:true,
 								label: '${web.label.owner}',
 								labelPosition: 'top',
@@ -145,7 +145,7 @@
     							textField:'ownerCode',
     							multiple: true,
 								url:'../../services/inner/base/owner/find',
-								params: getBaseData({active:'Y'}),
+								queryParams: getBaseData({active:'Y'}),
 							    columns:[[
 								    {field:'ownerId',hidden:true},
 								    {field:'phone1',hidden:true},
@@ -163,12 +163,12 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <input name="billingDateBegin" class="easyui-datebox"
+                    <td width="50%">
+                        <input name="billingDateBegin" class="easyui-datebox" style="width: 96%"
                            wms:data-options="required: true,label:'${web.label.billingdatebegin}',labelPosition:'top'"/>
                     </td>
-                     <td>
-                         <input name="billingDateEnd" class="easyui-datebox"
+                     <td width="50%">
+                         <input name="billingDateEnd" class="easyui-datebox" style="width: 96%"
                            wms:data-options="required: true,label:'${web.label.billingdateend}',labelPosition:'top'"/>
                     </td>
                 </tr>

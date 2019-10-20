@@ -61,7 +61,7 @@ public class SysRolePermissionServiceImpl implements ISysRolePermissionService {
 	public List<SysPermissionTEntity> findRolePermission(List<SysRoleTEntity> roles, PermissionTypeEnum permissionType) {
 
 		if (CollectionUtils.isEmpty(roles)) 
-			return null;
+			return Lists.newArrayList();
 		
 		Set<Long> ids = Sets.newHashSet();
 		for (SysRoleTEntity userRole : roles) {
@@ -82,7 +82,7 @@ public class SysRolePermissionServiceImpl implements ISysRolePermissionService {
 		}
 
 		if (CollectionUtils.isEmpty(ids)) {
-			return null;
+			return Lists.newArrayList();
 		}
 		
 		List<SysPermissionTEntity> perminssions = Lists.newArrayList();

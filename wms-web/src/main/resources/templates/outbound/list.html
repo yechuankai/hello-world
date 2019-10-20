@@ -228,7 +228,6 @@
         });
 
         $('.header-add').click(function(){
-            outboundHeaderEditable(0);
             $('#headerAddButton').show();
             $('#headerEditButton').hide();
             var panel = $(this).attr('data-addpanel');
@@ -244,6 +243,11 @@
             loadCustomerLov(null,function(data){
             	setCustomerResult(data);
             });
+          	//默认第一个选项卡
+			if ($(panel).find('.tabs-first').length > 0){
+				$(panel).find('.tabs-first > a').trigger('click');
+			}
+			outboundHeaderEditable(0);
             $('.tooltip').remove();
         });
 
@@ -333,6 +337,10 @@
         }).dialog('open');
         $(panel).find('form').form('reset');
         refreshEditHeader(headerData);
+      	//默认第一个选项卡
+		if ($(panel).find('.tabs-first').length > 0){
+			$(panel).find('.tabs-first > a').trigger('click');
+		}
         $('.tooltip').remove();
     }
 

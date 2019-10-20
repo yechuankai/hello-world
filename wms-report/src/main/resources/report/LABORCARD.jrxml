@@ -12,7 +12,6 @@
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<parameter name="host" class="java.lang.String"/>
 	<parameter name="applicationNo" class="java.lang.String">
 		<parameterDescription><![CDATA[applicationNo]]></parameterDescription>
 	</parameter>
@@ -79,7 +78,7 @@
 					<text><![CDATA[Card No.]]></text>
 				</staticText>
 				<textField>
-					<reportElement mode="Opaque" x="44" y="0" width="59" height="19" forecolor="#FFFFFF" backcolor="#11A0FE" uuid="51732d3a-454c-4824-9cce-fb4c04eea415"/>
+					<reportElement mode="Opaque" x="44" y="0" width="111" height="19" forecolor="#FFFFFF" backcolor="#11A0FE" uuid="51732d3a-454c-4824-9cce-fb4c04eea415"/>
 					<box leftPadding="5"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="8" isBold="true"/>
@@ -87,10 +86,8 @@
 					<textFieldExpression><![CDATA[$F{CARD_NO}]]></textFieldExpression>
 				</textField>
 				<image scaleImage="FillFrame">
-					<reportElement x="103" y="0" width="52" height="19" uuid="4586cb03-340e-4eac-b819-6695bbfcdde9">
-						<property name="com.jaspersoft.studio.unit.height" value="cm"/>
-					</reportElement>
-					<imageExpression><![CDATA[$P{host} + "/static/images/laborCard/diftz.png"]]></imageExpression>
+					<reportElement x="120" y="4" width="27" height="11" uuid="f9a5d6e6-e9f4-47ae-885f-2ef2300efdf1"/>
+					<imageExpression><![CDATA["report/images/logo.png"]]></imageExpression>
 				</image>
 			</band>
 		</groupFooter>
@@ -98,8 +95,8 @@
 	<background>
 		<band height="240" splitType="Stretch">
 			<image scaleImage="FillFrame">
-				<reportElement x="0" y="0" width="155" height="240" uuid="798151ae-d918-4e04-a099-952b546d14ac"/>
-				<imageExpression><![CDATA[$P{host} + "/static/images/laborCard/1.png"]]></imageExpression>
+				<reportElement x="0" y="0" width="155" height="240" uuid="d9b0df53-96c1-4e7a-82dc-3aa305b3cddc"/>
+				<imageExpression><![CDATA["report/images/LABOR.png"]]></imageExpression>
 			</image>
 		</band>
 	</background>

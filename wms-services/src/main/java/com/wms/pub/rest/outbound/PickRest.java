@@ -21,6 +21,7 @@ import com.wms.services.base.IPackService;
 import com.wms.services.base.ISkuService;
 import com.wms.services.inventory.ILotService;
 import com.wms.services.outbound.IAllocateService;
+import com.wms.services.outbound.IOutboundDetailService;
 import com.wms.services.outbound.IOutboundHeaderService;
 import com.wms.vo.InventoryOnhandVO;
 import com.wms.vo.LotLabelVO;
@@ -53,6 +54,8 @@ public class PickRest extends BaseController {
     private IAllocateQueryDao allocateQueryDao;
     @Autowired
     private IOutboundHeaderService outboundHeaderService;
+    @Autowired
+    private IOutboundDetailService outboundDetailService;
     @Autowired
 	private IPackService packService;
 	@Autowired
@@ -137,10 +140,23 @@ public class PickRest extends BaseController {
 			List<LotValidateTEntity> lotvList = lotvService.findByIds(LotValidateTEntity.builder().warehouseId(request.getWarehouseId()).companyId(request.getCompanyId()).build(), lotvIds);
 			Map<Long, LotValidateTEntity> lotvMap = lotvList.stream().collect(Collectors.toMap(LotValidateTEntity::getLotValidateId, v -> v));
 			
+			Set<Long> odIds = list.stream().map(AllocateTEntity::getSourceNumber).collect(Collectors.toSet());
+			List<OutboundDetailTEntity> odList = outboundDetailService.findByIds(OutboundDetailTEntity.builder().warehouseId(request.getWarehouseId()).companyId(request.getCompanyId()).build(), odIds);
+			Map<Long, OutboundDetailTEntity> odMap = odList.stream().collect(Collectors.toMap(OutboundDetailTEntity::getOutboundDetailId, v -> v));
+			
+			
 			List<AllocateVO> pickList = Lists.newArrayList();
 			list.forEach(al -> {
 				AllocateVO vo = new AllocateVO(al);
 				pickList.add(vo);
+				
+				//设置包装
+				OutboundDetailTEntity od = odMap.get(vo.getSourceNumber());
+				if (od != null) {
+					vo.setPackCode(od.getPackCode());
+					vo.setPackId(od.getPackId());
+					vo.setUom(od.getUom());
+				}
 				
 				//设置库位
 				LocationTEntity loc = locMap.get(vo.getLocationId());
@@ -229,8 +245,6 @@ public class PickRest extends BaseController {
 	        	if (StringUtils.isBlank(selectAll.getLpnNumber())
 	        			&& !StringUtils.isBlank(allocate.getLpnNumber()))
 	        		throw new BusinessServiceException("PickRest", "pick.lpn.different" , new Object[] {selectAll.getLpnNumber(), allocate.getLpnNumber()});
-	        	
-	        	
 	        	
 	        }else { //软分配，确认批次信息
 	        	InventoryOnhandVO onhandSelect = new InventoryOnhandVO();

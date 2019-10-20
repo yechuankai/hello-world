@@ -165,18 +165,18 @@
 				<input name="updateVersion" type="hidden">
 				<div class="lazy-load" lazy-load="easyui-tabs" style="width: 100%;height: 360px;">
 				  <div wms:title="${web.label.normal}">
-					<table style="width: 100%;padding-left: 60px;">
+					<table style="width: 100%;padding-left: 10px;">
 						<tr>
-							<td>
-								<input name="packCode" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="required:true,label:'${web.label.pack}',labelPosition:'top',validType:'characterNumber'">
+							<td style="width: 50%">
+								<input name="packCode" style="width:96%" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="required:true,label:'${web.label.pack}',labelPosition:'top',validType:['characterNumber','length[0,50]']">
 							</td>
-							<td>
-								<input name="packDescr" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="required:true,label:'${web.label.descr}',labelPosition:'top'">
+							<td style="width: 50%">
+								<input name="packDescr" style="width:96%" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="required:true,label:'${web.label.descr}',labelPosition:'top'">
 							</td>
 						</tr>
 						<tr>
 							<td>
-								<input name="uom" class="lazy-load" lazy-load="easyui-combobox"  wms:data-options="
+								<input name="uom" class="lazy-load" lazy-load="easyui-combobox" style="width:96%" wms:data-options="
 								required:true,
 								data: codelkups['UOM'],
 								valueField: 'code',
@@ -186,7 +186,7 @@
 								" />
 							</td>
 							<td>
-								<input name="qty" class="lazy-load" lazy-load="easyui-numberbox" value="1"  wms:data-options="
+								<input name="qty" class="lazy-load" lazy-load="easyui-numberbox" value="1" style="width:96%"  wms:data-options="
 									required:true,
 									label:'${web.label.quantity}',
 									labelPosition:'top',
@@ -195,7 +195,7 @@
 						</tr>
 						<tr>
 							<td>
-								<input name="uomInner" class="lazy-load" lazy-load="easyui-combobox"  wms:data-options="
+								<input name="uomInner" class="lazy-load" lazy-load="easyui-combobox" style="width:96%"  wms:data-options="
 								required:true,
 								data: codelkups['UOM'],
 								valueField: 'code',
@@ -205,7 +205,7 @@
 								" />
 							</td>
 							<td>
-								<input name="qtyInner" class="lazy-load" lazy-load="easyui-numberbox"  value="0"  wms:data-options="
+								<input name="qtyInner" class="lazy-load" lazy-load="easyui-numberbox"  value="0" style="width:96%"  wms:data-options="
 									required:true,
 									label:'${web.label.qtyInner}',
 									labelPosition:'top',
@@ -214,7 +214,7 @@
 						</tr>
 						<tr>
 							<td>
-								<input name="uomCase" class="lazy-load" lazy-load="easyui-combobox"  wms:data-options="
+								<input name="uomCase" class="lazy-load" lazy-load="easyui-combobox"  style="width:96%" wms:data-options="
 								required:true,
 								data: codelkups['UOM'],
 								valueField: 'code',
@@ -224,7 +224,7 @@
 								" />
 							</td>
 							<td>
-								<input name="qtyCase" class="lazy-load" lazy-load="easyui-numberbox"  value="0"  wms:data-options="
+								<input name="qtyCase" class="lazy-load" lazy-load="easyui-numberbox" style="width:96%" value="0"  wms:data-options="
 									required:true,
 									label:'${web.label.qtyCase}',
 									labelPosition:'top',
@@ -233,7 +233,7 @@
 						</tr>
 						<tr>
 							<td>
-								<input class="lazy-load" lazy-load="easyui-combobox" name="active"  wms:data-options="
+								<input class="lazy-load" lazy-load="easyui-combobox" name="active" style="width:96%" wms:data-options="
 								required:true,
 								value: 'Y',
 								data: codelkups['YESNO'],
@@ -244,7 +244,7 @@
 								" />
 							</td>
 							<td>
-								<input name="remark" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.remark}',labelPosition:'top'">
+								<input name="remark" class="lazy-load" lazy-load="easyui-textbox" style="width:96%" wms:data-options="label:'${web.label.remark}',labelPosition:'top'">
 							</td>
 						</tr>
 					</table>
@@ -252,8 +252,8 @@
 				<div wms:title="${web.label.pack.inner}">
 					<table style="width: 100%;padding-left: 10px;">
 						 <tr>
-							<td >
-								<input id="weightGrossInner" name="weightGrossInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
+							<td style="width: 33%;">
+								<input id="weightGrossInner" name="weightGrossInner" style="width:96%" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
 									required:true,
 									precision:4,
 									label:'${web.label.weightgross}',
@@ -264,8 +264,8 @@
 									}
 									">
 							</td>
-							<td >
-								<input id="weightNetInner" name="weightNetInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
+							<td style="width: 33%;">
+								<input id="weightNetInner" name="weightNetInner" style="width:96%" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
 									required:true,
 									precision:4,
 									label:'${web.label.weightnet}',
@@ -276,8 +276,8 @@
 									}
 									">
 							</td>
-							<td >
-								<input id="weightTareInner" name="weightTareInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
+							<td style="width: 33%;">
+								<input id="weightTareInner" name="weightTareInner" style="width:96%" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
 									required:true,
 									precision:4,
 									label:'${web.label.weighttare}',
@@ -288,7 +288,7 @@
 						 </tr>
 						  <tr>
 							<td >
-								<input id="lengthInner" name="lengthInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
+								<input id="lengthInner" name="lengthInner" style="width:96%" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
 									required:true,
 									precision:4,
 									label:'${web.label.length}',
@@ -300,7 +300,7 @@
 									">
 							</td>
 							<td >
-								<input id="widthInner" name="widthInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
+								<input id="widthInner" name="widthInner" style="width:96%" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
 									required:true,
 									precision:4,
 									label:'${web.label.width}',
@@ -312,7 +312,7 @@
 									">
 							</td>
 							<td >
-								<input id="heightInner" name="heightInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
+								<input id="heightInner" name="heightInner" style="width:96%" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
 									required:true,
 									precision:4,
 									label:'${web.label.height}',
@@ -326,7 +326,7 @@
 						 </tr>
 						 <tr>
 						 	<td >
-								<input id="volumeInner" name="volumeInner" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
+								<input id="volumeInner" name="volumeInner" style="width:96%" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
 									required:true,
 									precision:4,
 									label:'${web.label.volume}',
@@ -345,8 +345,8 @@
 				<div wms:title="${web.label.pack.case}" >
 					<table style="width: 100%;padding-left: 10px;">
 						 <tr>
-							<td >
-								<input id="weightGrossCase" name="weightGrossCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
+							<td style="width: 33%;">
+								<input id="weightGrossCase" name="weightGrossCase" style="width:96%" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
 									required:true,
 									precision:4,
 									label:'${web.label.weightgross}',
@@ -356,8 +356,8 @@
 										calculateTareWeight('Case');
 									}">
 							</td>
-							<td >
-								<input id="weightNetCase" name="weightNetCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
+							<td style="width: 33%;">
+								<input id="weightNetCase" name="weightNetCase" style="width:96%" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
 									required:true,
 									precision:4,
 									label:'${web.label.weightnet}',
@@ -367,8 +367,8 @@
 										calculateTareWeight('Case');
 									}">
 							</td>
-							<td >
-								<input id="weightTareCase" name="weightTareCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
+							<td style="width: 33%;">
+								<input id="weightTareCase" name="weightTareCase" style="width:96%" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
 									required:true,
 									precision:4,
 									label:'${web.label.weighttare}',
@@ -378,7 +378,7 @@
 						 </tr>
 						  <tr>
 							<td >
-								<input id="lengthCase" name="lengthCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
+								<input id="lengthCase" name="lengthCase" style="width:96%" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
 									required:true,
 									precision:4,
 									label:'${web.label.length}',
@@ -390,7 +390,7 @@
 									">
 							</td>
 							<td >
-								<input id="widthCase" name="widthCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
+								<input id="widthCase" name="widthCase" style="width:96%" class="lazy-load" lazy-load="easyui-numberbox" value="0"   wms:data-options="
 									required:true,
 									precision:4,
 									label:'${web.label.width}',
@@ -402,7 +402,7 @@
 									">
 							</td>
 							<td >
-								<input id="heightCase" name="heightCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
+								<input id="heightCase" name="heightCase" style="width:96%" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
 									required:true,
 									precision:4,
 									label:'${web.label.height}',
@@ -416,7 +416,7 @@
 						 </tr>
 						 <tr>
 						 	<td >
-								<input id="volumeCase" name="volumeCase" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
+								<input id="volumeCase" name="volumeCase" style="width:96%" class="lazy-load" lazy-load="easyui-numberbox" value="0"  wms:data-options="
 									required:true,
 									precision:4,
 									label:'${web.label.volume}',

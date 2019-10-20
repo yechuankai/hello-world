@@ -3,9 +3,6 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="labor_card_back" pageWidth="155" pageHeight="243" columnWidth="155" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isTitleNewPage="true" uuid="64085f18-982a-4903-a9bf-78bcad9e17d1">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DIFTZER_100"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<parameter name="host" class="java.lang.String">
-		<parameterDescription><![CDATA[host]]></parameterDescription>
-	</parameter>
 	<queryString>
 		<![CDATA[select 1 from dual]]>
 	</queryString>
@@ -15,8 +12,8 @@
 	<detail>
 		<band height="243">
 			<image scaleImage="FillFrame">
-				<reportElement x="0" y="0" width="155" height="243" uuid="43538ffa-aed3-4094-a172-ea19c2c010f7"/>
-				<imageExpression><![CDATA[$P{host} + "/static/images/laborCard/2.png"]]></imageExpression>
+				<reportElement x="0" y="0" width="155" height="243" uuid="845860fd-4231-42d1-9de5-9edd2d44a57f"/>
+				<imageExpression><![CDATA["report/images/LABOR_BACK.png"]]></imageExpression>
 			</image>
 		</band>
 	</detail>

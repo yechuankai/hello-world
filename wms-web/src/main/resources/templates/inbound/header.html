@@ -1,26 +1,26 @@
 <form id="inboundHeaderForm" th:data-url="@{/services/inner/inbound/save}" >
 	<input id="inboundHeaderId" name="inboundHeaderId" type="hidden" />
 	<div class="easyui-tabs">
-		<div wms:title="${web.label.normal}" >
+		<div wms:title="${web.label.normal}" style="padding-left: 5px;">
 			<table border="0" cellpadding="0" cellspacing="0" id="headerTab1" >
 				<tr>
 					<td width="200px">
-						<input name="inboundNumber" class="lazy-load" lazy-load="easyui-textbox" readonly="readonly"  wms:data-options="label:'${web.label.inboundnumber}',labelPosition:'top'" />
+						<input name="inboundNumber" class="lazy-load" lazy-load="easyui-textbox" readonly="readonly" style="width: 96%" wms:data-options="label:'${web.label.inboundnumber}',labelPosition:'top'" />
 					</td>
 					<td width="200px">
 						<input id="ownerCode" name="ownerCode" th:replace="lov/owner" />
 						<input type="hidden" name="ownerId" id="ownerId" />
 					</td>
 					<td width="200px">
-						<input id="sourceNumber" name="sourceNumber" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.sourcebillnumber}',labelPosition:'top'" />
+						<input id="sourceNumber" name="sourceNumber" class="lazy-load"  lazy-load="easyui-textbox" style="width: 96%" wms:data-options="label:'${web.label.sourcebillnumber}',labelPosition:'top'" />
 					</td>
 					<td width="200px">
-						<input id="referenceNumber" name="referenceNumber" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.referencenumber}',labelPosition:'top'" />
+						<input id="referenceNumber" name="referenceNumber" class="lazy-load"  lazy-load="easyui-textbox" style="width: 96%" wms:data-options="label:'${web.label.referencenumber}',labelPosition:'top'" />
 					</td>
 				</tr>
 				<tr>
 					<td >
-						<input id="type" class="lazy-load" lazy-load="easyui-combobox" name="type" wms:data-options="
+						<input id="type" class="lazy-load" lazy-load="easyui-combobox" name="type" style="width: 96%" wms:data-options="
 						data: codelkups['INBOUNDTYPE'],
 						valueField: 'code',
 						textField: 'descr',
@@ -33,15 +33,15 @@
 						<input id="supplierCode" name="supplierCode" th:replace="lov/supplier" />
 					</td>
 					<td>
-						<input id="expectedInboundDate" name="expectedInboundDate" class="lazy-load" lazy-load="easyui-datetimebox" wms:data-options="label:'${web.label.expectedinbounddate}',labelPosition:'top'" />
+						<input id="expectedInboundDate" name="expectedInboundDate" class="lazy-load" lazy-load="easyui-datetimebox" style="width: 96%" wms:data-options="label:'${web.label.expectedinbounddate}',labelPosition:'top'" />
 					</td>
 					<td rowspan="2">
-						<input id="remark" name="remark" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.remark}',labelPosition:'top',multiline:true" style="width: 300px;height:150px;" />
+						<input id="remark" name="remark" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.remark}',labelPosition:'top',multiline:true" style="width: 96%;height:150px;" />
 					</td>
 				</tr>
 				<tr>
 					<td >
-						<input class="lazy-load" lazy-load="easyui-combobox" name="status"  readonly="readonly" wms:data-options="
+						<input class="lazy-load" lazy-load="easyui-combobox" name="status"  readonly="readonly" style="width: 96%" wms:data-options="
 							data: codelkups['INBOUNDSTATUS'],
 							valueField: 'code',
 							textField: 'descr',
@@ -51,36 +51,39 @@
 							" />
 					</td>
 					<td>
-						<input id="createTime" name="createTime" readonly="readonly" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="label:'${web.label.createtime}',labelPosition:'top'" />
+						<input id="createTime" name="createTime" readonly="readonly" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:data-options="label:'${web.label.createtime}',labelPosition:'top'" />
 					</td>
 					<td>
-						<input id="inboundDate" name="inboundDate" readonly="readonly" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="label:'${web.label.inbounddate}',labelPosition:'top'" />
+						<input id="inboundDate" name="inboundDate" readonly="readonly" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:data-options="label:'${web.label.inbounddate}',labelPosition:'top'" />
 					</td>
 				</tr>
 			</table>
 		</div>
 		<div wms:title="${web.label.transport}" >
-			<table border="0" >
+			<table border="0" width="100%">
 				<tr>
 					<td width="200px">
 						<input id="carrierCode" name="carrierCode" th:replace="lov/carrier" />
 					</td>
-					<td>
-                		 <input id="carrierContainerNumber" name="containerNumber" class="lazy-load" lazy-load="easyui-textbox" wms:data-options="label:'${web.label.outbound.containernumber}',labelPosition:'top'" />
+					<td width="200px">
+                		 <input id="carrierContainerNumber" name="containerNumber" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:data-options="label:'${web.label.outbound.containernumber}',labelPosition:'top'" />
                 	</td>
-                	<td>
+                	<td width="200px">
+                		&nbsp;
+                	</td>
+                	<td width="200px">
                 		&nbsp;
                 	</td>
 				</tr>
 				<tr>
 					<td width="200px">
-						<input id="carrierCarNumber" name="carrierCarNumber" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.carriercarnumber}',labelPosition:'top'" />
+						<input id="carrierCarNumber" name="carrierCarNumber" class="lazy-load"  lazy-load="easyui-textbox" style="width: 96%" wms:data-options="label:'${web.label.carriercarnumber}',labelPosition:'top'" />
 					</td>
 					<td width="200px">
-						<input id="carrierDriver" name="carrierDriver" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.carrierdriver}',labelPosition:'top'" />
+						<input id="carrierDriver" name="carrierDriver" class="lazy-load"  lazy-load="easyui-textbox" style="width: 96%" wms:data-options="label:'${web.label.carrierdriver}',labelPosition:'top'" />
 					</td>
 					<td width="200px">
-						<input id="carrierDriverPhone" name="carrierDriverPhone" class="lazy-load"  lazy-load="easyui-textbox" wms:data-options="label:'${web.label.driverphone}',labelPosition:'top'" />
+						<input id="carrierDriverPhone" name="carrierDriverPhone" class="lazy-load"  lazy-load="easyui-textbox" style="width: 96%" wms:data-options="label:'${web.label.driverphone}',labelPosition:'top'" />
 					</td>
 				</tr>
 				<tr>

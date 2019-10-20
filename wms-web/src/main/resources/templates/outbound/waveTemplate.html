@@ -93,12 +93,12 @@
 	            <table style="width: 100%;">
 	                <tr>
 	                    <td>
-	                        <input name="buildCode"  class="easyui-textbox" readonly="readonly" wms:data-options="
+	                        <input name="buildCode"  class="easyui-textbox" readonly="readonly" style="width:96%" wms:data-options="
 	                        	label:'${web.label.templateNumber}',
 	                        	labelPosition:'top'">
 	                    </td>
 	                    <td>
-	                        <input name="waveType"  class="easyui-combobox" wms:data-options="
+	                        <input name="waveType"  class="easyui-combobox" style="width:96%" wms:data-options="
 	                        	data: codelkups['WAVETYPE'],
 	                        	valueField: 'code',
 	                        	textField: 'descr',
@@ -125,7 +125,7 @@
 								"/>
 	                    </td>
 	                    <td colspan="2">
-	                         <input id="owners" style="width: 96%" data-type="list" data-table="HEADER" data-property="OwnerCode" data-expression="In"  class="easyui-textbox commit"  wms:data-options="label:'${web.label.owner.contains}',labelPosition:'top',
+	                         <input id="owners" data-type="list" data-table="HEADER" data-property="OwnerCode" data-expression="In"  class="easyui-textbox commit" style="width:96%"  wms:data-options="label:'${web.label.owner.contains}',labelPosition:'top',
 								columns:[[
 									{field:'ck',checkbox:true},
 									{field:'ownerCode',title:'${web.label.owner}',width:80},
@@ -135,7 +135,7 @@
 	                </tr>
 	                <tr>
 	                    <td colspan="2">
-	                       <input id="customers" style="width: 96%" data-type="list" data-table="HEADER" data-property="CustomerCode" data-expression="In" class="easyui-textbox commit"  wms:data-options="label:'${web.label.customer.contains}',labelPosition:'top',
+	                       <input id="customers" data-type="list" data-table="HEADER" data-property="CustomerCode" data-expression="In" class="easyui-textbox commit" style="width:96%"  wms:data-options="label:'${web.label.customer.contains}',labelPosition:'top',
 								columns:[[
 									{field:'ck',checkbox:true},
 									{field:'customerCode',title:'${web.label.customercode}',width:80},
@@ -143,7 +143,7 @@
 								]]">
 	                    </td>
 	                     <td colspan="2">
-	                    	<input id="carriers" style="width: 96%" class="easyui-textbox commit" data-type="list" data-table="HEADER" data-property="CarrierCode" data-expression="In" wms:data-options="label:'${web.label.carrier.contains}',labelPosition:'top',
+	                    	<input id="carriers" class="easyui-textbox commit" data-type="list" data-table="HEADER" data-property="CarrierCode" data-expression="In" style="width:96%"  wms:data-options="label:'${web.label.carrier.contains}',labelPosition:'top',
 		                    	columns:[[
 									{field:'ck',checkbox:true},
 									{field:'carrierCode',title:'${web.label.carrier}',width:80},
@@ -153,7 +153,7 @@
 	                </tr>
 	                <tr>
 	                    <td colspan="4">
-	                        <input id="skus" style="width: 96%" data-type="list" data-table="AGGREGATE" data-property="SkuCode" data-expression="In" class="easyui-textbox commit"  wms:data-options="label:'${web.label.skucodein}',labelPosition:'top',
+	                        <input id="skus" data-type="list" data-table="AGGREGATE" data-property="SkuCode" data-expression="In" class="easyui-textbox commit" style="width:96%"  wms:data-options="label:'${web.label.skucodein}',labelPosition:'top',
 								columns:[[
 									{field:'ck',checkbox:true},
 									{field:'ownerCode',title:'${web.label.owner}',width:80},
@@ -163,17 +163,17 @@
 	                    </td>
 	                </tr>
 	                <tr>
-	                	<td>
-	                        <input id="expectedOutboundDateBegin" data-type="date" data-table="HEADER" data-property="ExpectedOutboundDate" data-expression="GreaterThanOrEqualTo" class="easyui-datebox commit"  wms:data-options="label:'${web.label.expectedoutbounddate.between}',labelPosition:'top'">
+	                	<td width="25%">
+	                        <input id="expectedOutboundDateBegin" data-type="date" data-table="HEADER" data-property="ExpectedOutboundDate" data-expression="GreaterThanOrEqualTo" class="easyui-datebox commit" style="width:96%"  wms:data-options="label:'${web.label.expectedoutbounddate.between}',labelPosition:'top'">
 	                    </td>
-	                    <td>
-	                        <input id="expectedOutboundDateEnd" data-type="date" data-table="HEADER" data-property="ExpectedOutboundDate" data-expression="LessThanOrEqualTo" class="easyui-datebox commit" wms:data-options="label:' ',labelPosition:'top'">
+	                    <td width="25%">
+	                        <input id="expectedOutboundDateEnd" data-type="date" data-table="HEADER" data-property="ExpectedOutboundDate" data-expression="LessThanOrEqualTo" class="easyui-datebox commit" style="width:96%"  wms:data-options="label:' ',labelPosition:'top'">
 	                    </td>
-	                    <td>
-	                        <input id="quantityOrderBegin" data-type="decimal" data-table="AGGREGATE" value="0" data-property="QuantityOrder" data-expression="GreaterThanOrEqualTo" class="easyui-numberbox commit"  wms:data-options="label:'${web.label.quantityorder.between}',labelPosition:'top'">
+	                    <td width="25%">
+	                        <input id="quantityOrderBegin" data-type="decimal" data-table="AGGREGATE" value="0" data-property="QuantityOrder" data-expression="GreaterThanOrEqualTo" class="easyui-numberbox commit" style="width:96%"  wms:data-options="label:'${web.label.quantityorder.between}',labelPosition:'top'">
 	                    </td>
-	                    <td>
-	                        <input id="quantityOrderEnd" data-type="decimal" data-table="AGGREGATE" value="9999999999" data-property="QuantityOrder" data-expression="LessThanOrEqualTo" class="easyui-numberbox commit"  wms:data-options="label:' ',labelPosition:'top'">
+	                    <td width="25%">
+	                        <input id="quantityOrderEnd" data-type="decimal" data-table="AGGREGATE" value="9999999999" data-property="QuantityOrder" data-expression="LessThanOrEqualTo" class="easyui-numberbox commit" style="width:96%"  wms:data-options="label:' ',labelPosition:'top'">
 	                    </td>
 	                </tr>
 	            </table>

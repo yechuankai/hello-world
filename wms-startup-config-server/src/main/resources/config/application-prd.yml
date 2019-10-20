@@ -27,7 +27,8 @@ spring:
   maxOpenPreparedStatements: 20
  data:
   mongodb:
-   uri: mongodb://10.88.18.20:27017
+#   uri: mongodb://10.88.18.20:27017
+   uri: mongodb://10.88.18.20:27017,10.88.18.21:27017/?slaveOk=true&replicaSet=prd_set&write=1&readPreference=secondaryPreferred
    database: WMS
         #spring.data.mongodb.uri=mongodb://name:pass@localhost:27017/dbname
 

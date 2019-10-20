@@ -11,7 +11,7 @@
             <form id="searchForm" data-table="#lotValidateData">
                 <div style="margin-bottom:10px">
                     <input name="lotValidateCode" class="easyui-textbox"
-                           wms:data-options="label:'${web.label.owner}',labelPosition:'top'">
+                           wms:data-options="label:'${web.label.lotvalidatecode}',labelPosition:'top'">
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="lotValidateDescr" class="easyui-textbox"
@@ -412,12 +412,12 @@
         <form method="post" id="addForm" th:data-url="@{/services/inner/base/lotValidate/add}">
             <table style="width: 100%;">
                 <tr>
-                    <td colspan="2">
+                    <td style="width: 50%;" colspan="2">
                         <input name="lotValidateId" id="lotValidateId" type="hidden" />
-                        <input id="lotValidateCode" name="lotValidateCode" class="easyui-textbox" wms:data-options="required:true,label:'${web.label.lotvalidatecode}',labelPosition:'top',validType:'characterNumber'">
+                        <input id="lotValidateCode" name="lotValidateCode" class="easyui-textbox" style="width: 96%" wms:data-options="required:true,label:'${web.label.lotvalidatecode}',labelPosition:'top',validType:['characterNumber','length[0,50]']">
                     </td>
-                    <td colspan="2">
-                        <input id="lotValidateDescr" name="lotValidateDescr" class="easyui-textbox"  wms:data-options="required:true,label:'${web.label.descr}',labelPosition:'top'">
+                    <td style="width: 50%;" colspan="2">
+                        <input id="lotValidateDescr" name="lotValidateDescr" class="easyui-textbox" style="width: 96%" wms:data-options="required:true,label:'${web.label.descr}',labelPosition:'top'">
                     </td>
 
                 </tr>

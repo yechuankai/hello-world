@@ -173,19 +173,19 @@
     </div>
 </div>
 <div id="addDiv" wms:title="${web.label.add}" style="width:450px;height:450px; display: none;">
-    <div style="width: 100%;padding-left: 50px;">
+    <div style="width: 100%;padding-left: 10px;">
         <form method="post" id="addForm" th:data-url="@{/services/inner/base/location/add}">
             <table style="width: 100%;">
                 <tr>
-                    <td >
-                        <input id="locationCode" name="locationCode" class="easyui-textbox" wms:data-options="
+                    <td style="width: 50%">
+                        <input id="locationCode" name="locationCode" class="easyui-textbox" style="width: 96%;" wms:data-options="
                         	required:true,
                         	label:'${web.label.location}',
                         	labelPosition:'top',
-                        	validType:'characterNumber'">
+                        	validType:['characterNumber','length[0,50]']">
                     </td>
-                    <td >
-                        <input class="easyui-combobox" name="locationType"  style="width: 100px;"  wms:data-options="
+                    <td style="width: 50%">
+                        <input class="easyui-combobox" name="locationType"  style="width: 96%;"  wms:data-options="
 							required:true,
 							data: codelkups['LOCATIONTYPE'],
 							valueField: 'code',
@@ -197,7 +197,8 @@
                 </tr>
                 <tr>
                     <td >
-                        <input id="locationLogical" name="locationLogical" class="easyui-textbox" wms:data-options="required:true,label:'${web.label.location.locationLogical}',labelPosition:'top',validType:'characterNumber'">
+                        <input id="locationLogical" name="locationLogical" class="easyui-textbox" style="width: 96%;"
+                        wms:data-options="required:true,label:'${web.label.location.locationLogical}',labelPosition:'top',validType:['characterNumber','length[0,50]']">
                     </td>
                     <td >
                        <input name="zonecode" th:replace="lov/zone" />
@@ -206,18 +207,18 @@
                 </tr>
                 <tr>
                     <td>
-                        <input name="x" class="easyui-numberbox" wms:data-options="required:true,label:'X',value: '0',labelPosition:'top'">
+                        <input name="x" class="easyui-numberbox" style="width: 96%;" wms:data-options="required:true,label:'X',value: '0',labelPosition:'top'">
                     </td>
                     <td >
-                        <input name="y" class="easyui-numberbox" style="width: 132px;" wms:data-options="required:true,value: '0',label:'Y',labelPosition:'top'">
+                        <input name="y" class="easyui-numberbox" style="width: 96%;" wms:data-options="required:true,value: '0',label:'Y',labelPosition:'top'">
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input name="z" class="easyui-numberbox" wms:data-options="required:true,label:'Z',value: '0',labelPosition:'top'">
+                        <input name="z" class="easyui-numberbox" style="width: 96%;" wms:data-options="required:true,label:'Z',value: '0',labelPosition:'top'">
                     </td>
                     <td >
-                        <input class="easyui-combobox" name="skuMix"  wms:data-options="
+                        <input class="easyui-combobox" name="skuMix" style="width: 96%;" wms:data-options="
 							required:true,
 							value: 'Y',
 							data: codelkups['YESNO'],
@@ -230,7 +231,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <input class="easyui-combobox" name="lotMix"  wms:data-options="
+                        <input class="easyui-combobox" name="lotMix" style="width: 96%;" wms:data-options="
 							required:true,
 							value: 'Y',
 							data: codelkups['YESNO'],
@@ -241,7 +242,7 @@
 							" />
                     </td>
                     <td >
-                        <input class="easyui-combobox" name="active"  wms:data-options="
+                        <input class="easyui-combobox" name="active" style="width: 96%;" wms:data-options="
 							required:true,
 							value: 'Y',
 							data: codelkups['YESNO'],

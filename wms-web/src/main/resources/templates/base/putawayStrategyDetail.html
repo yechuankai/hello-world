@@ -257,15 +257,15 @@
     </table>
 </div>
 <div id="detailAddDiv" wms:title="${web.label.detail.add}" style="width:500px;height:480px; display: none;">
-    <div style="width: 100%;padding-left: 50px;">
+    <div style="width: 100%;padding-left: 10px;">
         <form method="post" id="addDetailForm" th:data-url="@{/services/inner/base/putawayStrategyDetail/add}">
             <table style="width: 100%;">
                 <tr>
-                    <td>
-                        <input id="lineNumber" name="lineNumber" class="easyui-numberbox" wms:data-options="required:true,label:'${web.label.linenumber}',labelPosition:'top'">
+                    <td style="width: 50%">
+                        <input id="lineNumber" name="lineNumber" class="easyui-numberbox" style="width: 96%;" wms:data-options="required:true,label:'${web.label.linenumber}',labelPosition:'top'">
                     </td>
-                    <td style="padding-left: 20px;">
-                        <input class="easyui-combobox" name="type" style="width: 150px;" wms:data-options="
+                    <td style="width: 50%">
+                        <input class="easyui-combobox" name="type" style="width: 96%;" wms:data-options="
 							required:true,
 							panelWidth: 300,
 							data: codelkups['PUTAWAYTYPE'],
@@ -280,8 +280,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <input id="fromLocationCode" name="fromLocationCode" class="easyui-combogrid" wms:data-options="
+                    <td >
+                        <input id="fromLocationCode" name="fromLocationCode" readonly="readonly" class="easyui-combogrid" style="width: 96%;" wms:data-options="
 								label: '${web.label.fromlocationcode}',
 								labelPosition: 'top',
 								idField:'locationCode',
@@ -317,8 +317,8 @@
                                 }
 							" />
                     </td>
-                    <td style="padding-left: 20px;">
-                        <input id="fromZoneCode" name="fromZoneCode" class="easyui-combogrid" wms:data-options="
+                    <td >
+                        <input id="fromZoneCode" name="fromZoneCode" class="easyui-combogrid" readonly="readonly" style="width: 96%;" wms:data-options="
 								label: '${web.label.fromzonecode}',
 								labelPosition: 'top',
 								idField:'zoneCode',
@@ -356,7 +356,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <input id="toLocationCode" name="toLocationCode" class="easyui-combogrid" wms:data-options="
+                        <input id="toLocationCode" name="toLocationCode" class="easyui-combogrid" readonly="readonly" style="width: 96%;" wms:data-options="
 								label: '${web.label.tolocationcode}',
 								labelPosition: 'top',
 								idField:'locationCode',
@@ -392,8 +392,8 @@
                                 }
 							" />
                     </td>
-                    <td style="padding-left: 20px;">
-                        <input id="toZoneCode" name="toZoneCode" class="easyui-combogrid" wms:data-options="
+                    <td >
+                        <input id="toZoneCode" name="toZoneCode" class="easyui-combogrid" readonly="readonly" style="width: 96%;" wms:data-options="
 								label: '${web.label.tozonecode}',
 								labelPosition: 'top',
 								idField:'zoneCode',
@@ -431,7 +431,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <input class="easyui-combobox" name="sortRule" style="width: 150px;" wms:data-options="
+                        <input class="easyui-combobox" name="sortRule" style="width: 96%;" wms:data-options="
 							required:true,
 							data: codelkups['PUTAWAYSORT'],
 							valueField: 'code',
@@ -440,8 +440,8 @@
 							labelPosition: 'top'
 							"/>
                     </td>
-                    <td style="padding-left: 20px;">
-                        <input class="easyui-combobox" name="active" style="width: 100px;" wms:data-options="
+                    <td>
+                        <input class="easyui-combobox" name="active" style="width: 96%;" wms:data-options="
 							required:true,
 							value: 'Y',
 							data: codelkups['YESNO'],
@@ -456,7 +456,7 @@
                     <td colspan="2">
                         <input name="remark" class="easyui-textbox"
                                wms:data-options="label:'${web.label.remark}',labelPosition:'top',multiline:true"
-                               style="width: 400px;height:100px;"/>
+                               style="width: 96%;height:100px;"/>
                     </td>
                 </tr>
             </table>
@@ -531,6 +531,11 @@
     		$('#fromZoneCode').combogrid({readonly:true});
     		$('#toLocationCode').combogrid({readonly:false});
     		$('#toZoneCode').combogrid({readonly:true});
+    	}else{
+    		$('#fromLocationCode').combogrid({readonly:false});
+    		$('#fromZoneCode').combogrid({readonly:false});
+    		$('#toLocationCode').combogrid({readonly:false});
+    		$('#toZoneCode').combogrid({readonly:false});
     	}
     }
 </script>

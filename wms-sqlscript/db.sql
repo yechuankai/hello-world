@@ -3775,16 +3775,6 @@ alter table TASK_DETAIL_T modify STATUS default '10';
 
 
 alter table ALLOCATE_T modify QUANTITY_ALLOCATED default 0;
-alter table DATA_PRODUCT_MGT modify PRO_LENGTH default 0;
-alter table DATA_PRODUCT_MGT modify PRO_WIDTH default 0;
-alter table DATA_PRODUCT_MGT modify PRO_HIGH default 0;
-alter table DATA_PRODUCT_MGT modify PRO_GROSS default 0;
-alter table DATA_PRODUCT_MGT modify PRO_NET default 0;
-alter table DATA_PRODUCT_MGT modify PRO_VOL default 0;
-alter table DATA_PRODUCT_MGT modify PRO_PRICE default 0;
-alter table DATA_STOCK_MGT modify LOC_LENGTH default 0;
-alter table DATA_STOCK_MGT modify LOC_WIDTH default 0;
-alter table DATA_STOCK_MGT modify LOC_HIGHT default 0;
 alter table INBOUND_CANCEL_DETAIL_T modify QUANTITY_CANCEL default 0;
 alter table INBOUND_DETAIL_T modify UOM_QUANTITY default 0;
 alter table INBOUND_DETAIL_T modify QUANTITY_EXPECTED default 0;
@@ -3934,7 +3924,7 @@ comment on column supplier_t.email2 is '邮箱2';
 
 alter table owner_t rename column email to email1;
 alter table owner_t add (email2 varchar2(100));
-comment on column carrier_t.email2 is '邮箱2';
+comment on column owner_t.email2 is '邮箱2';
 
 alter table carrier_t rename column email to email1;
 alter table carrier_t add (email2 varchar2(100));
@@ -4015,6 +4005,18 @@ comment on column TASK_DETAIL_T.weight_net is '净重';
 comment on column TASK_DETAIL_T.weight_tare is '皮重';
 comment on column TASK_DETAIL_T.user_company is '装卸公司';
 
+
+--月台
+alter table INBOUND_HEADER_T ADD (
+platform_code varchar2(50)
+);
+comment on column INBOUND_HEADER_T.platform_code is '月台';
+
+--月台
+alter table OUTBOUND_HEADER_T ADD (
+platform_code varchar2(50)
+);
+comment on column OUTBOUND_HEADER_T.platform_code is '月台';
 
 
 

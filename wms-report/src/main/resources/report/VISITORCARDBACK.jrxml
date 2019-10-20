@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PRIVATECARCARD" pageWidth="155" pageHeight="243" columnWidth="155" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isTitleNewPage="true" uuid="64085f18-982a-4903-a9bf-78bcad9e17d1">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DIFTZER_100"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<style name="backupcolor" isDefault="true" mode="Opaque" forecolor="#FFFFFF" backcolor="#84C225"/>
+	<queryString>
+		<![CDATA[select 1 from dual]]>
+	</queryString>
+	<field name="1" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="1"/>
+	</field>
+	<background>
+		<band height="243">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="0" y="30" width="155" height="213" uuid="d68e278a-0d08-4b53-bc0b-d2c08855150d"/>
+				<box topPadding="0" leftPadding="10" bottomPadding="0" rightPadding="10"/>
+				<textElement verticalAlignment="Top">
+					<font size="8.5"/>
+				</textElement>
+				<text><![CDATA[Note:
+1. The card holder acknowledges and abides by the DIFTZ Management Regulations and the Rules of Safety Induction released in www.diftz.dj.
+2. Keep the card safely and for your own use.
+3. Carry the card with you in and out of DIFTZ.
+4. Re-apply and pay the cost at the Service Center if the card is lost or damaged.
+5. Return the card to the Service Center when you pick up a card.
+6. Customer Service Hotline 
+    +253 2127 0004
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="155" height="30" uuid="3c4a84d5-f762-4806-99f6-15155e688887"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Visitor Card]]></text>
+			</staticText>
+		</band>
+	</background>
+	<detail>
+		<band height="243">
+			<image>
+				<reportElement x="98" y="206" width="50" height="30" uuid="3357a28a-2323-4003-8fda-aa97a5029818"/>
+				<imageExpression><![CDATA["report/images/logo.png"]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+</jasperReport>

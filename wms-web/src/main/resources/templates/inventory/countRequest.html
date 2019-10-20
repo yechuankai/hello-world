@@ -138,18 +138,18 @@
         </table>
     </div>
 </div>
-<div id="addDiv" wms:title="${web.label.add}" style="width:550px;height:620px; display: none;">
-    <div style="width: 100%;padding-left: 50px;">
+<div id="addDiv" wms:title="${web.label.add}" style="width:700px;height:600px; display: none;">
+    <div style="width: 100%;padding-left: 10px;">
         <form method="post" id="addForm" th:data-url="@{/services/inner/inventory/inventoryCount/addRequest}">
             <input type="hidden" name="inventoryCountRequestId" />
             <input type="hidden" name="updateVersion" />
             <table style="width: 100%;">
                 <tr>
-                    <td>
-                        <input name="requestNumber" readonly="readonly" class="easyui-textbox" style="width: 120px;" wms:data-options="label:'${web.label.requestnumber}',labelPosition:'top'">
+                    <td width="25%">
+                        <input name="requestNumber" readonly="readonly" class="easyui-textbox" style="width: 96%;" wms:data-options="label:'${web.label.requestnumber}',labelPosition:'top'">
                     </td>
-                    <td style="padding-left: 15px;">
-                        <input class="easyui-combobox" name="quantityShowFlag" style="width: 100px;" wms:data-options="
+                    <td width="25%">
+                        <input class="easyui-combobox" name="quantityShowFlag" style="width: 96%;" wms:data-options="
 						data: codelkups['YESNO'],
 						valueField: 'code',
 						textField: 'descr',
@@ -159,8 +159,8 @@
 						required: true
 						">
                     </td>
-                    <td colspan="2">
-                    	<input id="ownerCode" name="ownerCode" class="lazy-load" lazy-load="easyui-combogrid" wms:data-options="
+                    <td width="25%">
+                    	<input id="ownerCode" name="ownerCode" class="lazy-load" lazy-load="easyui-combogrid" style="width: 96%;" wms:data-options="
 								label: '${web.label.owner}',
 								labelPosition: 'top',
 								idField:'ownerCode',
@@ -175,56 +175,55 @@
 							    ]]
 							" />
                     </td>
-                </tr>
-                <tr>
-                    <td colspan="4">
-                        <input name="requestDescr" style="width: 450px;" class="easyui-textbox"  wms:data-options="label:'${web.label.descr}',labelPosition:'top',required: true">
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input id="fromZoneCode" name="fromZoneCode"  class="easyui-textbox" value="0"  wms:data-options="label:'${web.label.startzone}',labelPosition:'top'">
-                    </td>
-                    <td></td>
-                    <td colspan="2">
-                        <input id="toZoneCode" name="toZoneCode"  class="easyui-textbox" value="ZZZZZZZZZZ"  wms:data-options="label:'${web.label.endzone}',labelPosition:'top'">
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input id="fromLocationCode" name="fromLocationCode"  class="easyui-textbox" value="0"  wms:data-options="label:'${web.label.startloc}',labelPosition:'top'">
-                    </td>
-                    <td></td>
-                    <td colspan="2">
-                        <input id="toLocationCode" name="toLocationCode"  class="easyui-textbox" value="ZZZZZZZZZZ"  wms:data-options="label:'${web.label.endloc}',labelPosition:'top'">
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input id="fromSkuCode" name="fromSkuCode"  class="easyui-textbox" value="0"  wms:data-options="label:'${web.label.startsku}',labelPosition:'top'">
-                    </td>
-                    <td></td>
-                    <td colspan="2">
-                        <input id="toSkuCode" name="toSkuCode"  class="easyui-textbox" value="ZZZZZZZZZZ"  wms:data-options="label:'${web.label.endsku}',labelPosition:'top'">
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input id="fromLpnNumber" name="fromLpnNumber"  class="easyui-textbox"  wms:data-options="label:'${web.label.startlpn}',labelPosition:'top'">
-                    </td>
-                    <td></td>
-                    <td colspan="2">
-                        <input id="toLpnNumber" name="toLpnNumber"  class="easyui-textbox" wms:data-options="label:'${web.label.endlpn}',labelPosition:'top'">
+                    <td width="25%">
+                    	&nbsp;
                     </td>
                 </tr>
                 <tr>
                     <td colspan="4">
-                        <input name="skuCodeIn" class="easyui-textbox" style="width: 450px;"  wms:data-options="label:'${web.label.skucodein}',labelPosition:'top'">
+                        <input name="requestDescr" style="width: 96%;" class="easyui-textbox"  wms:data-options="label:'${web.label.descr}',labelPosition:'top',required: true">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input id="fromZoneCode" name="fromZoneCode"  class="easyui-textbox" value="0" style="width: 96%;" wms:data-options="label:'${web.label.startzone}',labelPosition:'top'">
+                    </td>
+                    <td colspan="2">
+                        <input id="toZoneCode" name="toZoneCode"  class="easyui-textbox" value="ZZZZZZZZZZ" style="width: 96%;" wms:data-options="label:'${web.label.endzone}',labelPosition:'top'">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input id="fromLocationCode" name="fromLocationCode"  class="easyui-textbox" value="0" style="width: 96%;" wms:data-options="label:'${web.label.startloc}',labelPosition:'top'">
+                    </td>
+                    <td colspan="2">
+                        <input id="toLocationCode" name="toLocationCode"  class="easyui-textbox" value="ZZZZZZZZZZ" style="width: 96%;" wms:data-options="label:'${web.label.endloc}',labelPosition:'top'">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input id="fromSkuCode" name="fromSkuCode"  class="easyui-textbox" value="0" style="width: 96%;" wms:data-options="label:'${web.label.startsku}',labelPosition:'top'">
+                    </td>
+                    <td colspan="2">
+                        <input id="toSkuCode" name="toSkuCode"  class="easyui-textbox" value="ZZZZZZZZZZ" style="width: 96%;" wms:data-options="label:'${web.label.endsku}',labelPosition:'top'">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input id="fromLpnNumber" name="fromLpnNumber"  class="easyui-textbox" style="width: 96%;" wms:data-options="label:'${web.label.startlpn}',labelPosition:'top'">
+                    </td>
+                    <td colspan="2">
+                        <input id="toLpnNumber" name="toLpnNumber"  class="easyui-textbox" style="width: 96%;" wms:data-options="label:'${web.label.endlpn}',labelPosition:'top'">
                     </td>
                 </tr>
                 <tr>
                     <td colspan="4">
-                        <input name="lpnNumberIn" class="easyui-textbox" style="width: 450px;"  wms:data-options="label:'${web.label.lpnnumberin}',labelPosition:'top'">
+                        <input name="skuCodeIn" class="easyui-textbox" style="width: 96%;"  wms:data-options="label:'${web.label.skucodein}',labelPosition:'top'">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <input name="lpnNumberIn" class="easyui-textbox" style="width: 96%;"  wms:data-options="label:'${web.label.lpnnumberin}',labelPosition:'top'">
                     </td>
                 </tr>
             </table>

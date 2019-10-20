@@ -149,33 +149,22 @@
     </div>
 </div>
 <div id="addDiv" wms:title="${web.label.add}" style="width:400px;height:380px; display: none;">
-    <div style="width: 100%;padding-left: 50px;">
+    <div style="width: 100%;padding-left: 10px;">
         <form method="post" id="addForm" th:data-url="@{/services/inner/base/allocateStrategy/add}">
             <table style="width: 100%;">
                 <tr>
-                    <td>
-                        <input name="allocateStrategyCode" class="easyui-textbox"
-                               wms:data-options="required:true,label:'${web.label.allocatestrategycode}',labelPosition:'top',validType:'characterNumber'">
+                    <td style="width: 50%">
+                        <input name="allocateStrategyCode" class="easyui-textbox" style="width: 96%"
+                               wms:data-options="required:true,label:'${web.label.allocatestrategycode}',labelPosition:'top',validType:['characterNumber','length[0,50]']">
                     </td>
-                    <td>
-                        <input name="allocateStrategyDescr" class="easyui-textbox"
+                    <td style="width: 50%">
+                        <input name="allocateStrategyDescr" class="easyui-textbox" style="width: 96%"
                                wms:data-options="required:true,label:'${web.label.descr}',labelPosition:'top'">
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input class="easyui-combobox" name="active" style="width: 100px;" wms:data-options="
-							required:true,
-							value: 'Y',
-							data: codelkups['YESNO'],
-							valueField: 'code',
-							textField: 'descr',
-							label: '${web.label.active}',
-							labelPosition: 'top'
-							"/>
-                    </td>
-                    <td style="padding-left: 30px;">
-                        <input class="easyui-combobox" name="allocateStrategyType" style="width: 100px;" wms:data-options="
+                        <input class="easyui-combobox" name="allocateStrategyType" style="width: 96%" wms:data-options="
 							required:true,
 							value: '10',
 							data: codelkups['ALLOCATESTRATEGYTYPE'],
@@ -185,12 +174,23 @@
 							labelPosition: 'top'
 							"/>
                     </td>
+                    <td>
+                        <input class="easyui-combobox" name="active" style="width: 96%" wms:data-options="
+							required:true,
+							value: 'Y',
+							data: codelkups['YESNO'],
+							valueField: 'code',
+							textField: 'descr',
+							label: '${web.label.active}',
+							labelPosition: 'top'
+							"/>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2">
                         <input name="remark" class="easyui-textbox"
                                wms:data-options="label:'${web.label.remark}',labelPosition:'top',multiline:true"
-                               style="width: 300px;height:100px;"/>
+                               style="width: 96%;height:100px;"/>
                     </td>
                 </tr>
             </table>

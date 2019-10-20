@@ -107,14 +107,14 @@
         <input name="outboundDetailId" type="hidden"/>
         <div class="lazy-load" lazy-load="easyui-tabs">
             <div wms:title="${web.label.normal}">
-                <table border="0" cellpadding="0" cellspacing="0">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
                     <tr>
                         <td width="200px">
-                            <input name="lineNumber" id="lineNumber" class="lazy-load" lazy-load="easyui-textbox"
+                            <input name="lineNumber" id="lineNumber" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%"
                                    wms:data-options="label:'${web.label.linenumber}',labelPosition:'top',required:true"/>
                         </td>
                         <td width="200px">
-                            <input id="sourceLineNumber" name="sourceLineNumber" class="lazy-load"
+                            <input id="sourceLineNumber" name="sourceLineNumber" class="lazy-load" style="width: 96%"
                                    lazy-load="easyui-textbox"
                                    wms:data-options="label:'${web.label.sourcelinenumber}',labelPosition:'top'"/>
                         </td>
@@ -123,7 +123,7 @@
                             <input id="allocateStrategyId" name="allocateStrategyId" type="hidden"/>
                         </td>
                         <td width="200px">
-
+							&nbsp;
                         </td>
                     </tr>
                     <tr>
@@ -132,13 +132,12 @@
                             <input type="hidden" name="skuId" id="skuId"/>
                         </td>
                         <td>
-                            <input name="skuAlias" id="skuAlias" class="lazy-load" lazy-load="easyui-textbox"
+                            <input name="skuAlias" id="skuAlias" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%"
                                    wms:data-options="label:'${web.label.skualias}',labelPosition:'top'"/>
                         </td>
                         <td colspan="2">
-                            <input name="skuDescr" id="skuDescr" class="lazy-load" lazy-load="easyui-textbox"
-                                   wms:data-options="label:'${web.label.skudescr}',labelPosition:'top'"
-                                   style="width: 300px;"/>
+                            <input name="skuDescr" id="skuDescr" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%"
+                                   wms:data-options="label:'${web.label.skudescr}',labelPosition:'top'"/>
                         </td>
                     </tr>
                     <tr>
@@ -147,11 +146,11 @@
                             <input type="hidden" name="packId" id="packId"/>
                         </td>
                         <td>
-                        	<input name="uom" id="uom" class="lazy-load" lazy-load="easyui-combobox"
+                        	<input name="uom" id="uom" class="lazy-load" lazy-load="easyui-combobox" style="width: 96%"
                                    wms:data-options="label:'${web.label.uom}',labelPosition:'top',required:true,panelHeight:100"/>
                         </td>
                         <td>
-                            <input id="uomQuantityExpected" name="uomQuantityExpected" class="lazy-load"
+                            <input id="uomQuantityExpected" name="uomQuantityExpected" class="lazy-load" style="width: 96%"
                                    lazy-load="easyui-numberbox" value="0"
                                    wms:data-options="label:'${web.label.quantityexpected}',labelPosition:'top',required:true,precision:4"/>
                         </td>
@@ -165,44 +164,44 @@
                 <table border="0" >
                     <tr>
                         <td width="200px">
-                            <input id="lotAttribute1" name="lotAttribute1" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute1}',labelPosition:'top'" />
+                            <input id="lotAttribute1" name="lotAttribute1" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:data-options="label:'${web.label.lotattribute1}',labelPosition:'top'" />
                         </td>
                         <td width="200px">
-                            <input id="lotAttribute4" name="lotAttribute4" class="lazy-load" lazy-load="easyui-datebox"  wms:data-options="label:'${web.label.lotattribute4}',labelPosition:'top'" />
+                            <input id="lotAttribute4" name="lotAttribute4" class="lazy-load" lazy-load="easyui-datebox" style="width: 96%" wms:data-options="label:'${web.label.lotattribute4}',labelPosition:'top'" />
                         </td>
                         <td width="200px">
-                            <input id="lotAttribute7" name="lotAttribute7" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute7}',labelPosition:'top'" />
+                            <input id="lotAttribute7" name="lotAttribute7" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:data-options="label:'${web.label.lotattribute7}',labelPosition:'top'" />
                         </td>
                         <td width="200px">
-                            <input id="lotAttribute10" name="lotAttribute10" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute10}',labelPosition:'top'" />
+                            <input id="lotAttribute10" name="lotAttribute10" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:data-options="label:'${web.label.lotattribute10}',labelPosition:'top'" />
                         </td>
                     </tr>
                     <tr>
                         <td >
-                            <input id="lotAttribute2" name="lotAttribute2" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute2}',labelPosition:'top'" />
+                            <input id="lotAttribute2" name="lotAttribute2" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:data-options="label:'${web.label.lotattribute2}',labelPosition:'top'" />
                         </td>
                         <td>
-                            <input id="lotAttribute5" name="lotAttribute5" class="lazy-load" lazy-load="easyui-datebox"  wms:data-options="label:'${web.label.lotattribute5}',labelPosition:'top'" />
+                            <input id="lotAttribute5" name="lotAttribute5" class="lazy-load" lazy-load="easyui-datebox" style="width: 96%" wms:data-options="label:'${web.label.lotattribute5}',labelPosition:'top'" />
                         </td>
                         <td>
-                            <input id="lotAttribute8" name="lotAttribute8" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute8}',labelPosition:'top'" />
+                            <input id="lotAttribute8" name="lotAttribute8" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:data-options="label:'${web.label.lotattribute8}',labelPosition:'top'" />
                         </td>
-                        <td width="200px">
-                            <input id="lotAttribute11" name="lotAttribute11" class="lazy-load" lazy-load="easyui-datebox"  wms:data-options="label:'${web.label.lotattribute11}',labelPosition:'top'" />
+                        <td>
+                            <input id="lotAttribute11" name="lotAttribute11" class="lazy-load" lazy-load="easyui-datebox" style="width: 96%" wms:data-options="label:'${web.label.lotattribute11}',labelPosition:'top'" />
                         </td>
                     </tr>
                     <tr>
                         <td >
-                            <input id="lotAttribute3" name="lotAttribute3" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute3}',labelPosition:'top'" />
+                            <input id="lotAttribute3" name="lotAttribute3" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:data-options="label:'${web.label.lotattribute3}',labelPosition:'top'" />
                         </td>
                         <td>
-                            <input id="lotAttribute6" name="lotAttribute6" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute6}',labelPosition:'top'" />
+                            <input id="lotAttribute6" name="lotAttribute6" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:data-options="label:'${web.label.lotattribute6}',labelPosition:'top'" />
                         </td>
                         <td>
-                            <input id="lotAttribute9" name="lotAttribute9" class="lazy-load" lazy-load="easyui-textbox"  wms:data-options="label:'${web.label.lotattribute9}',labelPosition:'top'" />
+                            <input id="lotAttribute9" name="lotAttribute9" class="lazy-load" lazy-load="easyui-textbox" style="width: 96%" wms:data-options="label:'${web.label.lotattribute9}',labelPosition:'top'" />
                         </td>
                         <td width="200px">
-                            <input id="lotAttribute12" name="lotAttribute12" class="lazy-load" lazy-load="easyui-datebox"  wms:data-options="label:'${web.label.lotattribute12}',labelPosition:'top'" />
+                            <input id="lotAttribute12" name="lotAttribute12" class="lazy-load" lazy-load="easyui-datebox" style="width: 96%" wms:data-options="label:'${web.label.lotattribute12}',labelPosition:'top'" />
                         </td>
                     </tr>
                 </table>
@@ -251,6 +250,12 @@
                 fix: true,
                 buttons: '#detailAddButton'
             }).dialog('open');
+         	 //新增所有都可编辑
+            outboundDetailEditable(0);
+          	//默认第一个选项卡
+			if ($(panel).find('.tabs-first').length > 0){
+				$(panel).find('.tabs-first > a').trigger('click');
+			}
         });
         
       	//复制行
@@ -359,9 +364,11 @@
                 .combo('setText', data.packCode);
             setSkuResult(data);
             setPackUom({packId: data.packId});
+            
+            $("#allocateStrategyCode").combo('setValue', data.allocateStrategyCode)
+			.combo('setText', data.putawayStrategyCode);
+			$("#allocateStrategyId").val(data.allocateStrategyId);
         });
-        //新增所有都可编辑
-        outboundDetailEditable(0);
         loadAllocateStrategyLov();
         return maxNumber;
     }
@@ -448,7 +455,13 @@
 		setSkuData({skuId: copyData.skuId});
 		setPackUom({packId: copyData.packId});
 		setSkuLotLabel(skuData);
+		//新增所有都可编辑
+        outboundDetailEditable(0);
 		$(from).form('load', copyData);
+		//默认第一个选项卡
+		if ($(panel).find('.tabs-first').length > 0){
+			$(panel).find('.tabs-first > a').trigger('click');
+		}
 		$('.tooltip').remove();
 	}
 
@@ -484,6 +497,10 @@
             var uomQuantityExpected=$('#uomQuantityExpected').numberbox('getValue');
             $('#uomQuantityOrder').numberbox('setValue',uomQuantityExpected);
         }
+      	//默认第一个选项卡
+		if ($(panel).find('.tabs-first').length > 0){
+			$(panel).find('.tabs-first > a').trigger('click');
+		}
         $('.tooltip').remove();
     }
 
@@ -496,7 +513,7 @@
             $('#skuCode').combogrid({readonly:false});
             $('#skuAlias').textbox({readonly:false});
             $('#skuDescr').textbox({readonly:false});
-            $('#packId').combogrid({readonly:false});
+            $('#packCode').combogrid({readonly:false});
             $('#uomQuantityExpected').numberbox({readonly:false});
             $('#uom').combobox({readonly:false});
             lotAttributeEditable(false);
@@ -508,7 +525,7 @@
             $('#skuCode').combogrid({readonly:true});
             $('#skuAlias').textbox({readonly:true});
             $('#skuDescr').textbox({readonly:true});
-            $('#packId').combogrid({readonly:false});
+            $('#packCode').combogrid({readonly:false});
             $('#uomQuantityExpected').numberbox({readonly:false});
             $('#uom').combobox({readonly:false});
             lotAttributeEditable(false);
@@ -520,7 +537,7 @@
             $('#skuCode').combogrid({readonly:true});
             $('#skuAlias').textbox({readonly:true});
             $('#skuDescr').textbox({readonly:true});
-            $('#packId').combogrid({readonly:true});
+            $('#packCode').combogrid({readonly:true});
             $('#uomQuantityExpected').numberbox({readonly:false});
             $('#uom').combobox({readonly:true});
             lotAttributeEditable(true);
@@ -531,7 +548,7 @@
             $('#skuCode').combogrid({readonly:true});
             $('#skuAlias').textbox({readonly:true});
             $('#skuDescr').textbox({readonly:true});
-            $('#packId').combogrid({readonly:true});
+            $('#packCode').combogrid({readonly:true});
             $('#uomQuantityExpected').numberbox({readonly:true});
             $('#uom').combobox({readonly:true});
             lotAttributeEditable(true);

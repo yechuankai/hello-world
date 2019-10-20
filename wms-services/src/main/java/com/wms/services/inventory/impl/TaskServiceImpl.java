@@ -377,7 +377,9 @@ public class TaskServiceImpl implements ITaskService {
         .andSourceBillNumberEqualTo(task.getSourceBillNumber());
 
 	    List<TaskDetailTEntity> selectTask = taskdetailTDao.selectByExample(example);
-		
+		if (CollectionUtils.isEmpty(selectTask)) {
+			return Lists.newArrayList();
+		}
 		return selectTask;
 	}
 

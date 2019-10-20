@@ -182,12 +182,12 @@
         <form method="post" id="addForm" th:data-url="@{/services/inner/appointment/add}">
             <table style="width: 100%;">
                 <tr>
-                    <td>
-                        <input name="appointmentCode" class="easyui-textbox" readonly="readonly"
+                    <td width="33%">
+                        <input name="appointmentCode" class="easyui-textbox" readonly="readonly" style="width: 96%"
                                wms:data-options="label:'${web.label.appointment}',labelPosition:'top'">
                     </td>
-                    <td>
-                        <input class="easyui-combobox" id="type" name="type" wms:data-options="
+                    <td width="33%">
+                        <input class="easyui-combobox" id="type" name="type" style="width: 96%" wms:data-options="
 							required: true,
 							panelHeight: 200,
 							data: codelkups['APPOINTMENTTYPE'],
@@ -204,8 +204,8 @@
 							}
 						" />
                     </td>
-                    <td>
-                    	<input class="easyui-combobox" name="status" wms:data-options="
+                    <td width="33%">
+                    	<input class="easyui-combobox" name="status" style="width: 96%" wms:data-options="
 							data: codelkups['APPOINTMENTSTATUS'],
 							value: '10',
 							valueField: 'code',
@@ -217,7 +217,7 @@
                 </tr>
                 <tr>
                 	<td>
-                        <input id="sourceBillNumber" name="sourceBillNumber" class="easyui-combogrid"
+                        <input id="sourceBillNumber" name="sourceBillNumber" style="width: 96%" class="easyui-combogrid"
                            wms:data-options="
                            		required: true, 
                            		label:'${web.label.sourcebillnumber}',
@@ -248,7 +248,7 @@
                            		">
                     </td>
                     <td>
-                        <input class="easyui-combogrid" name="platformCode"  wms:data-options="
+                        <input class="easyui-combogrid" name="platformCode" style="width: 96%" wms:data-options="
 								required: true,
 								labelPosition: 'top',
 								label: '${web.label.platform}',
@@ -271,25 +271,28 @@
                 </tr>
                 <tr>
                     <td>
-                        <input id="expectedDate" name="expectedDate" class="easyui-datetimebox" 
+                        <input id="expectedDate" name="expectedDate" style="width: 96%" class="easyui-datetimebox" 
                                wms:data-options="required: true, label:'${web.label.expecteddate}',labelPosition:'top'">
                     </td>
-                    <td colspan="2">
-                         <input name="arrivalDate" class="easyui-datetimebox" 
+                    <td>
+                         <input name="arrivalDate" class="easyui-datetimebox"  style="width: 96%"
                                wms:data-options="label:'${web.label.arrivaldate}',labelPosition:'top'">
+                    </td>
+                    <td>
+                    	&nbsp;
                     </td>
                 </tr>
                 <tr>
                 	<td>
-                		<input name="carNumber" class="easyui-textbox"
+                		<input name="carNumber" class="easyui-textbox" style="width: 96%"
                            wms:data-options="label:'${web.label.carriercarnumber}',labelPosition:'top'">
                 	</td>
                 	<td>
-                		<input name="carDriver" class="easyui-textbox"
+                		<input name="carDriver" class="easyui-textbox" style="width: 96%"
                            wms:data-options="label:'${web.label.carrierdriver}',labelPosition:'top'">
                 	</td>
                 	<td>
-                		<input name="carDriverPhone" class="easyui-textbox"
+                		<input name="carDriverPhone" class="easyui-textbox" style="width: 96%"
                            wms:data-options="label:'${web.label.driverphone}',labelPosition:'top'">
                 	</td>
                 </tr>

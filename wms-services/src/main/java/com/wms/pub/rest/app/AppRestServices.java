@@ -18,6 +18,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.wms.common.core.controller.BaseController;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.response.AjaxResult;
+import com.wms.common.exception.user.UserPasswordNotMatchException;
 import com.wms.entity.auto.SysUserTEntity;
 import com.wms.services.app.IAppUserRestService;
 import com.wms.vo.PermissionVO;
@@ -57,8 +58,11 @@ public class AppRestServices extends BaseController{
 			SysUserTEntity paramUser = request.getData();
 			UserVO result = appUserPermService.appLogin(paramUser);;
 			return success(result);
+		}catch(UserPasswordNotMatchException e) {
+			logger.error(e.getMessage(), e);
+			return fail(e.getMessage());
 		}catch (Exception e) {
-			logger.error("AppLogin Fail:", e);
+			logger.error(e.getMessage(), e);
 			return fail(e.getMessage());
 		}
 	}
