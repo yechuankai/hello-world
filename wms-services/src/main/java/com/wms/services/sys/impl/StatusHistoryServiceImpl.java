@@ -2,6 +2,7 @@ package com.wms.services.sys.impl;
 
 import com.wms.common.enums.YesNoEnum;
 import com.wms.common.exception.BusinessServiceException;
+import com.wms.common.utils.StringUtils;
 import com.wms.common.utils.key.KeyUtils;
 import com.wms.dao.auto.IStatusHistoryTDao;
 import com.wms.dao.example.StatusHistoryTExample;
@@ -43,6 +44,25 @@ public class StatusHistoryServiceImpl implements IStatusHistoryService {
 		.andCompanyIdEqualTo(statusHistory.getCompanyId())
 		//.andWarehouseIdEqualTo(statusHistory.getWarehouseId())
 		.andSourceNumberEqualTo(statusHistory.getSourceNumber());
+		
+		//按主键升序
+		example.orderBy(StatusHistoryTEntity.Column.historyId.getValue());
+		
+		return statusHistoryDao.selectByExample(example);
+	}
+
+	@Override
+	public List<StatusHistoryTEntity> findByNotice1(StatusHistoryTEntity statusHistory)
+			throws BusinessServiceException {
+		StatusHistoryTExample example = new StatusHistoryTExample();
+		StatusHistoryTExample.Criteria criteria = example.createCriteria();
+		criteria.andDelFlagEqualTo(YesNoEnum.No.getCode())
+		.andCompanyIdEqualTo(statusHistory.getCompanyId())
+		.andNotice1EqualTo(statusHistory.getNotice1());
+		
+		if (StringUtils.isNotEmpty(statusHistory.getType())) {
+			criteria.andTypeEqualTo(statusHistory.getType());
+		}
 		
 		//按主键升序
 		example.orderBy(StatusHistoryTEntity.Column.historyId.getValue());

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="REGULARBACK" pageWidth="155" pageHeight="243" columnWidth="155" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isTitleNewPage="true" uuid="64085f18-982a-4903-a9bf-78bcad9e17d1">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DIFTZER_100"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="WMS"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.report.description" value=""/>
 	<style name="backupcolor" isDefault="true" mode="Opaque" forecolor="#FFFFFF" backcolor="#0093DD">
@@ -31,7 +31,7 @@
 		<band height="243">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
-				<reportElement x="0" y="30" width="155" height="213" uuid="d68e278a-0d08-4b53-bc0b-d2c08855150d"/>
+				<reportElement x="0" y="28" width="155" height="215" uuid="d68e278a-0d08-4b53-bc0b-d2c08855150d"/>
 				<box topPadding="0" leftPadding="10" bottomPadding="0" rightPadding="10"/>
 				<textElement verticalAlignment="Top">
 					<font size="8.5"/>
@@ -47,7 +47,7 @@
 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="0" width="155" height="30" uuid="3c4a84d5-f762-4806-99f6-15155e688887"/>
+				<reportElement x="0" y="0" width="155" height="28" uuid="3c4a84d5-f762-4806-99f6-15155e688887"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -58,7 +58,7 @@
 	<detail>
 		<band height="243">
 			<image>
-				<reportElement x="98" y="206" width="50" height="30" uuid="3357a28a-2323-4003-8fda-aa97a5029818"/>
+				<reportElement x="100" y="213" width="50" height="30" uuid="3357a28a-2323-4003-8fda-aa97a5029818"/>
 				<imageExpression><![CDATA["report/images/logo.png"]]></imageExpression>
 			</image>
 		</band>

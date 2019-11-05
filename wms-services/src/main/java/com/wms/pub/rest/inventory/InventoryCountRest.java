@@ -24,17 +24,20 @@ import com.wms.common.core.domain.response.PageResult;
 import com.wms.common.enums.CountStatusEnum;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.common.utils.StringUtils;
+import com.wms.common.utils.bean.BeanUtils;
 import com.wms.entity.auto.InventoryCountDetailTEntity;
 import com.wms.entity.auto.InventoryCountHeaderTEntity;
+import com.wms.entity.auto.InventoryCountRequestTEntity;
 import com.wms.entity.auto.InventoryOnhandTEntity;
 import com.wms.entity.auto.LocationTEntity;
 import com.wms.entity.auto.ZoneTEntity;
 import com.wms.services.base.ILocationService;
-import com.wms.services.base.IZoneService;
 import com.wms.services.inventory.IInventoryCountDetailService;
 import com.wms.services.inventory.IInventoryCountHeaderService;
+import com.wms.services.inventory.IInventoryCountRequestService;
 import com.wms.services.inventory.IInventoryService;
 import com.wms.vo.InventoryCountDetailVO;
+import com.wms.vo.InventoryCountHeaderVO;
 
 @RestController("publicInventoryCountRest")
 @RequestMapping("/services/public/inventory/count")
@@ -48,10 +51,12 @@ public class InventoryCountRest extends BaseController  {
 	private ILocationService locationService;
 	@Autowired
 	private IInventoryService inventoryService;
+	@Autowired
+	private IInventoryCountRequestService requestService;
 
 	
 	@RequestMapping("getCount")
-	public AjaxResult<InventoryCountHeaderTEntity> getCount(@RequestBody String req){
+	public AjaxResult<InventoryCountHeaderVO> getCount(@RequestBody String req){
 		AjaxRequest<InventoryCountHeaderTEntity> request = ajaxRequest(req, new TypeReference<AjaxRequest<InventoryCountHeaderTEntity>>() {});
 		try {
 			InventoryCountHeaderTEntity count = request.getData();
@@ -62,7 +67,18 @@ public class InventoryCountRest extends BaseController  {
 					|| CountStatusEnum.Post.getCode().equals(selectHeader.getStatus()))
 				throw new BusinessServiceException("InventoryCountRest", "count.status.not.process" , new Object[] {selectHeader.getCountNumber()});
 			
-			return success(selectHeader);
+			InventoryCountRequestTEntity requestTEntity = requestService.find(InventoryCountRequestTEntity.builder()
+																				.warehouseId(request.getWarehouseId())
+																				.companyId(request.getCompanyId())
+																				.inventoryCountRequestId(selectHeader.getInventoryCountRequestId())
+																				.build());
+			if (null == requestTEntity) 
+				throw new BusinessServiceException("InventoryCountRest", "count.not.exists" , new Object[] {selectHeader.getCountNumber()});
+			
+			InventoryCountHeaderVO countHeaderVO = new InventoryCountHeaderVO();
+			BeanUtils.copyBeanProp(countHeaderVO, selectHeader, Boolean.FALSE);
+			countHeaderVO.setQuantityShowFlag(requestTEntity.getQuantityShowFlag());
+			return success(countHeaderVO);
 		} catch (Exception e) {
 			return fail(e.getMessage());
 		}
@@ -106,7 +122,8 @@ public class InventoryCountRest extends BaseController  {
 			final Set<Long> _locIdSet = locIds;
 			Map<String, InventoryCountDetailTEntity> locationCountMap = Maps.newHashMap();
 			selectDetail.forEach(cd -> {
-				if (!_locIdSet.contains(cd.getLocationId())) {
+				if (StringUtils.isNotEmpty(countDetail.getZoneCode()) 
+						&& !_locIdSet.contains(cd.getLocationId())) {
 					return;
 				}
 				
@@ -139,11 +156,11 @@ public class InventoryCountRest extends BaseController  {
 			countDetail.setCompanyId(request.getCompanyId());
 			
 			if (StringUtils.isEmpty(countDetail.getLocationCode())) {
-				throw new BusinessServiceException("InventoryCountRest", "sku.isnull", null);
+				throw new BusinessServiceException("InventoryCountRest", "inventory.locationcode.isnull", null);
 			}
 			
 			if (StringUtils.isEmpty(countDetail.getSkuCode())) {
-				throw new BusinessServiceException("InventoryCountRest", "inventory.locationcode.isnull", null);
+				throw new BusinessServiceException("InventoryCountRest", "sku.isnull", null);
 			}
 			
 			//获取所有盘点明细

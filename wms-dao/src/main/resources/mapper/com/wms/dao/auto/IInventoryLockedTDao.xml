@@ -3,7 +3,6 @@
 <mapper namespace="com.wms.dao.auto.IInventoryLockedTDao">
   <resultMap id="BaseResultMap" type="com.wms.entity.auto.InventoryLockedTEntity">
     <id column="INVENTORY_LOCKED_ID" jdbcType="DECIMAL" property="inventoryLockedId" />
-    <result column="INBOUND_LOCKED_ID" jdbcType="DECIMAL" property="inboundLockedId" />
     <result column="INVENTORY_ONHAND_ID" jdbcType="DECIMAL" property="inventoryOnhandId" />
     <result column="QUANTITY_LOCKED" jdbcType="DECIMAL" property="quantityLocked" />
     <result column="LOCK_FLAG" jdbcType="CHAR" property="lockFlag" />
@@ -115,9 +114,9 @@
     </where >
   </sql>
   <sql id="Base_Column_List">
-    INVENTORY_LOCKED_ID, INBOUND_LOCKED_ID, INVENTORY_ONHAND_ID, QUANTITY_LOCKED, LOCK_FLAG, 
-    REASON, REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, 
-    UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
+    INVENTORY_LOCKED_ID, INVENTORY_ONHAND_ID, QUANTITY_LOCKED, LOCK_FLAG, REASON, REMARK, 
+    COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
+    UPDATE_VERSION, DESCRIPTION
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.InventoryLockedTExample" resultMap="BaseResultMap">
     select
@@ -140,27 +139,24 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.wms.entity.auto.InventoryLockedTEntity">
-    insert into INVENTORY_LOCKED_T (INVENTORY_LOCKED_ID, INBOUND_LOCKED_ID, 
-      INVENTORY_ONHAND_ID, QUANTITY_LOCKED, LOCK_FLAG, 
-      REASON, REMARK, COMPANY_ID, 
-      WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
-      CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
-      UPDATE_VERSION, DESCRIPTION)
-    values (#{inventoryLockedId,jdbcType=DECIMAL}, #{inboundLockedId,jdbcType=DECIMAL}, 
-      #{inventoryOnhandId,jdbcType=DECIMAL}, #{quantityLocked,jdbcType=DECIMAL}, #{lockFlag,jdbcType=CHAR}, 
-      #{reason,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, 
-      #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR})
+    insert into INVENTORY_LOCKED_T (INVENTORY_LOCKED_ID, INVENTORY_ONHAND_ID, 
+      QUANTITY_LOCKED, LOCK_FLAG, REASON, 
+      REMARK, COMPANY_ID, WAREHOUSE_ID, 
+      DEL_FLAG, CREATE_BY, CREATE_TIME, 
+      UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, 
+      DESCRIPTION)
+    values (#{inventoryLockedId,jdbcType=DECIMAL}, #{inventoryOnhandId,jdbcType=DECIMAL}, 
+      #{quantityLocked,jdbcType=DECIMAL}, #{lockFlag,jdbcType=CHAR}, #{reason,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, 
+      #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, 
+      #{description,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.InventoryLockedTEntity">
     insert into INVENTORY_LOCKED_T
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="inventoryLockedId != null">
         INVENTORY_LOCKED_ID,
-      </if>
-      <if test="inboundLockedId != null">
-        INBOUND_LOCKED_ID,
       </if>
       <if test="inventoryOnhandId != null">
         INVENTORY_ONHAND_ID,
@@ -208,9 +204,6 @@
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="inventoryLockedId != null">
         #{inventoryLockedId,jdbcType=DECIMAL},
-      </if>
-      <if test="inboundLockedId != null">
-        #{inboundLockedId,jdbcType=DECIMAL},
       </if>
       <if test="inventoryOnhandId != null">
         #{inventoryOnhandId,jdbcType=DECIMAL},
@@ -268,9 +261,6 @@
       <if test="record.inventoryLockedId != null">
         INVENTORY_LOCKED_ID = #{record.inventoryLockedId,jdbcType=DECIMAL},
       </if>
-      <if test="record.inboundLockedId != null">
-        INBOUND_LOCKED_ID = #{record.inboundLockedId,jdbcType=DECIMAL},
-      </if>
       <if test="record.inventoryOnhandId != null">
         INVENTORY_ONHAND_ID = #{record.inventoryOnhandId,jdbcType=DECIMAL},
       </if>
@@ -321,7 +311,6 @@
   <update id="updateByExample" parameterType="map">
     update INVENTORY_LOCKED_T
     set INVENTORY_LOCKED_ID = #{record.inventoryLockedId,jdbcType=DECIMAL},
-      INBOUND_LOCKED_ID = #{record.inboundLockedId,jdbcType=DECIMAL},
       INVENTORY_ONHAND_ID = #{record.inventoryOnhandId,jdbcType=DECIMAL},
       QUANTITY_LOCKED = #{record.quantityLocked,jdbcType=DECIMAL},
       LOCK_FLAG = #{record.lockFlag,jdbcType=CHAR},
@@ -439,7 +428,6 @@
     update INVENTORY_LOCKED_T
     set UPDATE_VERSION = UPDATE_VERSION + 1,
     INVENTORY_LOCKED_ID = #{record.inventoryLockedId,jdbcType=DECIMAL}, 
-    INBOUND_LOCKED_ID = #{record.inboundLockedId,jdbcType=DECIMAL}, 
     INVENTORY_ONHAND_ID = #{record.inventoryOnhandId,jdbcType=DECIMAL}, 
     QUANTITY_LOCKED = #{record.quantityLocked,jdbcType=DECIMAL}, 
     LOCK_FLAG = #{record.lockFlag,jdbcType=CHAR}, 
@@ -469,9 +457,6 @@
         UPDATE_VERSION = UPDATE_VERSION + 1,
         <if test="record.inventoryLockedId != null">
           INVENTORY_LOCKED_ID = #{record.inventoryLockedId,jdbcType=DECIMAL},
-        </if>
-        <if test="record.inboundLockedId != null">
-          INBOUND_LOCKED_ID = #{record.inboundLockedId,jdbcType=DECIMAL},
         </if>
         <if test="record.inventoryOnhandId != null">
           INVENTORY_ONHAND_ID = #{record.inventoryOnhandId,jdbcType=DECIMAL},

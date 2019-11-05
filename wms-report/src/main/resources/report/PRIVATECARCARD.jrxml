@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PRIVATECARCARDBACK" pageWidth="155" pageHeight="240" columnWidth="155" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5a1d5ead-fe31-4d19-838e-b53e77c1c471">
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PRIVATECARCARD" pageWidth="155" pageHeight="240" columnWidth="155" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5a1d5ead-fe31-4d19-838e-b53e77c1c471">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DIFTZER_100"/>
 	<property name="com.jaspersoft.studio.unit." value="cm"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
@@ -31,9 +31,9 @@
        DPSP.CARD_INFO_VEHICLE_LIGHT_LIST T
        INNER JOIN UUMS.COMPANY C ON C.COMPANY_ID = T.COMPANY_ID
   WHERE 
-       T.Application_No = $P{applicationNo}
+       T.Seq_No = $P{applicationNo}
   ORDER BY 
-        T.Application_No]]>
+        T.Seq_No]]>
 	</queryString>
 	<field name="APPLICATION_NO" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="APPLICATION_NO"/>

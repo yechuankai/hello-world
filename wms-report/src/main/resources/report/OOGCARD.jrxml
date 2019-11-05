@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OOGCARD" pageWidth="155" pageHeight="240" columnWidth="155" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5a1d5ead-fe31-4d19-838e-b53e77c1c471">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="WMS"/>
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<style name="font" isDefault="true" mode="Opaque" forecolor="#FCFCFC" backcolor="#79593A"/>
+	<parameter name="logicCardNo" class="java.lang.String">
+		<parameterDescription><![CDATA[logicCardNo]]></parameterDescription>
+	</parameter>
+	<parameter name="applicationNo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[
+SELECT 
+       T.Application_No,
+       CASE T.VEHICLE_TYPE 
+         WHEN 'OM' THEN 'Outdoor Material Handling Equipment'
+         WHEN 'IM' THEN 'Inhouse Material Handling Equipment'
+         WHEN 'CM' THEN 'Construction Vehicle'
+         ELSE '---' END TYPE,
+       $P{logicCardNo} Card_NO,
+       ' ' Remark
+  FROM 
+       CCLP_ERP.OOG_CARD_INFO T
+  WHERE 
+       T.APPLICATION_NO = $P{applicationNo}
+  ORDER BY 
+        T.APPLICATION_NO]]>
+	</queryString>
+	<field name="APPLICATION_NO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="APPLICATION_NO"/>
+	</field>
+	<field name="TYPE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TYPE"/>
+	</field>
+	<field name="CARD_NO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="CARD_NO"/>
+	</field>
+	<field name="REMARK" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="REMARK"/>
+	</field>
+	<background>
+		<band height="240">
+			<image scaleImage="FillFrame">
+				<reportElement x="0" y="20" width="155" height="220" uuid="9909c25f-f913-4518-a235-678bece031a8"/>
+				<imageExpression><![CDATA["report/images/OOG.png"]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<detail>
+		<band height="240" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement mode="Opaque" x="46" y="220" width="109" height="20" uuid="ab2524ff-faf7-44ed-9f03-d930d8205072"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{logicCardNo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="220" width="46" height="20" uuid="f6eefc42-1510-48c0-a4a5-91cfd38142ed"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Card No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="155" height="40" uuid="d7309bd5-5b48-4709-9e9f-ff76a9e51f9d"/>
+				<box bottomPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIFTZ OOG Lane]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Transparent" x="0" y="40" width="155" height="180" uuid="204023cf-8beb-4407-b419-228e64a95347"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{TYPE}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="97" y="180" width="50" height="40" uuid="747e588d-d828-4528-b5e6-5d972d7762cb"/>
+				<imageExpression><![CDATA["report/images/logo.png"]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+</jasperReport>

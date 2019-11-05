@@ -652,6 +652,7 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 				.companyId(request.getCompanyId())
 				.createBy(request.getUserName())
 				.updateBy(request.getUserName())
+				.type(StatusHistoryTypeEnum.Inbound.getCode())
 				.createTime(new Date())
 				.updateTime(new Date())
 				.operTime(new Date())

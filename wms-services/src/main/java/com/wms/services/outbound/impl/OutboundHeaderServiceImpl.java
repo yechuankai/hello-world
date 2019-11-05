@@ -23,6 +23,7 @@ import com.wms.common.enums.OperatorTypeEnum;
 import com.wms.common.enums.OrderNumberTypeEnum;
 import com.wms.common.enums.OutboundProcessStatusEnum;
 import com.wms.common.enums.OutboundStatusEnum;
+import com.wms.common.enums.StatusHistoryTypeEnum;
 import com.wms.common.enums.TaskStatusEnum;
 import com.wms.common.enums.TaskTypeEnum;
 import com.wms.common.enums.YesNoEnum;
@@ -769,6 +770,7 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 				.companyId(request.getCompanyId())
 				.createBy(request.getUserName())
 				.updateBy(request.getUserName())
+				.type(StatusHistoryTypeEnum.Outbound.getCode())
 				.createTime(new Date())
 				.updateTime(new Date())
 				.operTime(new Date())

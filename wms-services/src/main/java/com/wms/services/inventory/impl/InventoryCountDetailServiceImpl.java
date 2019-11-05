@@ -307,7 +307,7 @@ public class InventoryCountDetailServiceImpl implements IInventoryCountDetailSer
 			TExampleCriteria.andLocationCodeEqualTo(detail.getLocationCode());
 		}
 		if (StringUtils.isNotEmpty(detail.getSkuCode())) {
-			TExampleCriteria.andLocationCodeEqualTo(detail.getSkuCode());
+			TExampleCriteria.andSkuCodeEqualTo(detail.getSkuCode());
 		}
 		
 		

@@ -1,6 +1,7 @@
 package com.wms.pub.rest.inbound;
 
 import com.alibaba.fastjson.TypeReference;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.wms.common.constants.TableNameConstants;
@@ -90,15 +91,15 @@ public class InboundRest extends BaseController {
         List<InboundDetailVO> list = null;
         try {
             PageRequest pageRequest = pageRequest(req);
-            PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
+            Page page = PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
             list = inboundDetailService.find(pageRequest);
             if(CollectionUtils.isEmpty(list)){
                 return page(Lists.newArrayList());
             }
+            return page(page, list);
         } catch (Exception e) {
             return pageFail(e.getMessage());
         }
-        return page(list);
     }
 
     @RequestMapping(value = "/createPutaway")

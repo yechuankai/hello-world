@@ -16,4 +16,6 @@ public interface IStatusHistoryService {
     Boolean add(StatusHistoryTEntity statusHistory) throws BusinessServiceException;
     
     List<StatusHistoryTEntity> findBySourceNumber(StatusHistoryTEntity statusHistory) throws BusinessServiceException;
+    
+    List<StatusHistoryTEntity> findByNotice1(StatusHistoryTEntity statusHistory) throws BusinessServiceException;
 }

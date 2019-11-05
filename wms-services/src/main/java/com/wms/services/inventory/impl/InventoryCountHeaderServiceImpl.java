@@ -267,7 +267,7 @@ public class InventoryCountHeaderServiceImpl implements IInventoryCountHeaderSer
 		
 		InventoryCountHeaderTEntity count = headerDao.selectOneByExample(TExample);
 		if (count == null)
-			throw new BusinessServiceException("InventoryCountRequestImpl", "count.not.exists" , new Object[] {header.getInventoryCountHeaderId() + "/" + count.getCountNumber()});
+			throw new BusinessServiceException("InventoryCountRequestImpl", "count.not.exists" , new Object[] {header.getInventoryCountHeaderId() + "/" + header.getCountNumber()});
 			
 		return count;
 	}

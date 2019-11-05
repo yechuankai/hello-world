@@ -388,13 +388,18 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 			detail.setLpnNumber(detail.getLpnNumber().toUpperCase());
 		}
 		
-		
 		//默认设置批属性10为入库单号、批属性11为入库日期
 		if (BigDecimal.ZERO.compareTo(detail.getQuantityReceive()) < 0) {
 			if (StringUtils.isEmpty(detail.getLotAttribute10()))
 				detail.setLotAttribute10(inbound.getInboundNumber());
 			if (detail.getLotAttribute11() == null)
 				detail.setLotAttribute11(DateUtils.parseDate(DateUtils.getDate()));
+		}
+		
+		//验证LPN为空时，托盘号不能为空 提示错误
+		if (StringUtils.isEmpty(detail.getLpnNumber()) 
+				&& StringUtils.isNotEmpty(detail.getContainerNumber())) {
+			throw new BusinessServiceException("InboundDetailServiceImpl", "lpn.lpnnumber.isnull" , null);
 		}
 		
 		if (inbound.getOperatorType() == OperatorTypeEnum.Modify) {
