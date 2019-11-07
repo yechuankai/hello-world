@@ -12,7 +12,7 @@
     <echo>init tomcat deoploy finished..</echo>  
   
     <!--定义外部属性文件和目录-->  
-    <property file="wms.properties" />  
+    <property file="wms_${env}.properties" />  
 	
 	<target name="wms-service-undeploy" description="Remove web application">
 		<undeploy url="${server.wms-service.host}" username="${server.wms-service.username}" password="${server.wms-service.password}" path="${server.wms-service.path}"/>

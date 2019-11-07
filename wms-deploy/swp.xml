@@ -12,7 +12,7 @@
     <echo>init tomcat deoploy finished..</echo>  
   
     <!--定义外部属性文件和目录-->  
-    <property file="swp.properties" />  
+    <property file="swp_${env}.properties" />  
 	
 	<target name="swp-cas" description="deploy web application swp-cas">
 		<stop url="${server.swp-cas.host}" username="${server.swp-cas.username}" password="${server.swp-cas.password}" path="${server.swp-cas.path}" />
