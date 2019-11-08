@@ -15,6 +15,7 @@ public class OutboundVO extends OutboundHeaderTEntity{
 	private List<OutboundDetailVO> detail = Lists.newArrayList();
 	private List<AllocateTEntity> allocateList;
 	private String warehouseCode;
+	private Boolean forceUpdate = Boolean.FALSE;
 
 	public String getWarehouseCode() {
 		return warehouseCode;
@@ -59,4 +60,12 @@ public class OutboundVO extends OutboundHeaderTEntity{
 		this.detail = detail;
 	}
 
+	public Boolean getForceUpdate() {
+		return forceUpdate;
+	}
+
+	public void setForceUpdate(Boolean forceUpdate) {
+		this.forceUpdate = forceUpdate;
+	}
+	
 }

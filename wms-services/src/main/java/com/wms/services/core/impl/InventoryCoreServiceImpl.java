@@ -1,5 +1,18 @@
 package com.wms.services.core.impl;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.wms.common.enums.TransactionTypeEnum;
@@ -10,8 +23,22 @@ import com.wms.common.exception.BusinessServiceException;
 import com.wms.common.utils.MessageUtils;
 import com.wms.common.utils.StringUtils;
 import com.wms.common.utils.bean.BeanUtils;
-import com.wms.entity.auto.*;
-import com.wms.services.base.*;
+import com.wms.entity.auto.AllocateTEntity;
+import com.wms.entity.auto.InboundDetailTEntity;
+import com.wms.entity.auto.InboundHeaderTEntity;
+import com.wms.entity.auto.InventoryOnhandTEntity;
+import com.wms.entity.auto.InventoryTransactionTEntity;
+import com.wms.entity.auto.LocationTEntity;
+import com.wms.entity.auto.LotAttributeTEntity;
+import com.wms.entity.auto.LpnTEntity;
+import com.wms.entity.auto.OwnerTEntity;
+import com.wms.entity.auto.PackTEntity;
+import com.wms.entity.auto.SkuTEntity;
+import com.wms.services.base.ILocationService;
+import com.wms.services.base.ILotValidateService;
+import com.wms.services.base.IOwnerService;
+import com.wms.services.base.IPackService;
+import com.wms.services.base.ISkuService;
 import com.wms.services.core.IInventoryCoreService;
 import com.wms.services.inbound.IInboundDetailService;
 import com.wms.services.inbound.IInboundHeaderService;
@@ -25,19 +52,11 @@ import com.wms.vo.InventoryTranVO;
 import com.wms.vo.allocate.AllocateVO;
 import com.wms.vo.inbound.InboundDetailVO;
 import com.wms.vo.inbound.InboundVO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class InventoryCoreServiceImpl implements IInventoryCoreService {
+	
+	private static Logger log = LoggerFactory.getLogger(InventoryCoreServiceImpl.class);
 	
 	private static final String SEPARATOR = ","; 
 	
@@ -71,9 +90,21 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 	public InventoryTranVO inbound(InventoryTranVO tran) {
 		tran.setTransationTypeEnum(TransactionTypeEnum.Inbound);
 		
+		if (log.isDebugEnabled())
+			log.debug("inventory inbound validate start...");
+		
 		validate(tran);
 		
+		if (log.isDebugEnabled())
+			log.debug("inventory inbound validate end...");
+		
+		if (log.isDebugEnabled())
+			log.debug("inventory inbound process start...");
+		
 		processInbound(tran);
+		
+		if (log.isDebugEnabled())
+			log.debug("inventory inbound process end...");
 		
 		return tran;
 	}
@@ -83,9 +114,21 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 	public InventoryTranVO outbound(InventoryTranVO tran) {
 		tran.setTransationTypeEnum(TransactionTypeEnum.Outbound);
 		
+		if (log.isDebugEnabled())
+			log.debug("inventory outbound validate start...");
+		
 		validate(tran);
 		
+		if (log.isDebugEnabled())
+			log.debug("inventory outbound validate end...");
+		
+		if (log.isDebugEnabled())
+			log.debug("inventory outbound validate start...");
+		
 		processOutbound(tran);
+		
+		if (log.isDebugEnabled())
+			log.debug("inventory outbound validate end...");
 		
 		return tran;
 	}
@@ -93,6 +136,9 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 	@Override
 	@Transactional
 	public InventoryTranVO move(InventoryTranVO tran) {
+		if (log.isDebugEnabled())
+			log.debug("inventory move process start ");
+		
 		tran.getDetail().forEach(d -> {
 			 //获取来源库存信息
 			 if (d.getSourceInventoryOnhand() == null)
@@ -100,18 +146,30 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 			 d.getSourceInventoryOnhand().setQuantityOnhand(d.getTranQuantity());
 		});
 		transfer(tran);
+		
+		if (log.isDebugEnabled())
+			log.debug("inventory move process start ");
+		
 		return tran;
 	}
 	
 	@Override
 	@Transactional
 	public InventoryTranVO adjustment(InventoryTranVO tran) {
+		
+		if (log.isDebugEnabled())
+			log.debug("inventory adjustment process start ");
+		
 		tran.getDetail().forEach(d -> {
 			 //调用outbound进行调整库存，数量需要反向扣减
 			BigDecimal tranQuantity = BigDecimal.ZERO.subtract(d.getTranQuantity());
 			d.setTranQuantity(tranQuantity);
 		});
 		outbound(tran);
+		
+		if (log.isDebugEnabled())
+			log.debug("inventory adjustment process end ");
+		
 		return tran;
 	}
 	
@@ -184,6 +242,9 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 			LotAttributeTEntity lot = tran.getLotMap().get(detail.getLotNumber());
 			detail.setLotId(lot.getLotAttributeId());
 			
+			if (log.isDebugEnabled())
+				log.debug("inventory inbound process pack");
+			
 			//是否处理包装
 			if (tran.getPackFlag()) {
 				//单位数量为0时，按包装单位进行转换
@@ -198,22 +259,36 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 				detail.setTranQuantity(detail.getTranQuantity().multiply(detail.getUomQuantity()));
 			}
 			
+			if (log.isDebugEnabled())
+				log.debug("inventory inbound process allocate flag");
+			
 			//处理分配
 			if (tran.getAllocateFlag())
 				detail.getAllocate().setAllocateStrategyType(AllocateStrategyTypeEnum.Hard.getCode());
 			
+			if (log.isDebugEnabled())
+				log.debug("inventory inbound process update balance");
+			
 			// update inventory
 			updateInventory(tran, detail);
+			
+			if (log.isDebugEnabled())
+				log.debug("inventory inbound process update inbound order");
 			
 			//update inbound
 			if (TransactionTypeEnum.Inbound.getCode().equals(tran.getTransationType())) {
 				updateInbound(tran, detail);
 			}
 			
+			if (log.isDebugEnabled())
+				log.debug("inventory inbound process allocate");
+			
 			//处理分配
 			if (tran.getAllocateFlag())
 				processInboundAllocate(tran, detail);
 			
+			if (log.isDebugEnabled())
+				log.debug("inventory inbound process transaction");
 			
 			insertTransaction(tran, detail);
 		}
@@ -236,6 +311,10 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 			detail.setTranQuantity(outboundQuantity);
 			//处理分配明细
 			if (tran.getAllocateFlag()) {
+				
+				if (log.isDebugEnabled())
+					log.debug("inventory outbound process allocate ");
+				
 				//处理分配明细
 				AllocateVO allocate = detail.getAllocate();
 				//再次查询数量，保证数量正确
@@ -253,14 +332,25 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 				
 				//短拣时删除明细
 				if (YesNoEnum.Yes.getCode().equals(allocate.getShortFlag())) {
+					
+					if (log.isDebugEnabled())
+						log.debug("inventory outbound process short pick ");
+					
 					updateAllocate.setQuantityAllocated(BigDecimal.ZERO);
 					//记录短拣数量
 					updateAllocate.setDescription(selectAllocate.getQuantityAllocated().add(outboundQuantity).toString());
 				}
 				allocateService.modify(Lists.newArrayList(updateAllocate));
 			}
+			
+			if (log.isDebugEnabled())
+				log.debug("inventory outbound process update balance ");
+			
 			// update inventory
 			updateInventory(tran, detail);
+			
+			if (log.isDebugEnabled())
+				log.debug("inventory outbound process transaction ");
 			
 			insertTransaction(tran, detail);
 		}
@@ -636,7 +726,6 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 				|| inboundDetail.getInboundDetailId() == null)
 			return null;
 		
-
 		InboundDetailTEntity updateDetail = InboundDetailTEntity.builder()
 				.warehouseId(tran.getWarehouseId())
 				.companyId(tran.getCompanyId())
@@ -646,18 +735,32 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 				.lotNumber(detail.getLotNumber())
 				.inboundDetailId(inboundDetail.getInboundDetailId())
 				.build();
-		inboundDetailService.modify(new InboundDetailVO(updateDetail));
+		//fix 重量/体积自动自动更新为空
+		InboundDetailVO updateVo = new InboundDetailVO(updateDetail);
+		updateVo.setWeightGross(null);
+		updateVo.setWeightNet(null);
+		updateVo.setWeightTare(null);
+		updateVo.setVolume(null);
+		inboundDetailService.modify(updateVo);
 		
-		InboundHeaderTEntity updateHeader = InboundHeaderTEntity.builder()
+		//查找表头
+		InboundHeaderTEntity header = inboundHeaderService.find(InboundHeaderTEntity.builder()
 												.warehouseId(tran.getWarehouseId())
 												.companyId(tran.getCompanyId())
-												.updateBy(tran.getUserName())
-												.updateTime(new Date())
-												.inboundDate(new Date())
 												.inboundHeaderId(inboundDetail.getInboundHeaderId())
-												.build();
-		inboundHeaderService.modify(new InboundVO(updateHeader));
-		
+												.build());
+		//收货日期为空时更新
+		if (header.getInboundDate() == null) {
+			InboundHeaderTEntity updateHeader = InboundHeaderTEntity.builder()
+													.warehouseId(tran.getWarehouseId())
+													.companyId(tran.getCompanyId())
+													.updateBy(tran.getUserName())
+													.updateTime(new Date())
+													.inboundDate(new Date())
+													.inboundHeaderId(inboundDetail.getInboundHeaderId())
+													.build();
+			inboundHeaderService.modify(new InboundVO(updateHeader));
+		}
 		return inboundDetail;
 		
 	}

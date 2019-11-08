@@ -42,7 +42,7 @@ public interface IOutboundHeaderService {
 	 * @return
 	 * @throws BusinessServiceException
 	 */
-	Boolean modify(OutboundHeaderTEntity inbound) throws BusinessServiceException;
+	Boolean modifyStatus(OutboundHeaderTEntity inbound) throws BusinessServiceException;
 
 	Boolean add(OutboundVO outbound) throws BusinessServiceException;
 	

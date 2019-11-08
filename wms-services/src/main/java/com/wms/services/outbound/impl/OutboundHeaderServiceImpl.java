@@ -272,6 +272,7 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 		outboundVO.setWarehouseId(request.getWarehouseId());
 		outboundVO.setUpdateBy(request.getUserName());
 		outboundVO.setUpdateTime(new Date());
+		outboundVO.setForceUpdate(Boolean.TRUE);
 
 		validate(outboundVO);
 		switch (outboundVO.getOperatorType()) {
@@ -288,6 +289,10 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 			default:
 				throw new BusinessServiceException("OutboundHeaderServiceImpl", "opertiontype.not.exists" , null );
 		}
+		
+		//避免后续逻辑继续使用强制更新
+		outboundVO.setForceUpdate(Boolean.TRUE);
+		
 		//process detail
 		if (CollectionUtils.isNotEmpty(outboundVO.getDetail())) {
 			outboundDetailService.save(request);
@@ -312,9 +317,13 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 
 
 		OutboundHeaderTEntity updateHeader = new OutboundHeaderTEntity();
-		BeanUtils.copyBeanProp(updateHeader, outbound, Boolean.FALSE);
-		updateHeader.setUpdateBy(outbound.getUpdateBy());
-		updateHeader.setUpdateTime(new Date());
+		if (!outbound.getForceUpdate()) { //非强制更新，关联业务逻辑调用
+			BeanUtils.copyBeanProp(updateHeader, outbound, Boolean.FALSE);
+			updateHeader.setUpdateBy(outbound.getUpdateBy());
+			updateHeader.setUpdateTime(new Date());
+		}else { //界面更新点击保存
+			BeanUtils.copyBeanProp(updateHeader, outbound);
+		}
 
 		if(null != status){
 			updateHeader.setStatus(status.getCode());
@@ -356,7 +365,13 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 
 		//采用多线程并发时，不可按最后更新版本来更新数据
 		//int rowcount = outboundHeaderDao.updateWithVersionByExampleSelective(selectHeader.getUpdateVersion(), updateHeader, example);
-		int rowcount = outboundHeaderDao.updateByExampleSelective( updateHeader, example);
+		
+		int rowcount = 0;
+		if (!outbound.getForceUpdate()) {
+			rowcount = outboundHeaderDao.updateByExampleSelective(updateHeader, example);
+		}else {
+			rowcount = outboundHeaderDao.updateByExample(updateHeader, example);
+		}
 		if (rowcount == 0) {
 			throw new BusinessServiceException("record update error.");
 		}
@@ -365,7 +380,7 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 
 	@Override
 	@Transactional
-	public Boolean modify(OutboundHeaderTEntity outbound) throws BusinessServiceException {
+	public Boolean modifyStatus(OutboundHeaderTEntity outbound) throws BusinessServiceException {
         OutboundHeaderTEntity updateHeader = OutboundHeaderTEntity.builder()
                 .sourceWaveNumber(outbound.getSourceWaveNumber())
         		.status(outbound.getStatus())
@@ -716,7 +731,7 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 				v.setUpdateTime(new Date());
 				v.setStatus(OutboundStatusEnum.Release.getCode());
 				OutboundHeaderTEntity outbound = v;
-				modify(outbound);
+				modifyStatus(outbound);
 			});
 		}
         return Boolean.TRUE;
@@ -743,13 +758,13 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 					}
 					v.setUpdateBy(request.getUserName());
 					v.setStatus(OutboundStatusEnum.Cancel.getCode());
-					outboundDetailService.modify(v);
+					outboundDetailService.modifyStatus(v);
 				});
 			}
 
 			d.setStatus(OutboundStatusEnum.Cancel.getCode());
 			d.setUpdateBy(request.getUserName());
-			modify(d);
+			modifyStatus(d);
 			
 			//取消装车任务
 			loadTask(d, OperatorTypeEnum.Cancel);

@@ -18,6 +18,7 @@ public class OutboundDetailVO extends OutboundDetailTEntity {
 	private BigDecimal uomQuantityPicked = BigDecimal.ZERO;
 	private BigDecimal uomQuantityShiped = BigDecimal.ZERO;
 	private String warehouseCode;
+	private Boolean forceUpdate = Boolean.FALSE;
 
 	public String getWarehouseCode() {
 		return warehouseCode;
@@ -96,5 +97,12 @@ public class OutboundDetailVO extends OutboundDetailTEntity {
 		this.operatorType = operatorType;
 	}
 
-	
+	public Boolean getForceUpdate() {
+		return forceUpdate;
+	}
+
+	public void setForceUpdate(Boolean forceUpdate) {
+		this.forceUpdate = forceUpdate;
+	}
+
 }

@@ -49,7 +49,13 @@ $.fn.extend({
 		$.each(this.serializeArray(), function (index) {
 			data[this['name']] = this['value'];
 		});
-		return data;
+		var json = $(this).attr('data-json');
+		if (json == undefined || json == ''){
+			return data;
+		}
+		//继承数据
+		var jsonObj = JSON.parse(json);
+		return $.extend(jsonObj, data);
 	}
 });
 

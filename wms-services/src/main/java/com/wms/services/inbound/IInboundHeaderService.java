@@ -32,7 +32,7 @@ public interface IInboundHeaderService {
 	 * @return
 	 * @throws BusinessServiceException
 	 */
-	Boolean modify(InboundHeaderTEntity inbound) throws BusinessServiceException;
+	Boolean modifyStatus(InboundHeaderTEntity inbound) throws BusinessServiceException;
 	
 	Boolean add(InboundVO inbound) throws BusinessServiceException;
 	

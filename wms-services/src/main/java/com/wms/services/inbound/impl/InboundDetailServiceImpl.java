@@ -392,8 +392,13 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 		if (BigDecimal.ZERO.compareTo(detail.getQuantityReceive()) < 0) {
 			if (StringUtils.isEmpty(detail.getLotAttribute10()))
 				detail.setLotAttribute10(inbound.getInboundNumber());
-			if (detail.getLotAttribute11() == null)
-				detail.setLotAttribute11(DateUtils.parseDate(DateUtils.getDate()));
+			if (detail.getLotAttribute11() == null) {
+				if (inbound.getInboundDate() != null) {
+					detail.setLotAttribute11(DateUtils.parseDate(DateUtils.dateTime(inbound.getInboundDate())));
+				}else {
+					detail.setLotAttribute11(DateUtils.parseDate(DateUtils.getDate()));	
+				}
+			}
 		}
 		
 		//验证LPN为空时，托盘号不能为空 提示错误
@@ -470,6 +475,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 			d.setInboundHeaderId(inboundVO.getInboundHeaderId());
 			d.setUpdateBy(request.getUserName());
 			d.setUpdateTime(new Date());
+			d.setForceUpdate(Boolean.TRUE);
 			
 			validate(inboundVO, d);
 			switch (inboundVO.getOperatorType()) {
@@ -484,6 +490,9 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 			default:
 				throw new BusinessServiceException("InboundDetailServiceImpl", "opertiontype.not.exists" , null ); 
 			}
+			
+			//避免后续逻辑继续使用强制更新
+			d.setForceUpdate(Boolean.FALSE);
 			
 			//process status 
 			inboundDetailStatus(d, Boolean.TRUE);
@@ -723,13 +732,16 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 		validateExceed(selectDetail, inbound);
 		
 		InboundDetailTEntity updateDetail = new InboundDetailTEntity();
-		BeanUtils.copyBeanProp(updateDetail, inbound, Boolean.FALSE);
-		updateDetail.setUpdateBy(inbound.getUpdateBy());
-		updateDetail.setUpdateTime(new Date());
-		
-
-		
-		int rowcount = inboundDetailDao.updateWithVersionByExampleSelective(selectDetail.getUpdateVersion(), updateDetail, example);
+		int rowcount = 0;
+		if (!inbound.getForceUpdate()) {//非强制更新，关联业务逻辑调用
+			BeanUtils.copyBeanProp(updateDetail, inbound, Boolean.FALSE);
+			updateDetail.setUpdateBy(inbound.getUpdateBy());
+			updateDetail.setUpdateTime(new Date());
+			rowcount = inboundDetailDao.updateWithVersionByExampleSelective(selectDetail.getUpdateVersion(), updateDetail, example);
+		}else { //界面更新点击保存
+			BeanUtils.copyBeanProp(updateDetail, inbound);
+			rowcount = inboundDetailDao.updateWithVersionByExample(selectDetail.getUpdateVersion(), updateDetail, example);
+		}
 		if (rowcount == 0)
 			throw new BusinessServiceException("record update error.");
 		
@@ -862,7 +874,11 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 					//默认当前日期
 					if (StringUtils.isEmpty(detailObj.getLotAttribute10())) {
 						detailVO.setLotAttribute10(header.getInboundNumber());
-						detailVO.setLotAttribute11(DateUtils.parseDate(DateUtils.getDate()));
+						if (header.getInboundDate() != null) {
+							detailVO.setLotAttribute11(DateUtils.parseDate(DateUtils.dateTime(header.getInboundDate())));
+						}else {
+							detailVO.setLotAttribute11(DateUtils.parseDate(DateUtils.getDate()));
+						}
 					}
 					tranDetail.add(detailVO);
 
@@ -1139,8 +1155,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 
 	@Override
     @Transactional
-    public Boolean modify(InboundDetailTEntity detail) throws BusinessServiceException {
-
+    public Boolean modifyStatus(InboundDetailTEntity detail) throws BusinessServiceException {
         InboundDetailTEntity updateDetail = InboundDetailTEntity.builder()
                 .updateBy(detail.getUpdateBy())
                 .updateTime(new Date())

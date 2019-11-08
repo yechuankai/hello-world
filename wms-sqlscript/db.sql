@@ -4019,4 +4019,15 @@ platform_code varchar2(50)
 comment on column OUTBOUND_HEADER_T.platform_code is '月台';
 
 
+alter table status_history_t add type varchar2(50);
+alter table status_history_t add notice1 char(1) default 'N';
+alter table status_history_t add notice2 char(1) default 'N';
+alter table status_history_t add notice3 char(1) default 'N';
+alter table status_history_t add notice4 char(1) default 'N';
+comment on column status_history_t.type   is '类型';
+comment on column status_history_t.notice1   is '通知1';
+comment on column status_history_t.notice2   is '通知2';
+comment on column status_history_t.notice3   is '通知3';
+comment on column status_history_t.notice4   is '通知4';
+
 

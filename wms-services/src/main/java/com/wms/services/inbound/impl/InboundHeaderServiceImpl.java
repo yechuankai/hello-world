@@ -103,6 +103,7 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 		inboundVO.setCompanyId(request.getCompanyId());
 		inboundVO.setUpdateBy(request.getUserName());
 		inboundVO.setUpdateTime(new Date());
+		inboundVO.setForceUpdate(Boolean.TRUE);
 		
 		validate(inboundVO);
 		
@@ -120,6 +121,9 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 		default:
 			throw new BusinessServiceException("InboundHeaderServiceImpl", "opertiontype.not.exists" , null ); 
 		}
+		
+		//避免后续逻辑继续使用强制更新
+		inboundVO.setForceUpdate(Boolean.FALSE);
 		
 		//process detail
 		if (CollectionUtils.isNotEmpty(inboundVO.getDetail())) 
@@ -321,11 +325,6 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 		
 		notProcess(selectHeader);
 		
-		InboundHeaderTEntity updateHeader = new InboundHeaderTEntity();
-		BeanUtils.copyBeanProp(updateHeader, inbound, Boolean.FALSE);
-		updateHeader.setUpdateBy(inbound.getUpdateBy());
-		updateHeader.setUpdateTime(new Date());
-		
 		InboundHeaderTExample example = new InboundHeaderTExample();
 		InboundHeaderTExample.Criteria criteria =example.createCriteria()
 				.andCompanyIdEqualTo(inbound.getCompanyId())
@@ -335,7 +334,18 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 			criteria.andWarehouseIdEqualTo(inbound.getWarehouseId());
 		}
 		
-		int rowcount = inboundHeaderDao.updateWithVersionByExampleSelective(selectHeader.getUpdateVersion(), updateHeader, example);
+		InboundHeaderTEntity updateHeader = new InboundHeaderTEntity();
+		int rowcount = 0;
+		if (!inbound.getForceUpdate()) {//非强制更新，关联业务逻辑调用
+			BeanUtils.copyBeanProp(updateHeader, inbound, Boolean.FALSE);
+			updateHeader.setUpdateBy(inbound.getUpdateBy());
+			updateHeader.setUpdateTime(new Date());
+			rowcount = inboundHeaderDao.updateWithVersionByExampleSelective(selectHeader.getUpdateVersion(), updateHeader, example);
+		}else { //界面更新点击保存
+			BeanUtils.copyBeanProp(updateHeader, inbound);
+			rowcount = inboundHeaderDao.updateWithVersionByExample(selectHeader.getUpdateVersion(), updateHeader, example);
+		}	
+		
 		if (rowcount == 0)
 			throw new BusinessServiceException("record update error.");
 		
@@ -344,7 +354,7 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 
     @Override
     @Transactional
-    public Boolean modify(InboundHeaderTEntity inbound) throws BusinessServiceException {
+    public Boolean modifyStatus(InboundHeaderTEntity inbound) throws BusinessServiceException {
 		InboundHeaderTEntity updateHeader = InboundHeaderTEntity.builder()
 				.status(inbound.getStatus())
 				.updateBy(inbound.getUpdateBy())
@@ -553,13 +563,13 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 					v.setWarehouseId(request.getWarehouseId());
 					v.setCompanyId(request.getCompanyId());
 					v.setCancelDate(new Date());
-					inboundDetailService.modify(v);
+					inboundDetailService.modifyStatus(v);
 				});
 
 			}
 			d.setUpdateBy(request.getUserName());
 			d.setStatus(InboundStatusEnum.Cancel.getCode());
-            modify(d);
+            modifyStatus(d);
             
 			//取消卸车任务
 			unLoadTask(d, OperatorTypeEnum.Cancel);
@@ -595,7 +605,7 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
                     v.setUpdateTime(new Date());
                     v.setWarehouseId(request.getWarehouseId());
                     v.setCompanyId(request.getCompanyId());
-					inboundDetailService.modify(v);
+					inboundDetailService.modifyStatus(v);
 					closeCount ++;
 				}
 			}
@@ -605,7 +615,7 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 			d.setStatus(InboundStatusEnum.Closed.getCode());
 			d.setUpdateBy(request.getUserName());
 			d.setClosedDate(new Date());
-			modify(d);
+			modifyStatus(d);
 			
 			//记录状态关闭状态
 			StatusHistoryTEntity statusHistory = StatusHistoryTEntity.builder()

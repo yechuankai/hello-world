@@ -58,7 +58,7 @@ public interface IInboundDetailService {
 	 * @return
 	 * @throws BusinessServiceException
 	 */
-	Boolean modify(InboundDetailTEntity detail) throws BusinessServiceException;
+	Boolean modifyStatus(InboundDetailTEntity detail) throws BusinessServiceException;
 
 	/** 
 	* @Description: OMS生成并操作入库单 

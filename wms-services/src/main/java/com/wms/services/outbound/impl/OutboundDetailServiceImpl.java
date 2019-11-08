@@ -194,6 +194,7 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 			d.setOutboundHeaderId(outboundVO.getOutboundHeaderId());
 			d.setUpdateBy(request.getUserName());
 			d.setUpdateTime(new Date());
+			d.setForceUpdate(Boolean.TRUE);
 
 			validate(outboundVO, d);
 			switch (outboundVO.getOperatorType()) {
@@ -209,7 +210,7 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 					throw new BusinessServiceException("InboundDetailServiceImpl", "opertiontype.not.exists" , null );
 			}
 		});
-			return Boolean.TRUE;
+		return Boolean.TRUE;
 	}
 
 	@Override
@@ -276,25 +277,29 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 			throw new BusinessServiceException("outboundDetailServiceImpl", "outbound.line.quantity.must.available" , new Object[] {selectDetail.getLineNumber(), updateQuantityExpected, updateQuantityAllocated, updateQuantityPicked});
 		
 		OutboundDetailTEntity updateDetail = new OutboundDetailTEntity();
-		BeanUtils.copyBeanProp(updateDetail, outbound, Boolean.FALSE);
-		updateDetail.setUpdateBy(outbound.getUpdateBy());
-		updateDetail.setUpdateTime(new Date());
-		if (updateExpectedFlag)
-			updateDetail.setQuantityExpected(updateQuantityExpected);
-		else
-			updateDetail.setQuantityExpected(null);
-		if (updateAllocatedFlag)
-			updateDetail.setQuantityAllocated(updateQuantityAllocated);
-		else
-			updateDetail.setQuantityAllocated(null);
-		if (updatePickFlag)
-			updateDetail.setQuantityPicked(updateQuantityPicked);
-		else
-			updateDetail.setQuantityPicked(null);
-		if (updateShipFlag)
-			updateDetail.setQuantityShiped(updateQuantityShiped);
-		else
-			updateDetail.setQuantityShiped(null);
+		if (!outbound.getForceUpdate()) {
+			BeanUtils.copyBeanProp(updateDetail, outbound, Boolean.FALSE);
+			updateDetail.setUpdateBy(outbound.getUpdateBy());
+			updateDetail.setUpdateTime(new Date());
+			if (updateExpectedFlag)
+				updateDetail.setQuantityExpected(updateQuantityExpected);
+			else
+				updateDetail.setQuantityExpected(null);
+			if (updateAllocatedFlag)
+				updateDetail.setQuantityAllocated(updateQuantityAllocated);
+			else
+				updateDetail.setQuantityAllocated(null);
+			if (updatePickFlag)
+				updateDetail.setQuantityPicked(updateQuantityPicked);
+			else
+				updateDetail.setQuantityPicked(null);
+			if (updateShipFlag)
+				updateDetail.setQuantityShiped(updateQuantityShiped);
+			else
+				updateDetail.setQuantityShiped(null);
+		}else {
+			BeanUtils.copyBeanProp(updateDetail, outbound);
+		}
 		
 		String newStatus = outbound.getStatus();
 		if (StringUtils.isEmpty(newStatus)) {
@@ -319,7 +324,12 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 		.andCompanyIdEqualTo(outbound.getCompanyId())
 		.andOutboundDetailIdEqualTo(outbound.getOutboundDetailId());
 		
-		int rowcount = outboundDetailDao.updateWithVersionByExampleSelective(selectDetail.getUpdateVersion(), updateDetail, example);
+		int rowcount = 0;
+		if (!outbound.getForceUpdate()) {
+			rowcount = outboundDetailDao.updateWithVersionByExampleSelective(selectDetail.getUpdateVersion(), updateDetail, example);
+		}else {
+			rowcount = outboundDetailDao.updateWithVersionByExample(selectDetail.getUpdateVersion(), updateDetail, example);
+		}
 		if (rowcount == 0)
 			throw new BusinessServiceException("record update error.");
 		
@@ -462,7 +472,7 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 	}
 
     @Override
-    public Boolean modify(OutboundDetailTEntity detail) throws BusinessServiceException {
+    public Boolean modifyStatus(OutboundDetailTEntity detail) throws BusinessServiceException {
         OutboundDetailTEntity updateDetail = OutboundDetailTEntity.builder()
                 .updateBy(detail.getUpdateBy())
                 .updateTime(new Date())
@@ -732,7 +742,7 @@ public class OutboundDetailServiceImpl implements IOutboundDetailService, IExcel
 				d.setUpdateBy(d.getUpdateBy());
 				d.setUpdateTime(new Date());
 				d.setStatus(OutboundStatusEnum.Release.getCode());
-				modify(d);
+				modifyStatus(d);
 			});
 		}
 		return releaseFlag;

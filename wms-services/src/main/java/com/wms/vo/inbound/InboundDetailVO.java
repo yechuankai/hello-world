@@ -26,6 +26,7 @@ public class InboundDetailVO extends InboundDetailTEntity {
     private LotValidateTEntity lotv;
 	private String inboundNumber;
 	private OperatorTypeEnum operatorType;
+	private Boolean forceUpdate = Boolean.FALSE;
 	
 	void initZero(){
 		if (getWeightGross() == null)
@@ -149,6 +150,14 @@ public class InboundDetailVO extends InboundDetailTEntity {
 
 	public void setNoSku(String noSku) {
 		this.noSku = noSku;
+	}
+
+	public Boolean getForceUpdate() {
+		return forceUpdate;
+	}
+
+	public void setForceUpdate(Boolean forceUpdate) {
+		this.forceUpdate = forceUpdate;
 	}
 
 }

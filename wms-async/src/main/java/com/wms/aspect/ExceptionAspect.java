@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 
+import com.alibaba.fastjson.JSON;
 import com.wms.async.manager.AsyncManager;
 import com.wms.async.manager.factory.AsyncFactory;
 import com.wms.common.constants.ConfigConstants;
@@ -53,7 +54,8 @@ public class ExceptionAspect {
 			}
 			if (e instanceof BaseException) {
 				if (((BaseException)e).getArgs() != null){
-					log.warn(((BaseException)e).getArgs().toString());
+					Object arg = ((BaseException)e).getArgs().toString();
+					log.warn(JSON.toJSONString(arg));
 				}
 				log.warn(e.getMessage(), e);
 				throw e;

@@ -64,7 +64,7 @@ public interface IOutboundDetailService {
 	 * @return
 	 * @throws BusinessServiceException
 	 */
-	Boolean modify(OutboundDetailTEntity detail) throws BusinessServiceException;
+	Boolean modifyStatus(OutboundDetailTEntity detail) throws BusinessServiceException;
 
 	/**
 	* @Description:  OMS生成并操作出库单

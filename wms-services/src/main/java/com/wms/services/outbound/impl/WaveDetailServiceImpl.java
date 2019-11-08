@@ -142,7 +142,7 @@ public class WaveDetailServiceImpl implements IWaveDetailService {
 													.build();
 			OutboundHeaderTEntity find = outboundService.find(outboundHeader);
 			outboundHeader.setUpdateVersion(find.getUpdateVersion());
-			outboundService.modify(outboundHeader);
+			outboundService.modifyStatus(outboundHeader);
 		});
 		return Boolean.TRUE;
 	}
@@ -184,7 +184,7 @@ public class WaveDetailServiceImpl implements IWaveDetailService {
 													.build();
 			OutboundHeaderTEntity find = outboundService.find(outboundHeader);
 			outboundHeader.setUpdateVersion(find.getUpdateVersion());
-			outboundService.modify(outboundHeader);
+			outboundService.modifyStatus(outboundHeader);
 			
 		});
 		return Boolean.TRUE;

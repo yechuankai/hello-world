@@ -11,6 +11,7 @@ public class InboundVO extends InboundHeaderTEntity{
 
 	private OperatorTypeEnum operatorType;
 	private List<InboundDetailVO> detail = Lists.newArrayList();
+	private Boolean forceUpdate = Boolean.FALSE;
 	
 	public void setDetail(List<InboundDetailVO> detail) {
 		this.detail = detail;
@@ -37,6 +38,14 @@ public class InboundVO extends InboundHeaderTEntity{
 	public InboundVO(InboundHeaderTEntity inboundHeader, List<InboundDetailVO> detail) {
 		BeanUtils.copyBeanProp(this, inboundHeader, Boolean.TRUE);
 		this.detail = detail;
+	}
+
+	public Boolean getForceUpdate() {
+		return forceUpdate;
+	}
+
+	public void setForceUpdate(Boolean forceUpdate) {
+		this.forceUpdate = forceUpdate;
 	}
 
 }
