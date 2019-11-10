@@ -173,7 +173,6 @@ public class WarehouseRest extends BaseController{
 			if (CollectionUtils.isEmpty(findWarehouse)) 
 				return page(Lists.newArrayList());
 			
-			
 			Set<Long> warehouseIds = findWarehouse.stream().map(WarehouseVO::getWarehouseId).collect(Collectors.toSet());
 			Set<Long> companyIds = findWarehouse.stream().map(WarehouseVO::getCompanyId).collect(Collectors.toSet());
 			List<WarehouseActiveTEntity> waList = warehouseActiveService.find(companyIds, warehouseIds);

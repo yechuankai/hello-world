@@ -15,8 +15,8 @@ import com.wms.entity.auto.SkuTEntity;
 
 public class InventoryTranVO {
 
-	private String transationType;
-	private TransactionTypeEnum transationTypeEnum;
+	private String transactionType;
+	private TransactionTypeEnum transactionTypeEnum;
 	private String souceBillNumber;
 	private Long warehouseId;
 	private Long companyId;
@@ -31,11 +31,11 @@ public class InventoryTranVO {
 	private Map<String, SkuTEntity> skuMap = Maps.newHashMap();
 	private Map<String, OwnerTEntity> ownerMap = Maps.newHashMap();
 	
-	public String getTransationType() {
-		return transationType;
+	public String getTransactionType() {
+		return transactionType;
 	}
-	public void setTransationType(String transationType) {
-		this.transationType = transationType;
+	public void setTransactionType(String transactionType) {
+		this.transactionType = transactionType;
 	}
 	public String getSouceBillNumber() {
 		return souceBillNumber;
@@ -85,11 +85,11 @@ public class InventoryTranVO {
 	public void setPackMap(Map<String, PackTEntity> packMap) {
 		this.packMap = packMap;
 	}
-	public void setTransationTypeEnum(TransactionTypeEnum transationTypeEnum) {
-		this.transationTypeEnum = transationTypeEnum;
+	public void setTransactionTypeEnum(TransactionTypeEnum transactionTypeEnum) {
+		this.transactionTypeEnum = transactionTypeEnum;
 	}
-	public TransactionTypeEnum getTransationTypeEnum() {
-		return transationTypeEnum;
+	public TransactionTypeEnum getTransactionTypeEnum() {
+		return transactionTypeEnum;
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;

@@ -152,16 +152,19 @@ public class WarehouseActiveServiceImpl implements IWarehouseActiveService {
 			//验证是否存在记录
 			WarehouseActiveTEntity wa = find(d.getCompanyId(), d.getWarehouseId());
 			if (wa == null) {  //插入
+				d.setInit(YesNoEnum.Yes.getCode());
 				addList.add(d);
 			}else {  //更新
 				d.setActiveId(wa.getActiveId());
 				d.setUpdateVersion(d.getUpdateVersion());
 				modifyList.add(d);
 			}
-			
+			 
 			if ((wa == null || YesNoEnum.No.getCode().equals(wa.getInit()))
-					&& YesNoEnum.Yes.getCode().equals(d.getActive()))
+					&& YesNoEnum.Yes.getCode().equals(d.getActive())) {
+				d.setInit(YesNoEnum.Yes.getCode());
 				initList.add(d);
+			}
 		});
 		
 		if (CollectionUtils.isNotEmpty(addList))

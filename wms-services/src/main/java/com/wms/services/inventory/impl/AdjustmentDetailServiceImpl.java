@@ -198,7 +198,7 @@ public class AdjustmentDetailServiceImpl implements IAdjustmentDetailService {
 		//扣减库存
 		InventoryTranVO tran = new InventoryTranVO();
 		tran.setSouceBillNumber(adjustment.getInventoryAdjustmentNumber());
-		tran.setTransationType(TransactionTypeEnum.Adjustment.getCode());
+		tran.setTransactionType(TransactionTypeEnum.Adjustment.getCode());
 		tran.setUserName(request.getUserName());
 		tran.setWarehouseId(request.getWarehouseId());
 		tran.setCompanyId(request.getCompanyId());

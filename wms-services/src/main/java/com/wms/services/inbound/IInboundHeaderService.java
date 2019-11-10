@@ -18,6 +18,8 @@ public interface IInboundHeaderService {
 	
 	InboundHeaderTEntity find(InboundHeaderTEntity inbound) throws BusinessServiceException;
 	
+	List<InboundHeaderTEntity> findBySourceNumber(InboundHeaderTEntity inbound) throws BusinessServiceException;
+	
 	List<InboundHeaderTEntity> find(InboundHeaderTEntity inbound, Set<Long> ids) throws BusinessServiceException;
 	
 	List<InboundHeaderTEntity> findByNumber(InboundHeaderTEntity inbound, Set<String> billNumbers) throws BusinessServiceException;

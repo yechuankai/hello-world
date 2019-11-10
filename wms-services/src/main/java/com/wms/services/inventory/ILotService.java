@@ -7,11 +7,12 @@ import com.wms.common.core.domain.IBaseEntity;
 import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.entity.auto.LotAttributeTEntity;
-import com.wms.entity.auto.SysConfigTEntity;
 
 public interface ILotService {
 
 	LotAttributeTEntity find(LotAttributeTEntity lot) throws BusinessServiceException;
+	
+	List<LotAttributeTEntity> findByAttribute(LotAttributeTEntity lot) throws BusinessServiceException;
 	
 	List<LotAttributeTEntity> find(PageRequest request) throws BusinessServiceException;
 	

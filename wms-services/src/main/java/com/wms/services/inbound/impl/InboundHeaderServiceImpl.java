@@ -204,6 +204,22 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 	}
 	
 	@Override
+	public List<InboundHeaderTEntity> findBySourceNumber(InboundHeaderTEntity inbound) throws BusinessServiceException {
+		InboundHeaderTExample TExample = new InboundHeaderTExample();
+		InboundHeaderTExample.Criteria criteria = TExample.createCriteria();
+		
+		criteria.andDelFlagEqualTo(YesNoEnum.No.getCode())
+		.andCompanyIdEqualTo(inbound.getCompanyId())
+		.andWarehouseIdEqualTo(inbound.getWarehouseId())
+		.andSourceNumberEqualTo(inbound.getSourceNumber());
+		List<InboundHeaderTEntity> selectInbound = inboundHeaderDao.selectByExample(TExample);
+		if (selectInbound == null)
+			return Lists.newArrayList();
+		
+		return selectInbound;
+	}
+	
+	@Override
 	public List<InboundHeaderTEntity> find(InboundHeaderTEntity inbound, Set<Long> ids) throws BusinessServiceException {
 		if(CollectionUtils.isEmpty(ids))
 			return Lists.newArrayList();

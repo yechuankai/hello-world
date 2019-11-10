@@ -10,9 +10,10 @@ public enum TransactionCategoryEnum {
 	PCPick("PCPICK", "PC拣货"), 
 	PCShip("PCSHIP", "PC发货"), 
 	RFInbound("RFINBOUND", "移动收货"), 
-	Outbound("O", "出库"), 
-	Move("M", "移动"), 
-	Adjustment("A", "调整"); 
+	Outbound("OUTBOUND", "出库"), 
+	Move("MOVE", "移动"), 
+	Adjustment("ADJUSTMENT", "调整"),
+	ImportCustomsClearance("IMPORTCUSTOMSCLEARANCE", "导入通关关系"); 
 	
 	private final String code;
 	private final String desc;

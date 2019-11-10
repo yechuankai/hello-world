@@ -73,6 +73,74 @@ public class LotServiceImpl implements ILotService {
 	}
 	
 	@Override
+	public List<LotAttributeTEntity> findByAttribute(LotAttributeTEntity lot) throws BusinessServiceException {
+		LotAttributeTExample example = new LotAttributeTExample();
+		LotAttributeTExample.Criteria criteria = example.createCriteria();
+		criteria
+		.andDelFlagEqualTo(YesNoEnum.No.getCode())
+		.andWarehouseIdEqualTo(lot.getWarehouseId())
+		.andCompanyIdEqualTo(lot.getCompanyId());
+		
+		int conditionCount = 0;
+		if (StringUtils.isNotEmpty(lot.getLotAttribute1())) {
+			criteria.andLotAttribute1EqualTo(lot.getLotAttribute1());
+			conditionCount ++;
+		}
+		if (StringUtils.isNotEmpty(lot.getLotAttribute2())) {
+			criteria.andLotAttribute2EqualTo(lot.getLotAttribute2());
+			conditionCount ++;
+		}
+		if (StringUtils.isNotEmpty(lot.getLotAttribute3())) {
+			criteria.andLotAttribute3EqualTo(lot.getLotAttribute3());
+			conditionCount ++;
+		}
+		if (lot.getLotAttribute4() != null) {
+			criteria.andLotAttribute4EqualTo(lot.getLotAttribute4());
+			conditionCount ++;
+		}
+		if (lot.getLotAttribute5() != null) {
+			criteria.andLotAttribute5EqualTo(lot.getLotAttribute5());
+			conditionCount ++;
+		}
+		if (StringUtils.isNotEmpty(lot.getLotAttribute6())) {
+			criteria.andLotAttribute6EqualTo(lot.getLotAttribute6());
+			conditionCount ++;
+		}
+		if (StringUtils.isNotEmpty(lot.getLotAttribute7())) {
+			criteria.andLotAttribute7EqualTo(lot.getLotAttribute7());
+			conditionCount ++;
+		}
+		if (StringUtils.isNotEmpty(lot.getLotAttribute8())) {
+			criteria.andLotAttribute8EqualTo(lot.getLotAttribute8());
+			conditionCount ++;
+		}
+		if (StringUtils.isNotEmpty(lot.getLotAttribute9())) {
+			criteria.andLotAttribute9EqualTo(lot.getLotAttribute9());
+			conditionCount ++;
+		}
+		if (StringUtils.isNotEmpty(lot.getLotAttribute10())) {
+			criteria.andLotAttribute10EqualTo(lot.getLotAttribute10());
+			conditionCount ++;
+		}
+		if (lot.getLotAttribute11() != null) {
+			criteria.andLotAttribute11EqualTo(lot.getLotAttribute11());
+			conditionCount ++;
+		}
+		if (lot.getLotAttribute12() != null) {
+			criteria.andLotAttribute5EqualTo(lot.getLotAttribute12());
+			conditionCount ++;
+		}
+		if (conditionCount == 0)
+			return null;
+		
+		List<LotAttributeTEntity> selectLot = lotDao.selectByExample(example);
+		if (selectLot == null)
+			return Lists.newArrayList();
+		
+		return selectLot;
+	}
+	
+	@Override
 	public List<LotAttributeTEntity> findBylotNumbers(LotAttributeTEntity lpn, Set<String> lotNumbers) throws BusinessServiceException {
 		if (CollectionUtils.isEmpty(lotNumbers))
 			return Lists.newArrayList();

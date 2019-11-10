@@ -473,6 +473,11 @@ public class TaskServiceImpl implements ITaskService {
 				if (task.getEndTime() == null 
 						&& task.getCompleteTime() != null)
 					task.setEndTime(task.getCompleteTime());
+				
+				if (task.getEndTime() == null 
+						&& task.getCompleteTime() == null)
+					task.setEndTime(new Date());
+					task.setCompleteTime(task.getEndTime());
 			}
 
 			TaskDetailTEntity update = TaskDetailTEntity.builder()

@@ -511,7 +511,7 @@ public class AllocateServiceImpl implements IAllocateService , IExcelService<All
 			String userName = v.get(0).getUpdateBy();
 
 			InventoryTranVO tran = new InventoryTranVO();
-			tran.setTransationType(TransactionTypeEnum.Move.getCode());
+			tran.setTransactionType(TransactionTypeEnum.Move.getCode());
 			tran.setUserName(userName);
 			tran.setWarehouseId(warehouseId);
 			tran.setCompanyId(companyId);
@@ -650,7 +650,7 @@ public class AllocateServiceImpl implements IAllocateService , IExcelService<All
 			String userName = v.get(0).getUpdateBy();
 
 			InventoryTranVO tran = new InventoryTranVO();
-			tran.setTransationType(TransactionTypeEnum.Outbound.getCode());
+			tran.setTransactionType(TransactionTypeEnum.Outbound.getCode());
 			tran.setUserName(userName);
 			tran.setWarehouseId(warehouseId);
 			tran.setCompanyId(companyId);

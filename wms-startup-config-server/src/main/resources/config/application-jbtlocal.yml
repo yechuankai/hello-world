@@ -27,7 +27,8 @@ spring:
   maxOpenPreparedStatements: 20
  data:
   mongodb:
-   uri: mongodb://10.88.20.57:27017
+   #uri: mongodb://10.88.20.57:27017
+   uri: mongodb://10.88.17.111:27017
 #   富本集开启
 #   uri: mongodb://127.0.0.1:10111,127.0.0.1:10112/?slaveOk=true&replicaSet=test_set1&write=1&readPreference=secondaryPreferred
    database: PS

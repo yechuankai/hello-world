@@ -29,6 +29,8 @@ public interface IInventoryService {
 	
 	List<InventoryOnhandTEntity> findByOwner(InventoryOnhandTEntity inventory) throws BusinessServiceException;
 	
+	List<InventoryOnhandVO> findByLotAttribute(InventoryOnhandVO inventory) throws BusinessServiceException;
+	
 	List<InventoryOnhandTEntity> findByLpnId(InventoryOnhandTEntity inventory, Set<Long> lpns) throws BusinessServiceException;
 	
 	Boolean add(InventoryOnhandTEntity inventory) throws BusinessServiceException;

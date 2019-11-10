@@ -88,7 +88,7 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 	@Override
 	@Transactional
 	public InventoryTranVO inbound(InventoryTranVO tran) {
-		tran.setTransationTypeEnum(TransactionTypeEnum.Inbound);
+		tran.setTransactionTypeEnum(TransactionTypeEnum.Inbound);
 		
 		if (log.isDebugEnabled())
 			log.debug("inventory inbound validate start...");
@@ -112,7 +112,7 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 	@Override
 	@Transactional
 	public InventoryTranVO outbound(InventoryTranVO tran) {
-		tran.setTransationTypeEnum(TransactionTypeEnum.Outbound);
+		tran.setTransactionTypeEnum(TransactionTypeEnum.Outbound);
 		
 		if (log.isDebugEnabled())
 			log.debug("inventory outbound validate start...");
@@ -276,7 +276,7 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 				log.debug("inventory inbound process update inbound order");
 			
 			//update inbound
-			if (TransactionTypeEnum.Inbound.getCode().equals(tran.getTransationType())) {
+			if (TransactionTypeEnum.Inbound.getCode().equals(tran.getTransactionType())) {
 				updateInbound(tran, detail);
 			}
 			
@@ -389,7 +389,7 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 	private Boolean validate(InventoryTranVO tran) {
 		StringBuilder errorString = new StringBuilder();
 		
-		if (StringUtils.isEmpty(tran.getTransationType()))
+		if (StringUtils.isEmpty(tran.getTransactionType()))
 			throw new BusinessServiceException("InventoryCoreServiceImpl", "inventory.transation.type.isnull" , null);
 		
 		if (StringUtils.isEmpty(tran.getSouceBillNumber()))
@@ -402,7 +402,7 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 				throw new BusinessServiceException("InventoryCoreServiceImpl", "inventory.transation.allocate.isnull" , new Object[] { d.getSequence() });
 		});
 		
-		switch (tran.getTransationTypeEnum()) {
+		switch (tran.getTransactionTypeEnum()) {
 			case Inbound:
 				Set<String> owners = Sets.newHashSet();
 				Set<String> skus = Sets.newHashSet();
@@ -653,7 +653,7 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 		lot.setSkuCode(detail.getSkuCode());
 		
 		//入库时验证批属性
-		if (TransactionTypeEnum.Inbound.getCode().equals(tran.getTransationType())) {
+		if (TransactionTypeEnum.Inbound.getCode().equals(tran.getTransactionType())) {
 			lotValidateService.validate(lot);
 		}
 		
@@ -693,7 +693,7 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 			detail.setInventoryOnhandId(inventory.getInventoryOnhandId());
 			return inventory;
 		}
-		if (tran.getTransationTypeEnum() == TransactionTypeEnum.Outbound 
+		if (tran.getTransactionTypeEnum() == TransactionTypeEnum.Outbound 
 				&& selectInventory.getInventoryOnhandId().compareTo(detail.getInventoryOnhandId()) != 0)
 			throw new BusinessServiceException("InventoryCoreServiceImpl", "inventory.transation.onhand.error", new Object[] {detail.getInventoryOnhandId(), selectInventory.getInventoryOnhandId()});
 		
@@ -772,7 +772,7 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 													.companyId(tran.getCompanyId())
 													.createTime(new Date())
 													.updateTime(new Date())
-													.transactionType(tran.getTransationType())
+													.transactionType(tran.getTransactionType())
 													.transactionDate(new Date())
 													.sourceBillNumber(tran.getSouceBillNumber())
 													.quantity(detail.getTranQuantity())
@@ -782,7 +782,7 @@ public class InventoryCoreServiceImpl implements IInventoryCoreService {
 		
 		InventoryOnhandTEntity from = detail.getSourceInventoryOnhand();
 		
-		switch (tran.getTransationTypeEnum()) {
+		switch (tran.getTransactionTypeEnum()) {
 			case Inbound:
 				transaction.setFromInventoryOnhandId(from.getInventoryOnhandId());
 				transaction.setFromLocationCode(from.getLocationCode());

@@ -17,7 +17,8 @@ public enum ExcelTemplateEnum {
 	BilingLease("BILLINGLEASE","仓租导出"),
 	PutawayTask("PUTAWAYTASK","上架任务"),
 	UnLoadTask("UNLOADTASK","卸车任务"),
-	LoadTask("LOADTASK","装车任务");
+	LoadTask("LOADTASK","装车任务"),
+	CustomsClearance("CUSTOMSCLEARANCE","通关关系匹配");
 	
 	private final String code;
 	private final String desc;

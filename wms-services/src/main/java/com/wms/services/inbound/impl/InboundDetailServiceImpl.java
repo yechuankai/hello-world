@@ -784,7 +784,7 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 		}
 		
 		InventoryTranVO tran = new InventoryTranVO();
-		tran.setTransationType(TransactionTypeEnum.Inbound.getCode());
+		tran.setTransactionType(TransactionTypeEnum.Inbound.getCode());
 		tran.setSouceBillNumber(inboundVO.getInboundNumber());
 		tran.setCompanyId(inboundVO.getCompanyId());
 		tran.setWarehouseId(inboundVO.getWarehouseId());

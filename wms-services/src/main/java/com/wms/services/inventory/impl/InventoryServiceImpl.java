@@ -461,7 +461,7 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 		//生成移动单号
 		String transferNumber = KeyUtils.getOrderNumber(request.getCompanyId(), request.getWarehouseId(), OrderNumberTypeEnum.Transfer);
 		InventoryTranVO tran = new InventoryTranVO();
-		tran.setTransationType(TransactionTypeEnum.Move.getCode());
+		tran.setTransactionType(TransactionTypeEnum.Move.getCode());
 		tran.setSouceBillNumber(transferNumber);
 		tran.setCompanyId(request.getCompanyId());
 		tran.setWarehouseId(request.getWarehouseId());
@@ -588,5 +588,46 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 		}
 		List<InventoryOnhandTEntity> selectInventory = inventoryDao.selectByExample(example);
 		return selectInventory;
+	}
+
+	/**
+	 * 按批属性查询库存
+	 */
+	@Override
+	public List<InventoryOnhandVO> findByLotAttribute(InventoryOnhandVO inventory)
+			throws BusinessServiceException {
+		InventoryOnhandTExample example = new InventoryOnhandTExample();
+		InventoryOnhandTExample.Criteria criteria = example.createCriteria();
+		criteria
+		.andDelFlagEqualTo(YesNoEnum.No.getCode())
+		.andQuantityOnhandGreaterThan(BigDecimal.ZERO)
+		.andWarehouseIdEqualTo(inventory.getWarehouseId())
+		.andCompanyIdEqualTo(inventory.getCompanyId());
+		
+		LotAttributeTEntity selectLotObj = new LotAttributeTEntity();
+		BeanUtils.copyBeanProp(selectLotObj, inventory);
+		List<LotAttributeTEntity> lots = lotService.findByAttribute(selectLotObj);
+		if (CollectionUtils.isEmpty(lots))
+			return Lists.newArrayList();
+		
+		List<Long> lotIds = lots.stream().map(LotAttributeTEntity::getLotAttributeId).collect(Collectors.toList());
+		criteria.andLotIdIn(lotIds);
+		
+		List<InventoryOnhandTEntity> selectInventory = inventoryDao.selectByExample(example);
+		if (selectInventory == null)
+			return Lists.newArrayList();
+		
+		Map<Long, LotAttributeTEntity> lotMap = lots.stream().collect(Collectors.toMap(LotAttributeTEntity::getLotAttributeId, v->v));
+		List<InventoryOnhandVO> returnList = Lists.newArrayList();
+		selectInventory.forEach(i -> {
+			InventoryOnhandVO onhand = new InventoryOnhandVO();
+			BeanUtils.copyBeanProp(onhand, i);
+			LotAttributeTEntity lot = lotMap.get(i.getLotId());
+			if (lot != null) {
+				BeanUtils.copyBeanProp(onhand, lot);
+			}
+			returnList.add(onhand);
+		});
+		return returnList;
 	}
 }
