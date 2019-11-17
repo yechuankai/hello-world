@@ -15,6 +15,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 
 import com.google.common.collect.Maps;
@@ -30,7 +31,6 @@ import com.wms.common.utils.cache.LocaleUtils;
 import com.wms.common.utils.mongodb.MongoUtils;
 import com.wms.common.utils.spring.SpringUtils;
 import com.wms.entity.auto.SysFileTEntity;
-import com.wms.report.config.ServletConfig;
 import com.wms.report.vo.ReportParameter;
 import com.wms.services.report.IReportService;
 
@@ -41,18 +41,14 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.export.HtmlExporter;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
-import net.sf.jasperreports.engine.export.JRHtmlExporterParameter;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.export.ExporterOutput;
-import net.sf.jasperreports.export.SimpleCommonExportConfiguration;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleHtmlExporterOutput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
-import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
-import net.sf.jasperreports.export.SimpleWriterExporterOutput;
 import net.sf.jasperreports.j2ee.servlets.ImageServlet;
 import net.sf.jasperreports.web.util.WebHtmlResourceHandler;
 
@@ -134,14 +130,15 @@ public class JasperUtils {
 				throw new BusinessServiceException("JasperUtils", "format {0} error",
 						new Object[] { rptParam.getFormat() });
 			
-			ServletUtils.getSession().setAttribute(ImageServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, jasperPrint); 
-
 			JRAbstractExporter exporter = (JRAbstractExporter) clz.newInstance();
 			exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
 			ExporterOutput out = null;
 			if (HTML.equals(rptParam.getFormat())) {
+				ServletUtils.getSession().setAttribute(ImageServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, jasperPrint); 
+				Environment env = SpringUtils.getBean(Environment.class);
+				String url = env.getProperty("wms.url.report");
 				out = new SimpleHtmlExporterOutput(baos);
-				((SimpleHtmlExporterOutput)out).setImageHandler(new WebHtmlResourceHandler("../../jasper/images?image={0}"));
+				((SimpleHtmlExporterOutput)out).setImageHandler(new WebHtmlResourceHandler(url + "/jasper/images?image={0}"));
 			}else {
 				out = new SimpleOutputStreamExporterOutput(baos);
 			}

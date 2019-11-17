@@ -86,6 +86,8 @@ public class OutboundDetailRest extends BaseController {
             outboundVO.setCompanyId(request.getCompanyId());
             if (outboundVO.getOutboundHeaderId() == null) {
                 outboundHeaderService.save(request);
+                //再次查询
+				outboundVO = outboundHeaderService.find(outboundVO);
             }else {
                 outboundDetailService.save(request);
                 outboundHeaderService.outboundStatus(outboundVO, Boolean.TRUE);

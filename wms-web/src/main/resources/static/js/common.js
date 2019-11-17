@@ -354,9 +354,9 @@ function getReportUrl(url, p){
 }
 
 function getFileUrl(){
-	//var base = global['wms.url.file'];
-	//return base;
-	return 'http://127.0.0.1:8280/wms-file/';
+	var base = global['wms.url.file'];
+	return base;
+	//return 'http://127.0.0.1:8280/wms-file/';
 }
 
 function getServiceUrl(){

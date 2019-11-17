@@ -22,7 +22,7 @@ import com.wms.report.vo.ReportParameter;
 public class ReportRest {
 	private static Logger logger = LoggerFactory.getLogger(ReportRest.class);
 	
-	@Value("${wms.url.report}")
+	@Value("${swp.root}")
 	private String host;
 	
     @RequestMapping("/{format}/{reportName}")

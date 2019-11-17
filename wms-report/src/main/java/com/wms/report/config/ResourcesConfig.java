@@ -15,7 +15,7 @@ public class ResourcesConfig implements WebMvcConfigurer {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		/** 配置路径，对应静态资源所在的目录 */
-		registry.addResourceHandler("/static/images/**").addResourceLocations("classpath:/static/images/");
+		registry.addResourceHandler("/static/report/images/**").addResourceLocations("classpath:/report/images/");
 	}
 
 }

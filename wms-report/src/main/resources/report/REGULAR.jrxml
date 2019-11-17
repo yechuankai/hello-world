@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="REGULAR" pageWidth="155" pageHeight="240" columnWidth="155" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5a1d5ead-fe31-4d19-838e-b53e77c1c471">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DIFTZER_100"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DIFTZER_31"/>
 	<property name="com.jaspersoft.studio.unit." value="cm"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
 	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
@@ -83,22 +83,22 @@
 			</image>
 			<textField>
 				<reportElement x="0" y="150" width="155" height="18" uuid="ae0310e7-97d7-438d-a1bc-e86369ce0f80"/>
-				<textElement textAlignment="Center">
-					<font size="13" isBold="true"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{NAME}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="168" width="155" height="17" uuid="92bbcf51-11fe-4d6f-853c-42e4ef270d96"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{COMPANYNAME}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="185" width="155" height="17" uuid="45b9c5c3-77c2-4115-87eb-dd481918bc33"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="true"/>
+					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{POSTION}]]></textFieldExpression>
 			</textField>

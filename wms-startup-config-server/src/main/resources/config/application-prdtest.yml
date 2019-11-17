@@ -31,18 +31,24 @@ spring:
    database: WMS
         #spring.data.mongodb.uri=mongodb://name:pass@localhost:27017/dbname
 
+swp:
+ root: http://test.diftz.dj:8088
+ url:
+  #邮件接口
+  mail: ${swp.root}/SS-JBT/services/mailService/sendAttachmentsHtmlMail
+  
 wms:
  locale: en_US
  #WMS相关服务地址
  url:
-  service: http://test.diftz.dj:8088/WMS-JBT
-  report: http://test.diftz.dj:8088/wms-report
-  file: http://test.diftz.dj:8088/wms-file
-  
+  service: ${swp.root}/WMS-JBT
+  report: ${swp.root}/wms-report
+  file: ${swp.root}/wms-file
+
 
 cas: 
   #cas server地址，外网访问需用外网IP,可以写域名
-  server: http://test.diftz.dj:8088/CAS-JBT
+  server: ${swp.root}/CAS-JBT
   #拿取票据地址
   tickets: ${cas.server}/v1/tickets
   #当前项目被casFilter拦截的请求路径

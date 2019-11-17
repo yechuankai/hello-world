@@ -85,9 +85,11 @@ public class InboundDetailRest extends BaseController{
 					d.setTransactionCategory(TransactionCategoryEnum.PCReceive.getCode());
 				});
 			}
-			if (inboundVO.getInboundHeaderId() == null)
+			if (inboundVO.getInboundHeaderId() == null) {
 				inboundHeaderService.save(request);
-			else {
+				//再次查询
+				inboundVO = inboundHeaderService.find(inboundVO);
+			}else {
 				inboundDetailService.save(request);
 				inboundHeaderService.inboundStatus(inboundVO, Boolean.TRUE);
 			}

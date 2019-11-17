@@ -28,27 +28,35 @@ spring:
  data:
   mongodb:
    uri: mongodb://10.128.13.167:27017
-   database: wms
+   database: WMS
         #spring.data.mongodb.uri=mongodb://name:pass@localhost:27017/dbname
 
+
+swp:
+ root: http://www.jbt.com
+ url:
+  #邮件接口
+  mail: ${swp.root}/SS-JBT/services/mailService/sendAttachmentsHtmlMail
+  
 wms:
  locale: en_US
  #WMS相关服务地址
  url:
-  service: http://www.jbt.com/WMS-JBT
-  report: http://www.jbt.com/wms-report
-  file: http://www.jbt.com/wms-file
-  
+  service: ${swp.root}/WMS-JBT
+  report: ${swp.root}/wms-report
+  file: ${swp.root}/wms-file
+
 
 cas: 
   #cas server地址，外网访问需用外网IP,可以写域名
-  server: http://www.jbt.com/CAS-JBT
+  server: ${swp.root}/CAS-JBT
   #拿取票据地址
   tickets: ${cas.server}/v1/tickets
   #当前项目被casFilter拦截的请求路径
   casFilterUrl: /cas
   loginUrl: ${cas.server}/login?flag=trade&service=${wms.url.service}/cas
-  
+
+
 logging:
  path: C:\\logs
   

@@ -193,7 +193,7 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 		
 		return outboundVO;
 	}
-
+	
 	@Override
 	public OutboundHeaderTEntity find(OutboundHeaderTEntity outbound) throws BusinessServiceException {
 		OutboundHeaderTExample TExample = new OutboundHeaderTExample();
@@ -340,6 +340,7 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 						.sourceBillNumber(selectHeader.getOutboundNumber())
 						.sourceNumber(selectHeader.getOutboundHeaderId())
 						.oldStatus(selectHeader.getStatus())
+						.type(StatusHistoryTypeEnum.Outbound.getCode())
 						.newStatus(status.getCode())
 						.build();
 				statusHistoryService.add(statusHistory);
@@ -566,6 +567,7 @@ public class OutboundHeaderServiceImpl implements IOutboundHeaderService {
 				.sourceNumber(selectHeader.getOutboundHeaderId())
 				.oldStatus(selectHeader.getStatus())
 				.newStatus(status.getCode())
+				.type(StatusHistoryTypeEnum.Outbound.getCode())
 				.build();
 		statusHistoryService.add(statusHistory);
 				

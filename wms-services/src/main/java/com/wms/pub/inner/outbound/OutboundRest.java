@@ -99,6 +99,8 @@ public class OutboundRest extends BaseController{
 			if (outboundVO.getOperatorType() == OperatorTypeEnum.Add) {
 				String message = "billnumber.show";
 				message = MessageUtils.message(message, outboundVO.getOutboundNumber());
+				//再次查询
+				outboundVO = outboundService.find(outboundVO);
 				return success(outboundVO, message);
 			}
 

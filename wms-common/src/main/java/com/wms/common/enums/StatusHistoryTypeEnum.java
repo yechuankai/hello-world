@@ -9,7 +9,7 @@ package com.wms.common.enums;
 public enum StatusHistoryTypeEnum {
 
 	Inbound("INBOUND","入库"),
-	Outbound("OTBOUND", "出库");
+	Outbound("OUTBOUND", "出库");
 	
 	private final String code;
 	private final String desc;

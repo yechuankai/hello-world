@@ -547,6 +547,7 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 				.sourceNumber(selectHeader.getInboundHeaderId())
 				.oldStatus(selectHeader.getStatus())
 				.newStatus(status.getCode())
+				.type(StatusHistoryTypeEnum.Inbound.getCode())
 				.build();
 		statusHistoryService.add(statusHistory);
 		
@@ -645,6 +646,7 @@ public class InboundHeaderServiceImpl implements IInboundHeaderService {
 					.sourceBillNumber(d.getInboundNumber())
 					.sourceNumber(d.getInboundHeaderId())
 					.newStatus(InboundStatusEnum.Closed.getCode())
+					.type(StatusHistoryTypeEnum.Inbound.getCode())
 					.build();
 			statusHistoryService.add(statusHistory);
 			

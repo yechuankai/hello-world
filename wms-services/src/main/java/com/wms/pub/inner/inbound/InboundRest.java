@@ -58,6 +58,8 @@ public class InboundRest extends BaseController{
 			if (inboundVO.getOperatorType() == OperatorTypeEnum.Add) {
 				String message = "billnumber.show";
 				message = MessageUtils.message(message, inboundVO.getInboundNumber());
+				//再次查询
+				inboundVO = inboundHeaderService.find(inboundVO);
 				return success(inboundVO, message);
 			}
 			
