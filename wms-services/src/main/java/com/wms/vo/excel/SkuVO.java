@@ -63,6 +63,9 @@ public class SkuVO  extends AbstractExcelModel {
 
 	@Excel(name = "uom")
 	private String uom;
+	
+	@Excel(name = "billingUOM")
+	private String uomBilling;
 
 	@Excel(name = "lotValidateCode")
 	private String lotValidateCode;

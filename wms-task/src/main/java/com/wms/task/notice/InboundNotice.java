@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.collect.Sets;
+import com.wms.common.constants.ConfigConstants;
 import com.wms.common.core.domain.CodelkupVO;
 import com.wms.common.enums.InboundStatusEnum;
 import com.wms.common.enums.StatusHistoryTypeEnum;
@@ -53,7 +54,7 @@ public class InboundNotice extends BaseNotice{
 		List<CodelkupVO> statusCodelkp = CodelkUpUtils.getCodelkup("INBOUNDSTATUS");
 		Map<String, CodelkupVO> statusCodelkpMap = statusCodelkp.stream().collect(Collectors.toMap(CodelkupVO::getCode, v->v));
 		//获取标题
-		String title = ConfigUtils.getValue("NOTIC_SUBJECT_INBOUND");
+		String title = ConfigUtils.getValue(ConfigConstants.CONFIG_NOTIC_SUBJECT_INBOUND);
 		if (StringUtils.isEmpty(title))
 			return;
 		

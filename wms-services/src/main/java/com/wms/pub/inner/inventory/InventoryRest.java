@@ -10,8 +10,10 @@ import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.core.domain.response.AjaxResult;
 import com.wms.common.core.domain.response.PageResult;
+import com.wms.common.enums.YesNoEnum;
 import com.wms.services.inventory.IInventoryLockService;
 import com.wms.services.inventory.IInventoryService;
+import com.wms.services.inventory.impl.InventoryServiceImpl;
 import com.wms.vo.InventoryLockedVO;
 import com.wms.vo.InventoryOnhandVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,7 @@ public class InventoryRest extends BaseController {
 	public PageResult<InventoryOnhandVO> find(@RequestBody String req) {
 		try {
 			PageRequest pageRequest = pageRequest(req);
+			pageRequest.put(InventoryServiceImpl.QUANTITY_ONHAND_MORE_THAN_ZERO, YesNoEnum.Yes.getCode());
 			PageResult<InventoryOnhandVO> page = inventoryService.find(pageRequest);
 			return page;
 		} catch (Exception e) {

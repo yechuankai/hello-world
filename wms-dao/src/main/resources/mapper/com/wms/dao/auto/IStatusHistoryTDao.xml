@@ -18,11 +18,11 @@
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="UPDATE_VERSION" jdbcType="DECIMAL" property="updateVersion" />
     <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
-    <result column="NOTICE1" jdbcType="CHAR" property="notice1" />
-    <result column="NOTICE2" jdbcType="CHAR" property="notice2" />
-    <result column="NOTICE3" jdbcType="CHAR" property="notice3" />
-    <result column="NOTICE4" jdbcType="CHAR" property="notice4" />
     <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="NOTICE1" jdbcType="VARCHAR" property="notice1" />
+    <result column="NOTICE2" jdbcType="VARCHAR" property="notice2" />
+    <result column="NOTICE3" jdbcType="VARCHAR" property="notice3" />
+    <result column="NOTICE4" jdbcType="VARCHAR" property="notice4" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -122,7 +122,7 @@
   <sql id="Base_Column_List">
     HISTORY_ID, SOURCE_NUMBER, SOURCE_BILL_NUMBER, OLD_STATUS, NEW_STATUS, OPER_TIME, 
     REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
-    UPDATE_VERSION, DESCRIPTION, NOTICE1, NOTICE2, NOTICE3, NOTICE4, TYPE
+    UPDATE_VERSION, DESCRIPTION, TYPE, NOTICE1, NOTICE2, NOTICE3, NOTICE4
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.StatusHistoryTExample" resultMap="BaseResultMap">
     select
@@ -150,15 +150,17 @@
       REMARK, COMPANY_ID, WAREHOUSE_ID, 
       DEL_FLAG, CREATE_BY, CREATE_TIME, 
       UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, 
-      DESCRIPTION, NOTICE1, NOTICE2, 
-      NOTICE3, NOTICE4, TYPE)
+      DESCRIPTION, TYPE, NOTICE1, 
+      NOTICE2, NOTICE3, NOTICE4
+      )
     values (#{historyId,jdbcType=DECIMAL}, #{sourceNumber,jdbcType=DECIMAL}, #{sourceBillNumber,jdbcType=VARCHAR}, 
       #{oldStatus,jdbcType=VARCHAR}, #{newStatus,jdbcType=VARCHAR}, #{operTime,jdbcType=TIMESTAMP}, 
       #{remark,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, 
       #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, 
-      #{description,jdbcType=VARCHAR}, #{notice1,jdbcType=CHAR}, #{notice2,jdbcType=CHAR}, 
-      #{notice3,jdbcType=CHAR}, #{notice4,jdbcType=CHAR}, #{type,jdbcType=VARCHAR})
+      #{description,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{notice1,jdbcType=VARCHAR}, 
+      #{notice2,jdbcType=VARCHAR}, #{notice3,jdbcType=VARCHAR}, #{notice4,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.StatusHistoryTEntity">
     insert into STATUS_HISTORY_T
@@ -211,6 +213,9 @@
       <if test="description != null">
         DESCRIPTION,
       </if>
+      <if test="type != null">
+        TYPE,
+      </if>
       <if test="notice1 != null">
         NOTICE1,
       </if>
@@ -222,9 +227,6 @@
       </if>
       <if test="notice4 != null">
         NOTICE4,
-      </if>
-      <if test="type != null">
-        TYPE,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -276,20 +278,20 @@
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
       </if>
-      <if test="notice1 != null">
-        #{notice1,jdbcType=CHAR},
-      </if>
-      <if test="notice2 != null">
-        #{notice2,jdbcType=CHAR},
-      </if>
-      <if test="notice3 != null">
-        #{notice3,jdbcType=CHAR},
-      </if>
-      <if test="notice4 != null">
-        #{notice4,jdbcType=CHAR},
-      </if>
       <if test="type != null">
         #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="notice1 != null">
+        #{notice1,jdbcType=VARCHAR},
+      </if>
+      <if test="notice2 != null">
+        #{notice2,jdbcType=VARCHAR},
+      </if>
+      <if test="notice3 != null">
+        #{notice3,jdbcType=VARCHAR},
+      </if>
+      <if test="notice4 != null">
+        #{notice4,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -350,20 +352,20 @@
       <if test="record.description != null">
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       </if>
-      <if test="record.notice1 != null">
-        NOTICE1 = #{record.notice1,jdbcType=CHAR},
-      </if>
-      <if test="record.notice2 != null">
-        NOTICE2 = #{record.notice2,jdbcType=CHAR},
-      </if>
-      <if test="record.notice3 != null">
-        NOTICE3 = #{record.notice3,jdbcType=CHAR},
-      </if>
-      <if test="record.notice4 != null">
-        NOTICE4 = #{record.notice4,jdbcType=CHAR},
-      </if>
       <if test="record.type != null">
         TYPE = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.notice1 != null">
+        NOTICE1 = #{record.notice1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.notice2 != null">
+        NOTICE2 = #{record.notice2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.notice3 != null">
+        NOTICE3 = #{record.notice3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.notice4 != null">
+        NOTICE4 = #{record.notice4,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -388,11 +390,11 @@
       UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
       UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
       DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-      NOTICE1 = #{record.notice1,jdbcType=CHAR},
-      NOTICE2 = #{record.notice2,jdbcType=CHAR},
-      NOTICE3 = #{record.notice3,jdbcType=CHAR},
-      NOTICE4 = #{record.notice4,jdbcType=CHAR},
-      TYPE = #{record.type,jdbcType=VARCHAR}
+      TYPE = #{record.type,jdbcType=VARCHAR},
+      NOTICE1 = #{record.notice1,jdbcType=VARCHAR},
+      NOTICE2 = #{record.notice2,jdbcType=VARCHAR},
+      NOTICE3 = #{record.notice3,jdbcType=VARCHAR},
+      NOTICE4 = #{record.notice4,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -510,11 +512,11 @@
     UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR}, 
     UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
     DESCRIPTION = #{record.description,jdbcType=VARCHAR}, 
-    NOTICE1 = #{record.notice1,jdbcType=CHAR}, 
-    NOTICE2 = #{record.notice2,jdbcType=CHAR}, 
-    NOTICE3 = #{record.notice3,jdbcType=CHAR}, 
-    NOTICE4 = #{record.notice4,jdbcType=CHAR}, 
-    TYPE = #{record.type,jdbcType=VARCHAR}
+    TYPE = #{record.type,jdbcType=VARCHAR}, 
+    NOTICE1 = #{record.notice1,jdbcType=VARCHAR}, 
+    NOTICE2 = #{record.notice2,jdbcType=VARCHAR}, 
+    NOTICE3 = #{record.notice3,jdbcType=VARCHAR}, 
+    NOTICE4 = #{record.notice4,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
     </if>
@@ -574,20 +576,20 @@
         <if test="record.description != null">
           DESCRIPTION = #{record.description,jdbcType=VARCHAR},
         </if>
-        <if test="record.notice1 != null">
-          NOTICE1 = #{record.notice1,jdbcType=CHAR},
-        </if>
-        <if test="record.notice2 != null">
-          NOTICE2 = #{record.notice2,jdbcType=CHAR},
-        </if>
-        <if test="record.notice3 != null">
-          NOTICE3 = #{record.notice3,jdbcType=CHAR},
-        </if>
-        <if test="record.notice4 != null">
-          NOTICE4 = #{record.notice4,jdbcType=CHAR},
-        </if>
         <if test="record.type != null">
           TYPE = #{record.type,jdbcType=VARCHAR},
+        </if>
+        <if test="record.notice1 != null">
+          NOTICE1 = #{record.notice1,jdbcType=VARCHAR},
+        </if>
+        <if test="record.notice2 != null">
+          NOTICE2 = #{record.notice2,jdbcType=VARCHAR},
+        </if>
+        <if test="record.notice3 != null">
+          NOTICE3 = #{record.notice3,jdbcType=VARCHAR},
+        </if>
+        <if test="record.notice4 != null">
+          NOTICE4 = #{record.notice4,jdbcType=VARCHAR},
         </if>
       </trim>
     </set>

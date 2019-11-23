@@ -3,6 +3,7 @@ package com.wms.services.inventory.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
+import com.wms.common.constants.ConfigConstants;
 import com.wms.common.core.domain.ExcelTemplate;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
@@ -13,13 +14,17 @@ import com.wms.common.exception.BusinessServiceException;
 import com.wms.common.utils.ExampleUtils;
 import com.wms.common.utils.StringUtils;
 import com.wms.common.utils.bean.BeanUtils;
+import com.wms.common.utils.cache.ConfigUtils;
 import com.wms.common.utils.key.KeyUtils;
 import com.wms.dao.auto.IInventoryOnhandTDao;
 import com.wms.dao.example.InventoryOnhandTExample;
 import com.wms.entity.auto.InventoryOnhandTEntity;
 import com.wms.entity.auto.LotAttributeTEntity;
 import com.wms.entity.auto.LpnTEntity;
+import com.wms.entity.auto.PackTEntity;
 import com.wms.entity.auto.SkuTEntity;
+import com.wms.services.base.IPackService;
+import com.wms.services.base.ISkuService;
 import com.wms.services.core.IInventoryCoreService;
 import com.wms.services.inventory.IInventoryService;
 import com.wms.services.inventory.ILotService;
@@ -27,6 +32,7 @@ import com.wms.services.inventory.ILpnService;
 import com.wms.vo.InventoryOnhandVO;
 import com.wms.vo.InventoryTranDetailVO;
 import com.wms.vo.InventoryTranVO;
+import com.wms.vo.PackVO;
 import com.wms.vo.excel.InventoryOnhandImportVO;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +54,10 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 	private ILpnService lpnService;
 	@Autowired
 	private ILotService lotService;
+	@Autowired
+	private ISkuService skuService;
+	@Autowired
+	private IPackService packService;
 	
 	private static final String QUANTITY_AVAILABLE_MORE_THAN_ZERO = "quantityAvailableMoreThanZero";
 	public static final String QUANTITY_ONHAND_MORE_THAN_ZERO = "quantityOnhandMoreThanZero";
@@ -278,6 +288,8 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 				.build(request)
 				.orderby(TExample);
 		
+		
+		
 		//增加条件判断,查询条件可用库存是否大于0
 		if (YesNoEnum.Yes.getCode().equals(quantityAvailableMoreThanZero)) {
 			String condition = StringUtils.join( "(", 
@@ -350,6 +362,29 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 		List<LotAttributeTEntity> lotList = lotService.findByIds(LotAttributeTEntity.builder().companyId(request.getCompanyId()).build(), lotIds);
 		Map<Long, LotAttributeTEntity> lotMap = lotList.stream().collect(Collectors.toMap(LotAttributeTEntity::getLotAttributeId, v->v));
 		
+		//查询SKU/包装  获取规格信息
+		//查询KSU
+		Set<Long> skuIdSet = inventoryOnhandDetailList.stream().map(InventoryOnhandTEntity::getSkuId).collect(Collectors.toSet());
+		List<SkuTEntity> skuList = skuService.findByIds(SkuTEntity.builder()
+											.warehouseId(request.getWarehouseId())
+											.companyId(request.getCompanyId())
+											.build(), skuIdSet);
+		Map<String, SkuTEntity> skuMap = skuList.stream().collect(Collectors.toMap(k -> k.getOwnerCode() + k.getSkuCode(), v -> v));
+		
+		//开启了复制包装，则从批属性获取
+		boolean copyPacktoLot = ConfigUtils.getBooleanValue(request.getCompanyId(), request.getWarehouseId(), ConfigConstants.CONFIG_COPY_PACK_TO_LOT8X9);
+		//查询包装
+		Map<String, PackTEntity> packMap = null;
+		if (copyPacktoLot) {
+			Set<String> packCodeSet = lotList.stream().filter(v->StringUtils.isNotEmpty(v.getLotAttribute8())).map(LotAttributeTEntity::getLotAttribute8).collect(Collectors.toSet());
+			List<PackTEntity> packList = packService.findByPackcodes(PackTEntity.builder()
+					.warehouseId(request.getWarehouseId())
+					.companyId(request.getCompanyId())
+					.build(), packCodeSet);
+			packMap = packList.stream().collect(Collectors.toMap(PackTEntity::getPackCode, v -> v));
+		}
+		final Map<String, PackTEntity> packMapFinal = packMap;
+		
 		List<InventoryOnhandVO> returnList = Lists.newArrayList();
 		inventoryOnhandDetailList.forEach(d -> {
 			InventoryOnhandVO inventoryOnhandVO = new InventoryOnhandVO(d);
@@ -371,6 +406,38 @@ public class InventoryServiceImpl implements IInventoryService , IExcelService<I
 				inventoryOnhandVO.setLotAttribute11(lot.getLotAttribute11());
 				inventoryOnhandVO.setLotAttribute12(lot.getLotAttribute12());
 			}
+			
+			//计算重量/体积
+			if (BigDecimal.ZERO.compareTo(inventoryOnhandVO.getQuantityOnhand()) < 0) {
+				SkuTEntity sku = skuMap.get(d.getOwnerCode() + d.getSkuCode());
+				if(sku != null) {
+					if (!copyPacktoLot) { //没有将包装复制到批属性，以货品主数据为准
+						inventoryOnhandVO.setVolume(sku.getVolume().multiply(d.getQuantityOnhand()));
+						inventoryOnhandVO.setWeightGross(sku.getWeightGross().multiply(d.getQuantityOnhand()));
+						inventoryOnhandVO.setWeightNet(sku.getWeightNet().multiply(d.getQuantityOnhand()));
+						inventoryOnhandVO.setWeightTare(sku.getWeightTare().multiply(d.getQuantityOnhand()));
+					}else if (packMapFinal != null && StringUtils.isNotEmpty(inventoryOnhandVO.getLotAttribute8())) {
+						PackTEntity pack = packMapFinal.get(inventoryOnhandVO.getLotAttribute8());
+						if (pack != null) {
+							String uom = inventoryOnhandVO.getLotAttribute9();
+							PackVO packvo = packService.getPack(pack, sku, uom);
+							
+							inventoryOnhandVO.setVolume(packvo.getVolume().multiply(d.getQuantityOnhand()));
+							inventoryOnhandVO.setWeightGross(packvo.getWeightGross().multiply(d.getQuantityOnhand()));
+							inventoryOnhandVO.setWeightNet(packvo.getWeightNet().multiply(d.getQuantityOnhand()));
+							inventoryOnhandVO.setWeightTare(packvo.getWeightTare().multiply(d.getQuantityOnhand()));
+						}
+					}
+					
+					//设置计费吨
+					if (BillingUOMEnum.Volume.getCode().equals(sku.getUomBilling())) {
+						inventoryOnhandVO.setRevenueTon(inventoryOnhandVO.getVolume());
+					}else { //默认重量
+						inventoryOnhandVO.setRevenueTon(inventoryOnhandVO.getWeightGross());
+					}
+				}
+			}
+			
 			returnList.add(inventoryOnhandVO);
 		});
 		

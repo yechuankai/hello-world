@@ -52,6 +52,16 @@ public class InventoryOnhandVO extends InventoryOnhandTEntity{
     private String transactionCategory;
     
     private String warehouseCode;
+    
+    private BigDecimal weightGross;
+
+    private BigDecimal weightNet;
+
+    private BigDecimal weightTare;
+    
+    private BigDecimal volume;
+    
+    private BigDecimal revenueTon;
 	
 	public void setQuantityAvailable(BigDecimal quantityAvailable) {
 		this.quantityAvailable = quantityAvailable;
@@ -240,4 +250,46 @@ public class InventoryOnhandVO extends InventoryOnhandTEntity{
 	public void setWarehouseCode(String warehouseCode) {
 		this.warehouseCode = warehouseCode;
 	}
+
+	public BigDecimal getWeightGross() {
+		return weightGross;
+	}
+
+	public void setWeightGross(BigDecimal weightGross) {
+		this.weightGross = weightGross;
+	}
+
+	public BigDecimal getWeightNet() {
+		return weightNet;
+	}
+
+	public void setWeightNet(BigDecimal weightNet) {
+		this.weightNet = weightNet;
+	}
+
+	public BigDecimal getWeightTare() {
+		return weightTare;
+	}
+
+	public void setWeightTare(BigDecimal weightTare) {
+		this.weightTare = weightTare;
+	}
+
+	public BigDecimal getVolume() {
+		return volume;
+	}
+
+	public void setVolume(BigDecimal volume) {
+		this.volume = volume;
+	}
+
+	public BigDecimal getRevenueTon() {
+		return revenueTon;
+	}
+
+	public void setRevenueTon(BigDecimal revenueTon) {
+		this.revenueTon = revenueTon;
+	}
+
+	
 }

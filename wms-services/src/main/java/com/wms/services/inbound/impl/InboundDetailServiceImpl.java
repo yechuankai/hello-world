@@ -390,13 +390,25 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 		
 		//默认设置批属性10为入库单号、批属性11为入库日期
 		if (BigDecimal.ZERO.compareTo(detail.getQuantityReceive()) < 0) {
-			if (StringUtils.isEmpty(detail.getLotAttribute10()))
-				detail.setLotAttribute10(inbound.getInboundNumber());
-			if (detail.getLotAttribute11() == null) {
-				if (inbound.getInboundDate() != null) {
-					detail.setLotAttribute11(DateUtils.parseDate(DateUtils.dateTime(inbound.getInboundDate())));
-				}else {
-					detail.setLotAttribute11(DateUtils.parseDate(DateUtils.getDate()));	
+			//开启开关复制批属性
+			if (ConfigUtils.getBooleanValue(inbound.getCompanyId(), inbound.getWarehouseId(), ConfigConstants.CONFIG_COPY_INBOUND_TO_LOT10X11)) {
+				if (StringUtils.isEmpty(detail.getLotAttribute10())) {
+					detail.setLotAttribute10(inbound.getInboundNumber());
+				}
+				if (detail.getLotAttribute11() == null) {
+					if (inbound.getInboundDate() != null) {
+						detail.setLotAttribute11(DateUtils.parseDate(DateUtils.dateTime(inbound.getInboundDate())));
+					}else {
+						detail.setLotAttribute11(DateUtils.parseDate(DateUtils.getDate()));	
+					}
+				}
+			}
+			if (ConfigUtils.getBooleanValue(inbound.getCompanyId(), inbound.getWarehouseId(), ConfigConstants.CONFIG_COPY_PACK_TO_LOT8X9)) {
+				if (StringUtils.isEmpty(detail.getLotAttribute8())) {
+					detail.setLotAttribute8(detail.getPackCode());
+				}
+				if (StringUtils.isEmpty(detail.getLotAttribute9())) {
+					detail.setLotAttribute9(detail.getUom());
 				}
 			}
 		}
@@ -856,6 +868,10 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 			String updateBy = v.get(0).getUpdateBy();
 			InboundHeaderTEntity header = inboundHeaderService.find(InboundHeaderTEntity.builder().warehouseId(warehouseId).companyId(companyId).inboundHeaderId(k).build());
 			
+			//是否复制批属性
+			boolean copyInboundTolot = ConfigUtils.getBooleanValue(companyId, warehouseId, ConfigConstants.CONFIG_COPY_INBOUND_TO_LOT10X11);
+			boolean copyPackTolot = ConfigUtils.getBooleanValue(companyId, warehouseId, ConfigConstants.CONFIG_COPY_PACK_TO_LOT8X9);
+			
 			InboundVO headerVO = new InboundVO(header);
 			headerVO.setUpdateBy(updateBy);
 			
@@ -872,12 +888,25 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 					detailVO.setQuantityReceive(detailObj.getQuantityReceive().add(detailVO.getTranQuantity()));
 
 					//默认当前日期
-					if (StringUtils.isEmpty(detailObj.getLotAttribute10())) {
-						detailVO.setLotAttribute10(header.getInboundNumber());
-						if (header.getInboundDate() != null) {
-							detailVO.setLotAttribute11(DateUtils.parseDate(DateUtils.dateTime(header.getInboundDate())));
-						}else {
-							detailVO.setLotAttribute11(DateUtils.parseDate(DateUtils.getDate()));
+					if (copyInboundTolot) {
+						if (StringUtils.isEmpty(detailObj.getLotAttribute10())) {
+							detailVO.setLotAttribute10(header.getInboundNumber());
+						}
+						if (detailObj.getLotAttribute11() == null) {
+							if (header.getInboundDate() != null) {
+								detailVO.setLotAttribute11(DateUtils.parseDate(DateUtils.dateTime(header.getInboundDate())));
+							}else {
+								detailVO.setLotAttribute11(DateUtils.parseDate(DateUtils.getDate()));
+							}
+						}
+					}
+					//复制包装
+					if (copyPackTolot) {
+						if (StringUtils.isEmpty(detailObj.getLotAttribute8())) {
+							detailVO.setLotAttribute8(detailObj.getPackCode());
+						}
+						if (StringUtils.isEmpty(detailObj.getLotAttribute9())) {
+							detailVO.setLotAttribute9(detailObj.getUom());
 						}
 					}
 					tranDetail.add(detailVO);
@@ -891,6 +920,8 @@ public class InboundDetailServiceImpl implements IInboundDetailService, IExcelSe
 															.updateBy(d.getUpdateBy())
 															.updateTime(new Date())
 															.quantityReceive(detailVO.getQuantityReceive())
+															.lotAttribute8(detailVO.getLotAttribute8())
+															.lotAttribute9(detailVO.getLotAttribute9())
 															.lotAttribute10(detailVO.getLotAttribute10())
 															.lotAttribute11(detailVO.getLotAttribute11())
 															.build();

@@ -20,9 +20,14 @@
     <result column="ADDRESS2" jdbcType="VARCHAR" property="address2" />
     <result column="FAX" jdbcType="VARCHAR" property="fax" />
     <result column="EMAIL1" jdbcType="VARCHAR" property="email1" />
+    <result column="SHIP_LABEL" jdbcType="VARCHAR" property="shipLabel" />
+    <result column="CAR_NUMBER" jdbcType="VARCHAR" property="carNumber" />
+    <result column="DRIVER" jdbcType="VARCHAR" property="driver" />
+    <result column="CONTAINER_NUMBER" jdbcType="VARCHAR" property="containerNumber" />
     <result column="OUTBOUND_DATE" jdbcType="TIMESTAMP" property="outboundDate" />
     <result column="EXPECTED_OUTBOUND_DATE" jdbcType="TIMESTAMP" property="expectedOutboundDate" />
     <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="PROCESS_STATUS" jdbcType="VARCHAR" property="processStatus" />
     <result column="REMARK" jdbcType="VARCHAR" property="remark" />
     <result column="COMPANY_ID" jdbcType="DECIMAL" property="companyId" />
     <result column="WAREHOUSE_ID" jdbcType="DECIMAL" property="warehouseId" />
@@ -33,16 +38,11 @@
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="UPDATE_VERSION" jdbcType="DECIMAL" property="updateVersion" />
     <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
-    <result column="PROCESS_STATUS" jdbcType="VARCHAR" property="processStatus" />
-    <result column="SHIP_LABEL" jdbcType="VARCHAR" property="shipLabel" />
-    <result column="CAR_NUMBER" jdbcType="VARCHAR" property="carNumber" />
-    <result column="DRIVER" jdbcType="VARCHAR" property="driver" />
-    <result column="CONTAINER_NUMBER" jdbcType="VARCHAR" property="containerNumber" />
     <result column="CARRIER_ID" jdbcType="DECIMAL" property="carrierId" />
     <result column="CARRIER_CODE" jdbcType="VARCHAR" property="carrierCode" />
     <result column="EMAIL2" jdbcType="VARCHAR" property="email2" />
-    <result column="DRIVER_PHONE" jdbcType="VARCHAR" property="driverPhone" />
     <result column="SOURCE_WAVE_NUMBER" jdbcType="VARCHAR" property="sourceWaveNumber" />
+    <result column="DRIVER_PHONE" jdbcType="VARCHAR" property="driverPhone" />
     <result column="PLATFORM_CODE" jdbcType="VARCHAR" property="platformCode" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -143,10 +143,11 @@
   <sql id="Base_Column_List">
     OUTBOUND_HEADER_ID, OUTBOUND_NUMBER, SOURCE_NUMBER, REFERENCE_NUMBER, TYPE, OWNER_ID, 
     OWNER_CODE, CUSTOMER_ID, CUSTOMER_CODE, CUSTOMER_DESCR, CONTACT1, CONTACT2, PHONE1, 
-    PHONE2, ADDRESS1, ADDRESS2, FAX, EMAIL1, OUTBOUND_DATE, EXPECTED_OUTBOUND_DATE, STATUS, 
-    REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
-    UPDATE_VERSION, DESCRIPTION, PROCESS_STATUS, SHIP_LABEL, CAR_NUMBER, DRIVER, CONTAINER_NUMBER, 
-    CARRIER_ID, CARRIER_CODE, EMAIL2, DRIVER_PHONE, SOURCE_WAVE_NUMBER, PLATFORM_CODE
+    PHONE2, ADDRESS1, ADDRESS2, FAX, EMAIL1, SHIP_LABEL, CAR_NUMBER, DRIVER, CONTAINER_NUMBER, 
+    OUTBOUND_DATE, EXPECTED_OUTBOUND_DATE, STATUS, PROCESS_STATUS, REMARK, COMPANY_ID, 
+    WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, 
+    DESCRIPTION, CARRIER_ID, CARRIER_CODE, EMAIL2, SOURCE_WAVE_NUMBER, DRIVER_PHONE, 
+    PLATFORM_CODE
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.OutboundHeaderTExample" resultMap="BaseResultMap">
     select
@@ -175,14 +176,14 @@
       CUSTOMER_CODE, CUSTOMER_DESCR, CONTACT1, 
       CONTACT2, PHONE1, PHONE2, 
       ADDRESS1, ADDRESS2, FAX, 
-      EMAIL1, OUTBOUND_DATE, EXPECTED_OUTBOUND_DATE, 
-      STATUS, REMARK, COMPANY_ID, 
-      WAREHOUSE_ID, DEL_FLAG, CREATE_BY, 
-      CREATE_TIME, UPDATE_BY, UPDATE_TIME, 
-      UPDATE_VERSION, DESCRIPTION, PROCESS_STATUS, 
-      SHIP_LABEL, CAR_NUMBER, DRIVER, 
-      CONTAINER_NUMBER, CARRIER_ID, CARRIER_CODE, 
-      EMAIL2, DRIVER_PHONE, SOURCE_WAVE_NUMBER, 
+      EMAIL1, SHIP_LABEL, CAR_NUMBER, 
+      DRIVER, CONTAINER_NUMBER, OUTBOUND_DATE, 
+      EXPECTED_OUTBOUND_DATE, STATUS, PROCESS_STATUS, 
+      REMARK, COMPANY_ID, WAREHOUSE_ID, 
+      DEL_FLAG, CREATE_BY, CREATE_TIME, 
+      UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, 
+      DESCRIPTION, CARRIER_ID, CARRIER_CODE, 
+      EMAIL2, SOURCE_WAVE_NUMBER, DRIVER_PHONE, 
       PLATFORM_CODE)
     values (#{outboundHeaderId,jdbcType=DECIMAL}, #{outboundNumber,jdbcType=VARCHAR}, 
       #{sourceNumber,jdbcType=VARCHAR}, #{referenceNumber,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
@@ -190,14 +191,14 @@
       #{customerCode,jdbcType=VARCHAR}, #{customerDescr,jdbcType=VARCHAR}, #{contact1,jdbcType=VARCHAR}, 
       #{contact2,jdbcType=VARCHAR}, #{phone1,jdbcType=VARCHAR}, #{phone2,jdbcType=VARCHAR}, 
       #{address1,jdbcType=VARCHAR}, #{address2,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR}, 
-      #{email1,jdbcType=VARCHAR}, #{outboundDate,jdbcType=TIMESTAMP}, #{expectedOutboundDate,jdbcType=TIMESTAMP}, 
-      #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, 
-      #{warehouseId,jdbcType=DECIMAL}, #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{updateVersion,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}, #{processStatus,jdbcType=VARCHAR}, 
-      #{shipLabel,jdbcType=VARCHAR}, #{carNumber,jdbcType=VARCHAR}, #{driver,jdbcType=VARCHAR}, 
-      #{containerNumber,jdbcType=VARCHAR}, #{carrierId,jdbcType=DECIMAL}, #{carrierCode,jdbcType=VARCHAR}, 
-      #{email2,jdbcType=VARCHAR}, #{driverPhone,jdbcType=VARCHAR}, #{sourceWaveNumber,jdbcType=VARCHAR}, 
+      #{email1,jdbcType=VARCHAR}, #{shipLabel,jdbcType=VARCHAR}, #{carNumber,jdbcType=VARCHAR}, 
+      #{driver,jdbcType=VARCHAR}, #{containerNumber,jdbcType=VARCHAR}, #{outboundDate,jdbcType=TIMESTAMP}, 
+      #{expectedOutboundDate,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, #{processStatus,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, 
+      #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, 
+      #{description,jdbcType=VARCHAR}, #{carrierId,jdbcType=DECIMAL}, #{carrierCode,jdbcType=VARCHAR}, 
+      #{email2,jdbcType=VARCHAR}, #{sourceWaveNumber,jdbcType=VARCHAR}, #{driverPhone,jdbcType=VARCHAR}, 
       #{platformCode,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.OutboundHeaderTEntity">
@@ -257,6 +258,18 @@
       <if test="email1 != null">
         EMAIL1,
       </if>
+      <if test="shipLabel != null">
+        SHIP_LABEL,
+      </if>
+      <if test="carNumber != null">
+        CAR_NUMBER,
+      </if>
+      <if test="driver != null">
+        DRIVER,
+      </if>
+      <if test="containerNumber != null">
+        CONTAINER_NUMBER,
+      </if>
       <if test="outboundDate != null">
         OUTBOUND_DATE,
       </if>
@@ -265,6 +278,9 @@
       </if>
       <if test="status != null">
         STATUS,
+      </if>
+      <if test="processStatus != null">
+        PROCESS_STATUS,
       </if>
       <if test="remark != null">
         REMARK,
@@ -296,21 +312,6 @@
       <if test="description != null">
         DESCRIPTION,
       </if>
-      <if test="processStatus != null">
-        PROCESS_STATUS,
-      </if>
-      <if test="shipLabel != null">
-        SHIP_LABEL,
-      </if>
-      <if test="carNumber != null">
-        CAR_NUMBER,
-      </if>
-      <if test="driver != null">
-        DRIVER,
-      </if>
-      <if test="containerNumber != null">
-        CONTAINER_NUMBER,
-      </if>
       <if test="carrierId != null">
         CARRIER_ID,
       </if>
@@ -320,11 +321,11 @@
       <if test="email2 != null">
         EMAIL2,
       </if>
-      <if test="driverPhone != null">
-        DRIVER_PHONE,
-      </if>
       <if test="sourceWaveNumber != null">
         SOURCE_WAVE_NUMBER,
+      </if>
+      <if test="driverPhone != null">
+        DRIVER_PHONE,
       </if>
       <if test="platformCode != null">
         PLATFORM_CODE,
@@ -385,6 +386,18 @@
       <if test="email1 != null">
         #{email1,jdbcType=VARCHAR},
       </if>
+      <if test="shipLabel != null">
+        #{shipLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="carNumber != null">
+        #{carNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="driver != null">
+        #{driver,jdbcType=VARCHAR},
+      </if>
+      <if test="containerNumber != null">
+        #{containerNumber,jdbcType=VARCHAR},
+      </if>
       <if test="outboundDate != null">
         #{outboundDate,jdbcType=TIMESTAMP},
       </if>
@@ -393,6 +406,9 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="processStatus != null">
+        #{processStatus,jdbcType=VARCHAR},
       </if>
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
@@ -424,21 +440,6 @@
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
       </if>
-      <if test="processStatus != null">
-        #{processStatus,jdbcType=VARCHAR},
-      </if>
-      <if test="shipLabel != null">
-        #{shipLabel,jdbcType=VARCHAR},
-      </if>
-      <if test="carNumber != null">
-        #{carNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="driver != null">
-        #{driver,jdbcType=VARCHAR},
-      </if>
-      <if test="containerNumber != null">
-        #{containerNumber,jdbcType=VARCHAR},
-      </if>
       <if test="carrierId != null">
         #{carrierId,jdbcType=DECIMAL},
       </if>
@@ -448,11 +449,11 @@
       <if test="email2 != null">
         #{email2,jdbcType=VARCHAR},
       </if>
-      <if test="driverPhone != null">
-        #{driverPhone,jdbcType=VARCHAR},
-      </if>
       <if test="sourceWaveNumber != null">
         #{sourceWaveNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="driverPhone != null">
+        #{driverPhone,jdbcType=VARCHAR},
       </if>
       <if test="platformCode != null">
         #{platformCode,jdbcType=VARCHAR},
@@ -522,6 +523,18 @@
       <if test="record.email1 != null">
         EMAIL1 = #{record.email1,jdbcType=VARCHAR},
       </if>
+      <if test="record.shipLabel != null">
+        SHIP_LABEL = #{record.shipLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carNumber != null">
+        CAR_NUMBER = #{record.carNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.driver != null">
+        DRIVER = #{record.driver,jdbcType=VARCHAR},
+      </if>
+      <if test="record.containerNumber != null">
+        CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR},
+      </if>
       <if test="record.outboundDate != null">
         OUTBOUND_DATE = #{record.outboundDate,jdbcType=TIMESTAMP},
       </if>
@@ -530,6 +543,9 @@
       </if>
       <if test="record.status != null">
         STATUS = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.processStatus != null">
+        PROCESS_STATUS = #{record.processStatus,jdbcType=VARCHAR},
       </if>
       <if test="record.remark != null">
         REMARK = #{record.remark,jdbcType=VARCHAR},
@@ -561,21 +577,6 @@
       <if test="record.description != null">
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       </if>
-      <if test="record.processStatus != null">
-        PROCESS_STATUS = #{record.processStatus,jdbcType=VARCHAR},
-      </if>
-      <if test="record.shipLabel != null">
-        SHIP_LABEL = #{record.shipLabel,jdbcType=VARCHAR},
-      </if>
-      <if test="record.carNumber != null">
-        CAR_NUMBER = #{record.carNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="record.driver != null">
-        DRIVER = #{record.driver,jdbcType=VARCHAR},
-      </if>
-      <if test="record.containerNumber != null">
-        CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR},
-      </if>
       <if test="record.carrierId != null">
         CARRIER_ID = #{record.carrierId,jdbcType=DECIMAL},
       </if>
@@ -585,11 +586,11 @@
       <if test="record.email2 != null">
         EMAIL2 = #{record.email2,jdbcType=VARCHAR},
       </if>
-      <if test="record.driverPhone != null">
-        DRIVER_PHONE = #{record.driverPhone,jdbcType=VARCHAR},
-      </if>
       <if test="record.sourceWaveNumber != null">
         SOURCE_WAVE_NUMBER = #{record.sourceWaveNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.driverPhone != null">
+        DRIVER_PHONE = #{record.driverPhone,jdbcType=VARCHAR},
       </if>
       <if test="record.platformCode != null">
         PLATFORM_CODE = #{record.platformCode,jdbcType=VARCHAR},
@@ -619,9 +620,14 @@
       ADDRESS2 = #{record.address2,jdbcType=VARCHAR},
       FAX = #{record.fax,jdbcType=VARCHAR},
       EMAIL1 = #{record.email1,jdbcType=VARCHAR},
+      SHIP_LABEL = #{record.shipLabel,jdbcType=VARCHAR},
+      CAR_NUMBER = #{record.carNumber,jdbcType=VARCHAR},
+      DRIVER = #{record.driver,jdbcType=VARCHAR},
+      CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR},
       OUTBOUND_DATE = #{record.outboundDate,jdbcType=TIMESTAMP},
       EXPECTED_OUTBOUND_DATE = #{record.expectedOutboundDate,jdbcType=TIMESTAMP},
       STATUS = #{record.status,jdbcType=VARCHAR},
+      PROCESS_STATUS = #{record.processStatus,jdbcType=VARCHAR},
       REMARK = #{record.remark,jdbcType=VARCHAR},
       COMPANY_ID = #{record.companyId,jdbcType=DECIMAL},
       WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL},
@@ -632,16 +638,11 @@
       UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
       UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
       DESCRIPTION = #{record.description,jdbcType=VARCHAR},
-      PROCESS_STATUS = #{record.processStatus,jdbcType=VARCHAR},
-      SHIP_LABEL = #{record.shipLabel,jdbcType=VARCHAR},
-      CAR_NUMBER = #{record.carNumber,jdbcType=VARCHAR},
-      DRIVER = #{record.driver,jdbcType=VARCHAR},
-      CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR},
       CARRIER_ID = #{record.carrierId,jdbcType=DECIMAL},
       CARRIER_CODE = #{record.carrierCode,jdbcType=VARCHAR},
       EMAIL2 = #{record.email2,jdbcType=VARCHAR},
-      DRIVER_PHONE = #{record.driverPhone,jdbcType=VARCHAR},
       SOURCE_WAVE_NUMBER = #{record.sourceWaveNumber,jdbcType=VARCHAR},
+      DRIVER_PHONE = #{record.driverPhone,jdbcType=VARCHAR},
       PLATFORM_CODE = #{record.platformCode,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -763,9 +764,14 @@
     ADDRESS2 = #{record.address2,jdbcType=VARCHAR}, 
     FAX = #{record.fax,jdbcType=VARCHAR}, 
     EMAIL1 = #{record.email1,jdbcType=VARCHAR}, 
+    SHIP_LABEL = #{record.shipLabel,jdbcType=VARCHAR}, 
+    CAR_NUMBER = #{record.carNumber,jdbcType=VARCHAR}, 
+    DRIVER = #{record.driver,jdbcType=VARCHAR}, 
+    CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR}, 
     OUTBOUND_DATE = #{record.outboundDate,jdbcType=TIMESTAMP}, 
     EXPECTED_OUTBOUND_DATE = #{record.expectedOutboundDate,jdbcType=TIMESTAMP}, 
     STATUS = #{record.status,jdbcType=VARCHAR}, 
+    PROCESS_STATUS = #{record.processStatus,jdbcType=VARCHAR}, 
     REMARK = #{record.remark,jdbcType=VARCHAR}, 
     COMPANY_ID = #{record.companyId,jdbcType=DECIMAL}, 
     WAREHOUSE_ID = #{record.warehouseId,jdbcType=DECIMAL}, 
@@ -775,16 +781,11 @@
     UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR}, 
     UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
     DESCRIPTION = #{record.description,jdbcType=VARCHAR}, 
-    PROCESS_STATUS = #{record.processStatus,jdbcType=VARCHAR}, 
-    SHIP_LABEL = #{record.shipLabel,jdbcType=VARCHAR}, 
-    CAR_NUMBER = #{record.carNumber,jdbcType=VARCHAR}, 
-    DRIVER = #{record.driver,jdbcType=VARCHAR}, 
-    CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR}, 
     CARRIER_ID = #{record.carrierId,jdbcType=DECIMAL}, 
     CARRIER_CODE = #{record.carrierCode,jdbcType=VARCHAR}, 
     EMAIL2 = #{record.email2,jdbcType=VARCHAR}, 
-    DRIVER_PHONE = #{record.driverPhone,jdbcType=VARCHAR}, 
     SOURCE_WAVE_NUMBER = #{record.sourceWaveNumber,jdbcType=VARCHAR}, 
+    DRIVER_PHONE = #{record.driverPhone,jdbcType=VARCHAR}, 
     PLATFORM_CODE = #{record.platformCode,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
@@ -854,6 +855,18 @@
         <if test="record.email1 != null">
           EMAIL1 = #{record.email1,jdbcType=VARCHAR},
         </if>
+        <if test="record.shipLabel != null">
+          SHIP_LABEL = #{record.shipLabel,jdbcType=VARCHAR},
+        </if>
+        <if test="record.carNumber != null">
+          CAR_NUMBER = #{record.carNumber,jdbcType=VARCHAR},
+        </if>
+        <if test="record.driver != null">
+          DRIVER = #{record.driver,jdbcType=VARCHAR},
+        </if>
+        <if test="record.containerNumber != null">
+          CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR},
+        </if>
         <if test="record.outboundDate != null">
           OUTBOUND_DATE = #{record.outboundDate,jdbcType=TIMESTAMP},
         </if>
@@ -862,6 +875,9 @@
         </if>
         <if test="record.status != null">
           STATUS = #{record.status,jdbcType=VARCHAR},
+        </if>
+        <if test="record.processStatus != null">
+          PROCESS_STATUS = #{record.processStatus,jdbcType=VARCHAR},
         </if>
         <if test="record.remark != null">
           REMARK = #{record.remark,jdbcType=VARCHAR},
@@ -890,21 +906,6 @@
         <if test="record.description != null">
           DESCRIPTION = #{record.description,jdbcType=VARCHAR},
         </if>
-        <if test="record.processStatus != null">
-          PROCESS_STATUS = #{record.processStatus,jdbcType=VARCHAR},
-        </if>
-        <if test="record.shipLabel != null">
-          SHIP_LABEL = #{record.shipLabel,jdbcType=VARCHAR},
-        </if>
-        <if test="record.carNumber != null">
-          CAR_NUMBER = #{record.carNumber,jdbcType=VARCHAR},
-        </if>
-        <if test="record.driver != null">
-          DRIVER = #{record.driver,jdbcType=VARCHAR},
-        </if>
-        <if test="record.containerNumber != null">
-          CONTAINER_NUMBER = #{record.containerNumber,jdbcType=VARCHAR},
-        </if>
         <if test="record.carrierId != null">
           CARRIER_ID = #{record.carrierId,jdbcType=DECIMAL},
         </if>
@@ -914,11 +915,11 @@
         <if test="record.email2 != null">
           EMAIL2 = #{record.email2,jdbcType=VARCHAR},
         </if>
-        <if test="record.driverPhone != null">
-          DRIVER_PHONE = #{record.driverPhone,jdbcType=VARCHAR},
-        </if>
         <if test="record.sourceWaveNumber != null">
           SOURCE_WAVE_NUMBER = #{record.sourceWaveNumber,jdbcType=VARCHAR},
+        </if>
+        <if test="record.driverPhone != null">
+          DRIVER_PHONE = #{record.driverPhone,jdbcType=VARCHAR},
         </if>
         <if test="record.platformCode != null">
           PLATFORM_CODE = #{record.platformCode,jdbcType=VARCHAR},

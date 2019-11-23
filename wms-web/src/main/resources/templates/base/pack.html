@@ -437,14 +437,13 @@
 			</form>
 		</div>
 		<div style="text-align: center;margin-top: 15px;">
-				<a href="#" class="easyui-linkbutton pack-save" data-form="#addForm" data-table="#packData" id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
-					<span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
-				</a>
-				<a href="#" style="display: none;" class="common-confirmadd" data-form="#addForm" data-table="#packData" id="submitaddForm" >Add</a>
-				<a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');" data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
-					<span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
-				</a>
-			</div>
+			<a href="#" class="easyui-linkbutton pack-save" data-form="#addForm" data-table="#packData" id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
+				<span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
+			</a>
+			<a href="#" style="display: none;" class="common-confirmadd" data-form="#addForm" data-table="#packData" id="submitaddForm" >Add</a>
+			<a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');" data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
+				<span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
+			</a>
 		</div>
 	</div>
 </body>
@@ -480,7 +479,6 @@ function toEdit(data) {
         closed: true,
         modal: true,
         fix: true,
-        buttons: '#editButton',
     }).dialog('open');
     loadFlag = true;
     $(panel).find('form').form('reset');

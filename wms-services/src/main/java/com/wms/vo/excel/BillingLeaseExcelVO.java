@@ -59,6 +59,9 @@ public class BillingLeaseExcelVO extends AbstractExcelModel{
 	
 	@Excel(name = "weightTare")
     private BigDecimal weightTare;
+	
+	@Excel(name = "revenueTon")
+    private BigDecimal revenueTon;
 
 	public Date getBillingDate() {
 		return billingDate;
@@ -196,4 +199,13 @@ public class BillingLeaseExcelVO extends AbstractExcelModel{
 		this.weightTare = weightTare;
 	}
 
+	public BigDecimal getRevenueTon() {
+		return revenueTon;
+	}
+
+	public void setRevenueTon(BigDecimal revenueTon) {
+		this.revenueTon = revenueTon;
+	}
+
+	
 }

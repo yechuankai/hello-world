@@ -12,4 +12,12 @@ public interface ConfigConstants {
 	public static final String CONFIG_INBOUND_RECEIVE_EXCEED = "INBOUND_RECEIVE_EXCEED";
 	//无SKU收货
 	public static final String CONFIG_RF_INBOUND_RECEIVE_NO_SKU = "RF_INBOUND_RECEIVE_NO_SKU";
+	//入库收货通知标题
+	public static final String CONFIG_NOTIC_SUBJECT_INBOUND= "NOTIC_SUBJECT_INBOUND";
+	//出库通知标题
+	public static final String CONFIG_NOTIC_SUBJECT_OUTBOUND = "NOTIC_SUBJECT_OUTBOUND";
+	//复制入库信息到批属性10、批属性11
+	public static final String CONFIG_COPY_INBOUND_TO_LOT10X11 = "COPY_INBOUND_TO_LOT10X11";
+	//复制包装信息到批属性8、批属性9
+	public static final String CONFIG_COPY_PACK_TO_LOT8X9 = "COPY_PACK_TO_LOT8X9";
 }

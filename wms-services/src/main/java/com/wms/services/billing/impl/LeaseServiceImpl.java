@@ -23,6 +23,7 @@ import com.wms.common.core.domain.ExcelTemplate;
 import com.wms.common.core.domain.request.AjaxRequest;
 import com.wms.common.core.domain.request.PageRequest;
 import com.wms.common.core.services.IExcelService;
+import com.wms.common.enums.BillingUOMEnum;
 import com.wms.common.enums.ExcelTemplateEnum;
 import com.wms.common.enums.OrderNumberTypeEnum;
 import com.wms.common.enums.TransactionTypeEnum;
@@ -30,6 +31,7 @@ import com.wms.common.enums.YesNoEnum;
 import com.wms.common.exception.BusinessServiceException;
 import com.wms.common.utils.DateUtils;
 import com.wms.common.utils.ExampleUtils;
+import com.wms.common.utils.StringUtils;
 import com.wms.common.utils.bean.BeanUtils;
 import com.wms.common.utils.key.KeyUtils;
 import com.wms.dao.auto.IBillingLeaseTDao;
@@ -164,7 +166,7 @@ public class LeaseServiceImpl implements ILeaseService, IExcelService<BillingLea
 		OwnerTEntity owner = request.getData();
 
 		//如果结束日期为当天，则需判断产生库存快照
-		if (DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD, endDate).equals(DateUtils.getDate())) {
+		if (DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD, endDate).compareTo(DateUtils.getDate()) >= 0) {
 			//建立库存快照
 			inventorySnapshotService.synchronize(InventoryOnhandSnapshotTEntity.builder()
 													.warehouseId(request.getWarehouseId())
@@ -348,7 +350,6 @@ public class LeaseServiceImpl implements ILeaseService, IExcelService<BillingLea
 			mulitLotNumberList.add(lotNumberList.subList(i * max, toIndex));
 		}
 		
-		Map<String, InboundDetailTEntity> lotPackMap = Maps.newHashMap();
 		List<LotAttributeTEntity> lotList = Lists.newArrayList();
 		for (List<String> lots : mulitLotNumberList) {
 			//查询到所有批次
@@ -356,33 +357,11 @@ public class LeaseServiceImpl implements ILeaseService, IExcelService<BillingLea
 											.warehouseId(request.getWarehouseId())
 											.companyId(request.getCompanyId())
 											.build(), Sets.newHashSet(lots));
-			if (CollectionUtils.isNotEmpty(selectLots))
-				lotList.addAll(selectLots);
-			
-			//根据批次信息查询入库单包装， 批次信息已包含入库单、SKU，根据批次则能定位到包装、单位
-			List<InboundDetailTEntity> inboundDetailList = inboundDetailService.findByLotNumbers(InboundDetailTEntity.builder()
-											.warehouseId(request.getWarehouseId())
-											.companyId(request.getCompanyId())
-											.build(), Sets.newHashSet(lots));
-			
-			if(CollectionUtils.isEmpty(inboundDetailList))
+			if (CollectionUtils.isEmpty(selectLots)){
 				continue;
+			}
 			
-			//按批次号分组计算
-			Map<String, List<InboundDetailTEntity>> inboundDetailLotList = inboundDetailList.stream()
-					.filter(v-> v.getQuantityReceive().compareTo(BigDecimal.ZERO) > 0)
-					.collect(Collectors.groupingBy(InboundDetailTEntity::getLotNumber));
-			inboundDetailLotList.forEach((k, v) -> {
-				InboundDetailTEntity detail = v.stream().max(new Comparator<InboundDetailTEntity>() {
-					@Override
-					public int compare(InboundDetailTEntity o1, InboundDetailTEntity o2) {
-						//降序排列
-						return o2.getInboundDate().compareTo(o1.getInboundDate());
-					}
-				}).get();
-				//按批次获取最后收货行
-				lotPackMap.put(k, detail);
-			});
+			lotList.addAll(selectLots);
 		}
 		
 		if (CollectionUtils.isEmpty(lotList))
@@ -399,12 +378,12 @@ public class LeaseServiceImpl implements ILeaseService, IExcelService<BillingLea
 		Map<Long, SkuTEntity> skuMap = skuList.stream().collect(Collectors.toMap(SkuTEntity::getSkuId, v -> v));
 		
 		//查询包装
-		Set<Long> packIdSet = lotPackMap.values().stream().map(InboundDetailTEntity::getPackId).collect(Collectors.toSet());
-		List<PackTEntity> packList = packService.findByIds(PackTEntity.builder()
+		Set<String> packCodeSet = lotList.stream().filter(v->StringUtils.isNotEmpty(v.getLotAttribute8())).map(LotAttributeTEntity::getLotAttribute8).collect(Collectors.toSet());
+		List<PackTEntity> packList = packService.findByPackcodes(PackTEntity.builder()
 				.warehouseId(request.getWarehouseId())
 				.companyId(request.getCompanyId())
-				.build(), packIdSet);
-		Map<Long, PackTEntity> packMap = packList.stream().collect(Collectors.toMap(PackTEntity::getPackId, v -> v));
+				.build(), packCodeSet);
+		Map<String, PackTEntity> packMap = packList.stream().collect(Collectors.toMap(PackTEntity::getPackCode, v -> v));
 		
 		//将查询出的批次数据转换为map
 		Map<String, LotAttributeTEntity> lotMap = lotList.stream().collect(Collectors.toMap(LotAttributeTEntity::getLotNumber, v -> v));
@@ -422,17 +401,12 @@ public class LeaseServiceImpl implements ILeaseService, IExcelService<BillingLea
 				l.setSkuId(lot.getSkuId());
 				l.setSkuCode(lot.getSkuCode());
 			}
-			InboundDetailTEntity inbound = lotPackMap.get(l.getLotNumber());
-			if (inbound != null) {
-				l.setPackId(inbound.getPackId());
-				l.setPackCode(inbound.getPackCode());
-				l.setUom(inbound.getUom());
-			}
 			//查询规格信息
 			SkuTEntity sku = skuMap.get(l.getSkuId());
-			PackTEntity pack = packMap.get(l.getPackId());
+			PackTEntity pack = packMap.get(lot.getLotAttribute8());
 			if (sku != null && pack != null) {
-				PackVO packvo = packService.getPack(pack, sku, l.getUom());
+				String uom = lot.getLotAttribute9();
+				PackVO packvo = packService.getPack(pack, sku, uom);
 				
 				BigDecimal quantity = null;
 				if (l.getQuantityReceived() != null) {
@@ -440,10 +414,19 @@ public class LeaseServiceImpl implements ILeaseService, IExcelService<BillingLea
 				}else {
 					quantity = l.getQuantityShiped();
 				}
+				l.setPackId(pack.getPackId());
+				l.setPackCode(pack.getPackCode());
+				l.setUom(uom);
 				l.setVolume(packvo.getVolume().multiply(quantity));
 				l.setWeightGross(packvo.getWeightGross().multiply(quantity));
 				l.setWeightNet(packvo.getWeightNet().multiply(quantity));
 				l.setWeightTare(packvo.getWeightTare().multiply(quantity));
+				//设置计费吨
+				if (BillingUOMEnum.Volume.getCode().equals(sku.getUomBilling())) {
+					l.setRevenueTon(l.getVolume());
+				}else { //默认重量
+					l.setRevenueTon(l.getWeightGross());
+				}
 			}
 			
 		});

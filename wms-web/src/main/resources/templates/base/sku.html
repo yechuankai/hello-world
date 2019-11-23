@@ -100,26 +100,19 @@
 										putawayLocatoinCode.editor.options.onClickRow = function(i, row){
 											rowData.putawayZoneCode = row.zoneCode
 										}
-										console.log(putawayLocatoinCode);
-									}
-								},
-								onEndEdit: function(rowIndex, rowData, changes){
-									if (changes['length'] || changes['width'] || changes['height']){
-										var length = changes['length'] ? changes['length'] : rowData.length;
-										var width = changes['width'] ? changes['width'] : rowData.width;
-										var height = changes['height'] ? changes['height'] : rowData.height;
-										rowData.volume = Number(length) * Number(width) * Number(height);
-									}
-									if (changes['weightGross'] || changes['weightNet']){
-										var weightGross = changes['weightGross'] ? changes['weightGross'] : rowData.weightGross;
-										var weightNet = changes['weightNet'] ? changes['weightNet'] : rowData.weightNet;
-										rowData.weightTare = Number(weightGross) - Number(weightNet);
 									}
 								}
 							">
 				<thead data-options="frozen:true">
 	            	<tr>
 	            		<th field="skuId" data-options="checkbox:true"></th>
+	            		<th field="edit" data-options="
+										formatter:function(value,row){
+											var data = JSON.stringify(row);
+											var detail = '<span title = \'编辑\' onclick=\'toEdit('+data+')\' class=\'icon-edit\'>&nbsp;</span>';
+											return detail;
+										}
+									"></th>
 	            	</tr>
 	            </thead>
 				<thead>
@@ -183,64 +176,6 @@
 								}
 							}
 						" >uom</th>
-						<th field="volume" width="100" wms:text="${web.label.volume}" data-options="sortable:true,editor:{
-																													type: 'numberbox',
-																													options: {
-																														precision:4,
-																														required: true,
-																														validType: 'greaterthanzero',
-																													}
-																												}" >volume</th>
-						<th field="length" width="100" wms:text="${web.label.length}" data-options="
-							sortable:true,
-							editor:{
-								type: 'numberbox',
-								options: {
-									precision:4,
-									required: true,
-									validType: 'greaterthanzero',
-								}
-							}" >length</th>
-						<th field="width" width="100" wms:text="${web.label.width}" data-options="sortable:true,editor:{
-																													type: 'numberbox',
-																													options: {
-																														precision:4,
-																														required: true,
-																														validType: 'greaterthanzero',
-																													}
-																												}" >width</th>
-				        <th field="height" width="100" wms:text="${web.label.height}" data-options="sortable:true,editor:{
-																													type: 'numberbox',
-																													options: {
-																														precision:4,
-																														required: true,
-																														validType: 'greaterthanzero',
-																													}
-																												}" >height</th>
-					    <th field="weightGross" width="100" wms:text="${web.label.weightgross}" data-options="sortable:true,editor:{
-																													type: 'numberbox',
-																													options: {
-																														precision:4,
-																														required: true,
-																														validType: 'greaterthanzero',
-																													}
-																												}" >weightGross</th>
-				        <th field="weightNet" width="100" wms:text="${web.label.weightnet}" data-options="sortable:true,editor:{
-																													type: 'numberbox',
-																													options: {
-																														precision:4,
-																														required: true,
-																														validType: 'greaterthanzero',
-																													}
-																												}" >weightNet</th>
-					    <th field="weightTare" width="100" wms:text="${web.label.weighttare}" data-options="sortable:true,editor:{
-																													type: 'numberbox',
-																													options: {
-																														precision:4,
-																														required: true,
-																														validType: 'greaterthanzero',
-																													}
-																												}" >weightTare</th>
 						<th field="lotValidateCode" width="100" wms:text="${web.label.lotvalidate}" wms:data-options="
 							sortable:true,
 							editor:{
@@ -333,18 +268,6 @@
 							}
 
 						"  >putawayLocationCode</th>
-						<th field="lotAttribute1Label" width="100" wms:text="${web.label.lotattribute1}" data-options="sortable:true,editor:'text'" >lotAttribute1Label</th>
-						<th field="lotAttribute2Label" width="100" wms:text="${web.label.lotattribute2}" data-options="sortable:true,editor:'text'" >lotAttribute2Label</th>
-						<th field="lotAttribute3Label" width="100" wms:text="${web.label.lotattribute3}" data-options="sortable:true,editor:'text'" >lotAttribute3Label</th>
-						<th field="lotAttribute4Label" width="100" wms:text="${web.label.lotattribute4}" data-options="sortable:true,editor:'text'" >lotAttribute4Label</th>
-						<th field="lotAttribute5Label" width="100" wms:text="${web.label.lotattribute5}" data-options="sortable:true,editor:'text'" >lotAttribute5Label</th>
-						<th field="lotAttribute6Label" width="100" wms:text="${web.label.lotattribute6}" data-options="sortable:true,editor:'text'" >lotAttribute6Label</th>
-						<th field="lotAttribute7Label" width="100" wms:text="${web.label.lotattribute7}" data-options="sortable:true,editor:'text'" >lotAttribute7Label</th>
-						<th field="lotAttribute8Label" width="100" wms:text="${web.label.lotattribute8}" data-options="sortable:true,editor:'text'" >lotAttribute8Label</th>
-						<th field="lotAttribute9Label" width="100" wms:text="${web.label.lotattribute9}" data-options="sortable:true,editor:'text'" >lotAttribute9Label</th>
-						<th field="lotAttribute10Label" width="100" wms:text="${web.label.lotattribute10}" data-options="sortable:true,editor:'text'" >lotAttribute10Label</th>
-						<th field="lotAttribute11Label" width="100" wms:text="${web.label.lotattribute11}" data-options="sortable:true,editor:'text'" >lotAttribute11Label</th>
-						<th field="lotAttribute12Label" width="100" wms:text="${web.label.lotattribute12}" data-options="sortable:true,editor:'text'" >lotAttribute12Label</th>
 						<th field="active" width="50" wms:text="${web.label.active}" data-options="
 							sortable:true,
 							required:true,
@@ -370,14 +293,10 @@
 			</table>
 		</div>
 	</div>
-	<div id="addButton">
-		<a href="#" class="easyui-linkbutton common-confirmadd" wms:text="${web.label.save}" data-table="#skuData" data-form="#addForm">Save</a>
-		<a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');" wms:text="${web.label.clear}" data-options="iconCls:'icon-clear'">Clear</a>
-	</div>
-	<div id="addDiv" wms:title="${web.label.add}" style="width:700px;height:450px; display: none;" data-options="buttons: '#addButton'">
+	<div id="addDiv" wms:title="${web.label.add}" style="width:700px;height:470px; display: none;" >
 		<div style="width: 100%;">
 			<form method="post" id="addForm" th:data-url="@{/services/inner/base/sku/add}">
-			  <div class="lazy-load" lazy-load="easyui-tabs" style="width: 100%;">
+			  <div class="lazy-load" lazy-load="easyui-tabs" style="width: 100%;height:360px;" >
 				  <div wms:title="${web.label.normal}" style="padding-left: 10px;">
 					<table border="0" cellpadding="0" cellspacing="0" width="100%">
 						<tr>
@@ -504,7 +423,17 @@
 							</td>
 						 </tr>
 						 <tr>
-							<td colspan="4" >
+						 	<td >
+								<input name="uomBilling" class="easyui-combobox"  style="width: 96%" wms:data-options="
+									required:true,
+									data: codelkups['BILLINGUOM'],
+									valueField: 'code',
+									textField: 'descr',
+									label: '${web.label.uom.billing}',
+									labelPosition: 'top'
+									" />
+							</td>
+							<td colspan="3" >
 								<input class="easyui-combobox" name="active" style="width: 100px" wms:data-options="
 								required:true,
 								value: 'Y',
@@ -645,15 +574,36 @@
 				</div>
 			</form>
 		</div>
+		<div style="text-align: center;margin-top: 15px;">
+			<a href="#" class="easyui-linkbutton sku-save" data-form="#addForm" data-table="#skuData" id="submitaddForm" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:80px;">
+				<span style="font-size:14px;" wms:text="${web.label.save}">Save</span>
+			</a>
+			<a href="#" style="display: none;" class="common-confirmadd" data-form="#addForm" data-table="#skuData" id="submitaddForm" >Add</a>
+			<a href="#" class="easyui-linkbutton" id="clearAddForm" onclick="$('#addForm').form('clear');" data-options="iconCls:'icon-clear'" style="padding:5px 0px;width:80px;">
+				<span style="font-size:14px;" wms:text="${web.label.clear}">Clear</span>
+			</a>
+		</div>
 	</div>
 </body>
 <script th:replace="common/js" />
-<script type="text/javascript" th:src="@{/js/codelkupList?listName=YESNO,SKUTYPE,UOM,ZONETYPE}"></script>
+<script type="text/javascript" th:src="@{/js/codelkupList?listName=YESNO,SKUTYPE,UOM,ZONETYPE,BILLINGUOM}"></script>
 <script type="text/javascript" th:inline="text">
 	//记录上一个编辑列
 	var perChanges;
+	var editData;
+	var addFlag = true;
 	
     $(function(){
+    	$('.common-add').click(function(){
+    		addFlag = true;
+    	});
+    	$('.sku-save').click(function(){
+    		if (addFlag){
+    			$('.common-confirmadd').trigger('click');
+    		}else{
+    			save();
+    		}
+    	});
     	$('#skuCode').textbox({
     		onChange: function(newValue, oldValue){
     			var value = $('#barcode').textbox('getValue');
@@ -704,5 +654,59 @@
 		$('#weightTare').numberbox('setValue',tareWeight);
 		return true;
 	}
+	
+	
+	var loadFlag = false;
+	function toEdit(data) {
+		addFlag = false;
+	    if (typeof(data) == 'object') {
+	        editData = data;
+	    }else{
+	    	showError($.locale.selectOneRow);
+	    }
+	    var panel = '#addDiv';
+	    lazyLoadView(panel);
+	    $(panel).dialog({
+	        closed: true,
+	        modal: true,
+	        fix: true,
+	    }).dialog('open');
+	    loadFlag = true;
+	    $(panel).find('form').form('reset');
+	    var from = $(panel).find('form');
+	    $(from).form('load', editData);
+	    loadFlag = false;
+	}
+	
+	function save(){
+		var valid = $('#addForm').form('validate');
+		if (!valid) {
+			return;
+		}
+		var data = $('#addForm').serializeObject();
+		var dataArr = [data];
+		data = getBaseData(dataArr);
+		loading();
+		$.post({
+			url: '../../services/inner/base/sku/save',
+			data:data,
+			success: function(data){
+				data = returnData(data);
+				closeLoading();
+				if (data.code == '0') {
+					showError(data.msg);
+					return;
+				}
+				loadFlag = true;
+				$('#addForm').form('reset');
+				loadFlag = false;
+				$('#addForm').parents('.window-body').dialog('close');
+				if ($('.common-search').length > 0){
+					$('.common-search').trigger('click');
+				}
+			}
+		});
+	}
+
 </script>
 </html>

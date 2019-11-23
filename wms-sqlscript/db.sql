@@ -4030,4 +4030,9 @@ comment on column status_history_t.notice2   is '通知2';
 comment on column status_history_t.notice3   is '通知3';
 comment on column status_history_t.notice4   is '通知4';
 
+alter table sku_t add uom_billing varchar2(50);
+comment on column sku_t.uom_billing is '计费单位';
+
+alter table Billing_Lease_T add REVENUE_TON number(20,5);
+comment on column Billing_Lease_T.REVENUE_TON is '计费吨';
 

@@ -36,6 +36,7 @@
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="UPDATE_VERSION" jdbcType="DECIMAL" property="updateVersion" />
     <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    <result column="REVENUE_TON" jdbcType="DECIMAL" property="revenueTon" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -137,7 +138,7 @@
     SOURCE_BILL_NUMBER, SKU_ID, SKU_CODE, PACK_ID, PACK_CODE, UOM, LOT_ID, LOT_NUMBER, 
     INBOUND_DATE, QUANTITY_RECEIVED, OUTBOUND_DATE, QUANTITY_SHIPED, VOLUME, WEIGHT_GROSS, 
     WEIGHT_NET, WEIGHT_TARE, DAYS, STATUS, REMARK, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, 
-    CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION
+    CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION, REVENUE_TON
   </sql>
   <select id="selectByExample" parameterType="com.wms.dao.example.BillingLeaseTExample" resultMap="BaseResultMap">
     select
@@ -171,7 +172,7 @@
       REMARK, COMPANY_ID, WAREHOUSE_ID, 
       DEL_FLAG, CREATE_BY, CREATE_TIME, 
       UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, 
-      DESCRIPTION)
+      DESCRIPTION, REVENUE_TON)
     values (#{billingLeaseId,jdbcType=DECIMAL}, #{billingDate,jdbcType=TIMESTAMP}, #{billingMonth,jdbcType=VARCHAR}, 
       #{billingLeaseCode,jdbcType=VARCHAR}, #{ownerId,jdbcType=DECIMAL}, #{ownerCode,jdbcType=VARCHAR}, 
       #{sourceBillNumber,jdbcType=VARCHAR}, #{skuId,jdbcType=DECIMAL}, #{skuCode,jdbcType=VARCHAR}, 
@@ -183,7 +184,7 @@
       #{remark,jdbcType=VARCHAR}, #{companyId,jdbcType=DECIMAL}, #{warehouseId,jdbcType=DECIMAL}, 
       #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateVersion,jdbcType=DECIMAL}, 
-      #{description,jdbcType=VARCHAR})
+      #{description,jdbcType=VARCHAR}, #{revenueTon,jdbcType=DECIMAL})
   </insert>
   <insert id="insertSelective" parameterType="com.wms.entity.auto.BillingLeaseTEntity">
     insert into BILLING_LEASE_T
@@ -290,6 +291,9 @@
       <if test="description != null">
         DESCRIPTION,
       </if>
+      <if test="revenueTon != null">
+        REVENUE_TON,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="billingLeaseId != null">
@@ -393,6 +397,9 @@
       </if>
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="revenueTon != null">
+        #{revenueTon,jdbcType=DECIMAL},
       </if>
     </trim>
   </insert>
@@ -507,6 +514,9 @@
       <if test="record.description != null">
         DESCRIPTION = #{record.description,jdbcType=VARCHAR},
       </if>
+      <if test="record.revenueTon != null">
+        REVENUE_TON = #{record.revenueTon,jdbcType=DECIMAL},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -547,7 +557,8 @@
       UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR},
       UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
       UPDATE_VERSION = #{record.updateVersion,jdbcType=DECIMAL},
-      DESCRIPTION = #{record.description,jdbcType=VARCHAR}
+      DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+      REVENUE_TON = #{record.revenueTon,jdbcType=DECIMAL}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -682,7 +693,8 @@
     CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP}, 
     UPDATE_BY = #{record.updateBy,jdbcType=VARCHAR}, 
     UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP}, 
-    DESCRIPTION = #{record.description,jdbcType=VARCHAR}
+    DESCRIPTION = #{record.description,jdbcType=VARCHAR}, 
+    REVENUE_TON = #{record.revenueTon,jdbcType=DECIMAL}
     <if test="_parameter != null">
       <include refid="Update_By_Example_With_Version_Where_Clause" />
     </if>
@@ -795,6 +807,9 @@
         </if>
         <if test="record.description != null">
           DESCRIPTION = #{record.description,jdbcType=VARCHAR},
+        </if>
+        <if test="record.revenueTon != null">
+          REVENUE_TON = #{record.revenueTon,jdbcType=DECIMAL},
         </if>
       </trim>
     </set>

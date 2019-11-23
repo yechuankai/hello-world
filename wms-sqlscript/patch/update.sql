@@ -726,3 +726,88 @@ insert into uums.sc_mappingconfig_lang (LANG_ID, TABLE_NAME, COLUMN_NAME, LANGUA
 values (1342, 'WEB_FUNC', 'FUNC_NAME', 'zh_CN', '统计', '统计', to_date('19-08-2019 17:02:29', 'dd-mm-yyyy hh24:mi:ss'), null, null, null, 'wms:report:summary', 'WMS');
 
 
+
+
+
+--2019-11-23
+
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1195981484444913664', 'en_US', 'wms.label.notice.outbound', 'Outbound Status Change Notice', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('17-11-2019 11:26:20', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('17-11-2019 11:26:20', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1195981424126627840', 'zh_CN', 'wms.label.notice.outbound', '出库状态通知', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('17-11-2019 11:26:06', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('17-11-2019 11:26:06', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1195969752653664256', 'en_US', 'wms.label.notice.inbound', 'Inbound Status Change Notice', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('17-11-2019 10:39:43', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('17-11-2019 10:39:43', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1195969695518855168', 'zh_CN', 'wms.label.notice.inbound', '入库状态通知', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('17-11-2019 10:39:30', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('17-11-2019 10:39:30', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1193503593931087873', 'en_US', 'TEMPLATE_CUSTOMSCLEARANCE', 'Customs Clearance', 'TEMPLATE', 'CUSTOMSCLEARANCE', null, null, null, 'CODELKUP', 'Y', 'N', '管理员', to_date('10-11-2019 15:20:05', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('10-11-2019 15:22:53', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1193503520304275457', 'zh_CN', 'TEMPLATE_CUSTOMSCLEARANCE', '通关关系', 'TEMPLATE', 'CUSTOMSCLEARANCE', null, null, null, 'CODELKUP', 'Y', 'N', '管理员', to_date('10-11-2019 15:19:48', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('10-11-2019 15:19:48', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1193503033895034881', 'fr_FR', 'web.label.import.customsclearance', 'Dédouanement à l''importation', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('10-11-2019 15:17:52', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('10-11-2019 15:17:52', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1193502892437938176', 'en_US', 'web.label.import.customsclearance', 'Import Customs Clearance', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('10-11-2019 15:17:18', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('10-11-2019 15:17:18', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1193502833419886592', 'zh_CN', 'web.label.import.customsclearance', '导入通关关系', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('10-11-2019 15:17:04', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('10-11-2019 15:17:04', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+
+insert into wms.sys_config_t (CONFIG_ID, CONFIG_CODE, CONFIG_DESCR, CONFIG_VALUE, CONFIG_TYPE, ACTIVE, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1196020654718619648', 'NOTIC_SUBJECT_OUTBOUND', '出库通知标题', 'Diftz Outbound Operation notice (Outbound {0} {1})', null, 'Y', '0', '0', 'N', '管理员', to_date('17-11-2019 14:01:59', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('17-11-2019 14:02:14', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_config_t (CONFIG_ID, CONFIG_CODE, CONFIG_DESCR, CONFIG_VALUE, CONFIG_TYPE, ACTIVE, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1194900634856951808', 'NOTIC_SUBJECT_INBOUND', '入库通知标题', 'Diftz Inbound Operation notice (Inbound {0} {1})', null, 'Y', '0', '0', 'N', '管理员', to_date('14-11-2019 11:51:26', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('14-11-2019 11:51:26', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+
+alter table wms.sku_t add uom_billing varchar2(50);
+comment on column wms.sku_t.uom_billing is '计费单位';
+
+alter table wms.Billing_Lease_T add REVENUE_TON number(20,5);
+comment on column wms.Billing_Lease_T.REVENUE_TON is '计费吨';
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1198157408179236864', 'en_US', 'web.label.revenueton', 'RevenueTon', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('23-11-2019 11:32:41', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('23-11-2019 14:07:56', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1198157375161675776', 'zh_CN', 'web.label.revenueton', '计费吨', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('23-11-2019 11:32:33', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('23-11-2019 11:32:33', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1198151924181282816', 'en_US', 'web.label.uom.billing', 'Biiling UOM', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('23-11-2019 11:10:53', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('23-11-2019 11:10:53', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1198151880120119296', 'zh_CN', 'web.label.uom.billing', '计费单位', null, null, null, null, null, null, 'Y', 'N', '管理员', to_date('23-11-2019 11:10:43', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('23-11-2019 11:10:43', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1198151678705446912', 'en_US', 'BILLINGUOM_VOLUME', 'Volume', 'BILLINGUOM', 'VOLUME', null, null, null, 'CODELKUP', 'Y', 'N', '管理员', to_date('23-11-2019 11:09:55', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('23-11-2019 11:12:50', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1198151574627987456', 'en_US', 'BILLINGUOM_WEIGHT', 'Weight', 'BILLINGUOM', 'WEIGHT', null, null, null, 'CODELKUP', 'Y', 'N', '管理员', to_date('23-11-2019 11:09:30', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('23-11-2019 11:12:50', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+
+insert into wms.sys_codelist_t (CODELIST_ID, CODE, DESCR, TYPE, ACTIVE, IS_ALL, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1198151277830647808', 'BILLINGUOM', '计费单位', '10', 'Y', 'Y', '0', '0', 'N', '管理员', to_date('23-11-2019 11:08:19', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('23-11-2019 11:08:19', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+
+insert into wms.sys_codelkup_t (CODELKUP_ID, CODELIST_ID, CODE, SORT, DESCR, REMARK, TYPE, ACTIVE, IS_DEFAULT, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1198151454536675328', '1198151277830647808', 'VOLUME', '2', '体积', null, '10', 'Y', 'N', '0', '0', 'N', '管理员', to_date('23-11-2019 11:09:01', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('23-11-2019 11:09:01', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+insert into wms.sys_codelkup_t (CODELKUP_ID, CODELIST_ID, CODE, SORT, DESCR, REMARK, TYPE, ACTIVE, IS_DEFAULT, COMPANY_ID, WAREHOUSE_ID, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1198151377629917184', '1198151277830647808', 'WEIGHT', '1', '重量', null, '10', 'Y', 'N', '0', '0', 'N', '管理员', to_date('23-11-2019 11:08:43', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('23-11-2019 11:08:43', 'dd-mm-yyyy hh24:mi:ss'), '1', null);
+
+
+delete wms.sys_locale_t where LOCALE_ID = '1164073629514342603';
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1164073629514342603', 'en_US', 'INBOUNDSTATUS_30', 'Received', 'INBOUNDSTATUS', '30', null, null, null, 'CODELKUP', 'Y', 'N', null, to_date('22-08-2019 11:10:59', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('23-11-2019 14:19:36', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+
+delete wms.sys_locale_t where LOCALE_ID = '1148417789079990272';
+insert into wms.sys_locale_t (LOCALE_ID, LOCALE_CODE, LABEL_KEY, LABEL_VALUE, JOIN_KEY1, JOIN_KEY2, JOIN_KEY3, JOIN_KEY4, JOIN_KEY5, TABLE_NAME, ACTIVE, DEL_FLAG, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME, UPDATE_VERSION, DESCRIPTION)
+values ('1148417789079990272', 'en_US', 'web.label.quantity.available', 'Quantity Available', null, null, null, null, null, null, 'Y', 'N', 'ADMIN', to_date('09-07-2019 10:25:12', 'dd-mm-yyyy hh24:mi:ss'), '管理员', to_date('23-11-2019 14:08:36', 'dd-mm-yyyy hh24:mi:ss'), '2', null);
+

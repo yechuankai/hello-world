@@ -7,7 +7,7 @@ spring:
    overrideSystemProperties: false
  datasource:
   name: datasourceTest
-  url: jdbc:oracle:thin:@10.88.19.31:1521:DIFTZER
+  url: jdbc:oracle:thin:@10.88.19.10:1521/DIFTZER
   username: wms
   password: wms
   type: com.alibaba.druid.pool.DruidDataSource
@@ -57,5 +57,5 @@ cas:
   loginUrl: ${cas.server}/login?flag=trade&service=${wms.url.service}/cas
   
 logging:
- path: D:\\logs
+ path: E:\\logs
   
