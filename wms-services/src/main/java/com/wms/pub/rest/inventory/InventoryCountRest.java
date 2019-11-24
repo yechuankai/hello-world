@@ -149,8 +149,8 @@ public class InventoryCountRest extends BaseController  {
 	 */
 	@RequestMapping("getCountDetail")
 	public PageResult<InventoryCountDetailTEntity> getCountDetail(@RequestBody String req){
-		AjaxRequest<InventoryCountDetailVO> request = ajaxRequest(req, new TypeReference<AjaxRequest<InventoryCountDetailVO>>() {});
 		try {
+			AjaxRequest<InventoryCountDetailVO> request = ajaxRequest(req, new TypeReference<AjaxRequest<InventoryCountDetailVO>>() {});
 			InventoryCountDetailVO countDetail = request.getData();
 			countDetail.setWarehouseId(request.getWarehouseId());
 			countDetail.setCompanyId(request.getCompanyId());
@@ -262,10 +262,14 @@ public class InventoryCountRest extends BaseController  {
 	 */
 	@RequestMapping("confirm")
 	public AjaxResult confirm(@RequestBody String req){
-		AjaxRequest<List<InventoryCountDetailTEntity>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<InventoryCountDetailTEntity>>>() {});
 		try {
+			AjaxRequest<List<InventoryCountDetailTEntity>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<InventoryCountDetailTEntity>>>() {});
+			List<InventoryCountDetailTEntity> list = request.getData();
+			if (CollectionUtils.isNotEmpty(list))
+				return fail("no data.");
+			
 			//更新盘点数量
-			countDetailService.modify(request);
+			countDetailService.confirm(request);
 			return success();
 		} catch (Exception e) {
 			return fail(e.getMessage());

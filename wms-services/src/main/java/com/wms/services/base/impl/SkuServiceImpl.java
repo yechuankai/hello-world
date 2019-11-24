@@ -168,7 +168,10 @@ public class SkuServiceImpl implements ISkuService, IExcelService<SkuVO> {
 	@Override
 	public LotLabelVO getSkuLotLabel(SkuTEntity sku) throws BusinessServiceException {
 		StringBuilder sb = new StringBuilder();
-		sb.append(sku.getCompanyId()).append(sku.getWarehouseId()).append(sku.getSkuCode());
+		sb.append(sku.getCompanyId())
+			.append(sku.getWarehouseId())
+			.append(sku.getOwnerCode())
+			.append(sku.getSkuCode());
 		if (skuLotLabel.containsKey(sb.toString())) {
 			return skuLotLabel.get(sb.toString());
 		}
@@ -181,7 +184,7 @@ public class SkuServiceImpl implements ISkuService, IExcelService<SkuVO> {
 	
 	private void setSkuLotLabel(SkuTEntity sku) throws BusinessServiceException {
 		StringBuilder sb = new StringBuilder();
-		sb.append(sku.getCompanyId()).append(sku.getWarehouseId()).append(sku.getSkuCode());
+		sb.append(sku.getCompanyId()).append(sku.getWarehouseId()).append(sku.getOwnerCode()).append(sku.getSkuCode());
 		SkuTEntity selectSku = find(sku);
 		LotLabelVO label = new LotLabelVO();
 		BeanUtils.copyBeanProp(label, selectSku);

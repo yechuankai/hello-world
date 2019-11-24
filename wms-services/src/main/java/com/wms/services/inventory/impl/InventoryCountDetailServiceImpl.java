@@ -1,6 +1,7 @@
 package com.wms.services.inventory.impl;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ import com.wms.common.utils.bean.BeanUtils;
 import com.wms.common.utils.key.KeyUtils;
 import com.wms.dao.auto.IInventoryCountDetailTDao;
 import com.wms.dao.example.InventoryCountDetailTExample;
+import com.wms.entity.auto.InboundDetailTEntity;
 import com.wms.entity.auto.InventoryCountDetailTEntity;
 import com.wms.entity.auto.InventoryCountHeaderTEntity;
 import com.wms.entity.auto.InventoryOnhandTEntity;
@@ -567,6 +569,7 @@ public class InventoryCountDetailServiceImpl implements IInventoryCountDetailSer
 	}
 
 	@Override
+	@Transactional
 	public Boolean post(AjaxRequest<List<InventoryCountDetailTEntity>> request) throws BusinessServiceException {
 		if (CollectionUtils.isEmpty(request.getData()))
 			throw new BusinessServiceException("no data post.");
@@ -639,6 +642,60 @@ public class InventoryCountDetailServiceImpl implements IInventoryCountDetailSer
 			adjustmentDetailService.save(new AjaxRequest<AdjustmentVO>(adjustment, request));
 		});
 		return Boolean.TRUE;
+	}
+
+	@Override
+	@Transactional
+	public Boolean confirm(AjaxRequest<List<InventoryCountDetailTEntity>> request) throws BusinessServiceException {
+		List<InventoryCountDetailTEntity> list = request.getData();
+		
+		//更新的明细
+		List<InventoryCountDetailTEntity> modidyList = list.stream().filter(v -> v.getInventoryCountDetailId() != null && v.getInventoryCountDetailId() > 0L).collect(Collectors.toList());
+		
+		//处理新建
+		List<InventoryCountDetailTEntity> addList = list.stream().filter(v -> v.getInventoryCountDetailId() == null || v.getInventoryCountDetailId() == 0L).collect(Collectors.toList());
+		if (CollectionUtils.isNotEmpty(addList)) {
+			//获取最大的行号
+			long headerid = addList.get(0).getInventoryCountHeaderId();
+			long lineNumber = findMaxLine(InventoryCountDetailTEntity.builder()
+								.companyId(request.getCompanyId())
+								.warehouseId(request.getWarehouseId())
+								.inventoryCountHeaderId(headerid)
+								.build());
+			for (InventoryCountDetailTEntity c : addList) {
+				c.setLineNumber(lineNumber);
+				lineNumber = lineNumber + DefaultConstants.LINE_INCREMENT;
+			}
+			
+			add(new AjaxRequest<List<InventoryCountDetailTEntity>>(addList, request));
+			modidyList.addAll(addList);
+		}
+		
+		//更新盘点数量
+		modify(new AjaxRequest(modidyList, request));
+		
+		return Boolean.TRUE;
+	}
+	
+	
+	private Long findMaxLine(InventoryCountDetailTEntity countDetail) throws BusinessServiceException {
+		if (countDetail.getInventoryCountHeaderId() == null)
+			return DefaultConstants.LINE_INCREMENT;
+		
+		List<InventoryCountDetailTEntity> allDetail = findByHeaderId(countDetail);
+		if (CollectionUtils.isEmpty(allDetail))
+			return DefaultConstants.LINE_INCREMENT;
+		
+		InventoryCountDetailTEntity maxLine = allDetail.stream().max(new Comparator<InventoryCountDetailTEntity>() {
+			@Override
+			public int compare(InventoryCountDetailTEntity o1, InventoryCountDetailTEntity o2) {
+				return o1.getLineNumber().compareTo(o2.getLineNumber());
+			}
+		}).get();
+		
+		long maxLineNumber = maxLine.getLineNumber() + DefaultConstants.LINE_INCREMENT;
+		
+		return maxLineNumber;
 	}
 
 }

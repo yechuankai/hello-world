@@ -58,15 +58,16 @@ public class OutboundRest extends BaseController {
         List<OutboundVO> list = null;
         try {
             PageRequest pageRequest = pageRequest(req);
-            PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
+            Page page = PageHelper.startPage(pageRequest.getPageStart(), pageRequest.getPageSize());
             list = outboundHeaderService.findFromOms(pageRequest);
             if(CollectionUtils.isEmpty(list)){
                 return page(Lists.newArrayList());
             }
+            return page(page, list);
         } catch (Exception e) {
             return pageFail(e.getMessage());
         }
-        return page(list);
+        
     }
 
     @RequestMapping(value = "/findDetail")

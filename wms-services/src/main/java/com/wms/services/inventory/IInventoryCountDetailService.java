@@ -59,6 +59,15 @@ public interface IInventoryCountDetailService {
 	 */
 	List<InventoryCountDetailTEntity> replayCountDetail(InventoryCountDetailTEntity detail, CountStatusEnum ... countStatusEnums ) throws BusinessServiceException;
 
+	
+	/**
+	 *  RF 盘点完成
+	 * @param request
+	 * @return
+	 * @throws BusinessServiceException
+	 */
+	Boolean confirm(AjaxRequest<List<InventoryCountDetailTEntity>> request) throws BusinessServiceException;
+	
 	/**
 	 * 提交盘点，盘点完成也可继续修改（PC端）
 	 * @param request
