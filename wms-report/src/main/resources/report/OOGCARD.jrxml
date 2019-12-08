@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OOGCARD" pageWidth="155" pageHeight="240" columnWidth="155" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5a1d5ead-fe31-4d19-838e-b53e77c1c471">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="WMS"/>
-	<property name="com.jaspersoft.studio.unit." value="cm"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OOGCARD" pageWidth="155" pageHeight="245" columnWidth="155" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5a1d5ead-fe31-4d19-838e-b53e77c1c471">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DIFTZER_100"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.report.description" value=""/>
 	<style name="font" isDefault="true" mode="Opaque" forecolor="#FCFCFC" backcolor="#79593A"/>
@@ -19,8 +11,7 @@
 	</parameter>
 	<parameter name="applicationNo" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[
-SELECT 
+		<![CDATA[SELECT 
        T.Application_No,
        CASE T.VEHICLE_TYPE 
          WHEN 'OM' THEN 'Outdoor Material Handling Equipment'
@@ -57,17 +48,17 @@ SELECT
 		</band>
 	</background>
 	<detail>
-		<band height="240" splitType="Stretch">
+		<band height="245" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField>
-				<reportElement mode="Opaque" x="46" y="220" width="109" height="20" uuid="ab2524ff-faf7-44ed-9f03-d930d8205072"/>
+				<reportElement mode="Opaque" x="46" y="225" width="109" height="20" uuid="ab2524ff-faf7-44ed-9f03-d930d8205072"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{logicCardNo}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="220" width="46" height="20" uuid="f6eefc42-1510-48c0-a4a5-91cfd38142ed"/>
+				<reportElement mode="Opaque" x="0" y="225" width="46" height="20" uuid="f6eefc42-1510-48c0-a4a5-91cfd38142ed"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -82,12 +73,47 @@ SELECT
 				<text><![CDATA[DIFTZ OOG Lane]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Transparent" x="0" y="40" width="155" height="180" uuid="204023cf-8beb-4407-b419-228e64a95347"/>
+				<reportElement mode="Transparent" x="0" y="40" width="155" height="185" uuid="204023cf-8beb-4407-b419-228e64a95347"/>
 				<textElement textAlignment="Center" verticalAlignment="Top"/>
 				<textFieldExpression><![CDATA[$F{TYPE}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="97" y="180" width="50" height="40" uuid="747e588d-d828-4528-b5e6-5d972d7762cb"/>
+				<reportElement x="98" y="190" width="50" height="30" uuid="747e588d-d828-4528-b5e6-5d972d7762cb"/>
+				<imageExpression><![CDATA["report/images/logo.png"]]></imageExpression>
+			</image>
+			<break>
+				<reportElement x="0" y="244" width="155" height="1" uuid="8b5973b0-63fa-4343-9aae-18e1c439c811">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</break>
+		</band>
+		<band height="245">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="0" y="0" width="155" height="28" uuid="82839fb9-a297-4bd3-9d9a-c2dbd7223672"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIFTZ OOG Lane]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="28" width="155" height="217" uuid="e163d8d9-e0b2-4705-95cc-9fb70802e62b"/>
+				<box topPadding="0" leftPadding="10" bottomPadding="0" rightPadding="10"/>
+				<textElement verticalAlignment="Top">
+					<font size="8.5"/>
+				</textElement>
+				<text><![CDATA[Note:
+1. The card holder acknowledges and abides by the DIFTZ Management Regulations and the Rules of Safety Induction released in www.diftz.dj.
+2. Keep the card safely and for your own use.
+3. Carry the card with you in and out of DIFTZ.
+4. Re-apply and pay the cost at the Service Center if the card is lost or damaged.
+5. Return the card to the Service Center when you pick up a card.
+6. Customer Service Hotline 
+    +253 2127 0004
+]]></text>
+			</staticText>
+			<image>
+				<reportElement x="100" y="213" width="50" height="30" uuid="fc9e8d1e-1fd4-40b9-a456-3cb7820bde5e"/>
 				<imageExpression><![CDATA["report/images/logo.png"]]></imageExpression>
 			</image>
 		</band>

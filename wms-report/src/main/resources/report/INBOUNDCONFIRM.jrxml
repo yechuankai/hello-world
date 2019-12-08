@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="inboundConfirm" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="33736da5-c761-4230-9c6e-18189c2cbd6b">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DIFTZER_100"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
@@ -34,37 +34,49 @@
 	<parameter name="web.label.quantityexpected" class="java.lang.String"/>
 	<parameter name="id" class="java.lang.String"/>
 	<parameter name="companyId" class="java.lang.String"/>
+	<parameter name="ids" class="java.util.ArrayList"/>
 	<queryString>
-		<![CDATA[SELECT ROWNUM,
-	"INBOUND_DETAIL_T"."SKU_CODE",
-	"INBOUND_DETAIL_T"."QUANTITY_EXPECTED",
-	"INBOUND_HEADER_T"."INBOUND_NUMBER",
-	"INBOUND_HEADER_T"."SOURCE_NUMBER",
-	concat( 'INBOUNDTYPE',"INBOUND_HEADER_T"."TYPE") AS "TYPE",
-	"INBOUND_HEADER_T"."OWNER_CODE",
-	"INBOUND_HEADER_T"."INBOUND_DATE",
-	"INBOUND_HEADER_T"."REMARK",
-  	"INBOUND_DETAIL_T"."VOLUME" AS "VOLUME",
-  	"INBOUND_DETAIL_T"."WEIGHT_GROSS" AS "WEIGHT_GROSS",
-  	"INBOUND_DETAIL_T"."WEIGHT_NET" AS "WEIGHT_NET",
-	"INBOUND_DETAIL_T"."QUANTITY_RECEIVE",
-	"INBOUND_DETAIL_T"."INBOUND_HEADER_ID",
-	"SYS_WAREHOUSES_V"."CODE",
-	"SKU_T"."SKU_DESCR" AS "DESCRIPTION"
-FROM "INBOUND_DETAIL_T"
-	LEFT JOIN "INBOUND_HEADER_T" ON 
-	 "INBOUND_HEADER_T"."INBOUND_HEADER_ID" = "INBOUND_DETAIL_T"."INBOUND_HEADER_ID" 
-	left join "SKU_T" ON 
-	 "INBOUND_DETAIL_T"."SKU_ID" = "SKU_T"."SKU_ID" 
-	LEFT JOIN "SYS_WAREHOUSES_V" ON 
-	 "SYS_WAREHOUSES_V"."WAREHOUSE_ID" = "INBOUND_HEADER_T"."WAREHOUSE_ID" 
-WHERE 
-	 "INBOUND_HEADER_T"."INBOUND_HEADER_ID" = $P{id} 
-	 AND "INBOUND_HEADER_T"."COMPANY_ID" = $P{companyId} 
-	 AND "INBOUND_HEADER_T"."WAREHOUSE_ID" = $P{warehouseId} 
-	 AND "INBOUND_HEADER_T"."DEL_FLAG" = 'N' 
-	 AND "INBOUND_DETAIL_T"."DEL_FLAG" = 'N' 
-	 AND "SKU_T"."DEL_FLAG" = 'N']]>
+		<![CDATA[SELECT ROW_NUMBER() OVER(PARTITION BY HEADER.INBOUND_NUMBER ORDER BY DETAIL.SKU_CODE DESC) "ROWNUM",
+       DETAIL.SKU_CODE,
+       HEADER.INBOUND_NUMBER,
+       HEADER.SOURCE_NUMBER,
+       concat('INBOUNDTYPE', HEADER.TYPE) AS TYPE,
+       HEADER.OWNER_CODE,
+       HEADER.INBOUND_DATE,
+       HEADER.REMARK,
+       SUM(DETAIL.VOLUME) AS VOLUME,
+       SUM(DETAIL.WEIGHT_GROSS) AS WEIGHT_GROSS,
+       SUM(DETAIL.WEIGHT_NET) AS WEIGHT_NET,
+       SUM(DETAIL.QUANTITY_RECEIVE) QUANTITY_RECEIVE,
+       SUM(DETAIL.QUANTITY_EXPECTED) QUANTITY_EXPECTED,
+       DETAIL.INBOUND_HEADER_ID,
+       W.CODE,
+       SKU.SKU_DESCR AS DESCRIPTION
+  FROM INBOUND_DETAIL_T DETAIL
+  LEFT JOIN INBOUND_HEADER_T HEADER
+    ON HEADER.INBOUND_HEADER_ID = DETAIL.INBOUND_HEADER_ID
+  left join SKU_T SKU
+    ON DETAIL.SKU_ID = SKU.SKU_ID
+  LEFT JOIN SYS_WAREHOUSES_V W
+    ON W.WAREHOUSE_ID = HEADER.WAREHOUSE_ID
+ WHERE 1 = 1
+      AND (HEADER.INBOUND_HEADER_ID = $P{id} OR $X{IN, HEADER.INBOUND_HEADER_ID, ids})
+      AND HEADER.COMPANY_ID = $P{companyId}
+      AND HEADER.WAREHOUSE_ID = $P{warehouseId}
+    AND DETAIL.QUANTITY_RECEIVE > 0
+   AND HEADER.DEL_FLAG = 'N'
+   AND DETAIL.DEL_FLAG = 'N'
+   AND SKU.DEL_FLAG = 'N'
+ GROUP BY DETAIL.SKU_CODE,
+          HEADER.INBOUND_NUMBER,
+          HEADER.SOURCE_NUMBER,
+          HEADER.TYPE,
+          HEADER.OWNER_CODE,
+          HEADER.INBOUND_DATE,
+          HEADER.REMARK,
+          DETAIL.INBOUND_HEADER_ID,
+          W.CODE,
+          SKU.SKU_DESCR]]>
 	</queryString>
 	<field name="ROWNUM" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="ROWNUM"/>
@@ -135,10 +147,10 @@ WHERE
 	<group name="Group1" isStartNewPage="true">
 		<groupExpression><![CDATA[$F{INBOUND_HEADER_ID}]]></groupExpression>
 		<groupHeader>
-			<band height="110">
+			<band height="180">
 				<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				<line>
-					<reportElement x="10" y="0" width="530" height="1" uuid="036029c4-8d1b-430c-a2cd-20d20db97b74">
+					<reportElement x="10" y="70" width="530" height="1" uuid="036029c4-8d1b-430c-a2cd-20d20db97b74">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -146,7 +158,7 @@ WHERE
 					</reportElement>
 				</line>
 				<textField>
-					<reportElement x="70" y="60" width="80" height="20" uuid="cd39adc3-18c5-43ad-bb09-25a9ea03e23e">
+					<reportElement x="70" y="130" width="80" height="20" uuid="cd39adc3-18c5-43ad-bb09-25a9ea03e23e">
 						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -168,7 +180,7 @@ WHERE
 					<textFieldExpression><![CDATA[$F{REMARK}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="70" y="40" width="80" height="20" uuid="11d71e41-45ea-4eee-89cc-e094149c1f35">
+					<reportElement x="70" y="110" width="80" height="20" uuid="11d71e41-45ea-4eee-89cc-e094149c1f35">
 						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -190,7 +202,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}.get( $F{TYPE} )]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="70" y="20" width="80" height="20" uuid="eb5a6eb7-4e7e-4d64-ab08-9c941f4f4612">
+					<reportElement x="70" y="90" width="80" height="20" uuid="eb5a6eb7-4e7e-4d64-ab08-9c941f4f4612">
 						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -212,7 +224,7 @@ WHERE
 					<textFieldExpression><![CDATA[$F{OWNER_CODE}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="440" y="20" width="80" height="20" uuid="dfe1760d-1552-4208-a92d-f9fa1dad64ac">
+					<reportElement x="440" y="90" width="80" height="20" uuid="dfe1760d-1552-4208-a92d-f9fa1dad64ac">
 						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -234,7 +246,7 @@ WHERE
 					<textFieldExpression><![CDATA[DATEFORMAT($F{INBOUND_DATE},"YYYY-MM-dd")]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="440" y="0" width="80" height="20" uuid="e5344035-4e19-49ba-8dec-8eccb7d8b741">
+					<reportElement x="440" y="70" width="80" height="20" uuid="e5344035-4e19-49ba-8dec-8eccb7d8b741">
 						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -256,7 +268,7 @@ WHERE
 					<textFieldExpression><![CDATA[$F{SOURCE_NUMBER}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="70" y="0" width="80" height="20" uuid="9d37edd8-4eb5-4bee-955c-e56cc95d9202">
+					<reportElement x="70" y="70" width="80" height="20" uuid="9d37edd8-4eb5-4bee-955c-e56cc95d9202">
 						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -278,7 +290,7 @@ WHERE
 					<textFieldExpression><![CDATA[$F{INBOUND_NUMBER}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="10" y="0" width="60" height="20" uuid="6707bd7f-31d5-4900-b072-595a619cee2d">
+					<reportElement x="10" y="70" width="60" height="20" uuid="6707bd7f-31d5-4900-b072-595a619cee2d">
 						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -294,7 +306,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{web.label.inboundnumber} + ":"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement stretchType="RelativeToTallestObject" x="340" y="20" width="100" height="30" uuid="c0fb5a50-398b-46cc-8154-8715304db2f9">
+					<reportElement stretchType="RelativeToTallestObject" x="340" y="90" width="100" height="30" uuid="c0fb5a50-398b-46cc-8154-8715304db2f9">
 						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -310,7 +322,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{web.label.inbounddate} + ":"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="10" y="20" width="60" height="20" uuid="2644c520-9c95-443b-b942-64decc3b0af9">
+					<reportElement x="10" y="90" width="60" height="20" uuid="2644c520-9c95-443b-b942-64decc3b0af9">
 						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -326,7 +338,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{web.label.owner} + ":"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="340" y="0" width="100" height="20" uuid="d1a62ab7-e4d9-4d03-b981-2e40596a98be">
+					<reportElement x="340" y="70" width="100" height="20" uuid="d1a62ab7-e4d9-4d03-b981-2e40596a98be">
 						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -342,7 +354,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{web.label.sourcebillnumber} + ":"]]></textFieldExpression>
 				</textField>
 				<line>
-					<reportElement x="10" y="80" width="530" height="1" uuid="cd08ec80-6475-4b97-a257-429ea78e1675">
+					<reportElement x="10" y="150" width="530" height="1" uuid="cd08ec80-6475-4b97-a257-429ea78e1675">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -350,7 +362,7 @@ WHERE
 					</reportElement>
 				</line>
 				<textField>
-					<reportElement x="10" y="40" width="60" height="20" uuid="c0e38f44-1a39-46c4-b702-c59ddb6c8a3f">
+					<reportElement x="10" y="110" width="60" height="20" uuid="c0e38f44-1a39-46c4-b702-c59ddb6c8a3f">
 						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -366,7 +378,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{web.label.type} + ":"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="10" y="60" width="60" height="20" uuid="6dd378ce-d7ce-42e6-a580-4bfce47db022">
+					<reportElement x="10" y="130" width="60" height="20" uuid="6dd378ce-d7ce-42e6-a580-4bfce47db022">
 						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -382,7 +394,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{web.label.remark} + ":"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="10" y="90" width="30" height="20" uuid="772e4001-d6b0-456d-8a4c-a72544bea394">
+					<reportElement x="10" y="160" width="30" height="20" uuid="772e4001-d6b0-456d-8a4c-a72544bea394">
 						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -400,7 +412,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{web.label.serialNumber}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="40" y="90" width="70" height="20" uuid="714ddec4-6791-4f2f-88b6-f8e79a3cdf32">
+					<reportElement x="40" y="160" width="70" height="20" uuid="714ddec4-6791-4f2f-88b6-f8e79a3cdf32">
 						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -418,7 +430,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{web.label.sku}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="110" y="90" width="180" height="20" uuid="cc01621e-9260-4d72-bbd1-efff740fb82a">
+					<reportElement x="110" y="160" width="180" height="20" uuid="cc01621e-9260-4d72-bbd1-efff740fb82a">
 						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -436,7 +448,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{web.label.descr}]]></textFieldExpression>
 				</textField>
 				<frame>
-					<reportElement x="160" y="5" width="110" height="25" uuid="2f4958a1-2b49-4e00-801d-d66e6bf7bba9">
+					<reportElement x="160" y="75" width="110" height="25" uuid="2f4958a1-2b49-4e00-801d-d66e6bf7bba9">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -458,7 +470,7 @@ WHERE
 					</componentElement>
 				</frame>
 				<textField>
-					<reportElement stretchType="RelativeToTallestObject" x="290" y="90" width="50" height="20" uuid="98c21f25-4975-428b-af6c-15c0e4593c67">
+					<reportElement stretchType="RelativeToTallestObject" x="290" y="160" width="50" height="20" uuid="98c21f25-4975-428b-af6c-15c0e4593c67">
 						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -476,7 +488,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{web.label.quantityexpected}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement stretchType="RelativeToTallestObject" x="340" y="90" width="50" height="20" uuid="0cc204b1-cec7-4999-b6bf-a63cca361fe3">
+					<reportElement stretchType="RelativeToTallestObject" x="340" y="160" width="50" height="20" uuid="0cc204b1-cec7-4999-b6bf-a63cca361fe3">
 						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -494,7 +506,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{web.label.quantityreceive}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="390" y="90" width="50" height="20" uuid="99f026de-2cf6-4cd0-a789-a457ef270219">
+					<reportElement x="390" y="160" width="50" height="20" uuid="99f026de-2cf6-4cd0-a789-a457ef270219">
 						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -511,7 +523,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{web.label.weightgross}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="440" y="90" width="50" height="20" uuid="1e58efed-e05d-4733-8758-08f56ecc777b">
+					<reportElement x="440" y="160" width="50" height="20" uuid="1e58efed-e05d-4733-8758-08f56ecc777b">
 						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -529,7 +541,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{web.label.weightnet}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="490" y="90" width="50" height="20" uuid="60c4d6e0-fecf-4c7c-916d-81fde4e15b34">
+					<reportElement x="490" y="160" width="50" height="20" uuid="60c4d6e0-fecf-4c7c-916d-81fde4e15b34">
 						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -546,86 +558,165 @@ WHERE
 					</textElement>
 					<textFieldExpression><![CDATA[$P{web.label.volume}]]></textFieldExpression>
 				</textField>
+				<textField>
+					<reportElement x="10" y="40" width="60" height="30" uuid="5fc302b6-4a42-4248-8d3d-41ca59130081">
+						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
+						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="pdfFont" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{web.label.warehouse} + ":"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="70" y="40" width="100" height="30" uuid="97654e9d-4c74-42e8-af23-0c4e16a1d600">
+						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
+						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="pdfFont" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CODE}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="340" y="40" width="60" height="30" uuid="4ac0de63-441d-4289-b1b4-6da7372211cd">
+						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
+						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font fontName="pdfFont" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{wms.label.printtime} + ":"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="400" y="40" width="150" height="30" uuid="944e0e4f-5349-45fc-ab13-582ed2f0f1af">
+						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
+						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="pdfFont" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[DATEFORMAT(NOW( ),"YYYY/MM/dd HH:mm")]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="10" y="0" width="530" height="40" uuid="8ef188b1-910e-4772-8d22-70846fe345fc">
+						<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
+						<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+						<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="pdfFont" size="20" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{wms.label.receivedsummaryreport}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupHeader>
+		<groupFooter>
+			<band height="50">
+				<textField>
+					<reportElement x="10" y="0" width="280" height="20" uuid="e6919cca-3c8a-4d9d-9f3c-26f8864d2e44">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="pdfFont" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{web.label.sum}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="290" y="0" width="50" height="20" uuid="8ddf6647-9565-4927-bcb6-3c5c96792bde">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="pdfFont" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{QUANTITY_EXPECTED2}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="340" y="0" width="50" height="20" uuid="46839858-0e30-4ee9-a019-4bd4678282c9">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="pdfFont" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{QUANTITY_RECEIVE1}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="390" y="0" width="50" height="20" uuid="424a9eaa-fa28-47dc-a912-7f3ea67ab28e">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="pdfFont" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{WEIGHT_GROSS1}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="440" y="0" width="50" height="20" uuid="f747ffe2-b22f-4edd-81d4-9503f1f00949">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="pdfFont" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{WEIGHT_NET1}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="490" y="0" width="50" height="20" uuid="3bf2943f-c58e-4895-9f40-4735bf0fa30a">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="pdfFont" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{VOLUME1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
 	</group>
-	<title>
-		<band height="70" splitType="Stretch">
-			<property name="com.jaspersoft.studio.unit.height" value="px"/>
-			<textField>
-				<reportElement x="10" y="10" width="530" height="30" uuid="8ef188b1-910e-4772-8d22-70846fe345fc">
-					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
-					<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
-					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
-					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Center">
-					<font fontName="pdfFont" size="20" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{wms.label.receivedsummaryreport}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="400" y="40" width="150" height="30" uuid="944e0e4f-5349-45fc-ab13-582ed2f0f1af">
-					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
-					<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
-					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<property name="com.jaspersoft.studio.unit.y" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="pdfFont" size="10"/>
-				</textElement>
-				<textFieldExpression><![CDATA[DATEFORMAT(NOW( ),"YYYY/MM/dd HH:mm")]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="70" y="40" width="100" height="30" uuid="97654e9d-4c74-42e8-af23-0c4e16a1d600">
-					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
-					<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
-					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
-					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
-					<property name="com.jaspersoft.studio.unit.y" value="px"/>
-					<property name="com.jaspersoft.studio.unit.x" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="pdfFont" size="10"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{CODE}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="10" y="40" width="60" height="30" uuid="5fc302b6-4a42-4248-8d3d-41ca59130081">
-					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
-					<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
-					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
-					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
-					<property name="com.jaspersoft.studio.unit.y" value="px"/>
-					<property name="com.jaspersoft.studio.unit.x" value="px"/>
-				</reportElement>
-				<textElement verticalAlignment="Middle">
-					<font fontName="pdfFont" size="10"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{web.label.warehouse} + ":"]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="340" y="40" width="60" height="30" uuid="4ac0de63-441d-4289-b1b4-6da7372211cd">
-					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
-					<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
-					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
-					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
-					<property name="com.jaspersoft.studio.unit.y" value="px"/>
-				</reportElement>
-				<textElement verticalAlignment="Middle">
-					<font fontName="pdfFont" size="10"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{wms.label.printtime} + ":"]]></textFieldExpression>
-			</textField>
+	<background>
+		<band height="87">
+			<image onErrorType="Blank">
+				<reportElement x="440" y="0" width="105" height="50" uuid="1512b764-7d0d-4059-afed-e46a233dfbfc"/>
+				<imageExpression><![CDATA["report/images/logo/"+$P{companyId}+".png"]]></imageExpression>
+			</image>
 		</band>
-	</title>
+	</background>
 	<detail>
 		<band height="30" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value=""/>
@@ -761,81 +852,4 @@ WHERE
 			</textField>
 		</band>
 	</detail>
-	<summary>
-		<band height="20">
-			<property name="com.jaspersoft.studio.unit.height" value="px"/>
-			<textField>
-				<reportElement x="10" y="0" width="280" height="20" uuid="e6919cca-3c8a-4d9d-9f3c-26f8864d2e44">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<box>
-					<pen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="pdfFont" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{web.label.sum}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="290" y="0" width="50" height="20" uuid="8ddf6647-9565-4927-bcb6-3c5c96792bde">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<box>
-					<pen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="pdfFont" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{QUANTITY_EXPECTED2}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="340" y="0" width="50" height="20" uuid="46839858-0e30-4ee9-a019-4bd4678282c9">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<box>
-					<pen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="pdfFont" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{QUANTITY_RECEIVE1}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="390" y="0" width="50" height="20" uuid="424a9eaa-fa28-47dc-a912-7f3ea67ab28e">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<box>
-					<pen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="pdfFont" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{WEIGHT_GROSS1}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="440" y="0" width="50" height="20" uuid="f747ffe2-b22f-4edd-81d4-9503f1f00949">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<box>
-					<pen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="pdfFont" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{WEIGHT_NET1}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="490" y="0" width="50" height="20" uuid="3bf2943f-c58e-4895-9f40-4735bf0fa30a">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<box>
-					<pen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="pdfFont" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{VOLUME1}]]></textFieldExpression>
-			</textField>
-		</band>
-	</summary>
 </jasperReport>

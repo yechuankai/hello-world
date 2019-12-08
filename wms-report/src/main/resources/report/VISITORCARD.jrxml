@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VISITORCARD" pageWidth="155" pageHeight="240" columnWidth="155" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5a1d5ead-fe31-4d19-838e-b53e77c1c471">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VISITORCARD" pageWidth="155" pageHeight="245" columnWidth="155" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5a1d5ead-fe31-4d19-838e-b53e77c1c471">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DIFTZER_100"/>
-	<property name="com.jaspersoft.studio.unit." value="cm"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<style name="font" isDefault="true" mode="Opaque" forecolor="#FCFCFC" backcolor="#84C225"/>
 	<parameter name="logicCardNo" class="java.lang.String">
 		<parameterDescription><![CDATA[logicCardNo]]></parameterDescription>
@@ -27,17 +27,19 @@
 		<property name="com.jaspersoft.studio.field.label" value="CARD_NO"/>
 	</field>
 	<detail>
-		<band height="240" splitType="Stretch">
+		<band height="245" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField>
-				<reportElement x="46" y="220" width="109" height="20" uuid="ab2524ff-faf7-44ed-9f03-d930d8205072"/>
+				<reportElement x="46" y="220" width="109" height="25" uuid="ab2524ff-faf7-44ed-9f03-d930d8205072"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{CARD_NO}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="220" width="46" height="20" uuid="f6eefc42-1510-48c0-a4a5-91cfd38142ed"/>
+				<reportElement x="0" y="220" width="46" height="25" uuid="f6eefc42-1510-48c0-a4a5-91cfd38142ed">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -57,6 +59,45 @@
 			</staticText>
 			<image>
 				<reportElement x="50" y="160" width="50" height="30" uuid="bf6f3e55-b944-4322-a33e-a41dee512028"/>
+				<imageExpression><![CDATA["report/images/logo.png"]]></imageExpression>
+			</image>
+			<break>
+				<reportElement mode="Transparent" x="0" y="244" width="155" height="1" forecolor="#E34744" uuid="86415a18-9720-4721-8d2a-7943a7137496">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</break>
+		</band>
+		<band height="245">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="0" y="0" width="155" height="25" uuid="8f02d7c8-f7ad-4916-8125-5f7eda232796">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Visitor Card]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="25" width="155" height="220" uuid="ab2d3480-3fa2-47ec-87f6-ad37d99197a9"/>
+				<box topPadding="0" leftPadding="10" bottomPadding="0" rightPadding="10"/>
+				<textElement verticalAlignment="Top">
+					<font size="8.5"/>
+				</textElement>
+				<text><![CDATA[Note:
+1. The card holder acknowledges and abides by the DIFTZ Management Regulations and the Rules of Safety Induction released in www.diftz.dj.
+2. Keep the card safely and for your own use.
+3. Carry the card with you in and out of DIFTZ.
+4. Re-apply and pay the cost at the Service Center if the card is lost or damaged.
+5. Return the card to the Service Center when you pick up a card.
+6. Customer Service Hotline 
+    +253 2127 0004
+]]></text>
+			</staticText>
+			<image>
+				<reportElement x="90" y="210" width="50" height="30" uuid="62925398-8b80-4e96-b707-37ca72dd1482"/>
 				<imageExpression><![CDATA["report/images/logo.png"]]></imageExpression>
 			</image>
 		</band>

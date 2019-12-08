@@ -9,7 +9,7 @@ import cn.afterturn.easypoi.excel.annotation.Excel;
 
 public class BillingLeaseExcelVO extends AbstractExcelModel{
 	
-	@Excel(name = "billingDate")
+	@Excel(name = "billingDate",exportFormat = "yyyy-MM-dd HH:mm:ss")
 	private Date billingDate;
 
 	@Excel(name = "billingMonth")
@@ -36,13 +36,13 @@ public class BillingLeaseExcelVO extends AbstractExcelModel{
 	@Excel(name = "uom")
     private String uom;
 	
-	@Excel(name = "inboundDate")
+	@Excel(name = "inboundDate",exportFormat = "yyyy-MM-dd HH:mm:ss")
     private Date inboundDate;
 	
 	@Excel(name = "quantityReceived")
     private BigDecimal quantityReceived;
 	
-	@Excel(name = "outboundDate")
+	@Excel(name = "outboundDate",exportFormat = "yyyy-MM-dd HH:mm:ss")
     private Date outboundDate;
 	
 	@Excel(name = "quantityShiped")

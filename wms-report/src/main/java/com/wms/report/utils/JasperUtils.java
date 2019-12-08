@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.wms.common.config.Global;
@@ -173,7 +174,15 @@ public class JasperUtils {
 		JRParameter[] jrp = report.getParameters();
 		for (JRParameter p : jrp) {
 			if (m.containsKey(p.getName())) {
-				parms.put(p.getName(), m.get(p.getName()));
+				if (p.getValueClass() == java.util.ArrayList.class) {
+					String value = m.get(p.getName());
+					if (StringUtils.isNotEmpty(value)) {
+						String [] values = value.split(",");
+						parms.put(p.getName(), Lists.newArrayList(values));
+					}
+				}else {
+					parms.put(p.getName(), m.get(p.getName()));
+				}
 			}
 		}
 		

@@ -38,6 +38,7 @@ import com.wms.services.inventory.IInventoryCountRequestService;
 import com.wms.services.inventory.IInventoryService;
 import com.wms.vo.InventoryCountDetailVO;
 import com.wms.vo.InventoryCountHeaderVO;
+import com.wms.vo.InventoryOnhandVO;
 
 @RestController("publicInventoryCountRest")
 @RequestMapping("/services/public/inventory/count")
@@ -171,6 +172,9 @@ public class InventoryCountRest extends BaseController  {
 																								.skuCode(countDetail.getSkuCode())
 																								.locationCode(countDetail.getLocationCode())
 																								.build(), CountStatusEnum.New, CountStatusEnum.Counting);
+			if (CollectionUtils.isEmpty(selectDetail)) {
+				throw new BusinessServiceException("InventoryCountRest", "inventory.count.detail.isnull", null);
+			}
 			selectDetail.forEach(cd -> {
 				//查询不到库存则默认为0
 				BigDecimal countQuantity = BigDecimal.ZERO;
@@ -188,7 +192,27 @@ public class InventoryCountRest extends BaseController  {
 				cd.setQuantityCount(countQuantity);
 			});
 			
-			return page(selectDetail);
+			// 设置校验数量
+			BigDecimal validateQty = BigDecimal.ZERO;
+			// 筛选LPN
+			List<String> lpnList = Lists.newArrayList(Sets.newHashSet(selectDetail.stream()
+									.map(InventoryCountDetailTEntity::getLpnNumber).collect(Collectors.toSet())));
+			// 筛选lot
+			List<String> lotList = Lists.newArrayList(Sets.newHashSet(selectDetail.stream()
+									.map(InventoryCountDetailTEntity::getLotNumber).collect(Collectors.toSet())));
+			for (InventoryCountDetailTEntity entity: selectDetail) {
+				validateQty = validateQty.add(entity.getQuantityCount());
+			}
+			Map<String, Object> footMap = Maps.newHashMap();
+			footMap.put("validateQty", validateQty);
+			footMap.put("lpnList", lpnList);
+			footMap.put("lotList", lotList);
+			List<Map<String, Object>> footList = Lists.newArrayList();
+			footList.add(footMap);
+			
+			PageResult<InventoryCountDetailTEntity> resultPage = page(selectDetail);
+			resultPage.setFooter(footList);
+			return resultPage;
 		} catch (Exception e) {
 			return pageFail(e.getMessage());
 		}
@@ -265,7 +289,7 @@ public class InventoryCountRest extends BaseController  {
 		try {
 			AjaxRequest<List<InventoryCountDetailTEntity>> request = ajaxRequest(req, new TypeReference<AjaxRequest<List<InventoryCountDetailTEntity>>>() {});
 			List<InventoryCountDetailTEntity> list = request.getData();
-			if (CollectionUtils.isNotEmpty(list))
+			if (CollectionUtils.isEmpty(list))
 				return fail("no data.");
 			
 			//更新盘点数量

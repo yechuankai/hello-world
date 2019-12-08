@@ -75,8 +75,9 @@ public class KeyGeneratorServiceImpl extends com.wms.common.core.services.impl.K
 				vo.setSequence(0L);
 			}
 		}
-		
-		long seq = vo.getSequence() + vo.getCacheSequence();
+		long seq = vo.getSequence();
+		vo.setCurrentSequence(seq);
+		vo.setSequence(seq);
 		
 		example.getOredCriteria().clear();
 		example.createCriteria()
@@ -86,7 +87,7 @@ public class KeyGeneratorServiceImpl extends com.wms.common.core.services.impl.K
 		
 		SysOrderNumberTEntity update = SysOrderNumberTEntity.builder()
 				.updateTime(new Date())
-				.sequence(seq)
+				.sequence((seq + vo.getCacheSequence()))
 				.orderNumberId(orderNumber.getOrderNumberId())
 				.description(dateStr) //记录日期字符
 				.build();

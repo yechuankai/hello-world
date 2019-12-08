@@ -277,6 +277,14 @@ ORDER BY LOC ASC]]>
 			</band>
 		</groupHeader>
 	</group>
+	<background>
+		<band height="50">
+			<image onErrorType="Blank">
+				<reportElement x="470" y="0" width="105" height="50" uuid="eb649aae-ba67-4db9-ab20-51c5e75c8f05"/>
+				<imageExpression><![CDATA["report/images/logo/"+$P{companyId}+".png"]]></imageExpression>
+			</image>
+		</band>
+	</background>
 	<title>
 		<band height="70" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>

@@ -20,7 +20,7 @@ public class InventoryTransactionImportVO extends AbstractExcelModel {
     @Excel(name = "transactionCategory")
     private String transactionCategory;
 
-    @Excel(name = "transactionDate")
+    @Excel(name = "transactionDate",exportFormat = "yyyy-MM-dd HH:mm:ss")
     private Date transactionDate;
 
     @Excel(name = "ownerCode")

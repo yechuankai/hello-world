@@ -29,10 +29,10 @@ public class OutboundDetailImportVO extends AbstractExcelModel {
     @Excel(name = "ownerCode")
     private String ownerCode;
 
-    @Excel(name = "outboundDate")
+    @Excel(name = "outboundDate",exportFormat = "yyyy-MM-dd HH:mm:ss")
     private Date outboundDate;
 
-    @Excel(name = "expectedOutboundDate")
+    @Excel(name = "expectedOutboundDate",exportFormat = "yyyy-MM-dd HH:mm:ss")
     private Date expectedOutboundDate;
 
     @Excel(name = "customerCode")
@@ -119,10 +119,10 @@ public class OutboundDetailImportVO extends AbstractExcelModel {
     @Excel(name = "lotAttribute3")
     private String lotAttribute3;
 
-    @Excel(name = "lotAttribute4")
+    @Excel(name = "lotAttribute4",exportFormat = "yyyy-MM-dd HH:mm:ss")
     private Date lotAttribute4;
 
-    @Excel(name = "lotAttribute5")
+    @Excel(name = "lotAttribute5",exportFormat = "yyyy-MM-dd HH:mm:ss")
     private Date lotAttribute5;
 
     @Excel(name = "lotAttribute6")
@@ -140,10 +140,10 @@ public class OutboundDetailImportVO extends AbstractExcelModel {
     @Excel(name = "lotAttribute10")
     private String lotAttribute10;
 
-    @Excel(name = "lotAttribute11")
+    @Excel(name = "lotAttribute11",exportFormat = "yyyy-MM-dd HH:mm:ss")
     private Date lotAttribute11;
 
-    @Excel(name = "lotAttribute12")
+    @Excel(name = "lotAttribute12",exportFormat = "yyyy-MM-dd HH:mm:ss")
     private Date lotAttribute12;
 
     public String getOutboundNumber() {

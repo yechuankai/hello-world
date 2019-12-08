@@ -132,6 +132,9 @@
     <springProfile name="dev">
     	<logger name="com.wms" level="DEBUG" />
     </springProfile>
+    <springProfile name="jbtlocal">
+    	<logger name="com.wms" level="DEBUG" />
+    </springProfile>
     
     <root level="INFO">
         <appender-ref ref="FILEERROR" />
@@ -139,6 +142,10 @@
         <appender-ref ref="FILEINFO" />
 
 		<springProfile name="dev">
+	        <!-- 生产环境将请stdout,testfile去掉 -->
+	        <appender-ref ref="STDOUT" />
+        </springProfile>
+        <springProfile name="jbtlocal">
 	        <!-- 生产环境将请stdout,testfile去掉 -->
 	        <appender-ref ref="STDOUT" />
         </springProfile>

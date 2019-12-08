@@ -116,7 +116,7 @@ var locale = {
 	initWarehouse:'确定初始化{row}行仓库数据?',
 	warehouseAction:'确定{action}{row}行仓库数据?',
 	uploadAppName:'上传app',
-	inboundNewStatusPrint: '只允许待收货、收货中状态可打印',
+	inboundNewStatusPrint: '{inboundNumber} 只允许待收货、收货中状态可打印',
 	weightGrossMorethenNet: '毛重大于净重',
 	lessThenZero: '值不能小于0',
 	characterornumber: '只可输入字母或数字',

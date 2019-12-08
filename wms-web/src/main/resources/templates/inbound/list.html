@@ -338,17 +338,29 @@
 	/* 导出文件  */
 	function exportPDFReport(type) {
 		var checkedRows = $('#inboundData').datagrid('getChecked');
-		if (checkedRows.length != 1) {
+		if (checkedRows.length == 0) {
 			showError($.locale.selectOneRow);
 			return;
 		}
-		rowData = checkedRows[0];
-		if (type == 'INBOUND' && 
-				!(rowData.status == '10' || rowData.status == '20')){
-			showError($.locale.inboundNewStatusPrint);
-			return;
+		var ids = '';
+		for (var i in checkedRows){
+			if (i > 0){
+				ids += ',';
+			}
+			ids += checkedRows[i].inboundHeaderId;
 		}
-		exportInboundReport(type, rowData);
+		if (type == 'INBOUND'){
+			for (var i in checkedRows){
+				var rowData = checkedRows[i];
+				var status = rowData.status;
+				if (!(status == '10' || status == '20')){
+					showError($.locale.inboundNewStatusPrint, {inboundNumber:rowData.inboundNumber});
+					return;
+				}
+			}
+			
+		}
+		exportInboundReport(type, ids);
 	}
 	
 </script>

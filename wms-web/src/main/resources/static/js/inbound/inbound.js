@@ -60,6 +60,6 @@ function exportInboundReport(type, data) {
 		__codelkup: "INBOUNDTYPE",
 		fileType: "pdf",
 		reportType: type,
-		id: data.inboundHeaderId
+		ids: data
 	});
 }

@@ -41,6 +41,9 @@
 	<parameter name="companyId" class="java.lang.String"/>
 	<parameter name="web.label.sum" class="java.lang.String"/>
 	<parameter name="waveNumber" class="java.lang.String"/>
+	<parameter name="ids" class="java.util.ArrayList">
+		<parameterDescription><![CDATA[ids]]></parameterDescription>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT 
   OUTBOUND_HEADER_T.WAREHOUSE_ID,
@@ -80,7 +83,7 @@ FROM ALLOCATE_T
 WHERE 
 	 ALLOCATE_T.STATUS IN ('10','15')
 	 AND ALLOCATE_T.QUANTITY_ALLOCATED > 0
-	 AND ( OUTBOUND_HEADER_T.OUTBOUND_HEADER_ID = $P{id} or ALLOCATE_T.SOURCE_WAVE_NUMBER = $P{waveNumber} )
+	 AND ( OUTBOUND_HEADER_T.OUTBOUND_HEADER_ID = $P{id} or ALLOCATE_T.SOURCE_WAVE_NUMBER = $P{waveNumber} or $X{IN, OUTBOUND_HEADER_T.OUTBOUND_HEADER_ID, ids})
 	 AND OUTBOUND_HEADER_T.WAREHOUSE_ID = $P{warehouseId} 
 	 AND OUTBOUND_HEADER_T.COMPANY_ID = $P{companyId} 
 	 AND OUTBOUND_HEADER_T.DEL_FLAG = 'N' 
@@ -302,12 +305,12 @@ ORDER BY LOCATION_CODE ASC]]>
 					</reportElement>
 				</line>
 				<frame>
-					<reportElement x="180" y="75" width="110" height="25" uuid="2f4958a1-2b49-4e00-801d-d66e6bf7bba9">
+					<reportElement x="185" y="75" width="110" height="25" uuid="2f4958a1-2b49-4e00-801d-d66e6bf7bba9">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<componentElement>
-						<reportElement x="-25" y="0" width="110" height="25" uuid="e0e54376-1311-4f28-9b2f-a9170030d9a4">
+						<reportElement x="-20" y="0" width="110" height="25" uuid="e0e54376-1311-4f28-9b2f-a9170030d9a4">
 							<property name="com.jaspersoft.studio.unit.y" value="px"/>
 							<property name="com.jaspersoft.studio.unit.x" value="px"/>
 							<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
@@ -448,7 +451,7 @@ ORDER BY LOCATION_CODE ASC]]>
 					<textFieldExpression><![CDATA[$P{web.label.quantity}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="160" y="110" width="100" height="20" uuid="d1509db9-ed17-424a-8ff8-bdcae1a8ecd5">
+					<reportElement x="165" y="110" width="100" height="20" uuid="d1509db9-ed17-424a-8ff8-bdcae1a8ecd5">
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -459,7 +462,7 @@ ORDER BY LOCATION_CODE ASC]]>
 					<textFieldExpression><![CDATA[$F{CUSTOMER_DESCR}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="10" y="40" width="60" height="30" uuid="5fc302b6-4a42-4248-8d3d-41ca59130081">
+					<reportElement x="10" y="40" width="100" height="30" uuid="5fc302b6-4a42-4248-8d3d-41ca59130081">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 					</reportElement>
@@ -469,7 +472,7 @@ ORDER BY LOCATION_CODE ASC]]>
 					<textFieldExpression><![CDATA[$P{web.label.warehouse} + ":"]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="70" y="40" width="100" height="30" uuid="97654e9d-4c74-42e8-af23-0c4e16a1d600">
+					<reportElement x="110" y="40" width="100" height="30" uuid="97654e9d-4c74-42e8-af23-0c4e16a1d600">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
@@ -480,7 +483,7 @@ ORDER BY LOCATION_CODE ASC]]>
 					<textFieldExpression><![CDATA[$F{CODE}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="370" y="40" width="60" height="30" uuid="4ac0de63-441d-4289-b1b4-6da7372211cd">
+					<reportElement x="310" y="40" width="120" height="30" uuid="4ac0de63-441d-4289-b1b4-6da7372211cd">
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 					</reportElement>
@@ -499,24 +502,53 @@ ORDER BY LOCATION_CODE ASC]]>
 					<textFieldExpression><![CDATA[DATEFORMAT(NOW( ),"YYYY/MM/dd HH:mm")]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="10" y="0" width="570" height="30" uuid="8ef188b1-910e-4772-8d22-70846fe345fc">
+					<reportElement x="10" y="0" width="570" height="40" uuid="8ef188b1-910e-4772-8d22-70846fe345fc">
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
 						<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 					</reportElement>
-					<textElement textAlignment="Center">
+					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="pdfFont" size="20" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{wms.label.pickreport}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
+		<groupFooter>
+			<band height="50">
+				<textField>
+					<reportElement x="10" y="0" width="510" height="20" uuid="6190301b-40ef-4181-bf17-9009844d83b2"/>
+					<box>
+						<pen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="pdfFont" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{web.label.sum}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="520" y="0" width="60" height="20" uuid="bb813f70-9957-42a6-b0e9-4998b8a78983">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="pdfFont" size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($V{QUANTITY_PICKED1} == null)?0:$V{QUANTITY_PICKED1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
 	</group>
-	<title>
-		<band splitType="Stretch">
-			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+	<background>
+		<band height="50">
+			<image onErrorType="Blank">
+				<reportElement x="470" y="0" width="105" height="50" uuid="13224086-cefa-4594-9199-f0fccfbb1477"/>
+				<imageExpression><![CDATA["report/images/logo/"+$P{companyId}+".png"]]></imageExpression>
+			</image>
 		</band>
-	</title>
+	</background>
 	<detail>
 		<band height="40" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -682,31 +714,4 @@ ORDER BY LOCATION_CODE ASC]]>
 			</frame>
 		</band>
 	</detail>
-	<summary>
-		<band height="20" splitType="Stretch">
-			<property name="com.jaspersoft.studio.unit.height" value="px"/>
-			<textField>
-				<reportElement x="10" y="0" width="510" height="20" uuid="6190301b-40ef-4181-bf17-9009844d83b2"/>
-				<box>
-					<pen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="pdfFont" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{web.label.sum}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="520" y="0" width="60" height="20" uuid="bb813f70-9957-42a6-b0e9-4998b8a78983">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<box>
-					<pen lineWidth="0.25"/>
-				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="pdfFont" size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($V{QUANTITY_PICKED1} == null)?0:$V{QUANTITY_PICKED1}]]></textFieldExpression>
-			</textField>
-		</band>
-	</summary>
 </jasperReport>

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.wms.common.core.domain.AbstractExcelModel;
+import com.wms.common.utils.DateUtils;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
 
@@ -27,7 +28,7 @@ public class InboundDetailImportVO  extends AbstractExcelModel {
 	@Excel(name = "supplierCode")
     private String supplierCode;
 
-	@Excel(name = "expectedInboundDate")
+	@Excel(name = "expectedInboundDate",exportFormat = "yyyy-MM-dd HH:mm:ss")
     private Date expectedInboundDate;
 
 	@Excel(name = "carrierCode")
@@ -72,6 +73,18 @@ public class InboundDetailImportVO  extends AbstractExcelModel {
 	@Excel(name = "uomQuantityReceive")
     private BigDecimal uomQuantityReceive;
 	
+	@Excel(name = "weightGross")
+	private BigDecimal weightGross;
+
+	@Excel(name = "weightNet")
+    private BigDecimal weightNet;
+
+	@Excel(name = "weightTare")
+    private BigDecimal weightTare;
+
+	@Excel(name = "volume")
+    private BigDecimal volume;
+	
 	@Excel(name = "status")
     private String status;
 
@@ -93,10 +106,10 @@ public class InboundDetailImportVO  extends AbstractExcelModel {
 	@Excel(name = "lotAttribute3")
     private String lotAttribute3;
 
-	@Excel(name = "lotAttribute4")
+	@Excel(name = "lotAttribute4",exportFormat = "yyyy-MM-dd HH:mm:ss")
     private Date lotAttribute4;
 
-	@Excel(name = "lotAttribute5")
+	@Excel(name = "lotAttribute5",exportFormat = "yyyy-MM-dd HH:mm:ss")
     private Date lotAttribute5;
 
 	@Excel(name = "lotAttribute6")
@@ -114,10 +127,10 @@ public class InboundDetailImportVO  extends AbstractExcelModel {
 	@Excel(name = "lotAttribute10")
     private String lotAttribute10;
 
-	@Excel(name = "lotAttribute11")
+	@Excel(name = "lotAttribute11",exportFormat = "yyyy-MM-dd HH:mm:ss")
     private Date lotAttribute11;
 
-	@Excel(name = "lotAttribute12")
+	@Excel(name = "lotAttribute12",exportFormat = "yyyy-MM-dd HH:mm:ss")
     private Date lotAttribute12;
 	
 	public String getSourceNumber() {
@@ -416,4 +429,36 @@ public class InboundDetailImportVO  extends AbstractExcelModel {
 		this.status = status;
 	}
 
+	public BigDecimal getWeightGross() {
+		return weightGross;
+	}
+
+	public void setWeightGross(BigDecimal weightGross) {
+		this.weightGross = weightGross;
+	}
+
+	public BigDecimal getWeightNet() {
+		return weightNet;
+	}
+
+	public void setWeightNet(BigDecimal weightNet) {
+		this.weightNet = weightNet;
+	}
+
+	public BigDecimal getWeightTare() {
+		return weightTare;
+	}
+
+	public void setWeightTare(BigDecimal weightTare) {
+		this.weightTare = weightTare;
+	}
+
+	public BigDecimal getVolume() {
+		return volume;
+	}
+
+	public void setVolume(BigDecimal volume) {
+		this.volume = volume;
+	}
+	
 }

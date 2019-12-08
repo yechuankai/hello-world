@@ -255,7 +255,7 @@ public class InventoryCountRequestImpl implements IInventoryCountRequestService 
 		}
 		
 		boolean filterLoc = false;
-		if (CollectionUtils.isNotEmpty(locSets)) {
+		if (locSets != null) {
 			filterLoc = true;
 			if (locSets.size() < 1000) {
 				criteria.andLocationIdIn(Lists.newArrayList(locSets));

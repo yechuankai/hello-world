@@ -692,11 +692,19 @@
 			</band>
 		</groupHeader>
 	</group>
+	<background>
+		<band height="50">
+			<image onErrorType="Blank">
+				<reportElement x="675" y="0" width="105" height="50" uuid="50c3fcf2-f5af-4ba7-9693-6f82e3f12fc9"/>
+				<imageExpression><![CDATA["report/images/logo/"+$P{companyId}+".png"]]></imageExpression>
+			</image>
+		</band>
+	</background>
 	<title>
 		<band height="75" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField>
-				<reportElement x="9" y="15" width="790" height="30" uuid="8ef188b1-910e-4772-8d22-70846fe345fc">
+				<reportElement x="9" y="15" width="790" height="35" uuid="8ef188b1-910e-4772-8d22-70846fe345fc">
 					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="oracle"/>
 					<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
@@ -704,7 +712,7 @@
 					<property name="net.sf.jasperreports.style.isBlankWhenNull" value="true"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="pdfFont" size="20" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{wms.label.notice.inbound}]]></textFieldExpression>

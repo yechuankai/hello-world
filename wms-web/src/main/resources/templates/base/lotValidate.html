@@ -534,6 +534,7 @@
 <script type="text/javascript" th:src="@{/js/codelkupList?listName=YESNO}"></script>
 <script type="text/javascript" th:inline="text">
     var editData;
+    var editLoad = false;
     $(function(){
         $('.add').click(function(){
             $('#addButton').show();
@@ -558,10 +559,9 @@
             if (!valid) {
                 return;
             }
+            var formData = loadData();
             var data = $(from).serializeObject();
-            data.updateVersion=editData.updateVersion;
-            data.warehouseId=editData.warehouseId;
-            data.companyId=editData.companyId;
+            $.extend(data, formData);
             data = getBaseData(data);
             loading();
             $.post({
@@ -580,6 +580,40 @@
             });
         });
     });
+    
+   	function loadData(){
+   		var initData = {
+			        "lotAttribute1View": "N",
+   					"lotAttribute1Required": "N",
+   					"lotAttribute2View": "N",
+   					"lotAttribute2Required": "N",
+   					"lotAttribute3View": "N",
+   					"lotAttribute3Required": "N",
+   					"lotAttribute4View": "N",
+   					"lotAttribute4Required": "N",
+   					"lotAttribute5View": "N",
+   					"lotAttribute5Required": "N",
+   					"lotAttribute6View": "N",
+   			        "lotAttribute6Required": "N",
+	   			    "lotAttribute7View": "N",
+	   			  	"lotAttribute7Required": "N",
+	   			 	"lotAttribute8View": "N",
+			        "lotAttribute8Required": "N",
+			        "lotAttribute9View": "N",
+   					"lotAttribute9Required": "N",
+   					"lotAttribute10View": "N",
+   			        "lotAttribute10Required": "N",
+   			        "lotAttribute11View": "N",
+   			        "lotAttribute11Required": "N",
+   			        "lotAttribute12View": "N",
+   			        "lotAttribute12Required": "N"
+   			    };
+   		var formData = {};
+   		$.each($('#addForm').serializeArray(), function (index) {
+   			formData[this['name']] = this['value'];
+		}); 
+   		return $.extend(initData, formData);
+   	}
 
     function toEdit(data) {
         if (typeof(data) == 'object') {

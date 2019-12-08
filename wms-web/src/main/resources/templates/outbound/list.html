@@ -116,6 +116,7 @@
                 <div id="optionsOutboundReport">
                     <div  wms:text="${wms.label.pickreport}" onclick="exportPDFReport('PICKLIST')">Pick List</div>
                     <div  wms:text="${web.label.shiplabel}" onclick="exportPDFShipLabel()">Ship Label</div>
+                    <div  wms:text="${wms.label.packlist}" onclick="exportPDFReport('OUTBOUND')">Pack List</div>
                 </div>
                 <a href="#" class="easyui-linkbutton" onclick="importExcel('OUTBOUND')" wms:text="${web.label.import}">Import</a>
                 <a href="#" class="easyui-linkbutton" onclick="exportExcel('OUTBOUND', '#searchForm')" wms:text="${web.label.export}">Export</a>
@@ -355,12 +356,18 @@
     
     function exportPDFReport(type) {
         var checkedRows = $('#outboundData').datagrid('getChecked');
-		if (checkedRows.length != 1) {
+		if (checkedRows.length == 0) {
 			showError($.locale.selectOneRow);
 			return;
 		}
-		var rowData = checkedRows[0];
-		exportOutboundReport(type, rowData);
+		var ids = '';
+		for (var i in checkedRows){
+			if (i > 0){
+				ids += ',';
+			}
+			ids += checkedRows[i].outboundHeaderId;
+		}
+		exportOutboundReport(type, ids);
     }
     
     function exportPDFShipLabel(){

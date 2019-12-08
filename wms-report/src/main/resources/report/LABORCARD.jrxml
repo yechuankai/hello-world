@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="labor_card" pageWidth="155" pageHeight="240" columnWidth="155" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5a1d5ead-fe31-4d19-838e-b53e77c1c471">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DIFTZER_31"/>
-	<property name="com.jaspersoft.studio.unit." value="cm"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="labor_card" pageWidth="155" pageHeight="245" columnWidth="155" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5a1d5ead-fe31-4d19-838e-b53e77c1c471">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DIFTZER_100"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<parameter name="applicationNo" class="java.lang.String">
 		<parameterDescription><![CDATA[applicationNo]]></parameterDescription>
 	</parameter>
@@ -55,43 +54,6 @@
 	<field name="IMG" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="IMG"/>
 	</field>
-	<group name="labor_group">
-		<groupExpression><![CDATA[$F{CARD_NO}]]></groupExpression>
-		<groupHeader>
-			<band height="28">
-				<staticText>
-					<reportElement mode="Opaque" x="0" y="0" width="155" height="28" forecolor="#FFFFFF" backcolor="#11A0FE" uuid="096b5666-f82f-4bc8-93a1-11b222c475bd"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="15" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Labor Card]]></text>
-				</staticText>
-			</band>
-		</groupHeader>
-		<groupFooter>
-			<band height="19">
-				<staticText>
-					<reportElement mode="Opaque" x="0" y="0" width="44" height="19" forecolor="#FFFFFF" backcolor="#11A0FE" uuid="3eff7c53-753c-4864-a988-499f9c7377f6"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font size="8" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Card No.]]></text>
-				</staticText>
-				<textField>
-					<reportElement mode="Opaque" x="44" y="0" width="111" height="19" forecolor="#FFFFFF" backcolor="#11A0FE" uuid="51732d3a-454c-4824-9cce-fb4c04eea415"/>
-					<box leftPadding="5"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="8" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{CARD_NO}]]></textFieldExpression>
-				</textField>
-				<image scaleImage="FillFrame">
-					<reportElement x="120" y="4" width="27" height="11" uuid="f9a5d6e6-e9f4-47ae-885f-2ef2300efdf1"/>
-					<imageExpression><![CDATA["report/images/logo.png"]]></imageExpression>
-				</image>
-			</band>
-		</groupFooter>
-	</group>
 	<background>
 		<band height="240" splitType="Stretch">
 			<image scaleImage="FillFrame">
@@ -101,9 +63,10 @@
 		</band>
 	</background>
 	<detail>
-		<band height="192" splitType="Stretch">
+		<band height="245" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField>
-				<reportElement positionType="FixRelativeToBottom" mode="Opaque" x="60" y="175" width="95" height="14" forecolor="#FFFFFF" backcolor="#11A0FE" uuid="121bf2b5-b96f-442f-a39e-c88ce2ea1bd0">
+				<reportElement positionType="FixRelativeToBottom" mode="Opaque" x="60" y="208" width="95" height="14" forecolor="#FFFFFF" backcolor="#11A0FE" uuid="121bf2b5-b96f-442f-a39e-c88ce2ea1bd0">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="cm"/>
 				</reportElement>
@@ -114,13 +77,80 @@
 				<textFieldExpression><![CDATA[$F{LABOR_NAME}]]></textFieldExpression>
 			</textField>
 			<image scaleImage="FillFrame">
-				<reportElement x="3" y="120" width="56" height="70" uuid="ef0459d7-25e1-4a06-b1b1-8afca91490b5">
+				<reportElement x="3" y="153" width="56" height="70" uuid="ef0459d7-25e1-4a06-b1b1-8afca91490b5">
 					<property name="com.jaspersoft.studio.unit.height" value="cm"/>
 				</reportElement>
 				<box leftPadding="0">
 					<pen lineWidth="2.0" lineColor="#FFFFFF"/>
 				</box>
 				<imageExpression><![CDATA[$F{IMG}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="225" width="44" height="20" forecolor="#FFFFFF" backcolor="#11A0FE" uuid="3eff7c53-753c-4864-a988-499f9c7377f6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Card No.]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="44" y="225" width="111" height="20" forecolor="#FFFFFF" backcolor="#11A0FE" uuid="51732d3a-454c-4824-9cce-fb4c04eea415"/>
+				<box leftPadding="5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CARD_NO}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame">
+				<reportElement x="121" y="227" width="27" height="15" uuid="f9a5d6e6-e9f4-47ae-885f-2ef2300efdf1"/>
+				<imageExpression><![CDATA["report/images/logo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="155" height="30" forecolor="#FFFFFF" backcolor="#11A0FE" uuid="096b5666-f82f-4bc8-93a1-11b222c475bd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Labor Card]]></text>
+			</staticText>
+			<break>
+				<reportElement x="0" y="244" width="155" height="1" uuid="dd404be6-0a53-45ed-9c6c-0b801e25a51e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</break>
+		</band>
+		<band height="245">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="155" height="30" forecolor="#FFFFFF" backcolor="#A8A69C" uuid="e9a86315-9897-4750-bd4f-424a4685e16e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Labor Card]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="30" width="155" height="215" forecolor="#FFFFFF" backcolor="#A8A69C" uuid="e5018acc-efa3-4d64-9edc-a1d19827df6d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="10" bottomPadding="0" rightPadding="10"/>
+				<textElement verticalAlignment="Top">
+					<font size="8.5"/>
+				</textElement>
+				<text><![CDATA[Note:
+1. The card holder acknowledges and abides by the DIFTZ Management Regulations and the Rules of Safety Induction released in www.diftz.dj.
+2. Keep the card safely and for your own use.
+3. Carry the card with you in and out of DIFTZ.
+4. Re-apply and pay the cost at the Service Center if the card is lost or damaged.
+5. Return the card to the Service Center when you pick up a card.
+6. Customer Service Hotline 
+    +253 2127 0004
+]]></text>
+			</staticText>
+			<image>
+				<reportElement x="98" y="211" width="50" height="30" uuid="42535170-d82c-47ce-8bbd-e9b085873638"/>
+				<imageExpression><![CDATA["report/images/logo.png"]]></imageExpression>
 			</image>
 		</band>
 	</detail>

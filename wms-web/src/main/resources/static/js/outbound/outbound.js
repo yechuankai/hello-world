@@ -71,6 +71,6 @@ function exportOutboundReport(type, data) {
 		__codelkup: "OUTBOUNDTYPE",
 		fileType: "pdf",
 		reportType: type,
-		id: data.outboundHeaderId
+		ids: data
 	});
 }
